@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -53,7 +54,25 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     }
 
     //findConnectedGroupsHelper
+    private List<Group> findConnectedGroupsHelper(int[][] image, int[] current, boolean[][] visited) { 
+        int row = current[0];
+        int col = current[1];
 
+        if (row < 0 || row >= image.length || col < 0 || col >= image[0].length || image[row][col] == 0 || visited[row][col]) {
+            return new ArrayList<>();
+        }
+
+        // marking the current pixel as visited
+        visited[row][col] = true;
+
+        // list that holds the connected pixel groups
+        List<int[]> connectedPixels = new ArrayList<>();
+        connectedPixels.add(new int[]{row, col});
+
+        List<int[]> moves = possibleDirections(image, current);
+        
+
+    }
     //pixelStarterLocation 
 
     //possibleDirections 
