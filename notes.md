@@ -1,7 +1,7 @@
 ImageSummaryApp.java notes 
 --------------------------------------------------------------------------------------------------------------------------
 
-- We need 3 parameters: input_image, hex_target_color, threshold
+- Need 3 parameters: input_image, hex_target_color, threshold
 
 - Starting position of image -> args[0]
 
@@ -24,12 +24,35 @@ BinarizingImageGroupFinder.java notes
 BinaryGroupFinder.java notes 
 --------------------------------------------------------------------------------------------------------------------------
 
-- purpose of this method is to find groups of connected 1
+- Purpose of this method is to find groups of connected 1 in 2D image array
 
-- pixels are only horizontal or vertical 
+- Pixels are only horizontal or vertical 
 
-- if any arrays are null, then it will throw a nullpointerexception 
+- If any arrays are null, then it will throw a *NullPointerException*
 
-- if any are invalid will throw an illegalargumentexception 
+- If any are invalid will throw an *IllegalArgumentException*
 
-- output of this method, returns a list of group finders in decending order 
+- Output of this method, returns a list of group finders in decending order 
+
+ColorDistanceFinder.java notes 
+--------------------------------------------------------------------------------------------------------------------------
+
+- Interface which compares two colors and their differences
+
+- Colors are represented as 24-bit RGB integers, using the format -> 0xRRGGBB
+
+- RR = Red (8 bits), GG = Green (8 bits), BB = Blue (8 bits)
+
+Coordinate.java notes 
+--------------------------------------------------------------------------------------------------------------------------
+
+- Holds the location in an image/array
+
+- Y increases downwards, X increases to the right
+
+- *EXAMPLE*: row: 3, column: 4 -> x:4, y:3
+
+DfsBinaryGroupFinder.java notes 
+--------------------------------------------------------------------------------------------------------------------------
+
+- 
