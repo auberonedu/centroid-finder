@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-//Used AI to generate and fix tests for DfsBinaryGroupFinder.java
+// Used AI to generate and fix tests for DfsBinaryGroupFinder.java
 public class DfsBinaryGroupFinderTest {
 
     private DfsBinaryGroupFinder finder;

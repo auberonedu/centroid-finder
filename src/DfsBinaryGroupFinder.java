@@ -62,7 +62,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             }
         }
 
-        // Sorting in descending order
+        // sorting in descending order
         groups.sort(Collections.reverseOrder());   
         return groups;
     }
@@ -91,17 +91,6 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return connectedPixels;
     }
     
-    // public static int[] pixelStarterLocation(int[][] image) {
-    //     for (int r = 0; r < image.length; r++) {
-    //         for(int c = 0; c < image[0].length; c++) {
-    //             if (image[r][c] == 1) {
-    //                 return new int[]{r, c};
-    //             }
-    //         }
-    //     }
-    //     throw new IllegalArgumentException("No starting pixel is present.");
-    // }
-
     public static List<int[]> possibleDirections(int[][] image, int[] current) {
         int curR = current[0];
         int curC = current[1];
