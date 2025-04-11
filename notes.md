@@ -24,4 +24,12 @@ BinarizingImageGroupFinder.java notes
 BinaryGroupFinder.java notes 
 --------------------------------------------------------------------------------------------------------------------------
 
-- 
+- purpose of this method is to find groups of connected 1
+
+- pixels are only horizontal or vertical 
+
+- if any arrays are null, then it will throw a nullpointerexception 
+
+- if any are invalid will throw an illegalargumentexception 
+
+- output of this method, returns a list of group finders in decending order 
