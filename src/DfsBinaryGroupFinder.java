@@ -54,7 +54,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     }
 
     //findConnectedGroupsHelper
-    private List<Group> findConnectedGroupsHelper(int[][] image, int[] current, boolean[][] visited) { 
+    private List<int[]> findConnectedGroupsHelper(int[][] image, int[] current, boolean[][] visited) { 
         int row = current[0];
         int col = current[1];
 
@@ -82,7 +82,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     private static int[] pixelStarterLocation(int[][] image) {
         for (int r = 0; r < image.length; r++) {
             for(int c = 0; c < image[0].length; c++) {
-                if (image[r][c] == 0) {
+                if (image[r][c] == 1) {
                     return new int[]{r, c};
                 }
             }
