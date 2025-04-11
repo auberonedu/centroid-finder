@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -48,13 +49,25 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             throw new IllegalArgumentException("The array is Invalid.");
         }
 
-        int[] start = pixelStarterLocation(image);
         boolean[][] visited = new boolean[image.length][image[0].length];
-        return findConnectedGroupsHelper(image, start, visited);
+        List<Group> groups = new ArrayList<>();
+         
+        // traversing all pixels in the image
+        for (int r = 0; r < image.length; r++) {
+            for (int c = 0; c < image[0].length; c++) {
+                if (image[r][c] == 1 && !visited[r][c]) {
+                    List<int[]> pixels = findConnectedGroupsHelper(image, new int[]{r, c}, visited);
+                    groups.add(createGroupFromPixels(pixels));
+                }
+            }
+        }
+
+        // Sorting in descending order
+        groups.sort(Collections.reverseOrder());   
+        return groups;
     }
 
-    //findConnectedGroupsHelper
-    private List<int[]> findConnectedGroupsHelper(int[][] image, int[] current, boolean[][] visited) { 
+    public List<int[]> findConnectedGroupsHelper(int[][] image, int[] current, boolean[][] visited) { 
         int row = current[0];
         int col = current[1];
 
@@ -78,19 +91,17 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return connectedPixels;
     }
     
-    //pixelStarterLocation 
-    private static int[] pixelStarterLocation(int[][] image) {
-        for (int r = 0; r < image.length; r++) {
-            for(int c = 0; c < image[0].length; c++) {
-                if (image[r][c] == 1) {
-                    return new int[]{r, c};
-                }
-            }
-        }
-        throw new IllegalArgumentException("No starting pixel is present.");
-    }
+    // public static int[] pixelStarterLocation(int[][] image) {
+    //     for (int r = 0; r < image.length; r++) {
+    //         for(int c = 0; c < image[0].length; c++) {
+    //             if (image[r][c] == 1) {
+    //                 return new int[]{r, c};
+    //             }
+    //         }
+    //     }
+    //     throw new IllegalArgumentException("No starting pixel is present.");
+    // }
 
-    //possibleDirections 
     public static List<int[]> possibleDirections(int[][] image, int[] current) {
         int curR = current[0];
         int curC = current[1];
@@ -115,5 +126,21 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         }
     
         return moves;
+    }
+
+    public Group createGroupFromPixels(List<int[]> pixels) {
+        int sumOfX = 0;
+        int sumOfY = 0;
+
+        for (int[] p : pixels) {
+            sumOfY += p[0]; // y is the row
+            sumOfX += p[1]; // x is the column
+        }
+
+        int size = pixels.size();
+        int centroidX = sumOfX / size;
+        int centroidY = sumOfY / size;
+
+        return new Group(size, new Coordinate(centroidX, centroidY));
     }
 }
