@@ -71,8 +71,13 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
         List<int[]> moves = possibleDirections(image, current);
 
-
+        for (int[] move : moves) {
+            connectedPixels.addAll(findConnectedGroupsHelper(image, move, visited));
+        }
+    
+        return connectedPixels;
     }
+    
     //pixelStarterLocation 
     private static int[] pixelStarterLocation(int[][] image) {
         for (int r = 0; r < image.length; r++) {
