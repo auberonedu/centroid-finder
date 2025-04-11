@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+//Used AI to generate and fix tests for DfsBinaryGroupFinder.java
 public class DfsBinaryGroupFinderTest {
 
     private DfsBinaryGroupFinder finder;
@@ -24,12 +25,11 @@ public class DfsBinaryGroupFinderTest {
 
         List<Group> groups = finder.findConnectedGroups(image);
 
-        // Expecting 2 groups:
-        // Group 1: (2,1) and (1,0) with centroid (1,0), size = 2
-        // Group 2: (0,0), (0,2), (2,2) with centroid (0,2), size = 3
+        // Group 1: (0,0), (1,0), (1,1), (2,1), (2,2) => size 5
+        // Group 2: (0,2) => size 1
         assertEquals(2, groups.size());
-        assertEquals(3, groups.get(0).size());  // Largest group should be first
-        assertEquals(2, groups.get(1).size());
+        assertEquals(5, groups.get(0).size());  // Largest group
+        assertEquals(1, groups.get(1).size());
     }
 
     @Test
@@ -121,12 +121,9 @@ public class DfsBinaryGroupFinderTest {
 
         List<Group> groups = finder.findConnectedGroups(image);
 
-        // Expecting 4 groups, each of size 1
-        assertEquals(4, groups.size());
-        assertEquals(1, groups.get(0).size());
-        assertEquals(1, groups.get(1).size());
-        assertEquals(1, groups.get(2).size());
-        assertEquals(1, groups.get(3).size());
+        // 5 separate 1s, each unconnected — 5 groups of size 1
+        assertEquals(5, groups.size());
+        groups.forEach(g -> assertEquals(1, g.size()));
     }
 
     @Test
@@ -140,12 +137,20 @@ public class DfsBinaryGroupFinderTest {
 
         List<Group> groups = finder.findConnectedGroups(image);
 
-        // Group 1: (0,0), (1,0), (0,3), (1,3) with centroid (1,1), size = 4
-        // Group 2: (3,1), (3,2), (3,3) with centroid (3,2), size = 3
         assertEquals(2, groups.size());
-        assertEquals(4, groups.get(0).size());
-        assertEquals(3, groups.get(1).size());
-        assertEquals(1, groups.get(1).centroid().x());
-        assertEquals(3, groups.get(1).centroid().y());
+
+        Group group1 = groups.get(0); // Largest group first
+        Group group2 = groups.get(1);
+
+        assertEquals(6, group1.size());
+        assertEquals(2, group2.size());
+
+        // Centroid for group 1: (2,2)
+        assertEquals(2, group1.centroid().x());
+        assertEquals(2, group1.centroid().y());
+
+        // Centroid for group 2: (0,0)
+        assertEquals(0, group2.centroid().x());
+        assertEquals(0, group2.centroid().y());
     }
 }
