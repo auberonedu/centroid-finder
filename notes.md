@@ -95,4 +95,19 @@ Group.java notes
 ImageBinarizer.java notes
 --------------------------------------------------------------------------------------------------------------------------
 
-- 
+- The main purpose of this Interface is to convert between an RGB image and a binary black-and-white image
+
+- The 0s are black and the 1s are white 
+
+- toBufferedImage method, input in 2D binary arrays, 0s and 1s the output should be the color of the buffered image 
+
+- Overall this interface allows us to input images into convert it into black and white 
+
+ImageGroupFinder.java notes
+--------------------------------------------------------------------------------------------------------------------------
+
+- Finds the groups of the connected pixels in a BufferedImage or the colored image
+
+- findConnectedGroups, input is a colored image, or a BufferedIMage,  
+
+- Result should be a list of Group objects, sorted in decending order, by size, by y, then by x
