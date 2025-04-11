@@ -27,3 +27,29 @@ Wave 4 will implement DistanceImageBinarizer
 Wave 5 will implement BinarizingImageGroupFinder
 Wave 6 will be a validation step using sampleInput with result being compared to the resultant binary image output and the CSV group file both found in sampleOutput folder
 Wave 7 we can start to go crazy re enhancements to what should already be a solid working base code project. FUN!!!
+
+JS moving into Wave 2, reading description of DfsBinaryGroupFinder class (this is what we need to implement in Wave 2), Group.java description and code, and considering top 5 unit tests to write first:
+
+DfsBinaryGroupFinder.java:
+1. takes as input a 2D int array of 0s(black) and 1s(white)
+2. outputs a list of Group objects (List<Group>)
+3. Groups are cells connected via 4 cardinal directions only
+4. Each component (groups of 1s) it computes size and centroid
+5. Returns List<Group> sorted desc order (size, x coord, y coord);
+
+Group.java (public record):
+1. takes in an int size and a Coordinate centroid
+2. method compareTo takes in a Group other and compares this group to the other group re size and centroid, then orders them, then another method toCsvRow takes the sorted 3 element strings and puts them into CSV format to put into CSV file
+
+Unit tests to consider for DfsBinaryGroupFinder class:
+1. empty pixel group (edge case)
+2. single pixel group (simple starting test)
+3. diagonal 1s should not connect
+4. one 4-connected block
+5. sorting logic test (2 groups different size)
+6. multiple equal sized groups tests tiebreaking on centroid (if 4 equal sized groups should sort by desc x first, then desc y)
+7. non rectangular data (should throw exception)
+8. null input/null row (should throw NPE)
+9. checkboard pattern to ensure no false grouping
+10. odd shaped group (eg. salamander shape!)
+
