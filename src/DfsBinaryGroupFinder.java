@@ -70,7 +70,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         connectedPixels.add(new int[]{row, col});
 
         List<int[]> moves = possibleDirections(image, current);
-        
+
 
     }
     //pixelStarterLocation 
@@ -86,5 +86,21 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     }
 
     //possibleDirections 
+    public static List<int[]> possibleDirections(int[][] image, int[] current) {
+        int curR = current[0];
+        int curC = current[1];
+    
+        List<int[]> moves = new ArrayList<>();
+    
+        // Directions array for up, down, left, and right
+        int[][] directions = new int[][]{
+            {-1, 0}, 
+            {1, 0}, 
+            {0, -1}, 
+            {0, 1}   
+        };
+
+        return 0;
+    }
     
 }
