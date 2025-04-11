@@ -5,7 +5,7 @@ ImageSummaryApp.java:
         A. inputImagePath
         B. hexTargetColor
         C. int threshold
-    2. Loads input image as a BufferedImage using ImageIO.read()
+    2. Loads input image as a BufferedImage object using ImageIO.read()
     3. Converts hex color input into 24 bit RGB integer
     4. Uses class EuclideanColorDistance which implements interface ColorDistanceFinder to initialize a distanceFinder; DistanceImageBinarizer is initialized with the interface ColorDistanceFinder, a target RGB color, and a threshold. It uses these to convert the input image into a binary array based on how close each pixel color is to target;
     5. The binaryArray is a 2D int array formed by binarizer.toBinaryArray handed inputImage; binaryImage is a BufferedImage formed by binarizer.toBufferedImage handed the recently formed binaryArray
