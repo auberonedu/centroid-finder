@@ -66,3 +66,67 @@ Unit tests to consider for DfsBinaryGroupFinder class:
 10. odd shaped group (eg. salamander shape!)
 11. the compareTo() method in Group.java record has a 3 tier sorting criteria - if 'island' size are different that will be the sorting criteria used first ie largest to smallest by size, 2nd tier is x coord, 3rd tier is y coord- so we should develop a test (or tests) to make sure this sorting logic is working ie hand different sized islands (that's already covered in test #5), then hand in two same size islands to sort by x coord (covered in 6) but #6 needs two tests, first one same sized islands but different x coord, then same sized islands, same x coord, different y coordinates!
 
+DfsBinaryGroupFinder.java PseudoCode:
+-------------------------------------
+CLASS
+Under Class initialize a private static final int[][] CD (cardinal directions) = {{-1,0}, {1,0}, {0, -1}, {0, 1}}; (to use in dfs helper method to make dfs recursion in 4 CDs more elegant code)
+------------
+MAIN METHOD -> Validates the input, Traverses the full 2D image, Calls the helper method (dfs) whenever it finds a new group, Creates and collects Group objects, Sorts them using Group.compareTo(), Returns the List<Group>
+------------
+EdgeCases validate input:
+1. if image is null:
+    throw NullPointerException
+2. for each row in image:
+    if row is null:
+        throw NullPointerException
+3. if not all rows are the same length:
+    throw IllegalArgumentException
+---------
+Initializing state
+1. height = number of rows in image (remember x=col and y=row!!)
+2. width = number of columns in image[0]
+3. visited = 2D boolean array [height][width], initialized to false
+4. groups = empty list to store Group objects
+---------
+Iterate through entire 2D int matrix starting top left, left to right row by row
+1. for y from 0 to height - 1: (remember y-axis (vertical) = rows)
+    for x from 0 to width - 1: (x-axis (horizontal) so = columns)
+        if image[y][x] == 1 and not visited[y][x]: (edge cases)
+            pixelsInGroup = empty list of Coordinates
+            call dfs(image, visited, x, y, pixelsInGroup) (this is our dfs recursion step)
+
+            size = number of pixels in pixelsInGroup
+            sumX = sum of x-coordinates in pixelsInGroup
+            sumY = sum of y-coordinates in pixelsInGroup
+            centroidX = sumX / size  (INTEGER DIVISION)
+            centroidY = sumY / size
+            create Group with size and Coordinate(centroidX, centroidY)
+            add Group to groups
+---------
+return a List<Group> (list of groups :^)
+here's how it works: 
+sort groups by Group.compareTo():
+    - largest size first
+    - if sizes equal, use descending x
+    - if x equal, use descending y
+return groups
+--------------------
+HELPER METHOD -> Does not return anything, Its sole job is to explore a single group of connected 1s, It adds coordinates to a passed-in List<Coordinate> (or similar structure), The calling method then uses that list to build the Group object
+------------------
+DFS helper method! (input: 2D int matrix 'image', 2D boolean matrix 'visited', int row (y coord), int col(x coord), List<Coordinate> list of coordinates called 'pixelsInGroup'){}
+---------
+Edge cases: we don't want to move off the 2D matrix so UP y-1, DOWN y+1, LEFT x-1, RIGHT x+1
+We don't want to loop so if visited has already been there return;
+We don't want to move into cell containing == 0 because that's not part of our island!!
+---------
+Once we're sure cell is a new '1' we add to visited, add the coord to pixelsInGroup:
+visited[y][x] = true
+add Coordinate(x, y) to pixelsInGroup
+(for more elegant code) initialize row as y coord and col as x coord
+
+Recurse to 4-connected neighbors (no diagonals!)
+for each loop (int[] direction : directions) {}
+    dfs(image, visited, row + direction[0], col + direction[1], pixelsInGroup);
+--------------------
+DONE SON!! YIPPEEE! (THIS WAS JS/ZS spending 90 minutes in Friday lab!!)
+--------------------
