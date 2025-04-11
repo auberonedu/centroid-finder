@@ -74,6 +74,16 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
     }
     //pixelStarterLocation 
+    private static int[] pixelStarterLocation(int[][] image) {
+        for (int r = 0; r < image.length; r++) {
+            for(int c = 0; c < image[0].length; c++) {
+                if (image[r][c] == 0) {
+                    return new int[]{r, c};
+                }
+            }
+        }
+        throw new IllegalArgumentException("No starting pixel is present.");
+    }
 
     //possibleDirections 
     
