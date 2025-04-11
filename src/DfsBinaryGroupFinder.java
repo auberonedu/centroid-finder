@@ -34,6 +34,16 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
         return null;
+
+        int[] start = pixelStarterLocation(image);
+        boolean[][] visited = new boolean[image.length][image[0].length];
+        return findConnectedGroupsHelper(image, start, visited);
     }
+
+    //findConnectedGroupsHelper
+
+    //pixelStarterLocation 
+
+    //possibleDirections 
     
 }
