@@ -92,7 +92,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     
         List<int[]> moves = new ArrayList<>();
     
-        // Directions array for up, down, left, and right
+        // Directions array for UP, DOWN, LEFT, and RIGHT
         int[][] directions = new int[][]{
             {-1, 0}, 
             {1, 0}, 
@@ -100,7 +100,15 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             {0, 1}   
         };
 
-        return 0;
-    }
+        for (int[] direction : directions) {
+            int newR = curR + direction[0];
+            int newC = curC + direction[1];
     
+            if (newR >= 0 && newR < image.length && newC >= 0 && newC < image[0].length && image[newR][newC] == 1) {
+                moves.add(new int[]{newR, newC});
+            }
+        }
+    
+        return moves;
+    }
 }
