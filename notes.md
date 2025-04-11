@@ -28,7 +28,7 @@ Wave 5 will implement BinarizingImageGroupFinder
 Wave 6 will be a validation step using sampleInput with result being compared to the resultant binary image output and the CSV group file both found in sampleOutput folder
 Wave 7 we can start to go crazy re enhancements to what should already be a solid working base code project. FUN!!!
 
-JS moving into Wave 2, reading description of DfsBinaryGroupFinder class (this is what we need to implement in Wave 2), Group.java description and code, and considering top 5 unit tests to write first:
+JS moving into Wave 2, reading description of DfsBinaryGroupFinder class (this is what we need to implement in Wave 2), Group.java description and code, and considering top 10 unit tests to write first:
 
 DfsBinaryGroupFinder.java:
 1. takes as input a 2D int array of 0s(black) and 1s(white)
