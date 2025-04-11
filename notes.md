@@ -50,12 +50,12 @@ Coordinate.java notes
 
 - Y increases downwards, X increases to the right
 
-- *EXAMPLE*: row: 3, column: 4 -> x:4, y:3
+- *EXAMPLE*: row: 3, column: 4 -> x: 4, y: 3
 
 DfsBinaryGroupFinder.java notes 
 --------------------------------------------------------------------------------------------------------------------------
 
-- The purpose of this is to find and return a sorted list of groups of connected 1s in a binary 2d image 
+- The purpose of this is to find and return a sorted list of groups of connected 1s in a binary 2D image 
 
 - Uses DFS to explore all the connected 1s only horizontally and vertically, no diagonals
 
@@ -66,10 +66,33 @@ DfsBinaryGroupFinder.java notes
 DistanceImageBinarizer.java notes 
 --------------------------------------------------------------------------------------------------------------------------
 
-- Purpose of this file is to convert a colored image to binary imange using only 0s or 1s based on color distance
+- Purpose of this file is to convert a colored image to binary image using only 0s or 1s based on color distance
 
 - Constructor has three fields, distanceFInder, targetColor, threshold
 
 - toBinaryArray method, converts an image to 2D array pf 0s and 1s
 
-- toBufferedImage method, then convert it back to a buffered IMage
+- toBufferedImage method, then convert it back to a buffered Image
+
+EuclideanColorDistance.java notes
+--------------------------------------------------------------------------------------------------------------------------
+
+- Compares two RGB colors using Euclidean distance
+
+- Color components range from: 0-255
+
+- Can be visualized as: *Red = X, Green = Y, Blue = Z*
+
+Group.java notes
+--------------------------------------------------------------------------------------------------------------------------
+
+- Represents a group of connected white pixels in an image 
+
+- Group size = number of pixels in a group 
+
+- Centroid is the average of the pixel coordinates of a group
+
+ImageBinarizer.java notes
+--------------------------------------------------------------------------------------------------------------------------
+
+- 
