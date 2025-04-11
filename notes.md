@@ -62,3 +62,14 @@ DfsBinaryGroupFinder.java notes
 - For the centroid for each group have to use integer division
 
 - Return all groups in order by size, by y, by x, all sorted
+
+DistanceImageBinarizer.java notes 
+--------------------------------------------------------------------------------------------------------------------------
+
+- Purpose of this file is to convert a colored image to binary imange using only 0s or 1s based on color distance
+
+- Constructor has three fields, distanceFInder, targetColor, threshold
+
+- toBinaryArray method, converts an image to 2D array pf 0s and 1s
+
+- toBufferedImage method, then convert it back to a buffered IMage
