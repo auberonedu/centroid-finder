@@ -55,4 +55,10 @@ Coordinate.java notes
 DfsBinaryGroupFinder.java notes 
 --------------------------------------------------------------------------------------------------------------------------
 
-- 
+- The purpose of this is to find and return a sorted list of groups of connected 1s in a binary 2d image 
+
+- Uses DFS to explore all the connected 1s only horizontally and vertically, no diagonals
+
+- For the centroid for each group have to use integer division
+
+- Return all groups in order by size, by y, by x, all sorted
