@@ -52,4 +52,5 @@ Unit tests to consider for DfsBinaryGroupFinder class:
 8. null input/null row (should throw NPE)
 9. checkboard pattern to ensure no false grouping
 10. odd shaped group (eg. salamander shape!)
+11. the compareTo() method in Group.java record has a 3 tier sorting criteria - if 'island' size are different that will be the sorting criteria used first ie largest to smallest by size, 2nd tier is x coord, 3rd tier is y coord- so we should develop a test (or tests) to make sure this sorting logic is working ie hand different sized islands (that's already covered in test #5), then hand in two same size islands to sort by x coord (covered in 6) but #6 needs two tests, first one same sized islands but different x coord, then same sized islands, same x coord, different y coordinates!
 
