@@ -36,10 +36,22 @@ DfsBinaryGroupFinder.java:
 3. Groups are cells connected via 4 cardinal directions only
 4. Each component (groups of 1s) it computes size and centroid
 5. Returns List<Group> sorted desc order (size, x coord, y coord);
+----------------------
+Java Record -> concise, final, immutable class that automatically generates:
 
-Group.java (public record):
+Constructor
+getters (but no setters)
+equals()
+hashCode()
+toString()
+
+It can implement interfaces
+Cannot extend other classes (however, all records implicitly extend java.lang.Record)
+Is immutable by design—fields are final)
+----------------------
+Group.java
 1. takes in an int size and a Coordinate centroid
-2. method compareTo takes in a Group other and compares this group to the other group re size and centroid, then orders them, then another method toCsvRow takes the sorted 3 element strings and puts them into CSV format to put into CSV file
+2. method compareTo takes in a Group other and compares this group to the other group re size and centroid, then orders them, then another method toCsvRow(a specialized toString method) takes the sorted 3 element strings and puts them into CSV format to put into CSV file
 
 Unit tests to consider for DfsBinaryGroupFinder class:
 1. empty pixel group (edge case)
@@ -47,7 +59,7 @@ Unit tests to consider for DfsBinaryGroupFinder class:
 3. diagonal 1s should not connect
 4. one 4-connected block
 5. sorting logic test (2 groups different size)
-6. multiple equal sized groups tests tiebreaking on centroid (if 4 equal sized groups should sort by desc x first, then desc y)
+6. multiple equal sized groups tests tiebreaking on centroid (if 4 equal sized groups should sort by desc x first, then desc y) -> see test 11 idea!
 7. non rectangular data (should throw exception)
 8. null input/null row (should throw NPE)
 9. checkboard pattern to ensure no false grouping
