@@ -20,3 +20,10 @@ At this point I've looked though ImageSummaryApp; From this I can summarize the 
 4. DfsBinaryGroupFinder uses DFS to find connected pixel groups
 5. Group stores info about a group (size, centroid, csv output)
 6. BinarizingImageGroupFinder combines binarization and grouping logic (implements interface ImageGroupFinder)
+
+Wave 2 will implement DfsBinaryGroupFinder, this must be completed by class Wk3 Tuesday;
+Wave 3 will implement EuclideanColorDistance
+Wave 4 will implement DistanceImageBinarizer
+Wave 5 will implement BinarizingImageGroupFinder
+Wave 6 will be a validation step using sampleInput with result being compared to the resultant binary image output and the CSV group file both found in sampleOutput folder
+Wave 7 we can start to go crazy re enhancements to what should already be a solid working base code project. FUN!!!
