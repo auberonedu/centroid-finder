@@ -126,8 +126,14 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         //recurse on dfs helper method all 4 cardinal
         //directions (CD!)
         for (int[] direction : CD) {
+            //the fact that the y coord defines the rows
+            //and the x coord defines the columns is what
+            //has been flipping our minds
+            //we define newY by adding direction[0] to ROW
+            //we define newX by adding direction[1] to COL
             int newY = row + direction[0];
             int newX = col + direction[1];
+            //now ... we recurse!!
             dfs(image, visited, newY, newX, pixelsInGroup);
         }
     }
