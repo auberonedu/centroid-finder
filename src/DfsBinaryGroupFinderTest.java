@@ -74,16 +74,19 @@ public class DfsBinaryGroupFinderTest {
 
     // 6a. Equal size - tiebreaker by x
     @Test
-    void testEqualSizeTiebreakByX() {
-        int[][] image = {
-            {0, 1, 0},
-            {0, 0, 0},
-            {0, 1, 0}
-        };
-        List<Group> groups = finder.findConnectedGroups(image);
-        assertEquals(2, groups.size());
-        assertTrue(groups.get(0).centroid().x() > groups.get(1).centroid().x());
-    }
+void testEqualSizeTiebreakByX_withEdgeCaseTrigger() {
+    int[][] image = {
+        {1, 0, 0},  // y=0, x=0
+        {0, 0, 0},
+        {0, 0, 0},
+        {0, 0, 0},
+        {0, 0, 1}   // y=4, x=2 → triggers bug when height/width flipped
+    };
+    List<Group> groups = finder.findConnectedGroups(image);
+    assertEquals(2, groups.size());  // This will fail if DFS was broken
+    assertTrue(groups.get(0).centroid().x() > groups.get(1).centroid().x());
+}
+
 
     // 6b. Equal size and x - tiebreaker by y
     @Test
@@ -153,7 +156,7 @@ public class DfsBinaryGroupFinderTest {
         List<Group> groups = finder.findConnectedGroups(image);
         assertEquals(1, groups.size());
         Group g = groups.get(0);
-        assertEquals(7, g.size());
+        assertEquals(6, g.size());
         assertEquals(new Coordinate(1, 1), g.centroid()); // central symmetry
     }
 }

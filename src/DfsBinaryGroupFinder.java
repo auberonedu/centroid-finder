@@ -115,9 +115,9 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         //define again our height and width
         int height = image.length;
         int width = image[0].length;
-        //edge cases - don't go off grid LEFT/RIGHT/UP/DOWN
+        //edge cases - don't go off grid UP/DOWN/LEFT/RIGHT
         //don't visit cell == 0 or already visited
-        if(row < 0 || row >= width || col < 0 || col >= height || image[row][col] == 0 || visited[row][col]) return;
+        if(row < 0 || row >= height || col < 0 || col >= width || image[row][col] == 0 || visited[row][col]) return;
         //add this cell location to visited and pIG
         visited[row][col] = true;
         //Coordinate is x, y so we must flip row/col
