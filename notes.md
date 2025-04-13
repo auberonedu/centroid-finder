@@ -88,24 +88,36 @@ DistanceImageBinarizer.java
 EuclideanColorDistance.java
 ------------------------------------------
 
+- this class measures like how 2 colors are different
 
+- it implements ColorDistanceFinder
 
+- uses Euclidean distance formula
+
+- color ranges from 0-255 and can be visualized as Red = X, Green = Y, Blue = Z
 
 
 Group.java
 ------------------------------------------
 
+- represnts a group of white pixels that is connected
 
-
-
+- stores size - number of pixels in group, centroid - average x and y position
 
 
 ImageBinarizer.java
 ------------------------------------------
 
+- this defines how to convert between imnage and black and white binary images
 
-
+- works with BufferedImage (regualr image with RGB) and 2D int array with 0 (black) and 1 (white)
 
 
 ImageGroupFinder.java
 ------------------------------------------
+
+- this finds groups of connected white pixels inside a bufferedimage
+
+- take a full image as input abnd then returns a list of group objects
+
+- groups are sorted in descending order, bigger size first, x,  y
