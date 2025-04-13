@@ -18,3 +18,13 @@ what it does:
 - writes them into the csv file as in like x, y and size
 
 
+BinarizingImageGroupFinder.java
+------------------------------------------
+
+- Has 2 steps
+    - coverts the image to binary array (using ImageBinarizer)
+    - finds white pixel groups (using BinaryGroupFinder)
+
+- returns the list of group objects
+
+
