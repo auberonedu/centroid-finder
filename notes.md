@@ -130,3 +130,18 @@ for each loop (int[] direction : directions) {}
 --------------------
 DONE SON!! YIPPEEE! (THIS WAS JS/ZS spending 90 minutes in Friday lab!!)
 --------------------
+Sunday noon meeting at Wild Wheat in Kent JS/ZS
+We are slowly processing the pseudocode we worked on Friday in lab into actual code. We've run into a question about how to use the Coordinate java record and did some W3 and google investigation:
+
+Java Record innate behaviors
+1. When we define a record eg. record Coordinate(int x, int y), we’re creating a special kind of class used for storing data.
+2. Java automatically creates two private final fields: one called x and one called y.
+3. Java automatically generates a public constructor: so we can say new Coordinate(3, 5) to make a new coordinate with those values.
+4. Java automatically generates two accessor methods named exactly after the fields: x() and y(). These are like built-in getters:
+-> c.x() returns the value of x
+-> c.y() returns the value of y
+We don't need to write these methods - Java does it for us based on the record’s parameters.
+So even though we don’t see public int x() written anywhere, we’re still able to call c.x() inside our code. It’s part of the record’s automatic behavior.
+Records also come with useful methods like equals(), hashCode(), and toString()—so they work well in lists, maps, debugging, and comparison operations.
+The key idea is that records are meant to be simple, immutable data containers with less code and automatic structure.
+----------
