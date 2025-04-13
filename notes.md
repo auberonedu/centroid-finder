@@ -39,3 +39,25 @@ BinaryGroupFinder.java
 
 - calculates the sizes like how many pixels and also the centroid like the average xy and y of position pixels
 
+
+ColorDistanceFinder.java notes
+------------------------------------------
+
+- Interface that show how to compare the 2 RGS colors
+
+- Each color is in 0xRRGGBB format (24-bit hex)
+
+- RR = red, GG = green, BB = blue
+
+
+Coordinate.java notes
+------------------------------------------
+
+- records that stores as x and y coordinate
+
+- represents pixels locations in the image
+
+- example like (row: 4, col: 7) = x:7, y:4
+
+    X moves right
+    Y moves down
