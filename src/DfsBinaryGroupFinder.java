@@ -63,9 +63,29 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             if(row == null) throw new NullPointerException("One or more rows are null!");
             if(row.length != width) throw new IllegalArgumentException("Image is not rectangular and must be!");
         }
+        //initialize data structures to avoid looping
+        //and to track the groups that we find
+        boolean[][] visited = new boolean[height][width];
+        List<Group> groups = new ArrayList<>();
 
-
-
+        //iterate 2D matrix to scan each pixel
+        //nested for loops
+        for(int row = 0; row < height; row++) {
+            for(int col = 0; col < width; col++) {
+                //inside-iteration edge case
+                //does this current cell contain a 1
+                //and has visited not been here yet
+                if(image[row][col] == 1 && !visited[row][col]){
+                    //if edge cases true place this new
+                    //cell coord into a List of
+                    //Coordinates (that's a java record)
+                    List<Coordinate> pixelsInGroup = new ArrayList<>();
+                    //hand in image, visited, row, col, 
+                    //pixelsInGroup to DFS helper method
+                    dfs(image, visited, row, col, pixelsInGroup);
+                }
+            }
+        }
 
         return null;
     }
