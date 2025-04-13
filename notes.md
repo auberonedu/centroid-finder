@@ -28,3 +28,14 @@ BinarizingImageGroupFinder.java
 - returns the list of group objects
 
 
+BinaryGroupFinder.java 
+------------------------------------------
+
+- Finds all connected white pixels groups in the image
+
+- pixels are connected like up/right/down/left (no diagonal)
+
+- each group has bunch of 1s touching each other
+
+- calculates the sizes like how many pixels and also the centroid like the average xy and y of position pixels
+
