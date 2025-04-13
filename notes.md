@@ -150,3 +150,10 @@ re compareTo() method:
 -> It naturally sorts from smallest to largest
 -> We are tasked to return the CSV sorted from largest to smallest so we must reverse the order in Integer.compare() to sort in descending order (largest size, x, y first)
 ----------
+Wave 3 - we have looked over the javadoc for EuclideanColorDistance class; neither of us were initially aware of using a 3D x, y, z graph to represent a RGB color, so we have just studied this together. Here is our answer:
+
+3D Color Space via XYZ 3D Graph:
+RGB color space means we are describing colors using 3 numbers: red, green, blue; we imagine these as x, y, z axis on a 3D color 'graph'; now we can use the Euclidean 3D spatial geometry distance formula to tell us the 'distance' between two different colors (ie two different points on this 3D graph). 
+
+we are assuming that we use this so we can set the threshold somewhere in between the line connecting these two 'dots' on this 3D xyz graph?
+----------
