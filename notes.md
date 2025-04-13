@@ -61,3 +61,15 @@ Coordinate.java notes
 
     X moves right
     Y moves down
+
+
+DfsBinaryGroupFinder.java
+------------------------------------------
+
+- loops around every pixels
+
+- used DFS to explore the connected 1s only up/down/left/right only
+
+- tracks how many pixels = size, sum of the positions (x and y) to find out the centroid or to calculate it
+
+- makes a group with size and centroid
