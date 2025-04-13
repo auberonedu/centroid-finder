@@ -83,6 +83,19 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                     //hand in image, visited, row, col, 
                     //pixelsInGroup to DFS helper method
                     dfs(image, visited, row, col, pixelsInGroup);
+                    //pIG is a List of Coord that represents a Group
+                    //we need to compute the Group size
+                    int size = pixelsInGroup.size();
+                    //now we can compute centroid
+                    int SumX = 0;
+                    int SumY = 0;
+                    //for each iterate each Coord in pIG
+                    for (Coordinate xy : pixelsInGroup) {
+                        //x() and y() are Coord methods
+                        SumX += xy.x();
+                        SumY += xy.y();
+                    }
+
                 }
             }
         }
