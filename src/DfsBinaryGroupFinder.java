@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -46,6 +47,26 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
+        //Edge cases - validate input image, rectangular shape
+        if(image == null) throw new NullPointerException("Input image is null!");
+
+        int height = image.length;
+        //if image has no rows, return empty group list
+        if(height == 0) return new ArrayList<>();
+
+        //set 'width' as the first row length to compare to
+        //this 2D array is made up of successive rows, so an enhanced
+        //for-each loop will iterate through each row in order top 
+        //to bottom
+        int width = image[0].length;
+        for (int[] row : image) {
+            if(row == null) throw new NullPointerException("One or more rows are null!");
+            if(row.length != width) throw new IllegalArgumentException("Image is not rectangular and must be!");
+        }
+
+
+
+
         return null;
     }
 
