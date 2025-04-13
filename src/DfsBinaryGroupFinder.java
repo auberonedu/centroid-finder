@@ -91,11 +91,15 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                     int SumY = 0;
                     //for each iterate each Coord in pIG
                     for (Coordinate xy : pixelsInGroup) {
-                        //x() and y() are Coord methods
+                        //x() and y() are Coord Record auto/innate methods
                         SumX += xy.x();
                         SumY += xy.y();
                     }
-
+                    //centroid coordinate will be sumx/size and sumy/size
+                    int centroidX = sumX/size;
+                    int centroidY = sumY/size;
+                    //create new Group object with size, location (centroidX, centroidY) and add to our List of Group which we called groups :^))
+                    groups.add(new Group(size, new Coordinate(centroidX, centroidY)));
                 }
             }
         }
