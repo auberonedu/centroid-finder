@@ -83,3 +83,29 @@ DistanceImageBinarizer.java
 - uses threshold value - if its close enough to the target then becomes white (1) or else it becomes black (0)
 
 - 2 main methods - toBinaryArray() - converts 2D array of 1s and 0s and toBufferedImage() - turns the 1/0 array to an actual image
+
+
+EuclideanColorDistance.java
+------------------------------------------
+
+
+
+
+
+Group.java
+------------------------------------------
+
+
+
+
+
+
+ImageBinarizer.java
+------------------------------------------
+
+
+
+
+
+ImageGroupFinder.java
+------------------------------------------
