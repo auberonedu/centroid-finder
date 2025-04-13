@@ -145,3 +145,8 @@ So even though we don’t see public int x() written anywhere, we’re still abl
 Records also come with useful methods like equals(), hashCode(), and toString()—so they work well in lists, maps, debugging, and comparison operations.
 The key idea is that records are meant to be simple, immutable data containers with less code and automatic structure.
 ----------
+re compareTo() method:
+-> Integer.compare(a, b) returns -1 if a < b, 0 if a == b, and 1 if a > b;
+-> It naturally sorts from smallest to largest
+-> We are tasked to return the CSV sorted from largest to smallest so we must reverse the order in Integer.compare() to sort in descending order (largest size, x, y first)
+----------

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -103,8 +104,31 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                 }
             }
         }
-
-        return null;
+        //sort groups by 1. size 2. x desc, 3. y desc
+        //reverse the order in Integer.compare() to sort in descending order (largest size, x, y first)
+        Collections.sort(groups, Collections.reverseOrder());
+        //return our List of Group groups
+        return groups;
     }
 
+    private void dfs(int[][] image, boolean[][] visited, int row, int col, List<Coordinate> pixelsInGroup) {
+        //define again our height and width
+        int height = image.length;
+        int width = image[0].length;
+        //edge cases - don't go off grid LEFT/RIGHT/UP/DOWN
+        //don't visit cell == 0 or already visited
+        if(row < 0 || row >= width || col < 0 || col >= height || image[row][col] == 0 || visited[row][col]) return;
+        //add this cell location to visited and pIG
+        visited[row][col] = true;
+        //Coordinate is x, y so we must flip row/col
+        //to col, row for this nomenclature
+        pixelsInGroup.add(new Coordinate(col, row));
+        //recurse on dfs helper method all 4 cardinal
+        //directions (CD!)
+        for (int[] direction : CD) {
+            int newY = row + direction[0];
+            int newX = col + direction[1];
+            dfs(image, visited, newY, newX, pixelsInGroup);
+        }
+    }
 }
