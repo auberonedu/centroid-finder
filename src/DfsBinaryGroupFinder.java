@@ -87,13 +87,13 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                     //we need to compute the Group size
                     int size = pixelsInGroup.size();
                     //now we can compute centroid
-                    int SumX = 0;
-                    int SumY = 0;
+                    int sumX = 0;
+                    int sumY = 0;
                     //for each iterate each Coord in pIG
                     for (Coordinate xy : pixelsInGroup) {
                         //x() and y() are Coord Record auto/innate methods
-                        SumX += xy.x();
-                        SumY += xy.y();
+                        sumX += xy.x();
+                        sumY += xy.y();
                     }
                     //centroid coordinate will be sumx/size and sumy/size
                     int centroidX = sumX/size;
