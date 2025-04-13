@@ -73,3 +73,13 @@ DfsBinaryGroupFinder.java
 - tracks how many pixels = size, sum of the positions (x and y) to find out the centroid or to calculate it
 
 - makes a group with size and centroid
+
+
+DistanceImageBinarizer.java
+------------------------------------------
+
+- it converts a full color into a black and white (binary image) based on how close each pixel's color is to the target color
+
+- uses threshold value - if its close enough to the target then becomes white (1) or else it becomes black (0)
+
+- 2 main methods - toBinaryArray() - converts 2D array of 1s and 0s and toBufferedImage() - turns the 1/0 array to an actual image
