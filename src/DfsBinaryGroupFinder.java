@@ -44,14 +44,19 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
         for (int[] row : image) {
             if (row == null) {
-                throw new IllegalArgumentException("Image must be rectangular");
+                throw new IllegalArgumentException("Image array cannot contain null subarrays");
             }
         }
 
         int[] start = pixelFinder(image);
-        int[][] visited = new int[image.length][image[0].length];
+        boolean[][] visited = new boolean[image.length][image[0].length];
 
         return findConnectedGroupsHelper(image, start, start, visited);
+    }
+
+    private List<Group> findConnectedGroupsHelper(int[][] image, int[] start, int[] current, boolean[][] visited) {
+
+        return null;
     }
     
 }
