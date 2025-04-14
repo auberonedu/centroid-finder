@@ -91,5 +91,31 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     }
 
     // getAdjacentPixels
+    public static List<int[]> getAdjacentPixels(int[][] image, int[] current) {
+        List<int[]> validMoves = new ArrayList<>();
+
+        int row = current[0];
+        int col = current[1];
+
+        
+        int[][] directions = new int[][] {
+            {-1, 0}, // up
+            {1, 0},  // down
+            {0, -1}, // left
+            {0, 1}   // right
+        };
+
+        
+        for (int[] direction : directions) {
+            int newRow = row + direction[0];
+            int newCol = col + direction[1];
+
+            if (newRow >= 0 && newRow < image.length && newCol >= 0 && newCol < image[0].length && image[newRow][newCol] == 1) {
+                validMoves.add(new int[]{newRow, newCol});
+            }
+        }
+
+        return validMoves;
+    }
 
 }
