@@ -1,5 +1,9 @@
 import interfaces.BinaryGroupFinder;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import records.Coordinate;
 import records.Group;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -48,6 +52,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         if (image.length == 0 || image[0].length == 0) throw new IllegalArgumentException("Invalid image");
         
         // make List of Groups'
+        List<Group> groupsList = new ArrayList<>();
         // Loop through 2D array (image)
             // catch if is == 1
                 // Helper method that returns the list of coordinates, change the 1's to *'s
@@ -60,5 +65,28 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         
         return null;
     }
+
+    // getArea
+    public static int getArea(List<Coordinate> coords){
+        return coords.size();
+    }
     
+    // getCentroid
+    public static Coordinate getCentroid(List<Coordinate> coords){
+        // total x
+        // total y
+
+        // loop through coords
+            // add to x
+            // add to y
+        
+        // average x = sum of X / coords.size()
+
+        // average y = sum of Y / coords.size()
+
+        // return new Coordinate(average x, average y)
+    }
+
+    // getCoordinates
+    public static
 }
