@@ -55,6 +55,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         List<Group> groupsList = new ArrayList<>();
         // Loop through 2D array (image)
             // catch if is == 1
+                // create groupCoordList = new list<Coordinate>
                 // Helper method that returns the list of coordinates, change the 1's to *'s
 
                 // Group group1 = new Group(helperMethod1(getArea), helperMethod(getCentroid))
@@ -65,6 +66,19 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         
         return null;
     }
+
+        // getCoordinates
+        // Will this pass by reference or value?
+        public static void getCoordinates(int[][] image, int row, int col, List<Coordinate> groupCoordList){
+            // base case to avoid recursive doom
+                // is directions valid?
+                // is this a 1?
+    
+            // add new Coordinate(row, col) to groupCoordList
+            // change the 1 to *
+    
+            // recurse over all directions
+        }
 
     // getArea
     public static int getArea(List<Coordinate> coords){
@@ -87,6 +101,5 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         // return new Coordinate(average x, average y)
     }
 
-    // getCoordinates
-    public static
+
 }
