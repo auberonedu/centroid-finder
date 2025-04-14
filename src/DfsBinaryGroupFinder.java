@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ArrayList;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
    /**
@@ -48,15 +49,33 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             }
         }
 
-        int[] start = pixelFinder(image);
         boolean[][] visited = new boolean[image.length][image[0].length];
 
-        return findConnectedGroupsHelper(image, start, start, visited);
+        return findConnectedGroupsHelper(image, start, visited);
     }
 
-    private List<Group> findConnectedGroupsHelper(int[][] image, int[] start, int[] current, boolean[][] visited) {
+    // findConnectedGroupsHelper 
+    public List<int[]> findConnectedGroupsHelper(int[][] image, int[] start, int[] current, boolean[][] visited) {
 
-        return null;
+        int row = current[0];
+        int col = current[1];
+
+        if (row < 0 || row >= image.length || col < 0 || col >= image[0].length || image[row][col] == 0 || visited[row][col]) {
+            return new ArrayList<>();
+        }
+
+        visited[row][col] = true;
+
+        List<int[]> connectedPoints = new ArrayList<>();
+        connectedPoints.add(new int[]{row, col});
+
+        List<int[]> neighbors = getAdjacentPixels(image, current);
+
+        for (int[] neighbor : neighbors) {
+            connectedPoints.addAll(findConnectedGroupsHelper(image, start, neighbor, visited));
+        }
+
+        return connectedPoints;
     }
     
 }
