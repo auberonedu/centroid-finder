@@ -16,3 +16,20 @@ Image Summary App:
 
 ImageIO.write(binaryImage, "png", new File("binarized.png"));
  - This line saves the image, and in the process converts the binary arrayy (full of 1's and 0's to account for black/white) back to an image.
+
+INTERFACES:
+- ColorDistanceFinder = computed difference in 2 24-bit hex codes
+- ImageBinarizer = convert BufferedImage to binary 2d array, or vice versa
+- BinaryGroupFinder = list of Groups found in a 2d array
+- ImageGroupFinder = list of Groups found in a BufferedImage
+
+CLASSES:
+- BinarizingImageGroupFinder (implements ImageGroupFinder)
+- DfsBinaryGroupFinder (implements BinaryGroupFinder)
+- DistanceImageBinarizer (implements ImageBinarizer)
+- EuclideanColorDistance (implements ColorDistanceFinder)
+
+
+RECORDS:
+- Coordinate
+- Group
