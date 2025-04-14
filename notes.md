@@ -1,6 +1,7 @@
 Vocabulary:
 Binarization – A digital image processing technique that transforms a grayscale or color image into a binary image
 Euclidean color distance - Euclidean color distance calculates the straight-line distance between two colors
+Centroid - average x coord and average y coord of a group of coordinates.
 
 Image Summary App:
 - First it looks like this method checks to see if there are less than three arguments written in the command line
@@ -24,12 +25,44 @@ INTERFACES:
 - ImageGroupFinder = list of Groups found in a BufferedImage
 
 CLASSES:
-- BinarizingImageGroupFinder (implements ImageGroupFinder)
 - DfsBinaryGroupFinder (implements BinaryGroupFinder)
-- DistanceImageBinarizer (implements ImageBinarizer)
+    - Classes/Records used:
+        - Group
+    - Methods:
+    - findConnectedGroups
+        - performs dfs on 2d array to identify groups of 1s. returns sorted list of groups
+        
+- BinarizingImageGroupFinder (implements ImageGroupFinder)
+    - Classes/Records used: 
+        - DistanceImageBinarizer
+        - DfsBinaryGroupFinder
+        - Group
+    - Methods:
+    - findConnectedGroups
+        - converts image to binary 2d array using DistanceImageBinarizer, then finds groups using DfsBinaryGroupFinder
+
 - EuclideanColorDistance (implements ColorDistanceFinder)
+    - Methods:
+    - distance
+        - finds distance by applying euclidean distance formula to 2 24-bit hex integers
+
+- DistanceImageBinarizer (implements ImageBinarizer)
+    - Classes/Records used:
+        - EuclideanColorDistance
+    - Methods:
+    - toBinaryArray
+        - converts BufferedImage to 2d array that is binarized, using the EuclideanColorDistance to determine what is white (1) or black (0)
+    - toBufferedImage
+        - converts binarized 2d array to black and white image with standard rgb pixels
 
 
-RECORDS:
+
+RECORDS: (in records, fields are accessed with .field() syntax)
 - Coordinate
+    - Fields:
+    - int x
+    - int y
 - Group
+    - Fields:
+    - int size (number of pixels in group)
+    - Coordinate centroid 
