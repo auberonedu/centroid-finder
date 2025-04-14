@@ -53,13 +53,16 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         
         // make List of Groups'
         List<Group> groupsList = new ArrayList<>();
-        // Loop through 2D array (image)
-            // catch if is == 1
-                // create groupCoordList = new list<Coordinate>
-                // Helper method that returns the list of coordinates, change the 1's to *'s
 
-                // Group group1 = new Group(helperMethod1(getArea), helperMethod(getCentroid))
-                // add the group to that list of groups
+        // Loop through 2D array (image) - for row
+            // if row is null, nullPointerException
+            // for col
+                // catch if is == 1
+                    // create groupCoordList = new list<Coordinate>
+                    // Helper method that returns the list of coordinates, change the 1's to *'s
+
+                    // Group group1 = new Group(helperMethod1(getArea), helperMethod(getCentroid))
+                    // add the group to that list of groups
 
         // Collections.sort(lists)
                     
