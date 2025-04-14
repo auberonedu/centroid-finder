@@ -1,6 +1,5 @@
-import java.util.List;
-
 import interfaces.BinaryGroupFinder;
+import java.util.List;
 import records.Group;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -34,8 +33,31 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     * @param image a rectangular 2D array containing only 1s and 0s
     * @return the found groups of connected pixels in descending order
     */
+
+    private static final int[][] directions = {
+        {-1, 0}, // UP
+        {1,  0}, // DOWN
+        {0, -1}, // LEFT
+        {0,  1} // RIGHT
+    };
+
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
+       // If image sub-arrays is null or at 0 throw a NullPointerException
+        if (image == null) throw new NullPointerException("Image not found or empty"); 
+        if (image.length == 0 || image[0].length == 0) throw new IllegalArgumentException("Invalid image");
+        
+        // make List of Groups'
+        // Loop through 2D array (image)
+            // catch if is == 1
+                // Helper method that returns the list of coordinates, change the 1's to *'s
+
+                // Group group1 = new Group(helperMethod1(getArea), helperMethod(getCentroid))
+                // add the group to that list of groups
+
+        // Collections.sort(lists)
+                    
+        
         return null;
     }
     
