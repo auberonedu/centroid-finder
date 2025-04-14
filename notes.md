@@ -22,7 +22,6 @@ When ImageSummaryApp starts, user enters:
 - [**Image IO**](https://docs.oracle.com/javase/8/docs/api/javax/imageio/ImageIO.html)
 
 ### Interfaces
-- **Image Group Finder**
 - **Binary Group Finder**
     - Find connected groups of 1s in an integer array representing a binary image.
 - **Color Distance Finder**

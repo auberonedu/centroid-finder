@@ -1,5 +1,8 @@
 import java.util.List;
 
+import interfaces.BinaryGroupFinder;
+import records.Group;
+
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
    /**
     * Finds connected pixel groups of 1s in an integer array representing a binary image.

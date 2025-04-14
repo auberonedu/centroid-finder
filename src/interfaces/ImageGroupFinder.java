@@ -1,4 +1,8 @@
+package interfaces;
 import java.util.List;
+
+import records.Group;
+
 import java.awt.image.BufferedImage;
 
 public interface ImageGroupFinder {

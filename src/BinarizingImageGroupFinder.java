@@ -1,6 +1,11 @@
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import interfaces.BinaryGroupFinder;
+import interfaces.ImageBinarizer;
+import interfaces.ImageGroupFinder;
+import records.Group;
+
 /**
  * An implementation of the ImageGroupFinder interface that first binarizes a given image and then finds
  * connected groups of white pixels using a BinaryGroupFinder.

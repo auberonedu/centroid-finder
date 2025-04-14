@@ -1,5 +1,8 @@
 import java.awt.image.BufferedImage;
 
+import interfaces.ColorDistanceFinder;
+import interfaces.ImageBinarizer;
+
 /**
  * An implementation of the ImageBinarizer interface that uses color distance
  * to determine whether each pixel should be black or white in the binary image.

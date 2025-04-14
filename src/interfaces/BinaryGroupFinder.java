@@ -1,4 +1,7 @@
+package interfaces;
 import java.util.List;
+
+import records.Group;
 
 public interface BinaryGroupFinder {
    /**
