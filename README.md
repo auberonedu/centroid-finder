@@ -17,6 +17,8 @@ I, [rifflere](https://github.com/rifflere), understand that AI is ONLY to be use
 
 I, [tgillysuit](https://github.com/tgillysuit), understand that AI is ONLY to be used for tests, and that every commit that I use AI for must start with 'AI Used'
 
+I, [AugleBoBaugles](https://github.com/AugleBoBaugles), understand that AI is ONLY to be used for tests, and that every commit that I use AI for must start with 'AI Used'
+
 ## Wave 1: Understand
 Read through ImageSummaryApp in detail with your partner. Understand what each part does. This will involve looking through and reading ALL of the other classes records and interfaces. This will take a long time, but it is worth it! Do not skimp on this part, you will regret it! Also look at the sampleInput and sampleOutput folders to understand what comes in and what goes out.
 
