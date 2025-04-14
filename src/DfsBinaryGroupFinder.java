@@ -77,5 +77,19 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
         return connectedPoints;
     }
-    
+
+    // pixelFinder
+    private static int[] pixelFinder(int[][] image) {
+        for (int i = 0; i < image.length; i++) {
+            for (int j = 0; j < image[i].length; j++) {
+                if (image[i][j] == 1) {
+                    return new int[]{i, j};
+                }
+            }
+        }
+        throw new IllegalArgumentException("No pixel starting point found");
+    }
+
+    // getAdjacentPixels
+
 }
