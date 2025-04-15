@@ -84,15 +84,27 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         // getCoordinates
         // Will this pass by reference or value?
         public static void getCoordinates(int[][] image, int row, int col, List<Coordinate> groupCoordList){
-            // base case to avoid recursive doom
-            
-                // is directions valid?
-                // is this a 1?
+            // base case to avoid recursive doom -- is directions valid? is this a 1?
+            if (row < 0 || row >= image.length ||
+                col < 0 || col >= image[0].length 
+                || image[row][col] == 0){
+                    return;
+            }
     
             // add new Coordinate(row, col) to groupCoordList
-            // change the 1 to *
+            Coordinate newCoord = new Coordinate(row, col);
+            groupCoordList.add(newCoord);
+
+            // change the 1 to 2 (stops infinite looping)
+            image[row][col] = 2;
     
             // recurse over all directions
+            for (var direction : directions){
+                row += direction[0];
+                col += direction[1];
+
+                getCoordinates(image, row, col, groupCoordList);
+            }
         }
 
     // getArea
