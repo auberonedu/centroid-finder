@@ -77,7 +77,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         }
 
         // sort the list of groups
-        Collections.sort(groupsList);
+        Collections.sort(groupsList, Collections.reverseOrder());
                     
         
         return groupsList;

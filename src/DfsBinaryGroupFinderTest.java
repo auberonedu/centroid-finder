@@ -18,13 +18,61 @@ public class DfsBinaryGroupFinderTest {
         // image col length = 0; IllegalArgumentException
         // List is SORTED
 
+        @Test
+        public void testFindConnectedGroups_oneGroups() {
+            // Create image
+            int[][] image = new int[][]{
+                {0, 1},
+                {0, 1},
+            };
+    
+            // Create List of Group(s)
+            List<Group> groupsList = new ArrayList<>();
+            // Add Group with size and Coordinate centroid
+            groupsList.add(new Group(2, new Coordinate(0, 1)));
+
+            // Create instance of DFS
+            DfsBinaryGroupFinder test = new DfsBinaryGroupFinder();
+            // Save 
+            List<Group> actual = test.findConnectedGroups(image);
+            System.out.println(actual);
+
+            assertEquals(groupsList, actual);
+        }
+
+
+    @Test
+    public void testConnectedGroups_fourGroups() {
+        int[][] image = new int[][]{
+            {0, 1, 0, 1, 1},
+            {0, 1, 0, 0, 1},
+            {0, 1, 0, 1, 0},
+            {0, 1, 1, 0, 0},
+            {0, 1, 0, 1, 1},
+        };
+
+        // Create List of Group(s)
+        List<Group> groupsList = new ArrayList<>();
+        // Add Group with size and Coordinate centroid
+        groupsList.add(new Group(6, new Coordinate(2, 1))); 
+        groupsList.add(new Group(3, new Coordinate(0, 3)));
+        groupsList.add(new Group(2, new Coordinate(4, 3)));
+        groupsList.add(new Group(1, new Coordinate(2, 3)));
+
+        // Create instance of DFS
+        DfsBinaryGroupFinder test = new DfsBinaryGroupFinder();
+        // Save 
+        List<Group> actual = test.findConnectedGroups(image);
+        System.out.println(actual);
+
+        assertEquals(groupsList, actual);
+
+    }
+
     // get coordinates
-        // check expected size
-        // check expected values
-        // ? no 1 in image
 
         @Test
-        public void testCoordinates_threeCoordinatesOneGroupStartTop() {
+        public void testGetCoordinates_threeCoordinatesOneGroupStartTop() {
             // Create image
             int[][] image = new int[][]{
                 {0, 1, 0},
@@ -43,11 +91,11 @@ public class DfsBinaryGroupFinderTest {
             int result = coords.size();
             System.out.println(coords);
 
-            assertEquals(3, coords.size());
+            assertEquals(3, result);
         }
 
         @Test
-        public void testCoordinates_threeCoordinatesOneGroupStartMiddle() {
+        public void testGetCoordinates_threeCoordinatesOneGroupStartMiddle() {
             // Create image
             int[][] image = new int[][]{
                 {0, 1, 0},
@@ -66,11 +114,11 @@ public class DfsBinaryGroupFinderTest {
             int result = coords.size();
             System.out.println(coords);
 
-            assertEquals(3, coords.size());
+            assertEquals(3, result);
         }
 
         @Test
-        public void testCoordinates_threeCoordinatesOneGroupStartBottom() {
+        public void testGetCoordinates_threeCoordinatesOneGroupStartBottom() {
             // Create image
             int[][] image = new int[][]{
                 {0, 1, 0},
@@ -89,11 +137,11 @@ public class DfsBinaryGroupFinderTest {
             int result = coords.size();
             System.out.println(coords);
 
-            assertEquals(3, coords.size());
+            assertEquals(3, result);
         }
 
         @Test
-        public void testCoordinates_twoCoordinatesMultipleGroups() {
+        public void testGetCoordinates_twoCoordinatesMultipleGroups() {
             // Create image
             int[][] image = new int[][]{
                 {0, 1, 0, 1, 1},
@@ -114,11 +162,11 @@ public class DfsBinaryGroupFinderTest {
             int result = coords.size();
             System.out.println(coords);
 
-            assertEquals(2, coords.size());
+            assertEquals(2, result);
         }
 
         @Test
-        public void testCoordinates_oneCoordinateMultipleGroups() {
+        public void testGetCoordinates_oneCoordinateMultipleGroups() {
             // Create image
             int[][] image = new int[][]{
                 {0, 1, 0, 1, 1},
@@ -138,12 +186,12 @@ public class DfsBinaryGroupFinderTest {
 
             int result = coords.size();
 
-            assertEquals(1, coords.size());
+            assertEquals(1, result);
         }
 
 
         @Test
-        public void testCoordinates_rowOutOfBoundsSmall() {
+        public void testGetCoordinates_rowOutOfBoundsSmall() {
             // Create image
             int[][] image = new int[][]{
                 {0, 1, 0, 1, 1},
@@ -163,11 +211,11 @@ public class DfsBinaryGroupFinderTest {
 
             int result = coords.size();
 
-            assertEquals(0, coords.size());
+            assertEquals(0, result);
         }
 
         @Test
-        public void testCoordinates_rowOutOfBoundsBig() {
+        public void testGetCoordinates_rowOutOfBoundsBig() {
             // Create image
             int[][] image = new int[][]{
                 {0, 1, 0, 1, 1},
@@ -187,15 +235,10 @@ public class DfsBinaryGroupFinderTest {
 
             int result = coords.size();
 
-            assertEquals(0, coords.size());
+            assertEquals(0, result);
         }
 
     // get area
-        // size is zero
-        // size is 1
-        // size is ridiculously huge
-        // coords is empty
-        // coords is null
 
         @Test
         public void testGetArea_zeroCoordinates() {
