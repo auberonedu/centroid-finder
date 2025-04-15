@@ -10,4 +10,23 @@ import org.junit.Test;
 
 public class EuclideanColorDistanceTest {
     
+    @Test
+    public void testDistance_SameColor(){
+
+    }
+
+    @Test
+    public void testDistance_PrimaryAndBlack(){
+
+    }
+
+    @Test
+    public void testDistance_SimilarColors(){
+
+    }
+
+    @Test
+    public void testDistance_VeryDifferentColors(){
+        
+    }
 }
