@@ -21,4 +21,8 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
     public double distance(int colorA, int colorB) {
         return 0;
     }
+
+    public static int[] RGBconverter(int color) {
+        
+    }
 }
