@@ -1,5 +1,5 @@
 # Notes:
-
+ 
 ## ImageSummaryApp.java
 - Capture CLI args to variables `inputImagePath` (photo.png), `hexTargetColor` (FF0000), and `threshold` (how close color pixels must be to target color) from `java ImageSummaryApp <input_image> <hex_target_color> <threshold>`
 - Validate input image, threshold integer, and parse `hexTargetColor` from RGB to 24-bit integer (0xRRGGBB)
