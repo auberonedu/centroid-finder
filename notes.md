@@ -7,6 +7,9 @@
 5. A variable of type `int` called *targetColor* is initially set to 0. A try-catch block is then used to validate if *hexTargetColor* can be parsed to an integer and stored in *targetColor*. If it can't be converted, an error message with an example format is printed to the console, and the method returns.
 6. A variable of type `ColorDistanceFinder` called *distanceFinder* creates and stores a new instance of `EuclideanColorDistance`.
 7. A variable of type `ImageBinarizer` called *binarizer* creates a new instance of `DistanceImageBinarizer` with the *distanceFinder*, *targetColor*, and *threshold* passed into the instance.
+8. A variable of type `int[][]` called *binaryArray* stores the binary array output of *inputImage* using `toBinaryArray` from *binarizer*.
+9. A variable of type `ImageBinarizer` called *binaryImage* stores the buffered image of *binaryArray* using `toBufferedImage` from *binarizer*. A try-catch block is then used to validate if *binaryImage* can be written to a png called *binarized.png* using `ImagoIO.write`. If it can't be completed, an error message is printed to the console. The exception is printed using `printStackTrace()` (Built-in java.lang.Throwable method that prints the throwable and its backtrace to the standard error stream), and the method returns.
+
 
 
 ## ColorDistanceFinder
@@ -17,5 +20,6 @@ A class (not yet implemented) that implements the *ColorDistanceFinder* interfac
 
 ## ImageBinarizer
 An interface that for converting between RGB images and binary (black and white) images. The binary image will be represented in a 2D array of integers where black will be represented as 0 and white as 1. toBinaryArray will be implemented in DistanceImageBinarizer to convert a BufferedImage given to a binary 2D array. toBufferedImage will do the reverse converting a binary 2D array into a BufferedImage. Both not yet implemented in DistanceImageBinarizer.
+
 ## DistanceImageBinarizer
 DistanceImageBinarizer is an implementation of ImageBinarizer interface. There is a DistanceImageBinarizer constructor that takes in three params. The params are ColorDistanceFinder *distanceFinder* (given), int *threshold*, and int *targetColor*. The *distanceFinder* is used to find the Euclidean difference between the pixel's color and target color. *targetColor* is represented as 24-bit hex RGB integers (0xRRGGBB). *threshold* will determine cutoff for binarization with pixels whose distance are less than the threshold being white and others being black. The *toBinaryArray* method will convert a BufferedImage into a binary 2D array and *toBufferedImage* will do the reverse and convert a binary 2D array into a BufferedImage.
