@@ -80,7 +80,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         Collections.sort(groupsList);
                     
         
-        return null;
+        return groupsList;
     }
 
         // getCoordinates
