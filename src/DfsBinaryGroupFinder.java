@@ -100,8 +100,8 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     
             // recurse over all directions
             for (var direction : directions){
-                row += direction[0];
-                col += direction[1];
+                int newRow = direction[0] + row;
+                int newCol = direction[1] + col;
 
                 getCoordinates(image, row, col, groupCoordList);
             }
