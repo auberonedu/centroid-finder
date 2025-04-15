@@ -23,6 +23,29 @@ public class DfsBinaryGroupFinderTest {
         // check expected values
         // ? no 1 in image
 
+        @Test
+        public void testCoordinates_threeCoordinates() {
+            // Create image
+            int[][] image = new int[][]{
+                {0, 1, 0},
+                {0, 1, 0},
+                {0, 1, 0}
+            };
+
+            // Set start coordinates
+            int row = 0;
+            int col = 1;
+
+            // Create empty array list
+            List<Coordinate> coords = new ArrayList<>();
+            DfsBinaryGroupFinder.getCoordinates(image, row, col, coords);
+
+            int result = coords.size();
+            System.out.println(coords);
+
+            assertEquals(3, coords.size());
+        }
+
     // get area
         // size is zero
         // size is 1
