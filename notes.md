@@ -8,7 +8,10 @@
 6. A variable of type `ColorDistanceFinder` called *distanceFinder* creates and stores a new instance of `EuclideanColorDistance`.
 7. A variable of type `ImageBinarizer` called *binarizer* creates a new instance of `DistanceImageBinarizer` with the *distanceFinder*, *targetColor*, and *threshold* passed into the instance.
 8. A variable of type `int[][]` called *binaryArray* stores the binary array output of *inputImage* using `toBinaryArray` from *binarizer*.
-9. A variable of type `ImageBinarizer` called *binaryImage* stores the buffered image of *binaryArray* using `toBufferedImage` from *binarizer*. A try-catch block is then used to validate if *binaryImage* can be written to a png called *binarized.png* using `ImagoIO.write`. If it can't be completed, an error message is printed to the console. The exception is printed using `printStackTrace()` (Built-in java.lang.Throwable method that prints the throwable and its backtrace to the standard error stream), and the method returns.
+9. A variable of type `ImageBinarizer` called *binaryImage* stores the buffered image of *binaryArray* using `toBufferedImage` from *binarizer*. A try-catch block is then used to validate if *binaryImage* can be written to a png called *binarized.png* using `ImagoIO.write`. If it can't be completed, an error message is printed to the console. The exception is printed using `printStackTrace()`, and the method returns.
+10. A variable of type `ImageGroupFInder` called *groupFinder* creates and stores a new instance of `BinarizingImageGroupFinder` with *binarizer* and a new instance of `DfsBinaryGroupFinder` passed in.
+11. A variable of type `List<Group>` called *groups* stores the found connected groups of *inputImage* using `findConnectedGroups` from *groupFinder*.
+12. A try-catch block is used to write the groups information to a CSV file called `groups.csv`. A try-catch contains a `PrintWriter` called *writer* which is set to write to `groups.csv`. Inside of the try block a for loop of type `Group` loops over each *group* in *groups*. *Writer* then prints to the file using `toCsvRow` and a success statement is printed to the console. If it can't be completed, an error message is printed to the console. The exception is printed using `printStackTrace()`, and the method returns.
 
 
 
@@ -23,3 +26,10 @@ An interface that for converting between RGB images and binary (black and white)
 
 ## DistanceImageBinarizer
 DistanceImageBinarizer is an implementation of ImageBinarizer interface. There is a DistanceImageBinarizer constructor that takes in three params. The params are ColorDistanceFinder *distanceFinder* (given), int *threshold*, and int *targetColor*. The *distanceFinder* is used to find the Euclidean difference between the pixel's color and target color. *targetColor* is represented as 24-bit hex RGB integers (0xRRGGBB). *threshold* will determine cutoff for binarization with pixels whose distance are less than the threshold being white and others being black. The *toBinaryArray* method will convert a BufferedImage into a binary 2D array and *toBufferedImage* will do the reverse and convert a binary 2D array into a BufferedImage.
+
+## ImageGroupFinder
+
+## BinarizingImageGroupFinder
+
+## DfsBinaryGroupFinder
+
