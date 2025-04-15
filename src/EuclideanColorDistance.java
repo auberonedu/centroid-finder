@@ -30,8 +30,16 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
 
         int b1 = colorA_RGBified[2];
         int b2 = colorB_RGBified[2];
-        
-        return 0;
+
+        double colorDifference = Math.sqrt(diffCalc(r1, r2) + diffCalc(g1, g2) + diffCalc(b1, b2));
+
+        return colorDifference;
+    }
+
+    private int diffCalc(int color1, int color2){
+        int colorDifference = color1-color2;
+
+        return (int) Math.pow(colorDifference, 2);
     }
 
     private int[] rgbConverter(int color){
