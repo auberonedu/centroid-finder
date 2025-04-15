@@ -33,7 +33,7 @@ An interface for finding connected groups in image. Each group is sorted in desc
 ## BinarizingImageGroupFinder
 A class (not yet implemented) that implements the *ImageGroupFinder* interface to find connected groups in an image. This is completed by first binarizing a given image and then finding connected groups of white pixels using BinaryGroupFinder. This class uses an *ImageBinarizer* to convert an RGB image into a binary 2D array,  *BinaryGroupsFinder* is then applied to the array to locate the connected groups of white pixels, and the connected groups are then returned in descending order based on the compareTo method in the *Group* record. The constructor accepts two parameters of type `ImageBinarizer` and `BinaryGroupFinder` to construct a `BinarizingImageGroupFinder`. Within the constructor two private fields *binarizer* of type `ImageBinarizer` and *groupFinder* of type `BinaryGroupFinder` are set to the parameters passed into the constructor. A method called *findConnectedGroups* is then used to find the connects groups of white pixels in the image. It accepts a parameter of type `BufferedImage` and returns a type of `List<Group>`.
 
-## DfsBinaryGroupFinder
-
-
 ## BinaryGroupFinder
+An interface for finding connected pixel groups of 1s in an integer array representing an image in binary. Groups are considered connected only vertically or horizontally, not diagonally. The included method *findConnectedGroups* accepts a binary `int[][]` of 1s and 0s and returns a `List<Group>`.
+
+## DfsBinaryGroupFinder
