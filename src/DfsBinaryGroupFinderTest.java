@@ -1,5 +1,15 @@
-package tests;
+
+
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.util.ArrayList;
+import java.util.List;
+import records.Coordinate;
+import records.Group;
+
 public class DfsBinaryGroupFinderTest {
+
+
 
     // find Connected Groups
         // image null, NullPointerException
@@ -19,6 +29,21 @@ public class DfsBinaryGroupFinderTest {
         // size is ridiculously huge
         // coords is empty
         // coords is null
+
+        @Test
+        public void testGetArea_1() {
+            // Create a new List of Coordinates with 5 coordinates
+            List<Coordinate> coords = new ArrayList<>();
+            coords.add(new Coordinate(0, 0));
+            coords.add(new Coordinate(1, 1));
+            coords.add(new Coordinate(2, 2));
+            coords.add(new Coordinate(3, 3));
+            coords.add(new Coordinate(4, 4));
+
+            int area = DfsBinaryGroupFinder.getArea(coords);
+
+            assertEquals(5, area);
+        }
 
     // get centroid
         // odds divided correctly (sum5, sum7) / 2 = (2, 3)
