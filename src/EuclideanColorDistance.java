@@ -19,6 +19,18 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
      */
     @Override
     public double distance(int colorA, int colorB) {
+        int[] colorA_RGBified = rgbConverter(colorA);
+        int[] colorB_RGBified = rgbConverter(colorB);
+
+        int r1 = colorA_RGBified[0];
+        int r2 = colorB_RGBified[0];
+
+        int g1 = colorA_RGBified[1];
+        int g2 = colorB_RGBified[1];
+
+        int b1 = colorA_RGBified[2];
+        int b2 = colorB_RGBified[2];
+        
         return 0;
     }
 
@@ -26,6 +38,14 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
         int[] rgbHolder = new int[3];
 
         int red = (color >> 16) & 0xFF;
-        int green = 
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+        
+        rgbHolder[0] = red;
+        rgbHolder[1] = green;
+        rgbHolder[2] = blue;
+
+        return rgbHolder;
     }
+
 }
