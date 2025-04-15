@@ -164,3 +164,22 @@ The larger the distance, the more different the colors are.
 ----------
 Unit testing for wave3 - we have discussed our preferences for unit tests with AI and have asked AI to write the Unit test code for wave 3
 ----------
+for wave2 we reverse engineered the class code from the unit tests AI generated for us; however, wave2 class was highly similar to our Explorer class assignment and the interview questions Zach and I recently tested each other on, so this made wave 2 easier in a sense.
+For wave3 we have a helper class with a distance method so we had to study (google and w3) about the 24 bit rgb color syntax, hex rgb color syntax and usage inside Java code, the concept of using an x.y.z graph (ie 3D space) to describe two different colors as if they were separated by metaphysical space then using the 3D geometry distance formula (Euclidean) to 'measure the distance' between the 2 'points' of color on the 3D graph,
+That was super complex and took us a few hours to get through.
+We used AI again to generate this time 15 tests (although some are identical so we will be cleaning those up and the end result will likely be less than 15);
+Instead of reverse engineering wave3 class code from the unit tests, this time we will attempt to write the pseudocode based on the javadoc above the unfinished wave3 class code already provided
+----------------
+wave3 EuclideanColorDistance.java javadoc info:
+
+1. This class implements ColorDistanceFinder interface
+2. Class public method: 'double distance(int colorA, int colorB)'
+3. Both parameters represent respective colors in 24-bit RGB format
+4. Each color component is an 8-bit value (0-255)
+5. The method pretends each color is a point in 3D space then ...
+6. Uses the Euclidean 3d spatial geometry distance formula to calculate the two colors' 'distance' from each other
+7. sprt((r1-r2)^2 + (g1-g2)^2 + (b1-b2)^2)
+8. The method returns a double representing how visually different the two colors are
+--------
+Week2 in sdev334 our professor Auberon showed us how to think in bits and bytes, and delved into 'bit shifts' and 'masking' so we assume we will use these concepts and resulting code to process the 24-bit color input into its individual R-G-B components
+
