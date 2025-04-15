@@ -157,3 +157,10 @@ RGB color space means we are describing colors using 3 numbers: red, green, blue
 
 we are assuming that we use this so we can set the threshold somewhere in between the line connecting these two 'dots' on this 3D xyz graph?
 ----------
+Euclidean distance formula 3D geometry->
+Distance between 2 points on xyz/3D graph:
+SquareRoot of ((r1-r2)^2 + (g1-g2)^2 + (b1-b2)^2)
+The larger the distance, the more different the colors are.
+----------
+Unit testing for wave3 - we have discussed our preferences for unit tests with AI and have asked AI to write the Unit test code for wave 3
+----------
