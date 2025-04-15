@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,6 +7,47 @@ import java.util.List;
 import org.junit.Test;
 
 public class DfsBinaryGroupFinderTest {
+
+    @Test
+    public void findConnectedGroups_nullArray(){
+        BinaryGroupFinder finder = new DfsBinaryGroupFinder();
+        int[][] image = null;
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            finder.findConnectedGroups(image);
+        });
+    }
+
+    @Test
+    public void findConnectedGroups_nullSubArray(){
+        BinaryGroupFinder finder = new DfsBinaryGroupFinder();
+        int[][] image = {
+            null,
+            {0, 0, 0}
+        };
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            finder.findConnectedGroups(image);
+        });
+    }
+
+    @Test
+    public void findConnectedGroups_invalidArray(){
+        BinaryGroupFinder finder = new DfsBinaryGroupFinder();
+        int[][] image = {
+            {2, 3, 3, 3, 3},
+            {3, 2, 2, 3, 3},
+            {2, 3, 2, 3, 2},
+            {2, 2, 3, 3, 2}
+        };
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            finder.findConnectedGroups(image);
+        });
+    }
+
+    
+
     @Test
     public void findConnectedGroups_oneGroup(){
         BinaryGroupFinder finder = new DfsBinaryGroupFinder();
