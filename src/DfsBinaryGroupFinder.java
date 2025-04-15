@@ -1,5 +1,6 @@
 import interfaces.BinaryGroupFinder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import records.Coordinate;
 import records.Group;
@@ -61,19 +62,22 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             for (int c = 0; c < image[0].length; c++){
                 // catch if is == 1
                 if (image[r][c] == 1){
-                    // create groupCoordList = new list<Coordinate>
+                    // create groupCoordList -- Helper method that changes the list of coordinates to match the current group, change the 1's to *'s
                     List<Coordinate> groupCoordList = new ArrayList<>();
-
-                    // TODO: Helper method that returns the list of coordinates, change the 1's to *'s
-
+                    getCoordinates(image, r, c, groupCoordList);
 
                     // Group group1 = new Group(helperMethod1(getArea), helperMethod(getCentroid))
+                    Group currentGroup = new Group(getArea(groupCoordList), getCentroid(groupCoordList));
+                    
                     // add the group to that list of groups
+                    groupsList.add(currentGroup);
                 }
                     
             }
         }
-        // Collections.sort(lists)
+
+        // sort the list of groups
+        Collections.sort(groupsList);
                     
         
         return null;
