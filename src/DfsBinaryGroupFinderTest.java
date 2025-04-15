@@ -107,4 +107,102 @@ public class DfsBinaryGroupFinderTest {
         List<Group> actual = finder.findConnectedGroups(image);
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void findConnectedGroups_smallGroups() {
+        BinaryGroupFinder finder = new DfsBinaryGroupFinder();
+
+        int[][] image = {
+            {0, 1, 0, 0, 0},
+            {0, 0, 0, 1, 0},
+            {1, 0, 0, 0, 1},
+            {0, 0, 1, 0, 1},
+            {0, 0, 1, 0, 0}
+        };
+
+        List<Group> expected = Arrays.asList(
+            new Group(2, new Coordinate(4, 2)),
+            new Group(2, new Coordinate(2, 3)),
+            new Group(1, new Coordinate(3, 1)),
+            new Group(1, new Coordinate(1, 0)),
+            new Group(1, new Coordinate(0, 2))
+        );
+
+        List<Group> actual = finder.findConnectedGroups(image);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void findConnectedGroups_allSameRow() {
+        BinaryGroupFinder finder = new DfsBinaryGroupFinder();
+
+        int[][] image = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {1, 1, 1, 0, 1, 1, 0, 1, 0, 1},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        };
+
+        List<Group> expected = Arrays.asList(
+            new Group(3, new Coordinate(1, 4)),
+            new Group(2, new Coordinate(4, 4)),
+            new Group(1, new Coordinate(9, 4)),
+            new Group(1, new Coordinate(7, 4))
+        );
+
+        List<Group> actual = finder.findConnectedGroups(image);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void findConnectedGroups_allSameColumn() {
+        BinaryGroupFinder finder = new DfsBinaryGroupFinder();
+
+        int[][] image = {
+            {0, 0, 0, 0, 0, 1, 0},
+            {0, 0, 0, 0, 0, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 1, 0},
+            {0, 0, 0, 0, 0, 1, 0},
+            {0, 0, 0, 0, 0, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        List<Group> expected = Arrays.asList(
+            new Group(2, new Coordinate(5, 4)),
+            new Group(2, new Coordinate(5, 0)),
+            new Group(1, new Coordinate(5, 3))
+        );
+
+        List<Group> actual = finder.findConnectedGroups(image);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void findConnectedGroups_varyingSizesDiagonal() {
+        BinaryGroupFinder finder = new DfsBinaryGroupFinder();
+
+        int[][] image = {
+            {1, 0, 0, 0, 0, 0, 0},
+            {0, 1, 1, 0, 0, 0, 0},
+            {0, 1, 1, 0, 0, 0, 0},
+            {0, 0, 0, 1, 0, 0, 0},
+            {0, 0, 0, 1, 1, 0, 0},
+            {0, 0, 0, 0, 1, 1, 1},
+            {0, 0, 0, 0, 0, 0, 1}
+        };
+
+        List<Group> expected = Arrays.asList(
+            new Group(7, new Coordinate(4, 4)),
+            new Group(4, new Coordinate(1, 1)),
+            new Group(1, new Coordinate(0, 0))
+        );
+
+        List<Group> actual = finder.findConnectedGroups(image);
+        assertEquals(expected, actual);
+    }
+
 }
