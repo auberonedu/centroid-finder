@@ -55,15 +55,26 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         List<Group> groupsList = new ArrayList<>();
 
         // Loop through 2D array (image) - for row
+        for (int r = 0; r < image.length; r++){
             // if row is null, nullPointerException
+            if (image[r] == null) throw new NullPointerException("Row cannot be null.");
+
             // for col
+            for (int c = 0; c < image[0].length; c++){
                 // catch if is == 1
+                if (image[r][c] == 1){
                     // create groupCoordList = new list<Coordinate>
-                    // Helper method that returns the list of coordinates, change the 1's to *'s
+                    List<Coordinate> groupCoordList = new ArrayList<>();
+
+                    // TODO: Helper method that returns the list of coordinates, change the 1's to *'s
+
 
                     // Group group1 = new Group(helperMethod1(getArea), helperMethod(getCentroid))
                     // add the group to that list of groups
-
+                }
+                    
+            }
+        }
         // Collections.sort(lists)
                     
         
@@ -74,6 +85,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         // Will this pass by reference or value?
         public static void getCoordinates(int[][] image, int row, int col, List<Coordinate> groupCoordList){
             // base case to avoid recursive doom
+            
                 // is directions valid?
                 // is this a 1?
     
