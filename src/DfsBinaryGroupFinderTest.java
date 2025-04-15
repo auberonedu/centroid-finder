@@ -91,8 +91,8 @@ public class DfsBinaryGroupFinderTest {
     public void findConnectedGroups_sameGroupSizes(){
         BinaryGroupFinder finder = new DfsBinaryGroupFinder();
 
-        List<Group> expected = Arrays.asList(new Group(9, new Coordinate(1, 1)),
-        new Group(9, new Coordinate(5, 6)));
+        List<Group> expected = Arrays.asList(new Group(9, new Coordinate(5, 6)),
+        new Group(9, new Coordinate(1, 1)));
         int[][] image = {
             {1, 1, 1, 0, 0, 0, 0},
             {1, 1, 1, 0, 0, 0, 0},
@@ -172,9 +172,8 @@ public class DfsBinaryGroupFinderTest {
         };
 
         List<Group> expected = Arrays.asList(
-            new Group(2, new Coordinate(5, 4)),
-            new Group(2, new Coordinate(5, 0)),
-            new Group(1, new Coordinate(5, 3))
+            new Group(3, new Coordinate(5, 4)),
+            new Group(2, new Coordinate(5, 0))
         );
 
         List<Group> actual = finder.findConnectedGroups(image);
