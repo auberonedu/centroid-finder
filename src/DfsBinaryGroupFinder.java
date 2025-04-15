@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
    /**
@@ -35,6 +36,8 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
 
+        List<Group> groupList = new ArrayList<>();
+
         if (image == null) {
             throw new NullPointerException("Image array cannot be null");
         }
@@ -48,15 +51,23 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                 throw new IllegalArgumentException("Image array cannot contain null subarrays");
             }
         }
-
         boolean[][] visited = new boolean[image.length][image[0].length];
 
-        return findConnectedGroupsHelper(image, start, visited);
+        for (int i = 0; i < image.length; i++) {
+            for (int j = 0; j < image[i].length; j++) {
+                if (image[i][j] == 1 && !visited[i][j]) {
+                    List<int[]> pixels = findConnectedGroupsHelper(image, new int[]{i, j}, visited);
+                    groupList.add(newGroup(pixels));
+                }
+            }
+        }
+
+        groupList.sort(Collections.reverseOrder());
+        return groupList;
     }
 
     // findConnectedGroupsHelper 
-    public List<int[]> findConnectedGroupsHelper(int[][] image, int[] start, int[] current, boolean[][] visited) {
-
+    public List<int[]> findConnectedGroupsHelper(int[][] image, int[] current, boolean[][] visited) {
         int row = current[0];
         int col = current[1];
 
@@ -72,23 +83,23 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         List<int[]> neighbors = getAdjacentPixels(image, current);
 
         for (int[] neighbor : neighbors) {
-            connectedPoints.addAll(findConnectedGroupsHelper(image, start, neighbor, visited));
+            connectedPoints.addAll(findConnectedGroupsHelper(image, neighbor, visited));
         }
 
         return connectedPoints;
     }
 
-    // pixelFinder
-    private static int[] pixelFinder(int[][] image) {
-        for (int i = 0; i < image.length; i++) {
-            for (int j = 0; j < image[i].length; j++) {
-                if (image[i][j] == 1) {
-                    return new int[]{i, j};
-                }
-            }
-        }
-        throw new IllegalArgumentException("No pixel starting point found");
-    }
+    // // pixelFinder
+    // private static int[] pixelFinder(int[][] image) {
+    //     for (int i = 0; i < image.length; i++) {
+    //         for (int j = 0; j < image[i].length; j++) {
+    //             if (image[i][j] == 1) {
+    //                 return new int[]{i, j};
+    //             }
+    //         }
+    //     }
+    //     throw new IllegalArgumentException("No pixel starting point found");
+    // }
 
     // getAdjacentPixels
     public static List<int[]> getAdjacentPixels(int[][] image, int[] current) {
@@ -96,7 +107,6 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
         int row = current[0];
         int col = current[1];
-
         
         int[][] directions = new int[][] {
             {-1, 0}, // up
@@ -116,6 +126,22 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         }
 
         return validMoves;
+    }
+
+    public Group newGroup(List<int[]> pixels) {
+        int size = pixels.size();
+        int sumX = 0;
+        int sumY = 0;
+
+        for (int[] pixel : pixels) {
+            sumX += pixel[1];
+            sumY += pixel[0];
+        }
+
+        int centroidX = sumX / size;
+        int centroidY = sumY / size;
+
+        return new Group(size, new Coordinate(centroidX, centroidY));
     }
 
 }
