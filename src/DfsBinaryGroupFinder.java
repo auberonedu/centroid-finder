@@ -33,7 +33,33 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
+        if (image == null){
+            throw new NullPointerException();
+        }
+        // create shallow copy of image array to keep track of visited pixels without editing original array
+        // nested for loop to find start of each group
+        // if image[r] is null, throw null pointer
+        // if image[r][c] is not a 1 or a 0, throw invalid input
+        // when group is found, perform dfs with that x, y as starting point
+        // dfs will need to fill an array with the size of the group and a sum of the group's x and y coordinates
+        // a new Group record will be created and added to the List using this info^
+        // sort list and return it
         return null;
+    }
+
+    private void dfs(int[][] image, int y, int x, int[] groupInfo){
+        // if y is out of bound or x is out of bounds return
+        // if image[y][x] = 0 return
+
+        // create 2d array of direction options
+
+        // groupInfo[0] += 1
+        // groupInfo[1] += x
+        // groupInfo[2] += y
+
+        // set current pixel to 0 
+        // for each direction, perform recursion
+
     }
     
 }
