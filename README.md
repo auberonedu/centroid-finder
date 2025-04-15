@@ -19,7 +19,7 @@ I, f3liz, understand that AI is ONLY to be used for tests, and that every commit
 ## Wave 1: Understand
 Read through ImageSummaryApp in detail with your partner. Understand what each part does. This will involve looking through and reading ALL of the other classes records and interfaces. This will take a long time, but it is worth it! Do not skimp on this part, you will regret it! Also look at the sampleInput and sampleOutput folders to understand what comes in and what goes out.
 
-As you read through the files, take notes in notes.md to help you and your partner undertsnad. Make frequent commits to your notes.
+As you read through the files, take notes in notes.md to help you and your partner understand. Make frequent commits to your notes.
 
 ## Wave 2: Implement DfsBinaryGroupFinder
 This class takes in a binary image array and finds the connected groups. It will look very similar in many ways to the explorer problem you did for DFS! You'll need to understand the Group record to do this well.
