@@ -31,7 +31,26 @@ public class DfsBinaryGroupFinderTest {
         // coords is null
 
         @Test
-        public void testGetArea_1() {
+        public void testGetArea_zeroCoordinates() {
+            // Create a new List of Coordinates with 5 coordinates
+            List<Coordinate> coords = new ArrayList<>();
+            int area = DfsBinaryGroupFinder.getArea(coords);
+
+            assertEquals(0, area);
+        }
+
+        @Test
+        public void testGetArea_oneCoordinate() {
+            // Create a new List of Coordinates with 5 coordinates
+            List<Coordinate> coords = new ArrayList<>();
+            int area = DfsBinaryGroupFinder.getArea(coords);
+            coords.add(new Coordinate(0, 0));
+
+            assertEquals(1, area);
+        }
+
+        @Test
+        public void testGetArea_fiveCoordinates() {
             // Create a new List of Coordinates with 5 coordinates
             List<Coordinate> coords = new ArrayList<>();
             coords.add(new Coordinate(0, 0));
@@ -43,6 +62,27 @@ public class DfsBinaryGroupFinderTest {
             int area = DfsBinaryGroupFinder.getArea(coords);
 
             assertEquals(5, area);
+        }
+
+        @Test
+        public void testGetArea_nullList() {
+            // Create a new List of Coordinates with 5 coordinates
+            List<Coordinate> coords = null;
+
+            assertThrows(NullPointerException.class, () -> DfsBinaryGroupFinder.getArea(coords));
+        }
+
+        @Test
+        public void testGetArea_fourHundredAndFourCoordinates() {
+            // Create a new List of Coordinates with 5 coordinates
+            List<Coordinate> coords = new ArrayList<>();
+            for (int i = 0; i < 404; i++) {
+                coords.add(new Coordinate(i, 10));
+            }
+
+            int area = DfsBinaryGroupFinder.getArea(coords);
+
+            assertEquals(404, area);
         }
 
     // get centroid
