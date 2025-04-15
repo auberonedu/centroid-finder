@@ -23,6 +23,12 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
     }
 
     public static int[] RGBconverter(int color) {
-        
+        // grabbing the RGB colors by shifting and masking
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+
+        // returning the RGB components as the array
+        return new int[] {red, green, blue};
     }
 }
