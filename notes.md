@@ -10,6 +10,10 @@
 
 
 ## ColorDistanceFinder
+An interface for computing the distance between two different colors. Each color is represented as a 24-bit integer in the format: `0xRRGGBB`, where each color component can be extracted using bit shifting and masking. 
+
 ## EuclideanColorDistance
+A class (not yet implemented) that implements the *ColorDistanceFinder* interface to compute the distance between two different colors. This is done using the Euclidean distance formula `sqrt((r1 - r2)^2 + (g1 - g2)^2 + (b1 - b2)^2)`, where each variable corresponds to a color integer value represented in a 24-bit integer in the format `0xRRGGBB`. This formula gives a measure of how visually different the two colors are.
+
 ## ImageBinarizer
 ## DistanceImageBinarizer
