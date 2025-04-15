@@ -1,8 +1,6 @@
 import interfaces.BinaryGroupFinder;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import records.Coordinate;
 import records.Group;
 
@@ -114,18 +112,22 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     
     // getCentroid
     public static Coordinate getCentroid(List<Coordinate> coords){
-        // total x
-        // total y
+        int totalX = 0; // total x
+        int totalY = 0; // total y
 
         // loop through coords
-            // add to x
-            // add to y
+        for (Coordinate coord : coords) {
+            totalX += coord.x(); // add to x
+            totalY += coord.y(); // add to y
+        }
         
         // average x = sum of X / coords.size()
-
+        int avgX = totalX / coords.size();
         // average y = sum of Y / coords.size()
-
+        int avgY = totalY / coords.size();
+        
         // return new Coordinate(average x, average y)
+        return new Coordinate(avgX, avgY);
     }
 
 
