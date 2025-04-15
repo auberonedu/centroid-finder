@@ -87,7 +87,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             // base case to avoid recursive doom -- is directions valid? is this a 1?
             if (row < 0 || row >= image.length ||
                 col < 0 || col >= image[0].length 
-                || image[row][col] == 0){
+                || image[row][col] != 1){
                     return;
             }
     
