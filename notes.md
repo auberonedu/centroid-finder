@@ -182,4 +182,33 @@ wave3 EuclideanColorDistance.java javadoc info:
 8. The method returns a double representing how visually different the two colors are
 --------
 Week2 in sdev334 our professor Auberon showed us how to think in bits and bytes, and delved into 'bit shifts' and 'masking' so we assume we will use these concepts and resulting code to process the 24-bit color input into its individual R-G-B components
+---------
+Pseudocode:
+[public class EuclideanColorDistance implements ColorDistanceFinder {]
+[@Override
+    public double distance(int colorA, int colorB) {]
+    //RGB color component refinement
+    //rgb format: 0xRRGGBB
+    //each color component takes up 8 bits
+    //we can use bit-shifting & bit-masking to 'clarify'
+    //individual color components
 
+    //Red component from left-most 8 bits:
+    rA = (colorA shifted right 16 bits) and 0xFF
+    //Green from middle 8 bits
+    gA = (colorA shifted right 8 bits) and 0xFF
+    //Blue from right-most 8 bits (no shift required)
+    bA = colorA and 0xFF
+
+    rB = (colorB shifted right 16 bits) and 0xFF
+    gB = (colorB shifted right 8 bits) and 0xFF
+    bB = colorB and 0xFF
+
+    //calculate 'distance' using Euclidean formula
+    //initialize subtraction difference for elegant code
+    dr = rA-rB
+    dg = gA-gB
+    db = bA-bB
+    //return result of Euclidean formula
+    Return Math.sqrt(dr*dr + dg*dg + db*db)
+-----------------
