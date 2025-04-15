@@ -103,7 +103,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                 int newRow = direction[0] + row;
                 int newCol = direction[1] + col;
 
-                getCoordinates(image, row, col, groupCoordList);
+                getCoordinates(image, newRow, newCol, groupCoordList);
             }
         }
 
