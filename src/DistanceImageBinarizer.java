@@ -50,7 +50,7 @@ public class DistanceImageBinarizer implements ImageBinarizer {
         int height = image.getHeight();
 
         // creating the 2D array for binary values - 1 (white) & 0 (black) using the width and height
-        int[][] binaryArr = new int[width][height];
+        int[][] binaryArr = new int[height][width];
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) { 
