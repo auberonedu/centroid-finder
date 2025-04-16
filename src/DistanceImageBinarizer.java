@@ -87,10 +87,20 @@ public class DistanceImageBinarizer implements ImageBinarizer {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                
+                // setting a local variable for the color to modify it for the image
+                int color;
+
+                if (image[y][x] == 1) {
+                    color = 0xFFFFFF; // white
+                } else {
+                    color = 0x000000; // black
+                }
+
+                // setting the pixel color in the output image
+                outputImage.setRGB(x, y, color);
             }
         }
 
-        return null;
+        return outputImage;
     }
 }
