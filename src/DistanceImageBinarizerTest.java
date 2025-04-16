@@ -218,12 +218,12 @@ public class DistanceImageBinarizerTest {
     public void testToBinaryArray_colorDiagonal() {
         ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
         int targetColor = 0x000000;
-        int threshold = 150;
+        int threshold = 160;
 
         DistanceImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
 
         BufferedImage image = new BufferedImage(3, 1, BufferedImage.TYPE_INT_RGB);
-        image.setRGB(0, 0, 0x404080); // ≈ 128.0 distance
+        image.setRGB(0, 0, 0x404080); // ≈ 156.76 distance
         image.setRGB(1, 0, 0xA0A020); // ≈ 230.5 distance
         image.setRGB(2, 0, 0x000000); // distance = 0
 
