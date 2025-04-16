@@ -64,7 +64,7 @@ public class DistanceImageBinarizer implements ImageBinarizer {
                 }
             }
         }
-        
+
         return binaryArr;
     }
 
@@ -78,6 +78,13 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
+        // getting the number of rows and columns as height and width
+        int height = image.length;
+        int width = image[0].length;
+
+        // creating a new image with RGB
+        BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
         return null;
     }
 }
