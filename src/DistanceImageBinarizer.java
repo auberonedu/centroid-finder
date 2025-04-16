@@ -85,6 +85,12 @@ public class DistanceImageBinarizer implements ImageBinarizer {
         // creating a new image with RGB
         BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                
+            }
+        }
+
         return null;
     }
 }
