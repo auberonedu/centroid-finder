@@ -212,3 +212,9 @@ Pseudocode:
     //return result of Euclidean formula
     Return Math.sqrt(dr*dr + dg*dg + db*db)
 -----------------
+Integers in Java: this was learned from google searching because we didn't understand why we would need to use (& 0xff) for the red component since we had already right shifted the structure by 16 bits effectively removing the blue then green components. 
+But here's the explanation if I'm understanding this correctly:
+On paper we could omit the (& 0xff) since we only have left the red component; but in JAVA, Java uses a 32-bit memory allocation for an Integer. But the left most bit is not part of the actual integer itself, it's reserved by Java to indicate if the Integer is + or -; if + the left most bit will be a 0, if the integer is negative the left most bit will be a 1;
+So that raised the question, so then in Java an Integer can only be up to 2^31, NOT 2^32, and that is correct; In Java, the largest int we can deal with is 2^31 = 2.147~ billion!
+So THAT'S why we need to 'mask' all three components after right shifting (for red and green; we don't need to right shit for blue)!!
+--------------

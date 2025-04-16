@@ -17,25 +17,30 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
      * @param colorA the first color as a 24-bit hex RGB integer
      * @param colorB the second color as a 24-bit hex RGB integer
      * @return the Euclidean distance between the two colors
+     * @throws IAE if either input is not a valid 24-bit RGB color
      */
     @Override
     public double distance(int colorA, int colorB) {
+        //edge cases
+        if (colorA < 0 || colorA > 0xFFFFFF || colorB < 0 || colorB > 0xFFFFFF) {
+            throw new IllegalArgumentException("Input color value must be in 32-bit RGB format! (0x000000 to 0xFFFFFF)");
+        }
+
         // RGB color component refinement
-        // rgb format: 0xRRGGBB
-        // each color component takes up 8 bits
-        // we can use bit-shifting & bit-masking to 'clarify'
-        // individual color components
-        int rA = (colorA >> 16);
+        // we  use bit-shifting & bit-masking to 'clarify'
+        //colorA
+        int rA = (colorA >> 16) & 0xff;
         int gA = (colorA >> 8) & 0xff;
-        int bA = colorA;
-        int rB = (colorB >> 16);
+        int bA = colorA & 0xff;
+        //colorB
+        int rB = (colorB >> 16) & 0xff;
         int gB = (colorB >> 8) & 0xff;
-        int bB = colorB;
+        int bB = colorB & 0xff;
+        //calculate difference between color components 'a' minus 'b'
+        int dr = rA - rB;
+        int dg = gA - gB;
+        int db = bA - bB;
 
-        int distanceR = rA - rB;
-        int distanceG = gA - gB;
-        int distanceB = bA - bB;
-
-        return Math.sqrt(distanceR * distanceR + distanceG * distanceG + distanceB * distanceB);
+        return Math.sqrt(dr*dr + dg*dg + db*db);
     }
 }

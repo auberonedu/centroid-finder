@@ -67,25 +67,31 @@ public class EuclideanColorDistanceTest {
     // 10. Arbitrary color values - math check
     @Test
     void testCustomColors() {
-        assertEquals(84.85, distanceFinder.distance(0x123456, 0x654321), 0.1);
+        assertEquals(99.61, distanceFinder.distance(0x123456, 0x654321), 0.1);
     }
 
-    // 11. Negative input (interpreted as 0xFFFFFF due to masking)
+    // 11. Negative input should throw exception
     @Test
-    void testNegativeColor() {
-        assertEquals(441.67, distanceFinder.distance(-1, 0x000000), 0.01);
+    void testNegativeColorThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            distanceFinder.distance(-1, 0x000000);
+        });
     }
 
-    // 12. Extra bits in input (e.g. 0x12345678) should not affect result
+    // 12. Value over 0xFFFFFF should throw exception
     @Test
-    void testExtraBitsIgnored() {
-        assertEquals(0.0, distanceFinder.distance(0x12345678, 0x345678), 0.01);
+    void testTooLargeColorThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            distanceFinder.distance(0x1000000, 0x000000);
+        });
     }
 
-    // 13. Both inputs negative - still interpretable
+    // 13. Both values invalid
     @Test
-    void testBothNegative() {
-        assertEquals(0.0, distanceFinder.distance(-1, -1), 0.01);
+    void testBothInvalidThrow() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            distanceFinder.distance(-1, 0xABCDEF1); // both bad
+        });
     }
 
     // 14. Explicit black vs black
@@ -98,5 +104,13 @@ public class EuclideanColorDistanceTest {
     @Test
     void testMaxColorVsMaxColor() {
         assertEquals(0.0, distanceFinder.distance(0xFFFFFF, 0xFFFFFF), 0.01);
+    }
+
+    // 16. One valid, one invalid
+    @Test
+    void testOneBadOneGoodThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            distanceFinder.distance(0xFFFFFF, -42); // second one invalid
+        });
     }
 }
