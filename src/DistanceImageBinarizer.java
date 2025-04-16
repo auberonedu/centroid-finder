@@ -52,13 +52,20 @@ public class DistanceImageBinarizer implements ImageBinarizer {
         // creating the 2D array for binary values - 1 (white) & 0 (black) using the width and height
         int[][] binaryArr = new int[width][height];
 
-        // looping over the pixel
         for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+            for (int x = 0; x < width; x++) { 
+                int currentRgb = image.getRGB(x, y) & 0xFFFFFF; // storing the RGB color of a current pixel
+                double distance = distanceFinder.distance(currentRgb, targetColor);
 
+                if (distance < threshold) {
+                    binaryArr[y][x] = 1; // white pixel 
+                } else {
+                    binaryArr[y][x] = 0; // black pixel 
+                }
             }
         }
-        return null;
+        
+        return binaryArr;
     }
 
     /**
