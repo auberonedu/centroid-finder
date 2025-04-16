@@ -21,7 +21,7 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
      */
     @Override
     public double distance(int colorA, int colorB) {
-        //edge cases
+        //edge cases - IAE for negative input, input > 24 bits;
         if (colorA < 0 || colorA > 0xFFFFFF || colorB < 0 || colorB > 0xFFFFFF) {
             throw new IllegalArgumentException("Input color value must be in 32-bit RGB format! (0x000000 to 0xFFFFFF)");
         }
@@ -37,10 +37,11 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
         int gB = (colorB >> 8) & 0xff;
         int bB = colorB & 0xff;
         //calculate difference between color components 'a' minus 'b'
+        //honestly this just makes the euclidean formula code POP
         int dr = rA - rB;
         int dg = gA - gB;
         int db = bA - bB;
-
+        //return the result of the Euclidean 3D spatial geometry distance formula applied to the two colors
         return Math.sqrt(dr*dr + dg*dg + db*db);
     }
 }
