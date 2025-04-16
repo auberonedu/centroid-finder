@@ -52,7 +52,12 @@ public class DistanceImageBinarizer implements ImageBinarizer {
         // creating the 2D array for binary values - 1 (white) & 0 (black) using the width and height
         int[][] binaryArr = new int[width][height];
 
+        // looping over the pixel
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
 
+            }
+        }
         return null;
     }
 
