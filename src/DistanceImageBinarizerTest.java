@@ -105,4 +105,115 @@ public class DistanceImageBinarizerTest {
         assertEquals(1, binary[0][2]);
     }
 
+    @Test
+    public void testToBinaryArray_changeGreen() {
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+
+        int targetColor = 0x000000; // pure black
+        int threshold = 100;
+
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
+
+        // Create a 3x1 image where only the GREEN channel varies
+        // Format: 0x00GG00 (R=0, G=variable, B=0)
+        BufferedImage image = new BufferedImage(3, 1, BufferedImage.TYPE_INT_RGB);
+        image.setRGB(0, 0, 0x002000); // G = 32 → distance = 32
+        image.setRGB(1, 0, 0x008000); // G = 128 → distance = 128
+        image.setRGB(2, 0, 0x006400); // G = 100 → distance = 100
+
+        int[][] binary = binarizer.toBinaryArray(image);
+
+        // Expectation with threshold = 100:
+        // 0x002000 → distance 32 < 100 → white (1)
+        // 0x008000 → distance 128 > 100 → black (0)
+        // 0x006400 → distance 100 == threshold → black (0), because threshold is exclusive
+
+        assertEquals(1, binary[0][0]);
+        assertEquals(0, binary[0][1]);
+        assertEquals(0, binary[0][2]);
+    }
+
+    @Test
+    public void testToBinaryArray_changeRed() {
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        int targetColor = 0x000000; // pure black
+        int threshold = 100;
+
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
+
+        // Format: 0xRR0000 (only red varies)
+        BufferedImage image = new BufferedImage(3, 1, BufferedImage.TYPE_INT_RGB);
+        image.setRGB(0, 0, 0x200000); // R = 32 → distance = 32
+        image.setRGB(1, 0, 0x800000); // R = 128 → distance = 128
+        image.setRGB(2, 0, 0x640000); // R = 100 → distance = 100
+
+        int[][] binary = binarizer.toBinaryArray(image);
+
+        assertEquals(1, binary[0][0]);
+        assertEquals(0, binary[0][1]);
+        assertEquals(0, binary[0][2]);
+    }
+
+    @Test
+    public void testToBinaryArray_changeBlue() {
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        int targetColor = 0x000000; // pure black
+        int threshold = 100;
+
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
+
+        // Format: 0x0000BB (only blue varies)
+        BufferedImage image = new BufferedImage(3, 1, BufferedImage.TYPE_INT_RGB);
+        image.setRGB(0, 0, 0x000020); // B = 32 → distance = 32
+        image.setRGB(1, 0, 0x000080); // B = 128 → distance = 128
+        image.setRGB(2, 0, 0x000064); // B = 100 → distance = 100
+
+        int[][] binary = binarizer.toBinaryArray(image);
+
+        assertEquals(1, binary[0][0]);
+        assertEquals(0, binary[0][1]);
+        assertEquals(0, binary[0][2]);
+    }
+
+    @Test
+    public void testToBinaryArray_grayscaleGradient() {
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        int targetColor = 0x000000; // black
+        int threshold = 180;
+
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
+
+        BufferedImage image = new BufferedImage(3, 1, BufferedImage.TYPE_INT_RGB);
+        image.setRGB(0, 0, 0x111111); // grayscale ~17, distance ≈ 29.4
+        image.setRGB(1, 0, 0x808080); // grayscale 128, distance ≈ 221.7
+        image.setRGB(2, 0, 0x646464); // grayscale 100, distance ≈ 173.2
+
+        int[][] binary = binarizer.toBinaryArray(image);
+
+        assertEquals(1, binary[0][0]);
+        assertEquals(0, binary[0][1]);
+        assertEquals(1, binary[0][2]);
+    }
+
+    @Test
+    public void testToBinaryArray_colorDiagonal() {
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        int targetColor = 0x000000;
+        int threshold = 150;
+
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
+
+        BufferedImage image = new BufferedImage(3, 1, BufferedImage.TYPE_INT_RGB);
+        image.setRGB(0, 0, 0x404080); // ≈ 128.0 distance
+        image.setRGB(1, 0, 0xA0A020); // ≈ 230.5 distance
+        image.setRGB(2, 0, 0x000000); // distance = 0
+
+        int[][] binary = binarizer.toBinaryArray(image);
+
+        assertEquals(1, binary[0][0]);
+        assertEquals(0, binary[0][1]);
+        assertEquals(1, binary[0][2]);
+    }
+
+
 }
