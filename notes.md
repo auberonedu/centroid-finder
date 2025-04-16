@@ -49,3 +49,15 @@ When ImageSummaryApp starts, user enters:
     - Contains two ints representing an x and y coordinate.
 - **Group**
     - Represents a group of contiguous pixels in an image, with a calculated centroid that is located at the average of pixel coordinates in each dimension.
+
+
+## References
+### EuclideanColorDistanceTest
+#### Links 
+- (Google Color Picker: https://g.co/kgs/DG41Bvm)
+- (Rapid Tables: https://www.rapidtables.com/web/color/RGB_Color.html)
+
+### DistanceImageBinarizer
+#### Links
+- Java RGB Color Channels: Extracting from BufferedImage (https://www.youtube.com/watch?v=agW5FJSbjCM)
+- Java BufferedImage Class (https://www.tutorialspoint.com/java_dip/java_buffered_image.htm)
