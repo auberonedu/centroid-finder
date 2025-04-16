@@ -25,3 +25,13 @@
     - DistanceImageBinarizer: determintes Euclidian distance between pixel colors
     - toBinaryArray: converts BufferedImage into a binary 2D array
     - toBufferedImage: converts a binary 2D array into BufferedImage in black (0) and white (1)
+
+## DfsBinaryGroupFinder.java
+- Find connected pixel groups of 1s in an integer array representing a binary image
+- Input: 2D rectangular array/Matrix
+- Output: `List<Group>` of connected groups of 1s with size being the number of pixels in the group and centroid being avg (x, y) position of those pixels  
+- Uses Group.java
+
+## Group.java
+- Record class that holds info about connected pixels of 1s in a 2D matrix 
+- Stores size (amount of 1s) and centroid (avg x,y position of groups pixels)
