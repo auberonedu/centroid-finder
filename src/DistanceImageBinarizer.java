@@ -68,7 +68,6 @@ public class DistanceImageBinarizer implements ImageBinarizer {
             }
         }
             
-        
         // return the array
         return binary;
     }
@@ -83,14 +82,35 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
+        if (image == null){
+            throw new NullPointerException("Array cannot be null");
+        }
+        if (image.length == 0){
+            throw new IllegalArgumentException("Array cannot be empty");
+        }
         // create a new BufferedImage with width and height proportionate to image[][]
-
+        BufferedImage newImage = new BufferedImage(image[0].length, image.length, BufferedImage.TYPE_INT_RGB);
         // loop through the array
-            // set the pixel at the "x" and "y" point (setRGB)
-                // 0x000000 --> black (0)
+        for (int y = 0; y < image.length; y++){
+            if (image[y] == null){
+                throw new NullPointerException("Sub array cannot be null");
+            }
+            if (image[y].length == 0){
+                throw new IllegalArgumentException("Sub array cannot be empty");
+            }
+            for (int x = 0; x < image[y].length; x++){
+                // set the pixel at the "x" and "y" point (setRGB)
                 // 0xFFFFF --> white (1)
-        
+                if (image[y][x] == 1){
+                    newImage.setRGB(x, y, 0xffffff);
+                } else {
+                    // 0x000000 --> black (0)
+                    newImage.setRGB(x, y, 0x000000);
+                }
+            }
+        }
+            
         // return the new buffered image!
-        return null;
+        return newImage;
     }
 }
