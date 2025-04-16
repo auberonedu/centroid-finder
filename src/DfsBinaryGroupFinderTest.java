@@ -12,11 +12,20 @@ public class DfsBinaryGroupFinderTest {
 
 
     // find Connected Groups
-        // image null, NullPointerException
         // image has null row, NullPointerException
         // image row length = 0, IllegalArgumentException
         // image col length = 0; IllegalArgumentException
-        // List is SORTED
+
+        @Test
+        public void testFindConnectedGroups_nullImage() {
+            // Create image
+            int[][] image = null;
+
+            // Create instance of DFS
+            DfsBinaryGroupFinder test = new DfsBinaryGroupFinder();
+
+            assertThrows(NullPointerException.class, () -> test.findConnectedGroups(image));
+        }
 
         @Test
         public void testFindConnectedGroups_oneGroups() {
@@ -66,7 +75,6 @@ public class DfsBinaryGroupFinderTest {
         System.out.println(actual);
 
         assertEquals(groupsList, actual);
-
     }
 
     // get coordinates
@@ -251,11 +259,11 @@ public class DfsBinaryGroupFinderTest {
 
         @Test
         public void testGetArea_oneCoordinate() {
-            // Create a new List of Coordinates with 5 coordinates
+            // Create a new List of Coordinates with 1 coordinate
             List<Coordinate> coords = new ArrayList<>();
-            int area = DfsBinaryGroupFinder.getArea(coords);
             coords.add(new Coordinate(0, 0));
-
+            int area = DfsBinaryGroupFinder.getArea(coords);
+            
             assertEquals(1, area);
         }
 
@@ -296,8 +304,108 @@ public class DfsBinaryGroupFinderTest {
         }
 
     // get centroid
-        // odds divided correctly (sum5, sum7) / 2 = (2, 3)
-        // evens divided correctly (sum4, sum6) / 2 = (2, 3)
-        // ? totals of 0 handled
+
+    @Test
+    public void testGetCentroid_oneCoordinate() {
+        // takes in a list of coordinates
+        List<Coordinate> coords = new ArrayList<>();
+        coords.add(new Coordinate(1, 1));
+
+        Coordinate actual = DfsBinaryGroupFinder.getCentroid(coords);
+        Coordinate expected = new Coordinate(1,1);
+
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    public void testGetCentroid_twoByTwoSquare() {
+        // takes in a list of coordinates
+        List<Coordinate> coords = new ArrayList<>();
+        coords.add(new Coordinate(1, 1));
+        coords.add(new Coordinate(1, 2));
+        coords.add(new Coordinate(2, 1));
+        coords.add(new Coordinate(2, 2));
+
+        // Calculate centroid coordinates (x = sum x / 2 and y = sum y / 2)
+        int sumX = 0;
+        int sumY = 0;
+        for (var coor: coords) {
+            sumX += coor.x();
+            sumY += coor.y();
+        }
+        int xCentroid = sumX / coords.size();
+        int yCentroid = sumY / coords.size();
+
+
+        Coordinate actual = DfsBinaryGroupFinder.getCentroid(coords);
+        Coordinate expected = new Coordinate(xCentroid, yCentroid);
+
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    public void testGetCentroid_threeByThreeSquare() {
+        // takes in a list of coordinates
+        List<Coordinate> coords = new ArrayList<>();
+        coords.add(new Coordinate(1, 1));
+        coords.add(new Coordinate(1, 2));
+        coords.add(new Coordinate(1, 3));
+        coords.add(new Coordinate(2, 1));
+        coords.add(new Coordinate(2, 2));
+        coords.add(new Coordinate(2, 3));
+        coords.add(new Coordinate(3, 1));
+        coords.add(new Coordinate(3, 2));
+        coords.add(new Coordinate(3, 3));
+
+        // Calculate centroid coordinates (x = sum x / 2 and y = sum y / 2)
+        int sumX = 0;
+        int sumY = 0;
+        for (var coor: coords) {
+            sumX += coor.x();
+            sumY += coor.y();
+        }
+        int xCentroid = sumX / coords.size();
+        int yCentroid = sumY / coords.size();
+
+
+        Coordinate actual = DfsBinaryGroupFinder.getCentroid(coords);
+        Coordinate expected = new Coordinate(xCentroid, yCentroid);
+
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    public void testGetCentroid_asymetricalGroup() {
+        // takes in a list of coordinates
+        List<Coordinate> coords = new ArrayList<>();
+        coords.add(new Coordinate(1, 1));
+        coords.add(new Coordinate(1, 2));
+        coords.add(new Coordinate(1, 3));
+        coords.add(new Coordinate(2, 1));
+        coords.add(new Coordinate(3, 1));
+        coords.add(new Coordinate(3, 2));
+        coords.add(new Coordinate(4, 2));
+        coords.add(new Coordinate(4, 3));
+        coords.add(new Coordinate(4, 4));
+        coords.add(new Coordinate(4, 5));
+        coords.add(new Coordinate(5, 5));
+        coords.add(new Coordinate(6, 5));
+
+        // Calculate centroid coordinates (x = sum x / 2 and y = sum y / 2)
+        int sumX = 0;
+        int sumY = 0;
+        for (var coor: coords) {
+            sumX += coor.x();
+            sumY += coor.y();
+        }
+        int xCentroid = sumX / coords.size();
+        int yCentroid = sumY / coords.size();
+
+
+        Coordinate actual = DfsBinaryGroupFinder.getCentroid(coords);
+        Coordinate expected = new Coordinate(xCentroid, yCentroid);
+
+        assertEquals(actual, expected);
+    }
     
 }
