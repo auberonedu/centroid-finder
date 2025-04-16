@@ -218,3 +218,17 @@ On paper we could omit the (& 0xff) since we only have left the red component; b
 So that raised the question, so then in Java an Integer can only be up to 2^31, NOT 2^32, and that is correct; In Java, the largest int we can deal with is 2^31 = 2.147~ billion!
 So THAT'S why we need to 'mask' all three components after right shifting (for red and green; we don't need to right shit for blue)!!
 --------------
+wave4 DistanceImageBinarizer:
+This class takes a colored image and converts into binary (black & white) image considering how close each pixel is to target color.
+Two main jobs: 1. toBinaryArray(BufferedImage image) loops through the pixels checking their distance from target color then output 2D array of 1s/0s;
+(1='white'=close to target color; 0=black=far from target)
+2. toBufferedImage(int[][] image) takes binary array and converts to java BufferedImage
+---------
+DistanceImageBinarizer class acts as a liaison between the input image, the binary logic used in DfsBinaryGroupFinder, and outputs a BufferedImage format of the 2D int array we've received from DFS method
+-----------
+Wave4 class allows us to go back and forth between real image data and binary data
+-----------
+Unit Tests - we will ask AI to write these:
+-----------
+wave4 pseudocode (DistanceImageBinarizer)
+
