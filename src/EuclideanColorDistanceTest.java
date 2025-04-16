@@ -17,18 +17,17 @@ dc1e1e
 public class EuclideanColorDistanceTest {
     // distance tests (input: hex int colorA and colorB, output: double distance between them)
 
-    @Test void testDistance_redVersusBlue() {
+    @Test 
+    public void testDistance_redVersusBlue() {
         // blue, red: (30, 50, 150), (220, 30, 30)
-        double expected = Math.sqrt((30 - 220)^2 + (50 - 30)^2 + (150 - 30)^2);
+        double expected = Math.sqrt(Math.pow(30 - 220,2) + Math.pow(50 - 30,2) + Math.pow(150 - 30,2));
 
         EuclideanColorDistance distanceTester = new EuclideanColorDistance();
         // blue, red: 1e3296, dc1e1e
         double actual = distanceTester.distance(0x1e3296, 0xdc1e1e);
 
-        assertEquals(expected, actual);
-
+        assertEquals(expected, actual, 0.00001);
     }
-
 
     // hexToRGB tests (converts hex int into int[] R,G,B)
 
@@ -40,6 +39,7 @@ public class EuclideanColorDistanceTest {
         assertArrayEquals(expected, actual);
     }
 
+    @Test
     public void testHexToRGB_red() {
         int[] expected = new int[]{220, 30, 30};
         int[] actual = EuclideanColorDistance.hexToRGB(0xdc1e1e);

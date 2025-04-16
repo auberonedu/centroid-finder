@@ -20,7 +20,8 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
      * @return the Euclidean distance between the two colors
      */
     // Created a final int for the mask
-    private static final int mask = 0xf;
+    // 0xf = 4 bits and 0xff = 8 bits
+    private static final int mask = 0xff;
 
     @Override
     public double distance(int colorA, int colorB) {
