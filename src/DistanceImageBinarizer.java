@@ -54,7 +54,7 @@ public class DistanceImageBinarizer implements ImageBinarizer {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) { 
-                int currentRgb = image.getRGB(x, y) & 0xFFFFFF; // storing the RGB color of a current pixel
+                int currentRgb = image.getRGB(x, y) & 0xFFFFFF; 
                 double distance = distanceFinder.distance(currentRgb, targetColor);
 
                 if (distance < threshold) {
@@ -87,8 +87,7 @@ public class DistanceImageBinarizer implements ImageBinarizer {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                // setting a local variable for the color to modify it for the image
-                int color;
+                int color; 
 
                 if (image[y][x] == 1) {
                     color = 0xFFFFFF; // white
