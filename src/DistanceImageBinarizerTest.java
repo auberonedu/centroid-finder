@@ -1,9 +1,28 @@
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.awt.image.BufferedImage;
 public class DistanceImageBinarizerTest {
+
+    @Test
+    public void testToBinaryArray_nullImage(){
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        
+        // target = black
+        int targetColor = 0x000000;
+        int threshold = 100;
+
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
+
+        BufferedImage image = null;
+
+        assertThrows(NullPointerException.class, () -> {
+            binarizer.toBinaryArray(image);
+        });
+    }
+
     @Test
     public void testToBinaryArray_oneExactMatch(){
         ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
@@ -14,7 +33,7 @@ public class DistanceImageBinarizerTest {
 
         DistanceImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
 
-        // Creaye 2x1 pixel image
+        // Create 2x1 pixel image
         BufferedImage image = new BufferedImage(2, 1, BufferedImage.TYPE_INT_RGB);
         image.setRGB(0, 0, 0x000000);
         image.setRGB(1, 0, 0xffffff);
@@ -214,6 +233,30 @@ public class DistanceImageBinarizerTest {
         assertEquals(0, binary[0][1]);
         assertEquals(1, binary[0][2]);
     }
+
+    // toBufferedImage TESTS!!!!
+
+    @Test
+    public void testToBufferedImage_simple(){
+        // set up
+        int[][] image = {
+            {0, 0},
+            {1, 1}
+        };
+        // constructor params can be set to default since the fields are not used in 
+        // toBufferedImage
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+
+        BufferedImage actual = binarizer.toBufferedImage(image);
+
+        // 0x000000 = black / 0
+        // 0xffffff = white / 1
+        assertEquals(0x000000, actual.getRGB(0, 0));
+        assertEquals(0x000000, actual.getRGB(1, 0));
+        assertEquals(0xffffff, actual.getRGB(0, 1));
+        assertEquals(0xffffff, actual.getRGB(1, 1));
+    }
+
 
 
 }
