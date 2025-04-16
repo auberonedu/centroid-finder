@@ -302,10 +302,13 @@ public class DistanceImageBinarizerTest {
 
         // 0x000000 = black / 0
         // 0xffffff = white / 1
-        assertEquals(0x000000, actual.getRGB(0, 0));
-        assertEquals(0x000000, actual.getRGB(1, 0));
-        assertEquals(0xffffff, actual.getRGB(0, 1));
-        assertEquals(0xffffff, actual.getRGB(1, 1));
+        // since getRGB returns an ARGB value, add ff to the left 
+        // of every expected rgb value. The ff represents the alpha value
+        // of the color, which should be set to max by default.
+        assertEquals(0xff000000, actual.getRGB(0, 0));
+        assertEquals(0xff000000, actual.getRGB(1, 0));
+        assertEquals(0xffffffff, actual.getRGB(0, 1));
+        assertEquals(0xffffffff, actual.getRGB(1, 1));
     }
 
     @Test
@@ -321,10 +324,10 @@ public class DistanceImageBinarizerTest {
         assertEquals(2, image.getWidth());
         assertEquals(2, image.getHeight());
 
-        assertEquals(0x000000, image.getRGB(0, 0));
-        assertEquals(0x000000, image.getRGB(1, 0));
-        assertEquals(0x000000, image.getRGB(0, 1));
-        assertEquals(0x000000, image.getRGB(1, 1));
+        assertEquals(0xff000000, image.getRGB(0, 0));
+        assertEquals(0xff000000, image.getRGB(1, 0));
+        assertEquals(0xff000000, image.getRGB(0, 1));
+        assertEquals(0xff000000, image.getRGB(1, 1));
     }
 
     @Test
@@ -340,10 +343,10 @@ public class DistanceImageBinarizerTest {
         assertEquals(2, image.getWidth());
         assertEquals(2, image.getHeight());
 
-        assertEquals(0xFFFFFF, image.getRGB(0, 0));
-        assertEquals(0xFFFFFF, image.getRGB(1, 0));
-        assertEquals(0xFFFFFF, image.getRGB(0, 1));
-        assertEquals(0xFFFFFF, image.getRGB(1, 1));
+        assertEquals(0xffFFFFFF, image.getRGB(0, 0));
+        assertEquals(0xffFFFFFF, image.getRGB(1, 0));
+        assertEquals(0xffFFFFFF, image.getRGB(0, 1));
+        assertEquals(0xffFFFFFF, image.getRGB(1, 1));
     }
 
     @Test
@@ -359,10 +362,10 @@ public class DistanceImageBinarizerTest {
         assertEquals(2, image.getWidth());
         assertEquals(2, image.getHeight());
 
-        assertEquals(0x000000, image.getRGB(0, 0));
-        assertEquals(0xFFFFFF, image.getRGB(1, 0));
-        assertEquals(0xFFFFFF, image.getRGB(0, 1));
-        assertEquals(0x000000, image.getRGB(1, 1));
+        assertEquals(0xff000000, image.getRGB(0, 0));
+        assertEquals(0xffFFFFFF, image.getRGB(1, 0));
+        assertEquals(0xffFFFFFF, image.getRGB(0, 1));
+        assertEquals(0xff000000, image.getRGB(1, 1));
     }
 
     @Test
@@ -378,13 +381,13 @@ public class DistanceImageBinarizerTest {
         assertEquals(3, image.getWidth());
         assertEquals(2, image.getHeight());
 
-        assertEquals(0xFFFFFF, image.getRGB(0, 0));
-        assertEquals(0x000000, image.getRGB(1, 0));
-        assertEquals(0xFFFFFF, image.getRGB(2, 0));
+        assertEquals(0xffFFFFFF, image.getRGB(0, 0));
+        assertEquals(0xff000000, image.getRGB(1, 0));
+        assertEquals(0xffFFFFFF, image.getRGB(2, 0));
 
-        assertEquals(0x000000, image.getRGB(0, 1));
-        assertEquals(0xFFFFFF, image.getRGB(1, 1));
-        assertEquals(0x000000, image.getRGB(2, 1));
+        assertEquals(0xff000000, image.getRGB(0, 1));
+        assertEquals(0xffFFFFFF, image.getRGB(1, 1));
+        assertEquals(0xff000000, image.getRGB(2, 1));
     }
 
 
