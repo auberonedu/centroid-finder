@@ -102,4 +102,6 @@ public class EuclideanColorDistanceTest {
 
         assertArrayEquals(expected, actual);
     }
+
+    // Make Test Case for testing alpha transparency
 }

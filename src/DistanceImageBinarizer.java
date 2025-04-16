@@ -48,7 +48,9 @@ public class DistanceImageBinarizer implements ImageBinarizer {
     @Override
     public int[][] toBinaryArray(BufferedImage image) {
         // declare variables for height and width
-
+        int width = image.getWidth();
+        int height = image.getHeight();
+        
         // iterate through the 2d array
             // do some logic
         
@@ -66,11 +68,25 @@ public class DistanceImageBinarizer implements ImageBinarizer {
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
         // declare variables for height and width
+        int width = image.length;
+        int height = image[0].length;
         // declare a BufferedImage object
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
+        // set a 2d array as same size as image
         // iterate through the 2d array
-            // do some logic
+        for (int r = 0; r < image.length; r++) {
+            for (int c = 0; c < image[0].length; c++) {
+                // WHITE
+                if (image[r][c] == 1) {
+                    bufferedImage.setRGB(c, r, 0xFFFFFF);
+                } // BLACK
+                else if (image[r][c] == 0) {
+                    bufferedImage.setRGB(c, r, 0x000000);
+                }
+            }
+        }
         
-        return null;
+        return bufferedImage;
     }
 }
