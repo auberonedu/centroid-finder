@@ -45,6 +45,16 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public int[][] toBinaryArray(BufferedImage image) {
+        // get the width and height of the image --> getWidth() and getHeight()
+
+        // create a 2d array with the "width" and "height" set to width and height
+
+        // loop through the array
+            // grab the pixel at each "x" and "y" point
+            // compare the pixel color (getRGB) to targetColor (using EuclideanColorDistance method)
+            // set the coordinate to white (1) or black(0)
+        
+        // return the array
         return null;
     }
 
@@ -58,6 +68,14 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
+        // create a new BufferedImage with width and height proportionate to image[][]
+
+        // loop through the array
+            // set the pixel at the "x" and "y" point (setRGB)
+                // 0x000000 --> black (0)
+                // 0xFFFFF --> white (1)
+        
+        // return the new buffered image!
         return null;
     }
 }
