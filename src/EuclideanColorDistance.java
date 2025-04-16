@@ -50,11 +50,14 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
     public static int[] hexToRGB(int hex) {
         // conversion of red
             // int red = the hex >> 16
+        int red = (hex >> 16) & mask;
         // conversion of green
             // int green = the hex >> 8
+        int green = (hex >> 8) & mask;
         // conversion of blue
             // int blue = the hex of mask (0xf)
+        int blue = hex & mask;
 
-        return new int[]{};
+        return new int[]{red, green, blue};
     }
 }
