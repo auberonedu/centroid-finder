@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-//AI used to create Junit testcases for DistanceImageBinarizerTest.java
+// AI used to create Junit testcases for DistanceImageBinarizerTest.java
 public class DistanceImageBinarizerTest {
 
     private static class MockColorDistanceFinder implements ColorDistanceFinder {
@@ -91,4 +91,43 @@ public class DistanceImageBinarizerTest {
         assertEquals(1, binary[0][0]);
         assertEquals(0, binary[0][1]);
     }
+
+    @Test
+    public void testToBinaryArray_ThresholdZero_OnlyExactMatchWhite() {
+        DistanceImageBinarizer strictBinarizer = new DistanceImageBinarizer(new MockColorDistanceFinder(), 0xFFFFFF, 0);
+        BufferedImage img = new BufferedImage(2, 1, BufferedImage.TYPE_INT_RGB);
+        img.setRGB(0, 0, 0xFFFFFF); // exact match
+        img.setRGB(1, 0, 0xFFFFFE); // one off
+    
+        int[][] binary = strictBinarizer.toBinaryArray(img);
+    
+        assertEquals(1, binary[0][0]); //  exact match
+        assertEquals(0, binary[0][1]); //  off by 1
+    }
+    
+
+
+    @Test
+    public void testToBinaryArray_VeryHighThreshold_AllWhite() {
+        DistanceImageBinarizer lenientBinarizer = new DistanceImageBinarizer(new MockColorDistanceFinder(), 0xFFFFFF, 1000);
+        BufferedImage img = new BufferedImage(2, 1, BufferedImage.TYPE_INT_RGB);
+        img.setRGB(0, 0, 0x000000);
+        img.setRGB(1, 0, 0x123456);
+
+        int[][] binary = lenientBinarizer.toBinaryArray(img);
+
+        assertEquals(1, binary[0][0]);
+        assertEquals(1, binary[0][1]);
+    }
+
+    @Test
+    public void testToBinaryArray_SinglePixelImage() {
+        BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        img.setRGB(0, 0, 0xFFFFFF); // exact match
+
+        int[][] binary = binarizer.toBinaryArray(img);
+
+        assertEquals(1, binary[0][0]);
+    }
+
 }
