@@ -45,17 +45,32 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public int[][] toBinaryArray(BufferedImage image) {
+        if (image == null){
+            throw new NullPointerException("Image may not be null");
+        }
         // get the width and height of the image --> getWidth() and getHeight()
-
         // create a 2d array with the "width" and "height" set to width and height
+        int[][] binary = new int[image.getHeight()][image.getWidth()];
 
         // loop through the array
-            // grab the pixel at each "x" and "y" point
-            // compare the pixel color (getRGB) to targetColor (using EuclideanColorDistance method)
-            // set the coordinate to white (1) or black(0)
+        for (int y = 0; y < binary.length; y++){
+            for (int x = 0; x < binary[y].length; x++){
+                // grab the pixel at each "x" and "y" point
+                int pixel = image.getRGB(x, y);
+                // compare the pixel color (getRGB) to targetColor (using EuclideanColorDistance method)
+                double difference = distanceFinder.distance(pixel, targetColor);
+                // set the coordinate to white (1) or black(0)
+                if (difference < threshold){
+                    binary[y][x] = 1;
+                } else {
+                    binary[y][x] = 0;
+                }
+            }
+        }
+            
         
         // return the array
-        return null;
+        return binary;
     }
 
     /**
