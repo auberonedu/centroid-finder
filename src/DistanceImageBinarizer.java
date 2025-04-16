@@ -1,7 +1,6 @@
-import java.awt.image.BufferedImage;
-
 import interfaces.ColorDistanceFinder;
 import interfaces.ImageBinarizer;
+import java.awt.image.BufferedImage;
 
 /**
  * An implementation of the ImageBinarizer interface that uses color distance
@@ -48,6 +47,11 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public int[][] toBinaryArray(BufferedImage image) {
+        // declare variables for height and width
+
+        // iterate through the 2d array
+            // do some logic
+        
         return null;
     }
 
@@ -61,6 +65,12 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
+        // declare variables for height and width
+        // declare a BufferedImage object
+
+        // iterate through the 2d array
+            // do some logic
+        
         return null;
     }
 }
