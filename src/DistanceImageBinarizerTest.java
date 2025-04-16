@@ -249,6 +249,9 @@ public class DistanceImageBinarizerTest {
 
         BufferedImage actual = binarizer.toBufferedImage(image);
 
+        assertEquals(2, actual.getWidth());
+        assertEquals(2, actual.getHeight());
+
         // 0x000000 = black / 0
         // 0xffffff = white / 1
         assertEquals(0x000000, actual.getRGB(0, 0));
@@ -257,6 +260,84 @@ public class DistanceImageBinarizerTest {
         assertEquals(0xffffff, actual.getRGB(1, 1));
     }
 
+    @Test
+    public void testToBufferedImage_allBlack() {
+        int[][] binary = {
+            {0, 0},
+            {0, 0}
+        };
+
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+        BufferedImage image = binarizer.toBufferedImage(binary);
+
+        assertEquals(2, image.getWidth());
+        assertEquals(2, image.getHeight());
+
+        assertEquals(0x000000, image.getRGB(0, 0));
+        assertEquals(0x000000, image.getRGB(1, 0));
+        assertEquals(0x000000, image.getRGB(0, 1));
+        assertEquals(0x000000, image.getRGB(1, 1));
+    }
+
+    @Test
+    public void testToBufferedImage_allWhite() {
+        int[][] binary = {
+            {1, 1},
+            {1, 1}
+        };
+
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+        BufferedImage image = binarizer.toBufferedImage(binary);
+
+        assertEquals(2, image.getWidth());
+        assertEquals(2, image.getHeight());
+
+        assertEquals(0xFFFFFF, image.getRGB(0, 0));
+        assertEquals(0xFFFFFF, image.getRGB(1, 0));
+        assertEquals(0xFFFFFF, image.getRGB(0, 1));
+        assertEquals(0xFFFFFF, image.getRGB(1, 1));
+    }
+
+    @Test
+    public void testToBufferedImage_checkerboardPattern() {
+        int[][] binary = {
+            {0, 1},
+            {1, 0}
+        };
+
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+        BufferedImage image = binarizer.toBufferedImage(binary);
+
+        assertEquals(2, image.getWidth());
+        assertEquals(2, image.getHeight());
+
+        assertEquals(0x000000, image.getRGB(0, 0));
+        assertEquals(0xFFFFFF, image.getRGB(1, 0));
+        assertEquals(0xFFFFFF, image.getRGB(0, 1));
+        assertEquals(0x000000, image.getRGB(1, 1));
+    }
+
+    @Test
+    public void testToBufferedImage_nonSquareDimensions() {
+        int[][] binary = {
+            {1, 0, 1},
+            {0, 1, 0}
+        };
+
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+        BufferedImage image = binarizer.toBufferedImage(binary);
+
+        assertEquals(3, image.getWidth());
+        assertEquals(2, image.getHeight());
+
+        assertEquals(0xFFFFFF, image.getRGB(0, 0));
+        assertEquals(0x000000, image.getRGB(1, 0));
+        assertEquals(0xFFFFFF, image.getRGB(2, 0));
+
+        assertEquals(0x000000, image.getRGB(0, 1));
+        assertEquals(0xFFFFFF, image.getRGB(1, 1));
+        assertEquals(0x000000, image.getRGB(2, 1));
+    }
 
 
 }
