@@ -101,12 +101,10 @@ public class DistanceImageBinarizerTest {
     
         int[][] binary = strictBinarizer.toBinaryArray(img);
     
-        assertEquals(1, binary[0][0]); //  exact match
-        assertEquals(0, binary[0][1]); //  off by 1
+        assertEquals(1, binary[0][0]); // exact match
+        assertEquals(0, binary[0][1]); // off by 1
     }
     
-
-
     @Test
     public void testToBinaryArray_VeryHighThreshold_AllWhite() {
         DistanceImageBinarizer lenientBinarizer = new DistanceImageBinarizer(new MockColorDistanceFinder(), 0xFFFFFF, 1000);
@@ -129,5 +127,4 @@ public class DistanceImageBinarizerTest {
 
         assertEquals(1, binary[0][0]);
     }
-
 }
