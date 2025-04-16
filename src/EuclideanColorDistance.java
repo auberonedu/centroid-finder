@@ -25,11 +25,11 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
         // each color component takes up 8 bits
         // we can use bit-shifting & bit-masking to 'clarify'
         // individual color components
-        int rA = colorA >> 16;
-        int gA = colorA >> 8;
+        int rA = (colorA >> 16);
+        int gA = (colorA >> 8) & 0xff;
         int bA = colorA;
-        int rB = colorB >> 16;
-        int gB = colorB >> 8;
+        int rB = (colorB >> 16);
+        int gB = (colorB >> 8) & 0xff;
         int bB = colorB;
 
         int distanceR = rA - rB;
