@@ -235,6 +235,54 @@ public class DistanceImageBinarizerTest {
     }
 
     // toBufferedImage TESTS!!!!
+    @Test
+    public void testToBufferedImage_nullArray(){
+        // set up
+        int[][] image = null;
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+
+        assertThrows(NullPointerException.class, () -> {
+            binarizer.toBufferedImage(image);
+        });
+    }
+
+    @Test
+    public void testToBufferedImage_nullSubArray(){
+        // set up
+        int[][] image = {
+            {0},
+            null
+        };
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+
+        assertThrows(NullPointerException.class, () -> {
+            binarizer.toBufferedImage(image);
+        });
+    }
+
+    @Test
+    public void testToBufferedImage_emptyArray(){
+        // set up
+        int[][] image = {};
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            binarizer.toBufferedImage(image);
+        });
+    }
+
+    @Test
+    public void testToBufferedImage_emptySubArray(){
+        // set up
+        int[][] image = {
+            {}
+        };
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            binarizer.toBufferedImage(image);
+        });
+    }
 
     @Test
     public void testToBufferedImage_simple(){
