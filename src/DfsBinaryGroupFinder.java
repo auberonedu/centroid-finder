@@ -89,18 +89,6 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return connectedPoints;
     }
 
-    // // pixelFinder
-    // private static int[] pixelFinder(int[][] image) {
-    //     for (int i = 0; i < image.length; i++) {
-    //         for (int j = 0; j < image[i].length; j++) {
-    //             if (image[i][j] == 1) {
-    //                 return new int[]{i, j};
-    //             }
-    //         }
-    //     }
-    //     throw new IllegalArgumentException("No pixel starting point found");
-    // }
-
     // getAdjacentPixels
     public static List<int[]> getAdjacentPixels(int[][] image, int[] current) {
         List<int[]> validMoves = new ArrayList<>();
@@ -128,7 +116,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return validMoves;
     }
 
-    public Group newGroup(List<int[]> pixels) {
+    private Group newGroup(List<int[]> pixels) {
         int size = pixels.size();
         int sumX = 0;
         int sumY = 0;
