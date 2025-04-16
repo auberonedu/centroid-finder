@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -33,7 +34,51 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
+        boolean[][] visited = new boolean[image.length][image[0].length];
+        List<Group> groups = new ArrayList<Group>();
         return null;
+    }
+    
+    private void DFS(int[][] grid, int row, int col, boolean[][] visited, List<int[]> pixelGroup) {
+        if (grid == null) throw new NullPointerException();
+        if (grid.length == 0) throw new IllegalArgumentException();
+        
+        if (visited[row][col]) return;
+        if (grid[row][col] == 0) return;
+
+        List<int[]> moves = possibleMoves(grid, new int[]{row, col});
+
+        pixelGroup.add(new int[]{row, col});
+        for (int[] move : moves) {
+            DFS(grid, row, col, visited, pixelGroup);
+        }
+    }
+
+    public List<int[]> possibleMoves(int[][] grid, int[] current) {
+        int curRow = current[0];
+        int curCol = current[1];
+
+        List<int[]> moves = new ArrayList<>();
+
+        int[][] directions = new int[][] {
+            {-1, 0},
+            {1, 0},
+            {0, -1},
+            {0, 1}
+        };
+
+        for (int[] dir : directions) {
+            int newRow = curRow + dir[0];
+            int newCol = curCol + dir[1];
+
+            if (newRow >= 0 && newRow < grid.length &&
+                newCol >= 0 && newCol < grid[0].length &&
+                grid[newRow][newCol] != 0) {
+                    moves.add(new int[]{newRow, newCol});
+                }
+        }
+        
+        return moves;
     }
     
 }
