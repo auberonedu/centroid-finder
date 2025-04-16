@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+//AI used to create Junit testcases for DistanceImageBinarizerTest.java
 public class DistanceImageBinarizerTest {
 
     private static class MockColorDistanceFinder implements ColorDistanceFinder {
