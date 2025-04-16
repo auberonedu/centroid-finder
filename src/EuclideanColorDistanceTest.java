@@ -2,6 +2,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 // COLORS USED IN TESTS (Google Color Picker: https://g.co/kgs/DG41Bvm)
+// Also from Rapid Tables: https://www.rapidtables.com/web/color/RGB_Color.html
 /*
 
 BLUE
@@ -30,28 +31,75 @@ public class EuclideanColorDistanceTest {
     }
 
     // hexToRGB tests (converts hex int into int[] R,G,B)
+    // Default Red - via Rapid Tables
+    @Test
+    public void testHexToRGB_DefaultRed() {
+        int[] expected = new int[]{255, 0, 0};
+        int[] actual = EuclideanColorDistance.hexToRGB(0xFF0000);
 
+        assertArrayEquals(expected, actual);
+    }
+    
+    // A Shade of Red
+    @Test
+    public void testHexToRGB_ShadeOfRed() {
+        int[] expected = new int[]{220, 30, 30};
+        int[] actual = EuclideanColorDistance.hexToRGB(0xdc1e1e);
+
+        assertArrayEquals(expected, actual);
+    }
+    
+    // Default Green - via Rapid Tables
+    @Test
+    public void testHexToRGB_DefaultGreen() {
+        int[] expected = new int[]{0, 255, 0};
+        int[] actual = EuclideanColorDistance.hexToRGB(0x00FF00);
+
+        assertArrayEquals(expected, actual);
+    }
+
+    // A Shade of Green
+    @Test
+    public void testHexToRGB_ShadeOfGreen() {
+        int[] expected = new int[]{0, 186, 22};
+        int[] actual = EuclideanColorDistance.hexToRGB(0x00ba16);
+
+        assertArrayEquals(expected, actual);
+    }
+
+    // Default Blue - via Rapid Tables
+    @Test
+    public void testHexToRGB_DefaultBlue() {
+        int[] expected = new int[]{0, 0, 255};
+        int[] actual = EuclideanColorDistance.hexToRGB(0x0000FF);
+
+        assertArrayEquals(expected, actual);
+    }
+    
+    // A Shade of Blue
     @Test 
-    public void testHexToRGB_blue() {
+    public void testHexToRGB_ShadeOfBlue() {
         int[] expected = new int[]{30, 50, 150};
         int[] actual = EuclideanColorDistance.hexToRGB(0x1e3296);
 
         assertArrayEquals(expected, actual);
     }
 
+    // Yellow - via Rapid Tables
     @Test
-    public void testHexToRGB_red() {
-        int[] expected = new int[]{220, 30, 30};
-        int[] actual = EuclideanColorDistance.hexToRGB(0xdc1e1e);
+    public void testHexToRGB_yellow() {
+        int[] expected = new int[]{255, 255, 0};
+        int[] actual = EuclideanColorDistance.hexToRGB(0xFFFF00);
 
         assertArrayEquals(expected, actual);
     }
 
-    //BLUE
-    // 1e3296
-    // 30, 50, 150
+    // Magenta - via Rapid Tables
+    @Test
+    public void testHexToRGB_magenta() {
+        int[] expected = new int[]{255, 0, 255};
+        int[] actual = EuclideanColorDistance.hexToRGB(0xFF00FF);
 
-    // RED
-    //dc1e1e
-    //220, 30, 30
+        assertArrayEquals(expected, actual);
+    }
 }
