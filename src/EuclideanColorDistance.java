@@ -19,6 +19,24 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
      */
     @Override
     public double distance(int colorA, int colorB) {
-        return 0;
+        // converting first and second colors to RGB using the helper method
+        int[] firstRgbA = RGBconverter(colorA);
+        int[] secondRgbB = RGBconverter(colorB);
+        
+        // calculating the distance between the two colors 
+        int redComponent = firstRgbA[0] - secondRgbB[0];
+        int greenComponent = firstRgbA[1] - secondRgbB[1];
+        int blueComponent = firstRgbA[2] - secondRgbB[2];
+        
+        return Math.sqrt(redComponent * redComponent + greenComponent * greenComponent + blueComponent * blueComponent);
+    }
+
+    public static int[] RGBconverter(int color) {
+        // grabbing the RGB colors by shifting and masking
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+
+        return new int[] {red, green, blue};
     }
 }
