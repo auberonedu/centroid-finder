@@ -57,7 +57,7 @@ MAKE SURE YOU MAKE THOROUGH UNIT TESTS. Consider asking the AI to teach you abou
 To validate your code is working, make sure you're in the centroid-finder directory and run the below command:
 
 ```
-javac src/*.java && java -cp src ImageSummaryApp sampleInput/squares.jpg FFA200 164
+javac -cp lib/junit-platform-console-standalone-1.12.0.jar src/*.java && java -cp src ImageSummaryApp sampleInput/squares.jpg FFA200 164
 ```
 
 This will compile your files and run the main method in ImageSummaryApp against the sample image with a target color of orange and a threshold of 164. It should binarized.png and groups.csv which should match the corresponding files in the sampleOutput directory.
