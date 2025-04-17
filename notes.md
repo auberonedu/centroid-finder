@@ -231,4 +231,32 @@ Wave4 class allows us to go back and forth between real image data and binary da
 Unit Tests - we will ask AI to write these:
 -----------
 wave4 pseudocode (DistanceImageBinarizer)
+toBinaryArray(BufferedImage image)
+-> convert each pixel of rgb image to white1/black0 based on distance from target color<-
+//edge case image not null (unit test 7)
+Create 2D array 'binary' [image height][image width]
+Iterate each pixel nested for loops over rows and columns
+    get rgb color of pixel at (x,y) with image.getRGB(x, y)
+    use distanceFinder to compute distance from 'this' color to targetColor
+    if(distance < threshold)
+        set binary[y][x] = 1 (white)
+    else set binary[y][x] = 0 (black)
+return binary array
+----------
+toBufferedImage(int[][] image)
+-> convert 2D array to black/white rgb image<-
+//edge case image non-null & well-formed 2D array (all rows equal length)
+Check if image is null -> throw NPE
+Determine height= image.length (# of rows)
+Check if height==0 -> return zero-dimension image (edge handling)
+Determine width=image[0].length (top row elements = # of columns)
+Iterate each row in image
+    if(row.length!=width->throw IAE) (ie non-rectangular)
+Create BufferedImage size(width, height), type TYPE_INT_RGB
+Iterate each pixel (nested for loops over rows then columns)
+    if(image[y][x] ==1)
+        set pixel at (x,y) in BufferedImage to 0xFFFFFF (white)
+    else set pixel (x,y) in BufferedImage to 0x000000(black)
+Return BufferedImage
+
 
