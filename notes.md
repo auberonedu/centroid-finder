@@ -13,6 +13,11 @@
 11. A variable of type `List<Group>` called *groups* stores the found connected groups of *inputImage* using `findConnectedGroups` from *groupFinder*.
 12. A try-catch block is used to write the groups information to a CSV file called `groups.csv`. A try-catch contains a `PrintWriter` called *writer* which is set to write to `groups.csv`. Inside of the try block a for loop of type `Group` loops over each *group* in *groups*. *Writer* then prints to the file using `toCsvRow` and a success statement is printed to the console. If it can't be completed, an error message is printed to the console. The exception is printed using `printStackTrace()`, and the method returns.
 
+## Coordinate
+A record that represents a location in a binary image or array. The top-left corner of either the binary image or array (row: 0, column: 0) is considered (x: 0, y:0). Passed into the record is an `int` called *x* and another `int` called *y*.
+
+## Group
+A record that implements the comparable interface to use the compareTo method. This record represents a group of contiguous pixels in a binary image. The top-left corner of either the binary image or array (row: 0, column: 0) is considered (x: 0, y:0). The size of a group indicates the number of pixels in the group and the *centroid* of a group is the average of the pixel coordinates in each dimension. Passed into the record is an `int` called *size* and a `Coordinate` called *centroid*. The implemented `compareTo` method compares a `Group` called *other* to a `Group` of this. The method `toCsvRow` returns a `String` representing this group in CSV format.
 
 ## ColorDistanceFinder
 An interface for computing the distance between two different colors. Each color is represented as a 24-bit integer in the format: `0xRRGGBB`, where each color component can be extracted using bit shifting and masking. 
@@ -36,3 +41,4 @@ A class (not yet implemented) that implements the *ImageGroupFinder* interface t
 An interface for finding connected pixel groups of 1s in an integer array representing an image in binary. Groups are considered connected only vertically or horizontally, not diagonally. The included method *findConnectedGroups* accepts a binary `int[][]` of 1s and 0s and returns a `List<Group>`.
 
 ## DfsBinaryGroupFinder
+A class (not yet implemented) that implements the *BinaryGroupFinder* interface to find connected pixel groups of 1s in an integer array of 1s and 0s representing a binary image. It's method `findConnectedGroups` accepts an `int[][]` of an image in binary and returns a `List<Group>` with each connected pixel group of 1s. 
