@@ -51,6 +51,15 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                 throw new IllegalArgumentException("Provided array is not rectangular");
             }
         }
+        // Check for a non-binary array - This is based on the
+        // testGridWithInvalidValues() that AI created
+        for (int i = 0; i < image.length; i++) {
+            for (int j = 0; j < image[i].length; j++) {
+                if (image[i][j] != 0 && image[i][j] != 1) {
+                    throw new IllegalArgumentException("Provided array contains non-binary values");
+                }
+            }
+        }
 
         // Saving rows/columns to variables
         int rows = image.length;
@@ -68,27 +77,34 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return groups;
     }
 
-    // Pseudocode for helper method
-    // findConnectedGroupsHelper(int[][] image, boolean[][] visited, int row, int
-    // col, List<Group> groups)
-    // int[][] directions = new int[][] { {-1, 0},{1, 0},{0, -1},{0, 1} };
-    // visited[row][col] = true;
-    // group.add(row,col);
-    // Check surrounding cells
-    /*
-     * for (int[] direction : directions) {
-     * int newRow = row + direction[0];
-     * int newCol = col + direction[1];
-     * 
-     * // If the cell row is within bounds
-     * if (newRow >= 0 && newRow < grid.length &&
-     * // If the cell col is within bounds
-     * newCol >= 0 && newCol < grid[0].length &&
-     * // If the cell contains a 1
-     * grid[newRow][newCol] == 1 &&
-     * // If we haven't visited the cell
-     * !visited[newRow][newCol]) {
-     * recurse
-     * }
-     */
+    // Helper method for DFS
+    public static void findConnectedGroupsHelper(int[][] image, boolean[][] visited, int row, int col,
+            List<Group> groups) {
+        int[][] directions = new int[][] 
+        {
+                { -1, 0 },
+                { 1, 0 },
+                { 0, -1 },
+                { 0, 1 }
+        };
+
+        visited[row][col] = true;
+        //groups.add(row, col);
+
+        for (int[] direction : directions) {
+            int newRow = row + direction[0];
+            int newCol = col + direction[1];
+            
+            // If the cell row is within bounds
+            if (newRow >= 0 && newRow < image.length &&
+            // If the cell col is within bounds
+            newCol >= 0 && newCol < image[0].length &&
+            // If the cell contains a 1
+            image[newRow][newCol] == 1 &&
+            // If we haven't visited the cell
+            !visited[newRow][newCol]) {
+            findConnectedGroupsHelper(image, visited, row, col, groups);
+            }
+        }
+    }
 }
