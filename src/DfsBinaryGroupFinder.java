@@ -33,6 +33,11 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
+        // Check for a null or empty array
+        if (image == null || image.length == 0 || image[0] == null) {
+            throw new NullPointerException("Provided array is null or empty");
+        }
+
         return null;
     }
     
