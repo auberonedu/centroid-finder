@@ -9,9 +9,10 @@ public class DfsBinaryGroupFinderTest {
     @Test
     public void testDfsBinaryGroupFinder_Basic() {
         int[][] image = new int[][]{
-            {0, 0, 0},
-            {0, 1, 1},
-            {0, 0, 0}
+            {0, 0, 0, 0},
+            {0, 1, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 1, 1}
         };
 
         DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();

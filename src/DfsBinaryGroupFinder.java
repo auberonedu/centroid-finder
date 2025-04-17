@@ -50,7 +50,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         List<Group> groups = new ArrayList<>();
         boolean[][] visited = new boolean[image.length][image[0].length];
         for (int r = 0; r < image.length; r++) {
-            for (int c = 0; c < image[r].length; c++) {
+            for (int c = 0; c < image[0].length; c++) {
                 if (image[r][c] == 1 && !visited[r][c]) {
                     List<int[]> pixelatedGroup = new ArrayList<>();
                     findConnectedGroups(image, new int[] { r, c }, visited, pixelatedGroup);
@@ -70,8 +70,8 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         if (image == null || image[curR] == null)
             throw new NullPointerException("Null array or subarray");
 
-        if (curR < 0 || curR >= image.length || curC < 0 || curC >= image[0].length)
-            throw new IllegalArgumentException("Invalid x or y");
+        if (curR < 0 || curR >= image.length || curC < 0 || curC >= image[curR].length)
+            return;
 
         if (visited[curR][curC] || image[curR][curC] == 0)
             return;
@@ -81,7 +81,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         pixelatedGroup.add(location);
 
         for (int[] direction : directions) {
-            findConnectedGroups(image, new int[] { curR + direction[0], curC + direction[0] }, visited, pixelatedGroup);
+            findConnectedGroups(image, new int[] { curR + direction[0], curC + direction[1] }, visited, pixelatedGroup);
         }
     }
 }
