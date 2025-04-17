@@ -38,6 +38,10 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             throw new NullPointerException("Provided array is null or empty");
         }
 
+        // Creating a boolean array to track visited cells
+        boolean[][] visited = new boolean[image.length][image[0].length];
+        
+
         return null;
     }
     
