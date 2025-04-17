@@ -9,16 +9,16 @@ public class DfsBinaryGroupFinderTest {
     @Test
     public void testDfsBinaryGroupFinder_Basic() {
         int[][] image = new int[][]{
-            {0, 0, 0, 0},
+            {1, 0, 0, 1},
             {0, 1, 0, 0},
             {0, 0, 0, 0},
-            {0, 0, 1, 1}
+            {1, 0, 1, 1}
         };
 
         DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
         List<Group> actual = finder.findConnectedGroups(image);
 
-        assertEquals(2, actual.size());
+        assertEquals(5, actual.size());
     }
     
 }
