@@ -37,6 +37,11 @@ public class BinarizingImageGroupFinder implements ImageGroupFinder {
      */
     @Override
     public List<Group> findConnectedGroups(BufferedImage image) {
+        // convert the image to a binarized array
+
+        // use findConnectedGroups method to find the groups in this array
+
+        // return the found groups of connected pixels in descending order
         return null;
     }
 }
