@@ -20,5 +20,11 @@ public class DfsBinaryGroupFinderTest {
 
         assertEquals(5, actual.size());
     }
+
+    // test null
+
+    // test null subarray
+
+    // test empty
     
 }
