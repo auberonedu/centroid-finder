@@ -1,6 +1,10 @@
 public class EuclideanColorDistance implements ColorDistanceFinder {
     final int SHIFT_ONE_BYTE = 8;
     final int SHIFT_TWO_BYTE = 16;
+
+    final int RED_MASK = 0x000000FF;
+    final int GREEN_MASK = 0x0000FF00;
+    final int BLUE_MASK = 0x00FF0000;
     /**
      * Returns the euclidean color distance between two hex RGB colors.
      * 
@@ -22,18 +26,18 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
     @Override
     public double distance(int colorA, int colorB) {
 
-        byte aR = (byte)colorA;
-        byte bR = (byte)colorB;
+        int aR = (colorA & RED_MASK);
+        int bR = (colorB & RED_MASK);
 
-        byte aG = (byte) (colorA >> SHIFT_ONE_BYTE);
-        byte bG = (byte) (colorB >> SHIFT_ONE_BYTE);
+        int aG = ((colorA & GREEN_MASK) >> SHIFT_ONE_BYTE);
+        int bG = ((colorB & GREEN_MASK) >> SHIFT_ONE_BYTE);
 
-        byte aB = (byte) (colorA >> SHIFT_TWO_BYTE);
-        byte bB = (byte) (colorB >> SHIFT_TWO_BYTE);
+        int aB = ((colorA & BLUE_MASK) >> SHIFT_TWO_BYTE);
+        int bB = ((colorB & BLUE_MASK) >> SHIFT_TWO_BYTE);
 
-        short red = (short) bR;
-        short green = (short) bG;
-        short blue = (short) bB;
+        int red = bR;
+        int green = bG;
+        int blue = bB;
 
         red -= aR;
         green -= aG;
