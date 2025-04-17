@@ -1,6 +1,12 @@
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
+    private int[][] directions = new int[][]{
+        {-1, 0}, // up
+        {1, 0}, // down
+        {0, -1}, // left
+        {0, 1} // right
+    };
    /**
     * Finds connected pixel groups of 1s in an integer array representing a binary image.
     * 
@@ -36,4 +42,10 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return null;
     }
     
+    private List<Group> findConnectGroups(int[][] image, int[] location, boolean[][] visited) {
+        int curR = location[0];
+        int curC = location[1];
+
+        
+    }
 }
