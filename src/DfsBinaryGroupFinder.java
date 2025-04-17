@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
    /**
@@ -67,25 +68,27 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return groups;
     }
 
-    public List<int[]> findConnectedGroupsHelper(int[][] image, int[] current, boolean[][] visited) { 
-        int row = current[0];
-        int col = current[1];
-
-        if (row < 0 || row >= image.length || col < 0 || col >= image[0].length || image[row][col] == 0 || visited[row][col]) {
-            return new ArrayList<>();
-        }
-
-        // marking the current pixel as visited
-        visited[row][col] = true;
-
-        // list that holds the connected pixel groups
+    public List<int[]> findConnectedGroupsHelper(int[][] image, int[] start, boolean[][] visited) {
         List<int[]> connectedPixels = new ArrayList<>();
-        connectedPixels.add(new int[]{row, col});
-
-        List<int[]> moves = possibleDirections(image, current);
-
-        for (int[] move : moves) {
-            connectedPixels.addAll(findConnectedGroupsHelper(image, move, visited));
+        Stack<int[]> stack = new Stack<>();
+        stack.push(start);
+    
+        while (!stack.isEmpty()) {
+            int[] current = stack.pop();
+            int row = current[0];
+            int col = current[1];
+    
+            if (row < 0 || row >= image.length || col < 0 || col >= image[0].length) continue;
+            if (visited[row][col] || image[row][col] == 0) continue;
+    
+            visited[row][col] = true;
+            connectedPixels.add(new int[]{row, col});
+    
+            // pushing the valid neighbors (UP, DOWN, LEFT, RIGHT)
+            stack.push(new int[]{row - 1, col}); 
+            stack.push(new int[]{row + 1, col}); 
+            stack.push(new int[]{row, col - 1}); 
+            stack.push(new int[]{row, col + 1}); 
         }
     
         return connectedPixels;

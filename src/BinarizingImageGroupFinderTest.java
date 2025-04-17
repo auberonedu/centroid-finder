@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 // Used AI to generate and fix tests for BinarizingImageGroupFinderTest.java
-
 public class BinarizingImageGroupFinderTest {
     // Simple ImageBinarizer implementation for testing purposes
     static class SimpleImageBinarizer implements ImageBinarizer {
