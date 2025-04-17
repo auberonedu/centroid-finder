@@ -46,7 +46,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             for (int c = 0; c < image[r].length; c++) {
                 if(image[r][c] == 1 && !visited[r][c]) {
                     List<int[]> pixelatedGroup = new ArrayList<>();
-                    findConnectGroups(image, new int[]{r, c}, visited, pixelatedGroup);
+                    findConnectedGroups(image, new int[]{r, c}, visited, pixelatedGroup);
                     Group group = new Group(pixelatedGroup.size(), null);
                     groups.add(group);
                 }
@@ -56,7 +56,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return groups;
     }
     
-    private void findConnectGroups(int[][] image, int[] location, boolean[][] visited, List<int[]> pixelatedGroup) {
+    private void findConnectedGroups(int[][] image, int[] location, boolean[][] visited, List<int[]> pixelatedGroup) {
         int curR = location[0];
         int curC = location[1];
 
@@ -71,7 +71,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         pixelatedGroup.add(location);
 
         for(int[] direction : directions) {
-            findConnectGroups(image, new int[]{curR + direction[0], curC + direction[0]}, visited, pixelatedGroup);
+            findConnectedGroups(image, new int[]{curR + direction[0], curC + direction[0]}, visited, pixelatedGroup);
         }
 
         
