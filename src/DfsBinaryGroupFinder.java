@@ -36,4 +36,24 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return null;
     }
     
+    // Pseudocode for helper method
+    // findConnectedGroupsHelper(int[][] image, boolean[][] visited, int row, int col)
+    // int[][] directions = new int[][] { {-1, 0},{1, 0},{0, -1},{0, 1} };
+    // visited[ro[col] = true;
+    // Check surrounding cells
+    /*for (int[] direction : directions) {
+            int newRow = row + direction[0];
+            int newCol = col + direction[1];
+     * 
+     * // If the cell row is within bounds
+            if (newRow >= 0 && newRow < grid.length &&
+                // If the cell col is within bounds
+                newCol >= 0 && newCol < grid[0].length &&
+                // If the cell contains a 1
+                grid[newRow][newCol] == 1 &&
+                // If we haven't visited the cell
+                !visited[newRow][newCol]) {
+                    recurse
+                }
+     */
 }
