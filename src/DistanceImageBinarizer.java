@@ -51,10 +51,32 @@ public class DistanceImageBinarizer implements ImageBinarizer {
         int width = image.getWidth();
         int height = image.getHeight();
         
+        int[][] binaryArray = new int[height][width];
+
         // iterate through the 2d array
-            // do some logic
+        for (int r = 0; r < binaryArray.length; r++){
+            for (int c = 0; c < binaryArray[0].length; c++){
+                // do some logic
+                // get current pixel color
+                int currentColor = image.getRGB(c, r);
+
+                // find distance between currentColor and target color (use distanceFinder)
+                double distance = distanceFinder.distance(currentColor, targetColor);
+
+                // if distance < threshold -- set to 1 if distance >= threshold -- set to 0
+                if (distance < threshold){
+                    binaryArray[r][c] = 1; // white
+                } else if (distance >= threshold){
+                    binaryArray[r][c] = 0; // black
+                }
+
+                
+            }
+        }
+
+            
         
-        return null;
+        return binaryArray;
     }
 
     /**
