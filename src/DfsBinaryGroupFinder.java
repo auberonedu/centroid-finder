@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -36,25 +37,48 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     public List<Group> findConnectedGroups(int[][] image) {
         boolean[][] visited = new boolean[image.length][image[0].length];
         List<Group> groups = new ArrayList<Group>();
-        return null;
+
+        for (int r = 0; r < image.length; r++) {
+            for (int c = 0; c < image[0].length; c++) {
+                if (image[r][c] == 1 && !visited[r][c]) {
+                    List<int[]> pixelGroup = new ArrayList<>();
+                    DFS(image, r, c, visited, pixelGroup);
+                    Group group = new Group(pixelGroup.size(), centroidFinder(pixelGroup));
+                    groups.add(group);
+                }
+            }
+        }
+        
+        return groups;
     }
     
+    // performs DFS adding coordinates to pixelGroup list
     private void DFS(int[][] grid, int row, int col, boolean[][] visited, List<int[]> pixelGroup) {
+        // throw errors if invalid input
         if (grid == null) throw new NullPointerException();
         if (grid.length == 0) throw new IllegalArgumentException();
         
+        // base cases: if visited skip, if cell is 0 skip
         if (visited[row][col]) return;
         if (grid[row][col] == 0) return;
 
+        // mark cell as visited
+        visited[row][col] = true;
+        
+        // add coordinate to list
+        pixelGroup.add(new int[]{row, col});
+
+        // using helper method get possible moves in the grid
         List<int[]> moves = possibleMoves(grid, new int[]{row, col});
 
-        pixelGroup.add(new int[]{row, col});
+        // perform DFS recursively move[0] = newRow, move[1] = newCol from the returned moves
         for (int[] move : moves) {
-            DFS(grid, row, col, visited, pixelGroup);
+            DFS(grid, move[0], move[1], visited, pixelGroup);
         }
     }
 
-    public List<int[]> possibleMoves(int[][] grid, int[] current) {
+    // possible moves explorer method
+    private List<int[]> possibleMoves(int[][] grid, int[] current) {
         int curRow = current[0];
         int curCol = current[1];
 
@@ -81,4 +105,20 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return moves;
     }
     
+    // finds centroid
+    private Coordinate centroidFinder(List<int[]> pixelGroup) {
+        int x = 0;
+        int y = 0;
+
+        for (int[] pixel : pixelGroup) {
+            y += pixel[0]; // row = y
+            x += pixel[1]; // col = x
+        }
+
+        int centroidX = x / pixelGroup.size();
+        int centroidY = y / pixelGroup.size();
+        
+        return new Coordinate(centroidX, centroidY);
+    }
+
 }
