@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
@@ -22,9 +23,35 @@ public class DfsBinaryGroupFinderTest {
     }
 
     // test null
+    @Test
+    public void testDfsBinaryGroupFinder_NullArray() {
+        int[][] image = new int[][]{null};
 
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            finder.findConnectedGroups(image);;
+        });
+        assertEquals("Null array or subarray", exception.getMessage());
+       
+    }
+    
     // test null subarray
 
     // test empty
+    @Test
+    public void testDfsBinaryGroupFinder_EmptySize() {
+        int[][] image = new int[][]{
+            {0, 0, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 0, 0}
+        };
+
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+        List<Group> actual = finder.findConnectedGroups(image);
+
+        assertEquals(0, actual.size());
+    }
     
 }
