@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -34,21 +35,37 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
         // Check for a null or empty array
-        if (image == null || image.length == 0 || image[0] == null) {
+        if (image == null || image.length == 0 || image[0] == null || image[0].length == 0) {
             throw new NullPointerException("Provided array is null or empty");
+        }
+        // Check for a non-rectangular/invalid array - This is based on the testNonRectangularGrid() that AI created
+        for (int i = 1; i < image.length; i++) {
+            if (image[i].length != image[0].length) {
+                throw new IllegalArgumentException("Provided array is not rectangular");
+            }
         }
 
         // Creating a boolean array to track visited cells
         boolean[][] visited = new boolean[image.length][image[0].length];
-        
 
-        return null;
+        // List to store the groups found
+        List<Group> groups = new ArrayList<>();
+
+        // Saving rows/columns to variables
+        int rows = image.length;
+        int cols = image[0].length;
+
+        // Pseudocode - Maybe do the iteration here instead of the helper method?
+        // Math
+
+        return groups;
     }
     
     // Pseudocode for helper method
-    // findConnectedGroupsHelper(int[][] image, boolean[][] visited, int row, int col)
+    // findConnectedGroupsHelper(int[][] image, boolean[][] visited, int row, int col, List<Group> groups)
     // int[][] directions = new int[][] { {-1, 0},{1, 0},{0, -1},{0, 1} };
-    // visited[ro[col] = true;
+    // visited[row][col] = true;
+    // group.add(row,col);
     // Check surrounding cells
     /*for (int[] direction : directions) {
             int newRow = row + direction[0];
