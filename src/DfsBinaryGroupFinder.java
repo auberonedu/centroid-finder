@@ -1,7 +1,8 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
-    private int[][] directions = new int[][]{
+    private final int[][] directions = new int[][]{
         {-1, 0}, // up
         {1, 0}, // down
         {0, -1}, // left
@@ -39,12 +40,39 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
-        return null;
+        List<Group> groups = new ArrayList<>();
+        boolean[][] visited = new boolean[image.length][image[0].length];
+        for(int r = 0; r < image.length; r++) {
+            for (int c = 0; c < image[r].length; c++) {
+                if(image[r][c] == 1 && !visited[r][c]) {
+                    List<int[]> pixelatedGroup = new ArrayList<>();
+                    findConnectGroups(image, new int[]{r, c}, visited, pixelatedGroup);
+                    Group group = new Group(pixelatedGroup.size(), null);
+                    groups.add(group);
+                }
+            }
+        }
+
+        return groups;
     }
     
-    private List<Group> findConnectGroups(int[][] image, int[] location, boolean[][] visited) {
+    private void findConnectGroups(int[][] image, int[] location, boolean[][] visited, List<int[]> pixelatedGroup) {
         int curR = location[0];
         int curC = location[1];
+
+        if(image == null || image[curR] == null) throw new NullPointerException("Null array or subarray");
+
+        if(curR < 0 || curR >= image.length || curC < 0 || curC >= image[curR].length) throw new IllegalArgumentException("Invalid x or y");
+
+        if(visited[curR][curC] || image[curR][curC] == 0) return;
+
+        visited[curR][curC] = true;
+
+        pixelatedGroup.add(location);
+
+        for(int[] direction : directions) {
+            findConnectGroups(image, new int[]{curR + direction[0], curC + direction[0]}, visited, pixelatedGroup);
+        }
 
         
     }
