@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.Test;
 
@@ -33,4 +34,15 @@ public class EuclideanColorDistanceTest {
         EuclideanColorDistance distance = new EuclideanColorDistance();
         assertArrayEquals(new int[] {18, 52, 86}, distance.convertHexToRGB(0x123456));
     }
+
+    @Test
+    public void testDistance_BlackAndBlack() {
+        EuclideanColorDistance distance = new EuclideanColorDistance();
+        int black = 0x000000;
+        double actual = distance.distance(black, black);
+        assertEquals(0.0, actual);
+        
+    }
+
+
 }
