@@ -35,6 +35,11 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
+        if (image == null) throw new NullPointerException();
+        if (image.length == 0 || image[0] == null || image[0].length == 0) {
+            throw new IllegalArgumentException();
+        }
+
         boolean[][] visited = new boolean[image.length][image[0].length];
         List<Group> groups = new ArrayList<Group>();
 
@@ -49,6 +54,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             }
         }
         
+        Collections.sort(groups, Collections.reverseOrder());
         return groups;
     }
     
