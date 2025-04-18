@@ -56,7 +56,7 @@ public class DfsBinaryGroupFinderTest {
        
     }
 
-    // test empty
+    // test empty image/no pixels
     @Test
     public void testDfsBinaryGroupFinder_EmptySize() {
         int[][] image = new int[][]{
@@ -72,4 +72,17 @@ public class DfsBinaryGroupFinderTest {
         assertEquals(0, actual.size());
     }
     
+    // test empty image [0][0]
+    @Test
+    public void testDfsBinaryGroupFinder_EmptyArray() {
+        int[][] image = new int[0][0];
+
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            finder.findConnectedGroups(image);;
+        });
+        assertEquals("Invalid array", exception.getMessage());
+       
+    }
 }
