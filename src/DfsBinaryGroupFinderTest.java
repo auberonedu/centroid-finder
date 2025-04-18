@@ -37,6 +37,24 @@ public class DfsBinaryGroupFinderTest {
     }
     
     // test null subarray
+    @Test
+    public void testDfsBinaryGroupFinder_NullSubArray() {
+        int[][] image = new int[][]{
+            {1, 0, 0, 1},
+            {0, 1, 0, 0},
+            null,
+            {1, 0, 1, 1},
+            {1, 1, 0, 0}
+        };
+
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            finder.findConnectedGroups(image);;
+        });
+        assertEquals("Null array or subarray", exception.getMessage());
+       
+    }
 
     // test empty
     @Test

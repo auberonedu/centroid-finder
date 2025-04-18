@@ -47,6 +47,11 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
      */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
+        if (image == null) throw new NullPointerException("Null array or subarray");
+
+        for(int[] row : image) {
+            if(row == null) throw new NullPointerException("Null array or subarray");
+        }
         List<Group> groups = new ArrayList<>();
         boolean[][] visited = new boolean[image.length][image[0].length];
         for (int r = 0; r < image.length; r++) {
@@ -69,9 +74,6 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
         if (curR < 0 || curR >= image.length || curC < 0 || curC >= image[0].length)
             throw new IllegalArgumentException("Invalid x or y");
-
-        if (image == null || image[curR] == null)
-            throw new NullPointerException("Null array or subarray");
 
         if (visited[curR][curC] || image[curR][curC] == 0)
             return;
