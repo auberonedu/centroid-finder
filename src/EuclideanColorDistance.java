@@ -24,7 +24,7 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
 
         double redDifference = (double) colorARGB[0] - (double) colorBRGB[0];
         double greenDifference = (double) colorARGB[1] - (double) colorBRGB[1];
-        double blueDifference = (double) colorBRGB[2] - (double) colorBRGB[2];
+        double blueDifference = (double) colorARGB[2] - (double) colorBRGB[2];
 
         return Math.sqrt((redDifference * redDifference) + (greenDifference * greenDifference) + (blueDifference * blueDifference));
     }
