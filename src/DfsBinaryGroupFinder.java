@@ -35,5 +35,12 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     public List<Group> findConnectedGroups(int[][] image) {
         return null;
     }
+
+    public List<Group> findConnectedGroupsDFS(int[][] image, int row, int col){
+
+        // base case for edge of image and if pixel is not a 1
+      if(row >= image.length || col >= image[0].length || row < 0 || col < 0 || image[grid][row] != 1){
+         return new ArrayList<>();
+      }
     
 }
