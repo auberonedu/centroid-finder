@@ -36,19 +36,28 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     public List<Group> findConnectedGroups(int[][] image) {
 
         List<Group> coordinates = new ArrayList<>();
+        
+        // search entire image looking for connections of 1's
         for(int row = 0; row < image.length; row++){
             for(int col = 0; col < image[0].length; col++){
                 if(image[row][col] == 1){
                     List<int[]> coordinate  = new ArrayList<>();
                     findConnectedGroupsDFS(image, row, col, coordinate);
 
-                    // get size of group and x / y sum
+                    // get size of group and x / y sum for calculating centroid
                     int size = coordinate.size();
                     int xSum = 0;
                     int ySum = 0;
-                    for(int[] coord : coordinate){
 
+                    for(int[] cord : coordinate){
+                        xSum += cord[1];
+                        ySum += cord[0];
                     }
+
+                    //x = sum of all x coords in group / size
+                    //y = sum of all y coords in group / size
+                    Coordinate centroid = new Coordinate(xSum / size, ySum / size);
+                    coordinates.add(new Group(size, centroid));
                 }
             }
         }
@@ -76,7 +85,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         };
 
         for (int[] direction : directions) {
-            findConnectedGroupsDFS(image, row + direction[0], col + direction[1]);
+            findConnectedGroupsDFS(image, row + direction[0], col + direction[1], coordinates);
         }
 
     }
