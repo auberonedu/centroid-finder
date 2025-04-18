@@ -81,10 +81,11 @@ public class EuclideanColorDistanceTest {
         EuclideanColorDistance distance = new EuclideanColorDistance();
         int colorA = 0x123456; // A medium color
         int colorB = 0x654321; // Another medium color
-        // Let's calculate the expected result manually or check the method
-        // sqrt((18-101)^2 + (52-83)^2 + (86-33)^2)
-        // = sqrt(6889 + 961 + 2809) = sqrt(10659) ≈ 103.26
-        assertEquals(103.26, distance.distance(colorA, colorB), 0.01);
+        
+        // Distance between the random colors
+        // sqrt((18-101)^2 + (52-67)^2 + (86-33)^2)
+        // = sqrt(6889 + 225 + 2809) = sqrt(9923) ≈ 99.61
+        assertEquals(99.61, distance.distance(colorA, colorB), 0.01);
     }
 
     @Test

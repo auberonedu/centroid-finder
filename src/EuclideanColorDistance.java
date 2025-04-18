@@ -19,21 +19,36 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
      */
     @Override
     public double distance(int colorA, int colorB) {
+        // Converts each hex color into an integer array of their RGB components using convertHexToRGB
         int[] colorARGB = convertHexToRGB(colorA);
         int[] colorBRGB = convertHexToRGB(colorB);
 
-        double redDifference = (double) colorARGB[0] - (double) colorBRGB[0];
-        double greenDifference = (double) colorARGB[1] - (double) colorBRGB[1];
-        double blueDifference = (double) colorARGB[2] - (double) colorBRGB[2];
+        // Calculating the differences for each Red, Green, and Blue color component
+        int redDifference = colorARGB[0] - colorBRGB[0];
+        int greenDifference = colorARGB[1] - colorBRGB[1];
+        int blueDifference = colorARGB[2] - colorBRGB[2];
 
+        // Calculate and return the Euclidean distance between the two colors
         return Math.sqrt((redDifference * redDifference) + (greenDifference * greenDifference) + (blueDifference * blueDifference));
     }
 
+    /**
+     * Converts the passed in integer hex color in the form (0xRRGGBB) to an integer array of Red, Green, and Blue values.
+     * 
+     * @param color the color as a 24-bit hex RGB integer
+     * @return an array containing the red, green, and blue values
+     */
     public int[] convertHexToRGB(int color) {
+        // Extract red component by shifting 16 bits to the right and masking with 0xff
         int red = (color >> 16) & 0xff;
+
+        // Extract green component by shifting 8 bits to the right and masking with 0xff
         int green = (color >> 8) & 0xff;
+
+        // Extract blue component by masking with 0xff to get the last 8 bits
         int blue = color & 0xff;
+
+        // Returns the integer array of RGB values
         return new int[] {red, green, blue};
     }
-
 }
