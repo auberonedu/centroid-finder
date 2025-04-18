@@ -34,15 +34,26 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
-        return null;
+
+        List<Group> connections = new ArrayList<>();
+
+        for(int row = 0; row < image.length; row++){
+            for(int col = 0; col < image[0].length; col++){
+                if(image[row][col] == 1){
+                    connections.addAll(findConnectedGroupsDFS(image, row, col);
+                }
+            }
+        }
+
+        return connections;
+
     }
 
-    public List<Group> findConnectedGroupsDFS(int[][] image, int row, int col) {
+    public void findConnectedGroupsDFS(int[][] image, int row, int col) {
 
-        List<Group> moves = new ArrayList<>();
         // base case for edge of image and if pixel is not a 1
         if (row >= image.length || col >= image[0].length || row < 0 || col < 0 || image[row][col] != 1) {
-            return new ArrayList<>();
+            return;
         }
 
         // set the current location as a 0 to mark as visited
@@ -56,10 +67,10 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         };
 
         for (int[] direction : directions) {
-            moves.addAll(findConnectedGroupsDFS(image, row + direction[0], col + direction[1]));
+            findConnectedGroupsDFS(image, row + direction[0], col + direction[1]);
         }
 
-        return moves;
+
 
     }
     
