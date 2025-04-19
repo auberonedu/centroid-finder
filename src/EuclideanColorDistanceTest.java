@@ -37,7 +37,7 @@ public class EuclideanColorDistanceTest {
     }
     @Test
     public void constantColorPlusLinear() {
-        int constantColor = 0x000000FF;
+        int constantColor = 0x000000FF; //Red
         final int GREEN_SHIFT = 8;
         final int BLUE_SHIFT = 16;
 
@@ -48,9 +48,27 @@ public class EuclideanColorDistanceTest {
         double[] res = new double[256];
 
         for(int i = 0; i < 256; i++) {
-            res[i] = dist.distance(constantColor, constantColor+(i << GREEN_SHIFT));
+            res[i] = dist.distance(constantColor, constantColor+(i << GREEN_SHIFT)); //Const red, linear green
         }
         Assert.assertTrue(Arrays.equals(test, res));
+
+        constantColor = constantColor << GREEN_SHIFT; //Green
+
+        for(int i = 0; i < 256; i++) {
+            res[i] = dist.distance(constantColor, constantColor+i); //Const green, linear red
+        }
+
+        Assert.assertTrue(Arrays.equals(test, res));
+
+        constantColor = constantColor << GREEN_SHIFT; //Blue (Shifted by eight, not actually green).
+
+        for(int i = 0; i < 256; i++) {
+            res[i] = dist.distance(constantColor, constantColor+i); //Const blue, linear red
+        }
+
+        Assert.assertTrue(Arrays.equals(test, res));
+
+
     }
 
 }
