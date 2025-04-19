@@ -34,11 +34,18 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
+        if (image == null || image.length == 0 || image[0] == null)
+        throw new IllegalArgumentException("Invalid image input");
 
+        int expectedWidth = image[0].length;
         List<Group> coordinates = new ArrayList<>();
         
         // search entire image looking for connections of 1's
         for(int row = 0; row < image.length; row++){
+            if (image[row] == null || image[row].length != expectedWidth) {
+                throw new IllegalArgumentException("Input binary array is not rectangular.");
+            }
+
             for(int col = 0; col < image[0].length; col++){
                 if(image[row][col] == 1){
                     List<int[]> coordinate  = new ArrayList<>();
@@ -68,7 +75,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     public void findConnectedGroupsDFS(int[][] image, int row, int col, List<int[]> coordinates) {
 
         // base case for edge of image and if pixel is not a 1
-        if (row >= image.length || col >= image[0].length || row < 0 || col < 0 || image[row][col] != 1) {
+        if (row < 0 || row >= image.length || col < 0 || image[row] == null || col >= image[row].length || image[row][col] != 1) {
             return;
         }
 
