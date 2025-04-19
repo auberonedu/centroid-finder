@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -64,11 +65,12 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                 if (image[r][c] == 1 && !visited[r][c]) {
                     List<int[]> pixelatedGroup = new ArrayList<>();
                     findConnectedGroups(image, new int[] { r, c }, visited, pixelatedGroup);
-                    Group group = new Group(pixelatedGroup.size(), null);
-                    groups.add(group);
+                    groups.add(createGroup(pixelatedGroup));
                 }
             }
         }
+        groups.sort(Collections.reverseOrder());
+
         return groups;
     }
 
@@ -92,5 +94,20 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
             findConnectedGroups(image, new int[] { newR, newC}, visited, pixelatedGroup);
         }
+    }
+
+    // [r,c] = [y,x] must flip; centroid (x, y) = (totalX/size , totalY/size)
+    private Group createGroup(List<int[]> pixelatedGroup) {
+        int totalXPixels = 0;
+        int totalYPixels = 0;
+
+        int size = pixelatedGroup.size();
+
+        for(int[] coord : pixelatedGroup) {
+            totalXPixels += coord[1];
+            totalYPixels += coord[0];
+        }
+
+        return new Group(size, new Coordinate(totalXPixels / size, totalYPixels / size));
     }
 }

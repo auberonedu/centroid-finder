@@ -85,4 +85,46 @@ public class DfsBinaryGroupFinderTest {
         assertEquals("Invalid array", exception.getMessage());
        
     }
+
+    @Test
+    public void testDfsBinaryGroupFinder_SizeAndCentroid() {
+        int[][] image = new int[][]{
+            {0, 1, 0},
+            {0, 1, 0},
+            {0, 1, 0}
+        };
+
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+        List<Group> actual = finder.findConnectedGroups(image);
+
+        assertEquals(1, actual.size());
+
+        Group group = actual.get(0);
+        assertEquals(3, group.size());
+
+        assertEquals(1, group.centroid().x());
+        assertEquals(1, group.centroid().y());
+    }
+
+    @Test
+    public void testDfsBinaryGroupFinder_MultipleGroups() {
+        int[][] image = new int[][]{
+            {1, 0, 1 ,0 ,1},
+            {0, 0, 1 ,0 ,0},
+            {1, 1, 1 ,1 ,1},
+            {0, 0, 1 ,0 ,0},
+            {1, 0, 1 ,0 ,1},
+        };
+
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+        List<Group> actual = finder.findConnectedGroups(image);
+
+        assertEquals(5, actual.size());
+
+        Group group = actual.get(0);
+        assertEquals(9, group.size());
+
+        assertEquals(2, group.centroid().x());
+        assertEquals(2, group.centroid().y());
+    }
 }
