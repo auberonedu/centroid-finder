@@ -54,7 +54,7 @@ public class DistanceImageBinarizer implements ImageBinarizer {
                 int currentColor = image.getRGB(x, y);
                 double distance = distanceFinder.distance(currentColor, targetColor);
 
-                if (distance < threshold) {
+                if (distance <= threshold) {
                     binaryImage[y][x] = 1; // white 
                 } else {
                     binaryImage[y][x] = 0; // black 

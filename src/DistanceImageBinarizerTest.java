@@ -96,4 +96,28 @@ public class DistanceImageBinarizerTest {
         assertEquals(0x000000, img.getRGB(0, 1) & 0xFFFFFF);
         assertEquals(0xFFFFFF, img.getRGB(1, 1) & 0xFFFFFF);
     }
+
+    @Test
+    public void testExactThresholdMatch() {
+        DistanceImageBinarizer strictBinarizer = new DistanceImageBinarizer(new MockColorDistanceFinder(), 0xFFFFFF, 0);
+        BufferedImage img = new BufferedImage(2, 1, BufferedImage.TYPE_INT_RGB);
+        img.setRGB(0, 0, 0xFFFFFF); 
+        img.setRGB(1, 0, 0xFFFFFE); 
+
+        int[][] binary = strictBinarizer.toBinaryArray(img);
+        assertEquals(1, binary[0][0]);
+        assertEquals(0, binary[0][1]);
+    }
+
+    @Test
+    public void testVeryHighThreshold() {
+        DistanceImageBinarizer lenientBinarizer = new DistanceImageBinarizer(new MockColorDistanceFinder(), 0xFFFFFF, 1000);
+        BufferedImage img = new BufferedImage(2, 1, BufferedImage.TYPE_INT_RGB);
+        img.setRGB(0, 0, 0x000000);
+        img.setRGB(1, 0, 0x123456);
+
+        int[][] binary = lenientBinarizer.toBinaryArray(img);
+        assertEquals(1, binary[0][0]);
+        assertEquals(1, binary[0][1]);
+    }
 }
