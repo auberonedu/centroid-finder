@@ -1,12 +1,20 @@
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
 
 
-// AI used JUnit tets for DfsBinaryGroupFinder
+/**
+ * AI Used - Unit tests for DfsBinaryGroupFinder implementation.
+ */
 public class DfsBinaryGroupFinderTest {
 
-    private final DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+    private DfsBinaryGroupFinder finder;
+
+    @BeforeEach
+    public void setUp() {
+        finder = new DfsBinaryGroupFinder();
+    }
 
     @Test
     public void testLargeConnectedGroup() {
@@ -15,7 +23,7 @@ public class DfsBinaryGroupFinderTest {
             {1, 1, 1},
             {1, 1, 1}
         };
-    
+        
         List<Group> groups = finder.findConnectedGroups(image);
         assertEquals(1, groups.size());
         assertEquals(9, groups.get(0).size());

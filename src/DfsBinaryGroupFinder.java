@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Stack;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -38,14 +39,17 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
         List<Group> groupList = new ArrayList<>();
 
+        // validate the input image
         if (image == null) {
             throw new NullPointerException("Image array cannot be null");
         }
 
+        // check if the image is empty
         if (image.length == 0 || image[0].length == 0) {
             throw new IllegalArgumentException("Image array cannot be empty");
         }
 
+        // check if the image is rectangular
         for (int[] row : image) {
             if (row == null) {
                 throw new IllegalArgumentException("Image array cannot contain null subarrays");
@@ -53,6 +57,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         }
         boolean[][] visited = new boolean[image.length][image[0].length];
 
+        // iterate through the image to find connected groups
         for (int i = 0; i < image.length; i++) {
             for (int j = 0; j < image[i].length; j++) {
                 if (image[i][j] == 1 && !visited[i][j]) {
@@ -68,29 +73,37 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
     // findConnectedGroupsHelper 
     public List<int[]> findConnectedGroupsHelper(int[][] image, int[] current, boolean[][] visited) {
-        int row = current[0];
-        int col = current[1];
+        List<int[]> pixels = new ArrayList<>();
+        Stack<int[]> stack = new Stack<>();
+        stack.push(current);
 
-        if (row < 0 || row >= image.length || col < 0 || col >= image[0].length || image[row][col] == 0 || visited[row][col]) {
-            return new ArrayList<>();
+        while (!stack.isEmpty()) {
+            int[] pixel = stack.pop();
+            int row = pixel[0];
+            int col = pixel[1];
+
+            if (row < 0 || row >= image.length || col < 0 || col >= image[0].length) {
+                continue; 
+            }
+
+            if (visited[row][col] || image[row][col] == 0) {
+                continue; 
+            }
+
+            visited[row][col] = true;
+            pixels.add(new int[]{row, col});
+
+            stack.push(new int[]{row - 1, col}); // up
+            stack.push(new int[]{row + 1, col}); // down
+            stack.push(new int[]{row, col - 1}); // left
+            stack.push(new int[]{row, col + 1}); // right
         }
 
-        visited[row][col] = true;
-
-        List<int[]> connectedPoints = new ArrayList<>();
-        connectedPoints.add(new int[]{row, col});
-
-        List<int[]> neighbors = getAdjacentPixels(image, current);
-
-        for (int[] neighbor : neighbors) {
-            connectedPoints.addAll(findConnectedGroupsHelper(image, neighbor, visited));
-        }
-
-        return connectedPoints;
+        return pixels; 
     }
 
     // getAdjacentPixels
-    public static List<int[]> getAdjacentPixels(int[][] image, int[] current) {
+    public static List<int[]> possibleDirections(int[][] image, int[] current) {
         List<int[]> validMoves = new ArrayList<>();
 
         int row = current[0];
