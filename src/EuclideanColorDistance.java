@@ -1,3 +1,5 @@
+
+
 public class EuclideanColorDistance implements ColorDistanceFinder {
     /**
      * Returns the euclidean color distance between two hex RGB colors.
@@ -20,5 +22,15 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
     @Override
     public double distance(int colorA, int colorB) {
         return 0;
+    }
+
+    public static int[] convertColor(int color) {
+        // Shifting the bits to the appropriate byte
+        // Then masking it to get the last 8 bits/byte of data to get the number for the R, G, B respectively
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+
+        return new int[]{red, green, blue};
     }
 }
