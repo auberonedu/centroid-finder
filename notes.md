@@ -15,7 +15,8 @@
 ## EuclidianColorDistance.java
 - Returns the euclidian color distance between 2 hex RGB colors in 24-bit integer form (0XRRGGBB)
 - Euclidean distance formula `sqrt((r1 - r2)^2 + (g1 - g2)^2 + (b1 - b2)^2)` is applied to calculate distance
-- This gives a measure of how visually different the 2 colors are
+- This gives a measure of how visually different the 2 colors are.
+- A good approach to this problem would be to separate each of the 2 colors into 3 individual color values for red, green, and blue. That way the formula can be applied to each individual value.
 
 ## DistanceImageBinarizer.java
 - Use the result of EuclidianColorDistance.java distance to determine whether each pixel should be black or white in the binary image
