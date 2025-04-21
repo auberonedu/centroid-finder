@@ -37,6 +37,15 @@ public class BinarizingImageGroupFinder implements ImageGroupFinder {
      */
     @Override
     public List<Group> findConnectedGroups(BufferedImage image) {
-        return null;
+        if (image == null) {
+            throw new NullPointerException("Input image can't be null!");
+        }
+
+        //convert color image to binary 2D array
+        int[][] binary = binarizer.toBinaryArray(image);
+        //use dfs group finder to connect groups of while pixels (1s)
+        List<Group> groups = groupFinder.findConnectedGroups(binary);
+        //return sorted list of groups
+        return groups;
     }
 }
