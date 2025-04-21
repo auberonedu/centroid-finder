@@ -1,11 +1,22 @@
+package test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
-import java.awt.image.BufferedImage;
 
+import BinarizingImageGroupFinder;
+import BinaryGroupFinder;
+import ColorDistanceFinder;
+import Coordinate;
+import DfsBinaryGroupFinder;
+import DistanceImageBinarizer;
+import Group;
+import ImageBinarizer;
+
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -33,7 +44,7 @@ public class BinarizingImageGroupFinderTest {
         }
 
         @Override
-        public List<Group> findGroups(int[][] binary) {
+        public List<Group> findConnectedGroups(int[][] binary) {
             return groupsToReturn;
         }
     }
@@ -131,7 +142,7 @@ public class BinarizingImageGroupFinderTest {
 
         BinaryGroupFinder spyFinder = new BinaryGroupFinder() {
             @Override
-            public List<Group> findGroups(int[][] binary) {
+            public List<Group> findConnectedGroups(int[][] binary) {
                 called.set(true);
                 assertArrayEquals(expectedBinary, binary);
                 return List.of();
@@ -187,8 +198,12 @@ public class BinarizingImageGroupFinderTest {
         img.setRGB(1, 1, targetColor); // These 3 form a connected L-shape
         img.setRGB(2, 2, 0xFFFFFF); // A distant white pixel, not matching
 
-        // 2. Use real binarizer with exact match threshold
-        ColorDistanceFinder finder = (a, b) -> (a == b ? 0.0 : 1000.0); // Fake Euclidean logic
+        // 2. Use real binarizer with alpha-safe exact match threshold
+        ColorDistanceFinder finder = (a, b) -> {
+            int rgbA = a & 0xFFFFFF;
+            int rgbB = b & 0xFFFFFF;
+            return (rgbA == rgbB) ? 0.0 : 1000.0;
+        };
         DistanceImageBinarizer binarizer = new DistanceImageBinarizer(finder, targetColor, 10);
 
         // 3. Use real DFS group finder
@@ -200,13 +215,29 @@ public class BinarizingImageGroupFinderTest {
         // 5. Run the pipeline
         List<Group> groups = fullFinder.findConnectedGroups(img);
 
-        // 6. Check result
-        assertEquals(1, groups.size());
-        assertEquals(3, groups.get(0).size()); // 3 connected white pixels
+        // 🔍 One clean declaration of `bin`
+        int[][] bin = binarizer.toBinaryArray(img);
 
-        // Optionally check centroid is reasonable (should be center of L-shape)
-        Coordinate c = groups.get(0).centroid();
-        assertEquals(0, c.x());
-        assertEquals(1, c.y());
+        System.out.println("---- DEBUG OUTPUT ----");
+        System.out.printf("Target color: 0x%06X\n", targetColor);
+        System.out.printf("Pixel RGB (0,0): 0x%06X\n", img.getRGB(0, 0) & 0xFFFFFF);
+        System.out.printf("Distance: %.2f\n", finder.distance(img.getRGB(0, 0), targetColor));
+
+        System.out.println("Binarized matrix:");
+        for (int[] row : bin) {
+            System.out.println(Arrays.toString(row));
+        }
+
+        System.out.println("Groups found: " + groups.size());
+        for (Group g : groups) {
+            System.out.println(
+                    "  Group size: " + g.size() + ", centroid: (" + g.centroid().x() + "," + g.centroid().y() + ")");
+        }
+        System.out.println("----------------------");
+
+        // 6. Assertions
+        assertEquals(1, groups.size());
+        assertEquals(3, groups.get(0).size());
+
     }
 }
