@@ -8,14 +8,14 @@ public class BinarizingImageGroupFinderTest {
     public void test_test() {
 
         // Define test colors
-        int colorA = 0x000000;
-        int colorB = 0xFFFFFF;
+        // int colorA = 0x000000;
+        // int colorB = 0xFFFFFF;
 
     
         // Create a color distance finder
-        ColorDistanceFinder colorDistance = new EuclideanColorDistance(colorA, colorB);
+        // ColorDistanceFinder colorDistance = new EuclideanColorDistance(0x000000, 0xFFFFFF);
         // CREATE A BINARIZER (input: color distance finder, int color, int threshold)
-        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(, 0, 0);
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
         // Create group finder
         DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
 
