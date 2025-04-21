@@ -51,7 +51,7 @@ public class DistanceImageBinarizer implements ImageBinarizer {
         int[][] binaryImage = new int[height][width]; 
 
         for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; y++) {
+            for (int x = 0; x < width; x++) {
                 int currentRGB = image.getRGB(x, y) & 0xFFFFFF;
 
                 double currentDistance = distanceFinder.distance(currentRGB, targetColor);
