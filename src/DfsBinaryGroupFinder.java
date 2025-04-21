@@ -1,9 +1,6 @@
-import interfaces.BinaryGroupFinder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import records.Coordinate;
-import records.Group;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
    /**

@@ -1,7 +1,5 @@
 import org.junit.Test;
 
-import interfaces.ColorDistanceFinder;
-
 public class BinarizingImageGroupFinderTest {
 
     @Test

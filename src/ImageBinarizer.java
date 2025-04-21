@@ -1,4 +1,4 @@
-package interfaces;
+
 import java.awt.image.BufferedImage;
 
 /**

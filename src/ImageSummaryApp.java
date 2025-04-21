@@ -4,11 +4,6 @@ import java.io.PrintWriter;
 import java.util.List;
 import javax.imageio.ImageIO;
 
-import interfaces.ColorDistanceFinder;
-import interfaces.ImageBinarizer;
-import interfaces.ImageGroupFinder;
-import records.Group;
-
 /**
  * The Image Summary Application.
  * 

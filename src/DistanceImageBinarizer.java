@@ -1,5 +1,3 @@
-import interfaces.ColorDistanceFinder;
-import interfaces.ImageBinarizer;
 import java.awt.image.BufferedImage;
 
 /**

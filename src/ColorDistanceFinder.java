@@ -1,4 +1,4 @@
-package interfaces;
+
 /**
  * Defines an interface for computing the distance between two colors.
  * 
