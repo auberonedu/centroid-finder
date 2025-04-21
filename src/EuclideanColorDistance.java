@@ -50,6 +50,7 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
     // Helper method to convert a hex int into R, G, B components
     public static int[] hexToRGB(int hex) {
         // conversion of red
+        int alpha = (hex >> 24) & mask;
             // int red = the hex >> 16
         int red = (hex >> 16) & mask;
         // conversion of green
@@ -59,6 +60,7 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
             // int blue = the hex of mask (0xf)
         int blue = hex & mask;
 
-        return new int[]{red, green, blue};
+        // TODO: Change this to fix the testing, added "alpha" for Alpha characters. We need to decide if this is necessary for the BufferImage objects.
+        return new int[]{alpha, red, green, blue};
     }
 }

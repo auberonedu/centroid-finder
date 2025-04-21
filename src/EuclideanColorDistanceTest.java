@@ -30,6 +30,19 @@ public class EuclideanColorDistanceTest {
         assertEquals(expected, actual, 0.00001);
     }
 
+    // Red to Blue Distance with 0 alpha value (assuming argb NOT rgba)
+    @Test
+    public void testDistance_redVersusBlueWithAlphaZero(){
+        // blue, red: (0, 30, 50, 150), (0, 220, 30, 30)
+        double expected = Math.sqrt(Math.pow(30 - 220,2) + Math.pow(50 - 30,2) + Math.pow(150 - 30,2));
+
+        EuclideanColorDistance distanceTester = new EuclideanColorDistance();
+        // blue, red: 1e3296, dc1e1e
+        double actual = distanceTester.distance(0x001e3296, 0x00dc1e1e);
+
+        assertEquals(expected, actual, 0.00001);
+    }
+
     // hexToRGB tests (converts hex int into int[] R,G,B)
     // Default Red - via Rapid Tables
     @Test
@@ -103,5 +116,12 @@ public class EuclideanColorDistanceTest {
         assertArrayEquals(expected, actual);
     }
 
-    // Make Test Case for testing alpha transparency
+    // Red with 0 alpha (assuming argb NOT rgba)
+    @Test
+    public void testHexToRGB_DefaultRedWithAlpha() {
+        int[] expected = new int[]{0, 255, 0, 0};
+        int[] actual = EuclideanColorDistance.hexToRGB(0x00FF0000);
+
+        assertArrayEquals(expected, actual);
+    }
 }
