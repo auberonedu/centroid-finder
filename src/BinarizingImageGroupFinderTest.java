@@ -25,6 +25,11 @@ public class BinarizingImageGroupFinderTest {
         public int[][] toBinaryArray(BufferedImage image) {
             return binaryToReturn;
         }
+
+        @Override
+        public BufferedImage toBufferedImage(int[][] image) {
+            throw new UnsupportedOperationException("Fake does not support toBufferedImage");
+        }
     }
 
     private static class FakeGroupFinder implements BinaryGroupFinder {
