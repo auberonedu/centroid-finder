@@ -106,8 +106,23 @@ public class EuclideanColorDistanceTest {
 
 
     }
+    //I wanted to do a constant color + two linear colors but dealing with it was annoying.
+    @Test
+    public void randomTests() {
+        //WolframAlpha helped me find the distance in symbolic form, to compare to.
+        assertEquals(dist.distance(coord(126, 127, 238), coord(126, 127, 239)), 1.0);
+
+        assertEquals(dist.distance(coord(56, 78, 23), coord(245, 99, 157)), Math.sqrt(54118));
+
+        assertEquals(dist.distance(coord(77, 99, 127), coord(127, 64, 31)), Math.sqrt(12941));
+
+        assertEquals(dist.distance(coord(255, 41, 37), coord(183, 255, 1)), 2*Math.sqrt(13069));
+
+        assertEquals(dist.distance(coord(1, 1, 1), coord(38, 246, 133)), Math.sqrt(78818));
+    }
 
     private double[] createTestLinear(int size, double scalar) {
+        //Scalar might not be needed
         double[] res = new double[size];
 
         for(int i = 0; i < size; i++) {
@@ -117,4 +132,7 @@ public class EuclideanColorDistanceTest {
         return res;
     }
 
+    private int coord(int r, int g, int b) {
+        return r+(g<<GREEN_SHFT)+(b<<BLUE_SHFT);
+    }
 }
