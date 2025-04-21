@@ -135,4 +135,25 @@ public class DistanceImageBinarizerTest {
 
         assertArrayEquals(expected, actual);
     }
+
+    @Test 
+    public void testToBufferedImage_Basic() {
+        int[][] image = {
+            {1, 0},
+            {0, 1}
+        };
+
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        DistanceImageBinarizer imageBinarizer = new DistanceImageBinarizer(distanceFinder, 0xFFFFFF, 100);
+    
+        BufferedImage actual = imageBinarizer.toBufferedImage(image);
+
+        int white = 0xFFFFFF;
+        int black = 0x000000;
+
+        assertEquals(white, actual.getRGB(0, 0) & 0xFFFFFF);
+        assertEquals(black, actual.getRGB(1, 0) & 0xFFFFFF);
+        assertEquals(black, actual.getRGB(0, 1) & 0xFFFFFF);
+        assertEquals(white, actual.getRGB(1, 1) & 0xFFFFFF);
+    }
 }
