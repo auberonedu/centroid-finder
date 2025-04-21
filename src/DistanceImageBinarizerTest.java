@@ -136,16 +136,16 @@ public class DistanceImageBinarizerTest {
         assertArrayEquals(expected, actual);
     }
 
-    @Test 
+    @Test
     public void testToBufferedImage_Basic() {
         int[][] image = {
-            {1, 0},
-            {0, 1}
+                { 1, 0 },
+                { 0, 1 }
         };
 
         ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
         DistanceImageBinarizer imageBinarizer = new DistanceImageBinarizer(distanceFinder, 0xFFFFFF, 100);
-    
+
         BufferedImage actual = imageBinarizer.toBufferedImage(image);
 
         int white = 0xFFFFFF;
@@ -155,5 +155,124 @@ public class DistanceImageBinarizerTest {
         assertEquals(black, actual.getRGB(1, 0) & 0xFFFFFF);
         assertEquals(black, actual.getRGB(0, 1) & 0xFFFFFF);
         assertEquals(white, actual.getRGB(1, 1) & 0xFFFFFF);
+    }
+
+    @Test
+public void testToBufferedImage_LargerImage() {
+    int[][] image = {
+        {1, 0, 1, 0},
+        {0, 1, 0, 1},
+        {1, 0, 1, 0},
+        {0, 1, 0, 1}
+    };
+
+    ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+    DistanceImageBinarizer imageBinarizer = new DistanceImageBinarizer(distanceFinder, 0xFFFFFF, 100);
+
+    BufferedImage actual = imageBinarizer.toBufferedImage(image);
+
+    int white = 0xFFFFFF;
+    int black = 0x000000;
+
+    // Test the middle pixels and edge pixels to ensure they are set correctly
+    assertEquals(white, actual.getRGB(0, 0) & 0xFFFFFF);  // Top-left pixel (should be white)
+    assertEquals(black, actual.getRGB(1, 0) & 0xFFFFFF);  // Top-right pixel (should be black)
+    assertEquals(black, actual.getRGB(0, 1) & 0xFFFFFF);  // Bottom-left pixel (should be black)
+    assertEquals(white, actual.getRGB(1, 1) & 0xFFFFFF);  // Bottom-right pixel (should be white)
+
+    // Middle pixels
+    assertEquals(white, actual.getRGB(2, 2) & 0xFFFFFF);  // Third row, third column (should be white)
+    assertEquals(black, actual.getRGB(3, 2) & 0xFFFFFF);  // Third row, fourth column (should be black)
+
+    // Check other pixels to make sure the whole image is as expected
+    assertEquals(white, actual.getRGB(0, 2) & 0xFFFFFF);  // Third row, first column (should be white)
+    assertEquals(black, actual.getRGB(1, 2) & 0xFFFFFF); 
+}
+    @Test
+    public void testToBufferedImage_AllWhite() {
+        int[][] image = {
+                { 1, 1 },
+                { 1, 1 }
+        };
+
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        DistanceImageBinarizer imageBinarizer = new DistanceImageBinarizer(distanceFinder, 0xFFFFFF, 100);
+
+        BufferedImage actual = imageBinarizer.toBufferedImage(image);
+
+        int white = 0xFFFFFF;
+
+        // Check all pixels are white
+        assertEquals(white, actual.getRGB(0, 0) & 0xFFFFFF);
+        assertEquals(white, actual.getRGB(1, 0) & 0xFFFFFF);
+        assertEquals(white, actual.getRGB(0, 1) & 0xFFFFFF);
+        assertEquals(white, actual.getRGB(1, 1) & 0xFFFFFF);
+    }
+
+    @Test
+    public void testToBufferedImage_AllBlack() {
+        int[][] image = {
+                { 0, 0 },
+                { 0, 0 }
+        };
+
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        DistanceImageBinarizer imageBinarizer = new DistanceImageBinarizer(distanceFinder, 0xFFFFFF, 100);
+
+        BufferedImage actual = imageBinarizer.toBufferedImage(image);
+
+        int black = 0x000000;
+
+        // Check all pixels are black
+        assertEquals(black, actual.getRGB(0, 0) & 0xFFFFFF);
+        assertEquals(black, actual.getRGB(1, 0) & 0xFFFFFF);
+        assertEquals(black, actual.getRGB(0, 1) & 0xFFFFFF);
+        assertEquals(black, actual.getRGB(1, 1) & 0xFFFFFF);
+    }
+
+    @Test
+    public void testToBufferedImage_SinglePixel() {
+        int[][] image = {
+                { 1 }
+        };
+
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        DistanceImageBinarizer imageBinarizer = new DistanceImageBinarizer(distanceFinder, 0xFFFFFF, 100);
+
+        BufferedImage actual = imageBinarizer.toBufferedImage(image);
+
+        int white = 0xFFFFFF;
+
+        // Check that the single pixel is white
+        assertEquals(white, actual.getRGB(0, 0) & 0xFFFFFF);
+    }
+
+    @Test
+    public void testToBufferedImage_AlternatingPattern() {
+        int[][] image = {
+                { 1, 0, 1, 0 },
+                { 0, 1, 0, 1 },
+                { 1, 0, 1, 0 },
+                { 0, 1, 0, 1 }
+        };
+
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        DistanceImageBinarizer imageBinarizer = new DistanceImageBinarizer(distanceFinder, 0xFFFFFF, 100);
+
+        BufferedImage actual = imageBinarizer.toBufferedImage(image);
+
+        int white = 0xFFFFFF;
+        int black = 0x000000;
+
+        // Check alternating pattern across all pixels
+        for (int y = 0; y < 4; y++) {
+            for (int x = 0; x < 4; x++) {
+                if ((x + y) % 2 == 0) {
+                    assertEquals(white, actual.getRGB(x, y) & 0xFFFFFF);
+                } else {
+                    assertEquals(black, actual.getRGB(x, y) & 0xFFFFFF);
+                }
+            }
+        }
     }
 }
