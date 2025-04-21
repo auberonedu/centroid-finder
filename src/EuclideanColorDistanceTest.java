@@ -47,7 +47,7 @@ public class EuclideanColorDistanceTest {
     // Default Red - via Rapid Tables
     @Test
     public void testHexToRGB_DefaultRed() {
-        int[] expected = new int[]{255, 0, 0};
+        int[] expected = new int[]{0, 255, 0, 0};
         int[] actual = EuclideanColorDistance.hexToRGB(0xFF0000);
 
         assertArrayEquals(expected, actual);
@@ -56,7 +56,7 @@ public class EuclideanColorDistanceTest {
     // A Shade of Red
     @Test
     public void testHexToRGB_ShadeOfRed() {
-        int[] expected = new int[]{220, 30, 30};
+        int[] expected = new int[]{0, 220, 30, 30};
         int[] actual = EuclideanColorDistance.hexToRGB(0xdc1e1e);
 
         assertArrayEquals(expected, actual);
@@ -65,7 +65,7 @@ public class EuclideanColorDistanceTest {
     // Default Green - via Rapid Tables
     @Test
     public void testHexToRGB_DefaultGreen() {
-        int[] expected = new int[]{0, 255, 0};
+        int[] expected = new int[]{0, 0, 255, 0};
         int[] actual = EuclideanColorDistance.hexToRGB(0x00FF00);
 
         assertArrayEquals(expected, actual);
@@ -74,7 +74,7 @@ public class EuclideanColorDistanceTest {
     // A Shade of Green
     @Test
     public void testHexToRGB_ShadeOfGreen() {
-        int[] expected = new int[]{0, 186, 22};
+        int[] expected = new int[]{0, 0, 186, 22};
         int[] actual = EuclideanColorDistance.hexToRGB(0x00ba16);
 
         assertArrayEquals(expected, actual);
@@ -83,7 +83,7 @@ public class EuclideanColorDistanceTest {
     // Default Blue - via Rapid Tables
     @Test
     public void testHexToRGB_DefaultBlue() {
-        int[] expected = new int[]{0, 0, 255};
+        int[] expected = new int[]{0, 0, 0, 255};
         int[] actual = EuclideanColorDistance.hexToRGB(0x0000FF);
 
         assertArrayEquals(expected, actual);
@@ -92,7 +92,7 @@ public class EuclideanColorDistanceTest {
     // A Shade of Blue
     @Test 
     public void testHexToRGB_ShadeOfBlue() {
-        int[] expected = new int[]{30, 50, 150};
+        int[] expected = new int[]{0, 30, 50, 150};
         int[] actual = EuclideanColorDistance.hexToRGB(0x1e3296);
 
         assertArrayEquals(expected, actual);
@@ -101,7 +101,7 @@ public class EuclideanColorDistanceTest {
     // Yellow - via Rapid Tables
     @Test
     public void testHexToRGB_yellow() {
-        int[] expected = new int[]{255, 255, 0};
+        int[] expected = new int[]{0, 255, 255, 0};
         int[] actual = EuclideanColorDistance.hexToRGB(0xFFFF00);
 
         assertArrayEquals(expected, actual);
@@ -110,7 +110,7 @@ public class EuclideanColorDistanceTest {
     // Magenta - via Rapid Tables
     @Test
     public void testHexToRGB_magenta() {
-        int[] expected = new int[]{255, 0, 255};
+        int[] expected = new int[]{0, 255, 0, 255};
         int[] actual = EuclideanColorDistance.hexToRGB(0xFF00FF);
 
         assertArrayEquals(expected, actual);
