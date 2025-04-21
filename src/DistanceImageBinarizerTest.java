@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 
 public class DistanceImageBinarizerTest {
 
+    // TODO: ADD TESTS
+
     // toBinaryArray
     @Test
     public void testToBinaryArray_fourPixelBlackWhite() {
