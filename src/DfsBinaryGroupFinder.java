@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -40,5 +41,15 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             if (row == null)throw new NullPointerException("Rows can't be null.");
             
         }
-    
-}
+        int height = image.length;
+        int width = image[0].length; 
+        boolean[][] visited = new boolean[hight][width];
+        List<Group> groups = new ArrayList<>();
+
+
+        for(int r = 0; r < height; r++) {
+            for(int c = 0; c < width; c++) {
+            }
+        }
+    }
+}    
