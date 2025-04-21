@@ -10,6 +10,13 @@ import org.junit.Test;
 public class EuclideanColorDistanceTest {
     EuclideanColorDistance dist = new EuclideanColorDistance();
     
+    final int RED = 0x000000FF;
+    final int GREEN = 0x0000FF00;
+    final int BLUE = 0x00FF0000;
+
+    final int BLUE_SHFT = 16;
+    final int GREEN_SHFT = 8;
+
     @Test
     public void noColor() {
         assertEquals(dist.distance(0, 0), 0.0);
@@ -41,10 +48,7 @@ public class EuclideanColorDistanceTest {
         final int GREEN_SHIFT = 8;
         final int BLUE_SHIFT = 16;
 
-        double[] test = new double[256];
-        for(int i = 0; i < test.length; i++) {
-            test[i] = (double)i;
-        }
+        double[] test = createTestLinear(256, 1);
         double[] res = new double[256];
 
         for(int i = 0; i < 256; i++) {
@@ -69,6 +73,48 @@ public class EuclideanColorDistanceTest {
         Assert.assertTrue(Arrays.equals(test, res));
 
 
+    }
+    @Test
+    public void twoConstantColorsPlusLinear() {
+        int RED_GREEN = 0x0000FFFF;
+        int RED_BLUE = 0x00FF00FF;
+        int GREEN_BLUE = 0x00FFFF00;
+
+
+        double[] test = createTestLinear(256, 1.0);
+
+
+        double[] cmp = new double[256];
+
+        for(int i  = 0; i < 256; i++) {
+            cmp[i] = dist.distance(RED_GREEN, RED_GREEN+(i << BLUE_SHFT));
+        }
+
+        Assert.assertTrue(Arrays.equals(cmp, test));
+
+        for(int i  = 0; i < 256; i++) {
+            cmp[i] = dist.distance(RED_BLUE, RED_BLUE+(i << GREEN_SHFT));
+        }
+
+        Assert.assertTrue(Arrays.equals(cmp, test));
+
+        for(int i  = 0; i < 256; i++) {
+            cmp[i] = dist.distance(GREEN_BLUE, GREEN_BLUE+i);
+        }
+
+        Assert.assertTrue(Arrays.equals(cmp, test));
+
+
+    }
+
+    private double[] createTestLinear(int size, double scalar) {
+        double[] res = new double[size];
+
+        for(int i = 0; i < size; i++) {
+            res[i] = ((double) i) * scalar;
+        }
+
+        return res;
     }
 
 }
