@@ -41,6 +41,7 @@ public class BinarizingImageGroupFinderTest {
         }
     }
 
+    // Tests Binarizing Image Group Finder with fakes
     @Test
     public void testReturnsPredefinedGroups(){
         BufferedImage dummyImage = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB);
@@ -118,5 +119,38 @@ public class BinarizingImageGroupFinderTest {
         List<Group> result = groupFinder.findConnectedGroups(dummyImage);
 
         assertEquals(predefinedGroups, result);
+    }
+
+    // Tests Binarizing Image Group Finder with real input
+    @Test
+    public void testFindConnectedGroups_withRealBinarizerAndFinder(){
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        
+        int targetColor = 0xb69a7b;
+        int threshold = 30;
+
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+
+        // Create 3x3 pixel image
+        BufferedImage image = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
+        image.setRGB(0, 0, 0xb69a7a); // 1
+        image.setRGB(1, 0, 0xb69a98); // 1
+        image.setRGB(2, 0, 0xb69a9a); // 0
+        image.setRGB(0, 1, 0xb69a9f); // 0
+        image.setRGB(1, 1, 0xb69a7f); // 1
+        image.setRGB(2, 1, 0xbffa7b); // 0
+        image.setRGB(0, 2, 0xf6fa7b); // 0
+        image.setRGB(1, 2, 0xb69a76); // 1
+        image.setRGB(2, 2, 0x00ffff); // 0
+
+
+        List<Group> groups = finder.findConnectedGroups(binarizer.toBinaryArray(image));
+
+        assertEquals(1, groups.size());
+
+        Group testGroup = groups.get(0);
+        assertEquals(4, testGroup.size());
+
     }
 }
