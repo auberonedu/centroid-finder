@@ -99,10 +99,10 @@ public class DistanceImageBinarizer implements ImageBinarizer {
             for (int c = 0; c < image[0].length; c++) {
                 // WHITE
                 if (image[r][c] == 1) {
-                    bufferedImage.setRGB(c, r, 0xFFFFFF);
+                    bufferedImage.setRGB(r, c, 0xFFFFFF);
                 } // BLACK
                 else if (image[r][c] == 0) {
-                    bufferedImage.setRGB(c, r, 0x000000);
+                    bufferedImage.setRGB(r, c, 0x000000);
                 }
             }
         }
