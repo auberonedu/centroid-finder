@@ -80,5 +80,43 @@ public class BinarizingImageGroupFinderTest {
     @Test
     public void testMultipleGroupsDescOrder(){
         BufferedImage dummyImage = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
+        int[][] fakeBinary = {
+            {1,0,1},
+            {0,1,0},
+            {1,0,0}
+        };
+        
+        Group largerGroup = new Group(2, new Coordinate(1,1));
+        Group smallerGroup = new Group(1, new Coordinate(0,2));
+
+        List<Group> groups = List.of(largerGroup, smallerGroup);
+
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(
+            new FakeBinarizer(fakeBinary),
+            new FakeGroupFinder(groups)
+        );
+
+        List<Group> result = finder.findConnectedGroups(dummyImage);
+
+        // Assuming Group implements Comparable and sorts by size
+        assertEquals(groups, result);
+    }
+
+    @Test
+    public void testWithSingularPixel(){
+        BufferedImage dummyImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        int[][] fakeBinary = {
+            {1}
+        };
+
+        Group group1 = new Group(1, new Coordinate(0, 0));
+        List<Group> predefinedGroups = List.of(group1);
+
+        BinarizingImageGroupFinder groupFinder = new BinarizingImageGroupFinder(
+            new FakeBinarizer(fakeBinary), new FakeGroupFinder(predefinedGroups));
+        
+        List<Group> result = groupFinder.findConnectedGroups(dummyImage);
+
+        assertEquals(predefinedGroups, result);
     }
 }
