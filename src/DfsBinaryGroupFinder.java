@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -40,20 +41,27 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
      */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
+        
+        // Saving rows/columns to variables
+        int rows = image.length;
+        int cols = image[0].length;
+        
         // Check for a null or empty array
-        if (image == null || image.length == 0 || image[0] == null || image[0].length == 0) {
+        if (image == null || image[0] == null || rows == 0 || cols == 0) {
             throw new NullPointerException("Provided array is null or empty");
         }
+
         // Check for a non-rectangular/invalid array - This is based on the
         // testNonRectangularGrid() that AI created
-        for (int i = 1; i < image.length; i++) {
-            if (image[i].length != image[0].length) {
+        for (int i = 1; i < rows; i++) {
+            if (image[i].length != cols) {
                 throw new IllegalArgumentException("Provided array is not rectangular");
             }
         }
+
         // Check for a non-binary array - This is based on the
         // testGridWithInvalidValues() that AI created
-        for (int i = 0; i < image.length; i++) {
+        for (int i = 0; i < rows; i++) {
             for (int j = 0; j < image[i].length; j++) {
                 if (image[i][j] != 0 && image[i][j] != 1) {
                     throw new IllegalArgumentException("Provided array contains non-binary values");
@@ -61,24 +69,34 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             }
         }
 
-        // Saving rows/columns to variables
-        int rows = image.length;
-        int cols = image[0].length;
-
         // Creating a boolean array to track visited cells
         boolean[][] visited = new boolean[rows][cols];
 
-        // List to store the groups found
+        // List to store the groups found since this method needs to return a list
         List<Group> groups = new ArrayList<>();
 
-        // Pseudocode - Maybe do the iteration here instead of the helper method?
-        // Math
+        // Looping through the image to find groups
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (image[r][c] == 1 && !visited[r][c]) {
+                    // Logic goes here
+                }
+            }
+        }
 
+        // Sorting the groups in descending order
+        Collections.sort(groups, Collections.reverseOrder());
+        
         return groups;
     }
 
-    // Helper method for DFS
-    public static void findConnectedGroupsHelper(int[][] image, boolean[][] visited, int row, int col,
+    // Helper method to find connected groups
+    private Group findPixelGroups(int[][] image, boolean[][] visited, int yCoord, int xCoord) {
+
+    }
+
+    // Helper method for movement through connected groups
+    private static void pixelGroupTraversal(int[][] image, boolean[][] visited, int row, int col,
             List<Group> groups) {
         int[][] directions = new int[][] 
         {
