@@ -10,7 +10,7 @@ import org.junit.Test;
 public class BinarizingImageGroupFinderTest {
 
     // fakes are simplified versions of classes, aka test doubles. for testing a component without needing full implementation of it's dependencies
-    
+
     // mocks are objects you can control during a test to see how it was used
     
     // fake ImageBinarizer
@@ -27,6 +27,7 @@ public class BinarizingImageGroupFinderTest {
             };
         }
 
+        // not using for tests
         @Override
         public BufferedImage toBufferedImage(int[][] image) {
             throw new UnsupportedOperationException("Not needed in this test");
