@@ -58,7 +58,7 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
             // int blue = the hex of mask (0xf)
         int blue = hex & mask;
 
-        // TODO: Change this to fix the testing, added "alpha" for Alpha characters. We need to decide if this is necessary for the BufferImage objects.
+        
         return new int[]{alpha, red, green, blue};
     }
 }
