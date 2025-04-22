@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
@@ -33,7 +36,71 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
-        return null;
+        if (image == null){
+            throw new NullPointerException();
+        }
+        // create shallow copy of image array to keep track of visited pixels without editing original array
+        int[][] imageClone = image.clone();
+        // create list to add groups to
+        List<Group> groups = new ArrayList<Group>();
+        // nested for loop to find start of each group
+        for (int y = 0; y < imageClone.length; y++){
+            // if image[y] is null, throw null pointer
+            if (imageClone[y] == null){
+                throw new NullPointerException();
+            }
+            for(int x = 0; x < imageClone[y].length; x++){
+                // if image[y][x] is not a 1 or a 0, throw illegal argument
+                if (imageClone[y][x] != 1 && imageClone[y][x] != 0){
+                    throw new IllegalArgumentException();
+                }
+
+                // when group is found, perform dfs with that x, y as starting point
+                if (imageClone[y][x] == 1){
+                    // dfs will need to fill an array with the size of the group and a sum of the group's x and y coordinates
+                    // index 0 will have size, 1 will have sum of xs, 2 will have sum of ys
+                    int[] groupInfo = new int[3];
+
+                    dfs(imageClone, y, x, groupInfo);
+                    // a new Group record will be created and added to the List using this info^
+                    int size = groupInfo[0];
+                    int xCentroid = groupInfo[1] / size;
+                    int yCentroid = groupInfo[2] / size;
+
+                    groups.add(new Group(size, new Coordinate(xCentroid, yCentroid)));
+                }
+            }
+        }
+        
+        // sort list and return it
+        Collections.sort(groups, Collections.reverseOrder());
+        return groups;
+    }
+
+    private void dfs(int[][] image, int y, int x, int[] groupInfo){
+        // if y is out of bound or x is out of bounds return
+        // if image[y][x] = 0 return
+        if (y < 0 || y >= image.length || x < 0 || x >= image[y].length || image[y][x] == 0) return;
+
+        // create 2d array of direction options
+        int[][] directions = {
+            {-1, 0},
+            {1, 0},
+            {0, -1},
+            {0, 1}
+        };
+
+        groupInfo[0] += 1;
+        groupInfo[1] += x;
+        groupInfo[2] += y;
+
+        // set current pixel to 0 
+        image[y][x] = 0;
+
+        // for each direction, perform recursion
+        for (int[] dir: directions){
+            dfs(image, y + dir[0], x + dir[1], groupInfo);
+        }
     }
     
 }

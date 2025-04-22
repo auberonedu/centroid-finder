@@ -45,7 +45,31 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public int[][] toBinaryArray(BufferedImage image) {
-        return null;
+        if (image == null){
+            throw new NullPointerException("Image may not be null");
+        }
+        // get the width and height of the image --> getWidth() and getHeight()
+        // create a 2d array with the "width" and "height" set to width and height
+        int[][] binary = new int[image.getHeight()][image.getWidth()];
+
+        // loop through the array
+        for (int y = 0; y < binary.length; y++){
+            for (int x = 0; x < binary[y].length; x++){
+                // grab the pixel at each "x" and "y" point
+                int pixel = image.getRGB(x, y);
+                // compare the pixel color (getRGB) to targetColor (using EuclideanColorDistance method)
+                double difference = distanceFinder.distance(pixel, targetColor);
+                // set the coordinate to white (1) or black(0)
+                if (difference < threshold){
+                    binary[y][x] = 1;
+                } else {
+                    binary[y][x] = 0;
+                }
+            }
+        }
+            
+        // return the array
+        return binary;
     }
 
     /**
@@ -58,6 +82,35 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
-        return null;
+        if (image == null){
+            throw new NullPointerException("Array cannot be null");
+        }
+        if (image.length == 0){
+            throw new IllegalArgumentException("Array cannot be empty");
+        }
+        // create a new BufferedImage with width and height proportionate to image[][]
+        BufferedImage newImage = new BufferedImage(image[0].length, image.length, BufferedImage.TYPE_INT_RGB);
+        // loop through the array
+        for (int y = 0; y < image.length; y++){
+            if (image[y] == null){
+                throw new NullPointerException("Sub array cannot be null");
+            }
+            if (image[y].length == 0){
+                throw new IllegalArgumentException("Sub array cannot be empty");
+            }
+            for (int x = 0; x < image[y].length; x++){
+                // set the pixel at the "x" and "y" point (setRGB)
+                // 0xFFFFF --> white (1)
+                if (image[y][x] == 1){
+                    newImage.setRGB(x, y, 0xffffff);
+                } else {
+                    // 0x000000 --> black (0)
+                    newImage.setRGB(x, y, 0x000000);
+                }
+            }
+        }
+            
+        // return the new buffered image!
+        return newImage;
     }
 }
