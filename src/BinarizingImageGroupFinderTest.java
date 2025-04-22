@@ -113,4 +113,45 @@ public class BinarizingImageGroupFinderTest {
         assertTrue(result.isEmpty());
     }
 
+    @Test
+    public void testImageWithOneGiantGroup() {
+        // Arrange
+        BufferedImage fakeImage = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
+
+        FakeImageBinarizer binarizer = new FakeImageBinarizer() {
+            @Override
+            public int[][] toBinaryArray(BufferedImage image) {
+                called = true;
+                return new int[][] {
+                    {1, 1, 1},
+                    {1, 1, 1},
+                    {1, 1, 1}
+                };
+            }
+        };
+
+        FakeBinaryGroupFinder groupFinder = new FakeBinaryGroupFinder() {
+            @Override
+            public List<Group> findConnectedGroups(int[][] binaryImage) {
+                called = true;
+                List<Group> groups = new ArrayList<>();
+                groups.add(new Group(9, new Coordinate(1, 1)));
+                return groups;
+            }
+        };
+
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
+
+        // Act
+        List<Group> result = finder.findConnectedGroups(fakeImage);
+
+        // Assert
+        assertTrue(binarizer.called);
+        assertTrue(groupFinder.called);
+    
+        assertEquals(1, result.size());
+        assertEquals(9, result.get(0).size());
+        assertEquals(new Coordinate(1, 1), result.get(0).centroid());
+    }
+    
 }
