@@ -70,36 +70,13 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             }
         }
 
-        // Beginning conversion to BFS instead of DFS
-        Queue<Group> queue = new LinkedList<>();
-
-        // Test group
-        queue.add(new Group(0, 0, 0));
-
         // Creating a boolean array to track visited cells
         boolean[][] visited = new boolean[rows][cols];
 
         // List to store the groups found since this method needs to return a list
         List<Group> groups = new ArrayList<>();
 
-        while(!queue.isEmpty()) {
-            // Remove first element from the queue and store it
-            Group currentGroup = queue.poll();
-
-            // If the current cell has already been visited...
-            if (visited[rows][cols]) {
-                // Skip it
-                continue;
-            }
-
-            // Mark current cell as visited
-            visited[rows][cols] = true;
-
-            findConnectedGroupsHelper(image, visited, rows, cols, groups);
-
-            groups.add(currentGroup);
-        }
-
+        
         return groups;
     }
 
