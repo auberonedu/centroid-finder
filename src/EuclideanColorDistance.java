@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 import static java.lang.StrictMath.sqrt;
 
+=======
+
+import static java.lang.StrictMath.sqrt;
+
+
+
+>>>>>>> a8b21b12e8e97774d74ac5186584025c183c627c
 public class EuclideanColorDistance implements ColorDistanceFinder {
     /**
      * Returns the euclidean color distance between two hex RGB colors.
