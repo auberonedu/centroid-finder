@@ -153,5 +153,50 @@ public class BinarizingImageGroupFinderTest {
         assertEquals(9, result.get(0).size());
         assertEquals(new Coordinate(1, 1), result.get(0).centroid());
     }
+
+    @Test
+    public void testImageWithMultipleGroups() {
+        // Arrange
+        BufferedImage fakeImage = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
+
+        FakeImageBinarizer binarizer = new FakeImageBinarizer() {
+            @Override
+            public int[][] toBinaryArray(BufferedImage image) {
+                called = true;
+                return new int[][] {
+                    {1, 0, 1},
+                    {0, 0, 0},
+                    {1, 1, 1}
+                };
+            }
+        };
+
+        FakeBinaryGroupFinder groupFinder = new FakeBinaryGroupFinder() {
+            @Override
+            public List<Group> findConnectedGroups(int[][] binaryImage) {
+                called = true;
+                List<Group> groups = new ArrayList<>();
+                groups.add(new Group(3, new Coordinate(1, 2)));
+                groups.add(new Group(1, new Coordinate(0, 0)));
+                groups.add(new Group(1, new Coordinate(2, 0)));
+                return groups;
+            }
+        };
+
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
+
+        // Act
+        List<Group> result = finder.findConnectedGroups(fakeImage);
+
+        // Assert
+        assertTrue(binarizer.called);
+        assertTrue(groupFinder.called);
     
+        assertEquals(3, result.size());
+        assertEquals(3, result.get(0).size());
+        assertEquals(new Coordinate(1, 2), result.get(0).centroid());
+        assertEquals(new Coordinate(0, 0), result.get(1).centroid());
+        assertEquals(new Coordinate(2, 0), result.get(2).centroid());
+    }
+
 }
