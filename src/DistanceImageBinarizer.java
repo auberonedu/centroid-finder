@@ -48,12 +48,12 @@ public class DistanceImageBinarizer implements ImageBinarizer {
         // create a matrix with provided image height x width
         int[][] binarized = new int[image.getHeight()][image.getWidth()];
 
-        // loop through image matrix and swap pixels to 1 white if distance < threshold
-        // else 0 black
+        // loop through image matrix, if euclidian distance between pixelColor and targetColor < threshold:
+        // swap pixels to 1 white, else 0 black
         // image coordinates start from top left corner and go y-down and x-right
         for (int y = 0; y < binarized.length; y++) {
             for (int x = 0; x < binarized[0].length; x++) {
-                int pixelColor = image.getRGB(x, y); // return pixel color at x, y as 0xAARRGGBB
+                int pixelColor = image.getRGB(x, y) & 0xFFFFFF; // return pixel color at x, y as 0xAARRGGBB + mask alpha channel
                 double distance = distanceFinder.distance(pixelColor, targetColor);
                 if (distance < threshold) binarized[y][x] = 1;
                 else binarized[y][x] = 0;
@@ -73,6 +73,18 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
-        return null;
+        int height = image.length;
+        int width = image[0].length;
+
+        BufferedImage buffered = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        for (int y = 0; y < image.length; y++) {
+            for (int x = 0; x < image[0].length; x++) {
+                if (image[y][x] == 1) buffered.setRGB(x, y, 0xFFFFFF);
+                else buffered.setRGB(x, y, 0x000000);
+            }
+        }
+        
+        return buffered;
     }
 }
