@@ -1,7 +1,6 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Queue;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     /**
@@ -76,12 +75,28 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         // List to store the groups found since this method needs to return a list
         List<Group> groups = new ArrayList<>();
 
+        // Looping through the image to find groups
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (image[r][c] == 1 && !visited[r][c]) {
+                    // Logic goes here
+                }
+            }
+        }
+
+        // Sorting the groups in descending order
+        Collections.sort(groups, Collections.reverseOrder());
         
         return groups;
     }
 
-    // Helper method for BFS
-    public static void findConnectedGroupsHelper(int[][] image, boolean[][] visited, int row, int col,
+    // Helper method to find connected groups
+    private Group findPixelGroups(int[][] image, boolean[][] visited, int yCoord, int xCoord) {
+
+    }
+
+    // Helper method for movement through connected groups
+    private static void pixelGroupTraversal(int[][] image, boolean[][] visited, int row, int col,
             List<Group> groups) {
         int[][] directions = new int[][] 
         {
