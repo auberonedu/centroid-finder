@@ -1,7 +1,8 @@
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import java.util.List;
 
 public class BinarizingImageGroupFinderTest {
 
-    // TODO: ADD TESTS
 
     @Test
     public void test_test() {
@@ -44,5 +44,146 @@ public class BinarizingImageGroupFinderTest {
 
         
     }
+
+    // Inner stub class
+    private static class StubBinarizer implements ImageBinarizer {
+        @Override
+        public int[][] toBinaryArray(BufferedImage image) {
+            return new int[][] {
+                {1, 0},
+                {0, 1}
+            };
+        }
+
+        // dummy method to soothe ImageBinarizer implementation
+        @Override
+        public BufferedImage toBufferedImage(int[][] binaryArray) {
+            // Just return a blank image for testing purposes
+            return new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB);
+        }
+    }
+
+    // Inner mock class
+    private static class MockGroupFinder implements BinaryGroupFinder {
+        public int[][] lastInput = null;
+
+        @Override
+        public List<Group> findConnectedGroups(int[][] binaryImage) {
+            lastInput = binaryImage;
+            return List.of(new Group(1, new Coordinate(0, 0)));
+        }
+    }
+
+
+    // Simple test 
+    @Test
+    public void testFindConnectedGroups_usesBinarizerAndGroupFinder() {
+        // Arrange
+        StubBinarizer binarizer = new StubBinarizer();
+        MockGroupFinder groupFinder = new MockGroupFinder();
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
+
+        BufferedImage dummyImage = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB);
+
+        // Act
+        List<Group> result = finder.findConnectedGroups(dummyImage);
+
+        // Assert
+        assertNotNull(groupFinder.lastInput);
+        assertEquals(1, result.size());
+        assertEquals(1, result.get(0).size());
+        assertEquals(new Coordinate(0, 0), result.get(0).centroid());
+    }
+
+
+    // Testing group that is all white (one group)
     
+    @Test
+    public void testFindConnectedGroups_allWhitePixels_singleGroup() {
+        StubBinarizer binarizer = new StubBinarizer() {
+            @Override
+            public int[][] toBinaryArray(BufferedImage image) {
+                return new int[][] {
+                    {1, 1},
+                    {1, 1}
+                };
+            }
+        };
+
+        BinaryGroupFinder groupFinder = new DfsBinaryGroupFinder();
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
+        BufferedImage dummy = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB);
+
+        List<Group> result = finder.findConnectedGroups(dummy);
+
+        assertEquals(1, result.size());
+        Group group = result.get(0);
+        assertEquals(4, group.size());
+        assertEquals(new Coordinate(0, 0), group.centroid());  // ((0+0+1+1)/4, (0+1+0+1)/4) = (0, 0)
+    }
+
+
+    // Testing image with no groups 
+
+    @Test
+    public void testFindConnectedGroups_allBlackPixels_returnsEmpty() {
+        StubBinarizer binarizer = new StubBinarizer() {
+            @Override
+            public int[][] toBinaryArray(BufferedImage image) {
+                return new int[][] {
+                    {0, 0},
+                    {0, 0}
+                };
+            }
+        };
+
+        BinaryGroupFinder groupFinder = new DfsBinaryGroupFinder();
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
+        BufferedImage dummy = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB);
+
+        List<Group> result = finder.findConnectedGroups(dummy);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testFindConnectedGroups_multipleGroups_sortedCorrectly() {
+        StubBinarizer binarizer = new StubBinarizer() {
+            @Override
+            public int[][] toBinaryArray(BufferedImage image) {
+                return new int[][] {
+                    {1, 0, 1, 1, 0},
+                    {1, 0, 0, 1, 0},
+                    {0, 0, 0, 1, 1},
+                    {1, 1, 0, 0, 0},
+                    {1, 0, 0, 0, 0}
+                };
+            }
+        };
+
+        BinaryGroupFinder groupFinder = new DfsBinaryGroupFinder();
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
+        BufferedImage dummy = new BufferedImage(5, 5, BufferedImage.TYPE_INT_RGB);
+
+        List<Group> result = finder.findConnectedGroups(dummy);
+
+        // There should be 3 distinct groups in the map
+        assertEquals(3, result.size());
+
+        // Validate group sizes
+        assertEquals(5, result.get(0).size());  // Top-right block of 1s
+        assertEquals(3, result.get(1).size());  // Bottom-left block 
+        assertEquals(2, result.get(2).size());  // Top-left block
+
+        // Validate centroids
+        assertEquals(new Coordinate(1, 3), result.get(0).centroid()); // roughly center of top-right block
+        assertEquals(new Coordinate(3, 0), result.get(1).centroid()); // avg of [(0,0), (1,0), (0,2)] -> (0,0)
+        assertEquals(new Coordinate(0, 0), result.get(2).centroid()); // avg of [(3,0), (3,1), (4,0)] -> (0,3)
+
+        // Confirm descending sort (by size, then x, then y)
+        for (int i = 1; i < result.size(); i++) {
+            assertTrue(result.get(i - 1).compareTo(result.get(i)) >= 0);
+        }
+    }
+
 }
