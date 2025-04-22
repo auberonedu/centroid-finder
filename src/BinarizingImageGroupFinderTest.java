@@ -78,15 +78,18 @@ public class BinarizingImageGroupFinderTest {
     }
 
     @Test
-    public void testFindConnectedGroupsWithEmptyImage() {
-        // Arrange
-        BufferedImage fakeImage = new BufferedImage(0, 0, BufferedImage.TYPE_INT_RGB);
+    public void testImageWithOnlyZeros() {
+        BufferedImage fakeImage = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
 
         FakeImageBinarizer binarizer = new FakeImageBinarizer() {
             @Override
             public int[][] toBinaryArray(BufferedImage image) {
                 called = true;
-                return new int[0][0];
+                return new int[][] {
+                    {0, 0, 0},
+                    {0, 0, 0},
+                    {0, 0, 0}
+                };
             }
         };
 
@@ -94,18 +97,16 @@ public class BinarizingImageGroupFinderTest {
             @Override
             public List<Group> findConnectedGroups(int[][] binaryImage) {
                 called = true;
-                return new ArrayList<>();
+                return new ArrayList<>(); // no groups found
             }
         };
 
         BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
-
-        // Act
         List<Group> result = finder.findConnectedGroups(fakeImage);
 
-        // Assert
         assertTrue(binarizer.called);
         assertTrue(groupFinder.called);
         assertTrue(result.isEmpty());
     }
+
 }
