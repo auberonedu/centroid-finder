@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     /**
@@ -40,20 +42,27 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
      */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
+        
+        // Saving rows/columns to variables
+        int rows = image.length;
+        int cols = image[0].length;
+        
         // Check for a null or empty array
-        if (image == null || image.length == 0 || image[0] == null || image[0].length == 0) {
+        if (image == null || image[0] == null || rows == 0 || cols == 0) {
             throw new NullPointerException("Provided array is null or empty");
         }
+
         // Check for a non-rectangular/invalid array - This is based on the
         // testNonRectangularGrid() that AI created
-        for (int i = 1; i < image.length; i++) {
-            if (image[i].length != image[0].length) {
+        for (int i = 1; i < rows; i++) {
+            if (image[i].length != cols) {
                 throw new IllegalArgumentException("Provided array is not rectangular");
             }
         }
+
         // Check for a non-binary array - This is based on the
         // testGridWithInvalidValues() that AI created
-        for (int i = 0; i < image.length; i++) {
+        for (int i = 0; i < rows; i++) {
             for (int j = 0; j < image[i].length; j++) {
                 if (image[i][j] != 0 && image[i][j] != 1) {
                     throw new IllegalArgumentException("Provided array contains non-binary values");
@@ -61,23 +70,40 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             }
         }
 
-        // Saving rows/columns to variables
-        int rows = image.length;
-        int cols = image[0].length;
+        // Beginning conversion to BFS instead of DFS
+        Queue<Group> queue = new LinkedList<>();
+
+        // Test group
+        queue.add(new Group(0, 0, 0));
 
         // Creating a boolean array to track visited cells
         boolean[][] visited = new boolean[rows][cols];
 
-        // List to store the groups found
+        // List to store the groups found since this method needs to return a list
         List<Group> groups = new ArrayList<>();
 
-        // Pseudocode - Maybe do the iteration here instead of the helper method?
-        // Math
+        while(!queue.isEmpty()) {
+            // Remove first element from the queue and store it
+            Group currentGroup = queue.poll();
+
+            // If the current cell has already been visited...
+            if (visited[rows][cols]) {
+                // Skip it
+                continue;
+            }
+
+            // Mark current cell as visited
+            visited[rows][cols] = true;
+
+            findConnectedGroupsHelper(image, visited, rows, cols, groups);
+
+            groups.add(currentGroup);
+        }
 
         return groups;
     }
 
-    // Helper method for DFS
+    // Helper method for BFS
     public static void findConnectedGroupsHelper(int[][] image, boolean[][] visited, int row, int col,
             List<Group> groups) {
         int[][] directions = new int[][] 
