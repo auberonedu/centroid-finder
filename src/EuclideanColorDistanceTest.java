@@ -10,6 +10,7 @@ import org.junit.Test;
 public class EuclideanColorDistanceTest {
     EuclideanColorDistance dist = new EuclideanColorDistance();
     
+    // color masks and shifts
     final int RED = 0x000000FF;
     final int GREEN = 0x0000FF00;
     final int BLUE = 0x00FF0000;
@@ -21,6 +22,7 @@ public class EuclideanColorDistanceTest {
     public void noColor() {
         assertEquals(dist.distance(0, 0), 0.0);
     }
+
     @Test
     public void sameColor() {
         //One color
@@ -42,8 +44,11 @@ public class EuclideanColorDistanceTest {
         //All three
         assertEquals(dist.distance(0x00FFFFFF, 0x00FFFFFF), 0.0);
     }
+
     @Test
     public void constantColorPlusLinear() {
+
+        // test a constant color (red) vs a linear color (green)
         int constantColor = 0x000000FF; //Red
         final int GREEN_SHIFT = 8;
         final int BLUE_SHIFT = 16;
@@ -51,13 +56,14 @@ public class EuclideanColorDistanceTest {
         double[] test = createTestLinear(256, 1);
         double[] res = new double[256];
 
+        // Test linear red
         for(int i = 0; i < 256; i++) {
             res[i] = dist.distance(constantColor, constantColor+(i << GREEN_SHIFT)); //Const red, linear green
         }
         Assert.assertTrue(Arrays.equals(test, res));
 
+        // Test linear blue
         constantColor = constantColor << GREEN_SHIFT; //Green
-
         for(int i = 0; i < 256; i++) {
             res[i] = dist.distance(constantColor, constantColor+i); //Const green, linear red
         }
@@ -71,41 +77,38 @@ public class EuclideanColorDistanceTest {
         }
 
         Assert.assertTrue(Arrays.equals(test, res));
-
-
     }
+
     @Test
     public void twoConstantColorsPlusLinear() {
+
+        // test keeps two channels constant (red and green) and varies the third channel (blue)
         int RED_GREEN = 0x0000FFFF;
         int RED_BLUE = 0x00FF00FF;
         int GREEN_BLUE = 0x00FFFF00;
 
-
         double[] test = createTestLinear(256, 1.0);
-
-
         double[] cmp = new double[256];
 
+        // vary blue
         for(int i  = 0; i < 256; i++) {
             cmp[i] = dist.distance(RED_GREEN, RED_GREEN+(i << BLUE_SHFT));
         }
-
         Assert.assertTrue(Arrays.equals(cmp, test));
 
+        // vary red
         for(int i  = 0; i < 256; i++) {
             cmp[i] = dist.distance(RED_BLUE, RED_BLUE+(i << GREEN_SHFT));
         }
-
         Assert.assertTrue(Arrays.equals(cmp, test));
 
+        // vary green
         for(int i  = 0; i < 256; i++) {
             cmp[i] = dist.distance(GREEN_BLUE, GREEN_BLUE+i);
         }
-
         Assert.assertTrue(Arrays.equals(cmp, test));
-
-
     }
+
     //I wanted to do a constant color + two linear colors but dealing with it was annoying.
     @Test
     public void randomTests() {
@@ -113,14 +116,12 @@ public class EuclideanColorDistanceTest {
         assertEquals(dist.distance(coord(126, 127, 238), coord(126, 127, 239)), 1.0);
 
         assertEquals(dist.distance(coord(56, 78, 23), coord(245, 99, 157)), Math.sqrt(54118));
-
         assertEquals(dist.distance(coord(77, 99, 127), coord(127, 64, 31)), Math.sqrt(12941));
-
         assertEquals(dist.distance(coord(255, 41, 37), coord(183, 255, 1)), 2*Math.sqrt(13069));
-
         assertEquals(dist.distance(coord(1, 1, 1), coord(38, 246, 133)), Math.sqrt(78818));
     }
 
+    // helper method to create a linear array
     private double[] createTestLinear(int size, double scalar) {
         //Scalar might not be needed
         double[] res = new double[size];

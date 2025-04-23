@@ -26,6 +26,7 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
     @Override
     public double distance(int colorA, int colorB) {
 
+        // Extract the red, green, and blue components from each color
         int aR = (colorA & RED_MASK);
         int bR = (colorB & RED_MASK);
 
@@ -35,18 +36,16 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
         int aB = ((colorA & BLUE_MASK) >> SHIFT_TWO_BYTE);
         int bB = ((colorB & BLUE_MASK) >> SHIFT_TWO_BYTE);
 
-        int red = bR;
-        int green = bG;
-        int blue = bB;
+        // find the difference between the each color component
+        int red = bR - aR;
+        int green = bG - aG;
+        int blue = bB - aB;
 
-        red -= aR;
-        green -= aG;
-        blue -= aB;
+        // use euclidean distance formula
+        int intRet = red * red + green * green + blue * blue;
 
-        int intRet = red*red + green*green + blue*blue;
-
+        // calculate the final
         double ret = Math.sqrt((double)intRet);
-
 
         return ret;
     }
