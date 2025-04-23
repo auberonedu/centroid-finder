@@ -72,4 +72,56 @@ public class DistanceImageBinarizerTest {
 
         assertArrayEquals(expected, binarizer.toBinaryArray(image));
     }
+
+    //toBufferedImageTests
+
+    @Test
+    public void convertsAllOnesToWhitePixels() {
+        int[][] binary = {
+                {1, 1},
+                {1, 1}
+        };
+
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+        BufferedImage image = binarizer.toBufferedImage(binary);
+
+        for (int y = 0; y < 2; y++) {
+            for (int x = 0; x < 2; x++) {
+                assertEquals(0xFFFFFF, image.getRGB(x, y) & 0xFFFFFF, "Pixel at (" + x + "," + y + ") should be white");
+            }
+        }
+    }
+
+    @Test
+    public void convertsAllZerosToBlackPixels() {
+        int[][] binary = {
+                {0, 0},
+                {0, 0}
+        };
+
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+        BufferedImage image = binarizer.toBufferedImage(binary);
+
+        for (int y = 0; y < 2; y++) {
+            for (int x = 0; x < 2; x++) {
+                assertEquals(0x000000, image.getRGB(x, y) & 0xFFFFFF, "Pixel at (" + x + "," + y + ") should be black");
+            }
+        }
+    }
+
+    @Test
+    public void convertsMixedBinaryMatrixCorrectly() {
+        int[][] binary = {
+                {1, 0},
+                {0, 1}
+        };
+
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+        BufferedImage image = binarizer.toBufferedImage(binary);
+
+        assertEquals(0xFFFFFF, image.getRGB(0, 0) & 0xFFFFFF);
+        assertEquals(0x000000, image.getRGB(1, 0) & 0xFFFFFF);
+        assertEquals(0x000000, image.getRGB(0, 1) & 0xFFFFFF);
+        assertEquals(0xFFFFFF, image.getRGB(1, 1) & 0xFFFFFF);
+    }
 }
