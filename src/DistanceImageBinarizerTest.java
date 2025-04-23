@@ -68,8 +68,8 @@ class DistanceImageBinarizerTest {
         int[][] result = binarizer.toBinaryArray(image);
 
         assertEquals(1, result[0][0]);
-        assertEquals(0, result[0][1]);
-        assertEquals(1, result[1][0]);
+        assertEquals(1, result[0][1]);
+        assertEquals(0, result[1][0]);
         assertEquals(0, result[1][1]);
     }
 

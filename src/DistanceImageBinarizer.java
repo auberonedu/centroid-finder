@@ -53,7 +53,7 @@ public class DistanceImageBinarizer implements ImageBinarizer {
         for (int r = 0; r < bArray.length; r++) {
             for (int c = 0; c < bArray[r].length; c++) {
                 // As we are looping over the array, we save the pixel at the point at row and column
-                int pixel = image.getRGB(r, c);
+                int pixel = image.getRGB(c, r);
 
                 // Using EuclideanColorDistance, we compare the target and the pixel
                 double distance = distanceFinder.distance(pixel, targetColor);
@@ -91,10 +91,10 @@ public class DistanceImageBinarizer implements ImageBinarizer {
                 // As we go through the image array we reassign the rgb using set at the point of the array
                 if (image[r][c] == 1){
                     // White
-                    monochrome.setRGB(r, c, 0xffffff);
+                    monochrome.setRGB(c, r, 0xffffff);
                 } else {
                     // Black
-                    monochrome.setRGB(r, c, 0x000000);
+                    monochrome.setRGB(c, r, 0x000000);
                 }
             }
         }
