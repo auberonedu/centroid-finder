@@ -79,6 +79,9 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
+        if (image == null) throw new NullPointerException("Image array is null.");
+        if (image.length == 0) throw new IllegalArgumentException("Image array is null.");
+        
         return null;
     }
 }
