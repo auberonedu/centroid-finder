@@ -147,5 +147,4 @@ class DistanceImageBinarizerTest {
         ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
         assertThrows(NullPointerException.class, () -> binarizer.toBufferedImage(null));
     }
-
 }
