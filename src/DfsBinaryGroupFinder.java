@@ -3,6 +3,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
+
+    // Directions to move in the grid: up, down, left, right
     private final int[][] directions = new int[][] {
             { -1, 0 }, // up
             { 1, 0 }, // down
@@ -48,47 +50,64 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
      */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
+        // Validation the image
         if (image == null) throw new NullPointerException("Null array or subarray");
-
         if (image.length == 0) throw new IllegalArgumentException("Invalid array");
 
+        // Validation for subarrays
         for(int[] row : image) {
-            if(row == null) throw new NullPointerException("Null array or subarray");
+            if (row == null) throw new NullPointerException("Null array or subarray");
         }
 
         if (image[0].length == 0) throw new IllegalArgumentException("Invalid array");
 
         List<Group> groups = new ArrayList<>();
         boolean[][] visited = new boolean[image.length][image[0].length];
+
+        // Iterate through each pixel in the image
         for (int r = 0; r < image.length; r++) {
             for (int c = 0; c < image[0].length; c++) {
+                // Check for if the pixel is a part of a group
                 if (image[r][c] == 1 && !visited[r][c]) {
                     List<int[]> pixelatedGroup = new ArrayList<>();
+                    // Perform DFS to all connected pixels for this group
                     findConnectedGroups(image, new int[] { r, c }, visited, pixelatedGroup);
+                    // Convert the list of pixels to a Group and adding to the result
                     groups.add(createGroup(pixelatedGroup));
                 }
             }
         }
-        // descending order
+        // Sort the groups in descending order
         groups.sort(Collections.reverseOrder());
 
         return groups;
     }
 
+    /**
+     * Locates connected groups of pixels in the image from a given location.
+     * 
+     * @param image a rectangular 2D array containing only 1s and 0s
+     * @param location the starting coordinates (row, column) for the search
+     * @param visited the boolean array used to track visited pixels
+     * @param pixelatedGroup a list that contains the found connected pixels
+     */
     private void findConnectedGroups(int[][] image, int[] location, boolean[][] visited, List<int[]> pixelatedGroup) {
         int curR = location[0];
         int curC = location[1];
 
+        // Validate coordinates to ensure they are within the boundaries of image
         if (curR < 0 || curR >= image.length || curC < 0 || curC >= image[0].length)
             return;
 
+        // Skip if the current pixel has already been visited or is a '0'
         if (visited[curR][curC] || image[curR][curC] == 0)
             return;
 
+        // Mark the pixel as visited and add it to the group
         visited[curR][curC] = true;
-
         pixelatedGroup.add(location);
 
+        // Exploring all four directions (up, down, left, right)
         for (int[] direction : directions) {
             int newR = curR + direction[0];
             int newC = curC + direction[1];
@@ -97,18 +116,26 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         }
     }
 
-    // [r,c] = [y,x] must flip; centroid (x, y) = (totalX/size , totalY/size)
+    /**
+     * Converts a list of pixel coordinates into a Group. 
+     * The centroid is calculated by averaging the pixel coordinates.
+     * 
+     * @param pixelatedGroup a list of pixel coordinates that form a connected group
+     * @return a Group representing the connected group of pixels
+     */
     private Group createGroup(List<int[]> pixelatedGroup) {
         int totalXPixels = 0;
         int totalYPixels = 0;
 
         int size = pixelatedGroup.size();
 
-        for(int[] coord : pixelatedGroup) {
+        // Calculate the total of the x and y coordinates for the centroid
+        for (int[] coord : pixelatedGroup) {
             totalXPixels += coord[1];
             totalYPixels += coord[0];
         }
 
+        // Return a new Group with the size and the calculated centroid
         return new Group(size, new Coordinate(totalXPixels / size, totalYPixels / size));
     }
 }

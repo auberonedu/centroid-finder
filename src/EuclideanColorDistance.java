@@ -36,7 +36,7 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
      * Converts the passed in integer hex color in the form (0xRRGGBB) to an integer array of Red, Green, and Blue values.
      * 
      * @param color the color as a 24-bit hex RGB integer
-     * @return an array containing the red, green, and blue values
+     * @return an array containing the red, green, and blue values of color
      */
     public int[] convertHexToRGB(int color) {
         // Extract red component by shifting 16 bits to the right and masking with 0xff
