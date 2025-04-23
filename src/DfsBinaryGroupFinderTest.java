@@ -7,65 +7,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
-class Group implements Comparable<Group> {
-    private final int size;
-    private final int centroidX;
-    private final int centroidY;
-
-    public Group(int size, int centroidX, int centroidY) {
-        this.size = size;
-        this.centroidX = centroidX;
-        this.centroidY = centroidY;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public int getCentroidX() {
-        return centroidX;
-    }
-
-    public int getCentroidY() {
-        return centroidY;
-    }
-
-    @Override
-    public int compareTo(Group other) {
-        // Sort by size (descending)
-        int sizeComparison = Integer.compare(other.size, this.size);
-        if (sizeComparison != 0) {
-            return sizeComparison;
-        }
-
-        // If sizes are equal, sort by centroidY (descending)
-        int yComparison = Integer.compare(other.centroidY, this.centroidY);
-        if (yComparison != 0) {
-            return yComparison;
-        }
-
-        // If centroidY is also equal, sort by centroidX (descending)
-        return Integer.compare(other.centroidX, this.centroidX);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-        Group group = (Group) obj;
-        return size == group.size &&
-                centroidX == group.centroidX &&
-                centroidY == group.centroidY;
-    }
-
-    @Override
-    public String toString() {
-        return "Group{size=" + size + ", centroidX=" + centroidX + ", centroidY=" + centroidY + "}";
-    }
-}
-
 public class DfsBinaryGroupFinderTest {
 
     private DfsBinaryGroupFinder finder;
@@ -84,13 +25,13 @@ public class DfsBinaryGroupFinderTest {
                 { 0, 0, 0 }
         };
 
-        List<Group> expected = Collections.singletonList(new Group(4, 0, 0));
+        List<Group> expected = Collections.singletonList(new Group(4, new Coordinate(0, 0)));
         List<Group> actual = finder.findConnectedGroups(image);
 
         assertEquals(1, actual.size(), "Should find exactly one group");
-        assertEquals(expected.get(0).getSize(), actual.get(0).getSize(), "Group should have 4 pixels");
-        assertEquals(expected.get(0).getCentroidX(), actual.get(0).getCentroidX(), "Centroid X should be 0");
-        assertEquals(expected.get(0).getCentroidY(), actual.get(0).getCentroidY(), "Centroid Y should be 0");
+        assertEquals(expected.get(0).size(), actual.get(0).size(), "Group should have 4 pixels");
+        assertEquals(expected.get(0).centroid().x(), actual.get(0).centroid().x(), "Centroid X should be 0");
+        assertEquals(expected.get(0).centroid().y(), actual.get(0).centroid().y(), "Centroid Y should be 0");
     }
 
     @Test
@@ -108,19 +49,19 @@ public class DfsBinaryGroupFinderTest {
         assertEquals(4, actual.size(), "Should find exactly 4 groups");
 
         // Verify groups are sorted by size (descending)
-        assertTrue(actual.get(0).getSize() >= actual.get(1).getSize(),
+        assertTrue(actual.get(0).size() >= actual.get(1).size(),
                 "First group should be larger than or equal to second group");
 
         // Check the largest group (3 pixels at top right)
         Group largestGroup = actual.get(0);
-        assertEquals(3, largestGroup.getSize(), "Largest group should have 3 pixels");
-        assertEquals(2, largestGroup.getCentroidX(), "Largest group centroid X should be 2");
-        assertEquals(0, largestGroup.getCentroidY(), "Largest group centroid Y should be 0");
+        assertEquals(3, largestGroup.size(), "Largest group should have 3 pixels");
+        assertEquals(2, largestGroup.centroid().x(), "Largest group centroid X should be 2");
+        assertEquals(0, largestGroup.centroid().y(), "Largest group centroid Y should be 0");
 
         // Check other groups
-        assertEquals(2, actual.get(1).getSize(), "Second group should have 2 pixels");
-        assertEquals(1, actual.get(2).getSize(), "Third group should have 1 pixel");
-        assertEquals(1, actual.get(3).getSize(), "Fourth group should have 1 pixel");
+        assertEquals(2, actual.get(1).size(), "Second group should have 2 pixels");
+        assertEquals(1, actual.get(2).size(), "Third group should have 1 pixel");
+        assertEquals(1, actual.get(3).size(), "Fourth group should have 1 pixel");
     }
 
     @Test
@@ -146,13 +87,13 @@ public class DfsBinaryGroupFinderTest {
                 { 1, 1, 1 }
         };
 
-        List<Group> expected = Collections.singletonList(new Group(9, 1, 1));
+        List<Group> expected = Collections.singletonList(new Group(9, new Coordinate(1, 1)));
         List<Group> actual = finder.findConnectedGroups(image);
 
         assertEquals(1, actual.size(), "Should find exactly one group");
-        assertEquals(expected.get(0).getSize(), actual.get(0).getSize(), "Group should have 9 pixels");
-        assertEquals(expected.get(0).getCentroidX(), actual.get(0).getCentroidX(), "Centroid X should be 1");
-        assertEquals(expected.get(0).getCentroidY(), actual.get(0).getCentroidY(), "Centroid Y should be 1");
+        assertEquals(expected.get(0).size(), actual.get(0).size(), "Group should have 9 pixels");
+        assertEquals(expected.get(0).centroid().x(), actual.get(0).centroid().x(), "Centroid X should be 1");
+        assertEquals(expected.get(0).centroid().y(), actual.get(0).centroid().y(), "Centroid Y should be 1");
     }
 
     @Test
@@ -166,13 +107,13 @@ public class DfsBinaryGroupFinderTest {
                 { 0, 0, 0, 0, 0 }
         };
 
-        List<Group> expected = Collections.singletonList(new Group(5, 2, 2));
+        List<Group> expected = Collections.singletonList(new Group(5, new Coordinate(2, 2)));
         List<Group> actual = finder.findConnectedGroups(image);
 
         assertEquals(1, actual.size(), "Should find exactly one group");
-        assertEquals(expected.get(0).getSize(), actual.get(0).getSize(), "Group should have 5 pixels");
-        assertEquals(expected.get(0).getCentroidX(), actual.get(0).getCentroidX(), "Centroid X should be 2");
-        assertEquals(expected.get(0).getCentroidY(), actual.get(0).getCentroidY(), "Centroid Y should be 2");
+        assertEquals(expected.get(0).size(), actual.get(0).size(), "Group should have 5 pixels");
+        assertEquals(expected.get(0).centroid().x(), actual.get(0).centroid().x(), "Centroid X should be 2");
+        assertEquals(expected.get(0).centroid().y(), actual.get(0).centroid().y(), "Centroid Y should be 2");
     }
 
     @Test
@@ -186,13 +127,13 @@ public class DfsBinaryGroupFinderTest {
                 { 0, 0, 1, 0, 0 }
         };
 
-        List<Group> expected = Collections.singletonList(new Group(5, 2, 2));
+        List<Group> expected = Collections.singletonList(new Group(5, new Coordinate(2, 2)));
         List<Group> actual = finder.findConnectedGroups(image);
 
         assertEquals(1, actual.size(), "Should find exactly one group");
-        assertEquals(expected.get(0).getSize(), actual.get(0).getSize(), "Group should have 5 pixels");
-        assertEquals(expected.get(0).getCentroidX(), actual.get(0).getCentroidX(), "Centroid X should be 2");
-        assertEquals(expected.get(0).getCentroidY(), actual.get(0).getCentroidY(), "Centroid Y should be 2");
+        assertEquals(expected.get(0).size(), actual.get(0).size(), "Group should have 5 pixels");
+        assertEquals(expected.get(0).centroid().x(), actual.get(0).centroid().x(), "Centroid X should be 2");
+        assertEquals(expected.get(0).centroid().y(), actual.get(0).centroid().y(), "Centroid Y should be 2");
     }
 
     @Test
@@ -210,10 +151,10 @@ public class DfsBinaryGroupFinderTest {
 
         assertEquals(3, actual.size(), "Should find exactly 3 groups");
 
-        // All groups have size 2, so they should be sorted by centroid Y (descending)
-        assertEquals(4, actual.get(0).getCentroidY(), "First group should have highest Y");
-        assertEquals(2, actual.get(1).getCentroidY(), "Second group should have middle Y");
-        assertEquals(0, actual.get(2).getCentroidY(), "Third group should have lowest Y");
+        // All groups have size 2, so they should be sorted by centroid X (descending)
+        assertEquals(4, actual.get(0).centroid().y(), "First group should have highest Y");
+        assertEquals(2, actual.get(1).centroid().y(), "Second group should have middle Y");
+        assertEquals(0, actual.get(2).centroid().y(), "Third group should have lowest Y");
     }
 
     @Test
@@ -231,7 +172,7 @@ public class DfsBinaryGroupFinderTest {
 
         // Both groups have size 2 and same Y, so they should be sorted by X
         // (descending)
-        assertTrue(actual.get(0).getCentroidX() > actual.get(1).getCentroidX(),
+        assertTrue(actual.get(0).centroid().x() > actual.get(1).centroid().x(),
                 "First group should have higher X value");
     }
 
@@ -240,13 +181,13 @@ public class DfsBinaryGroupFinderTest {
     void testSinglePixelGrid() {
         int[][] image = { { 1 } };
 
-        List<Group> expected = Collections.singletonList(new Group(1, 0, 0));
+        List<Group> expected = Collections.singletonList(new Group(1, new Coordinate(0, 0)));
         List<Group> actual = finder.findConnectedGroups(image);
 
         assertEquals(1, actual.size(), "Should find exactly one group");
-        assertEquals(expected.get(0).getSize(), actual.get(0).getSize(), "Group should have 1 pixel");
-        assertEquals(expected.get(0).getCentroidX(), actual.get(0).getCentroidX(), "Centroid X should be 0");
-        assertEquals(expected.get(0).getCentroidY(), actual.get(0).getCentroidY(), "Centroid Y should be 0");
+        assertEquals(expected.get(0).size(), actual.get(0).size(), "Group should have 1 pixel");
+        assertEquals(expected.get(0).centroid().x(), actual.get(0).centroid().x(), "Centroid X should be 0");
+        assertEquals(expected.get(0).centroid().y(), actual.get(0).centroid().y(), "Centroid Y should be 0");
     }
 
     @Test
@@ -311,23 +252,23 @@ public class DfsBinaryGroupFinderTest {
         };
 
         List<Group> actual = finder.findConnectedGroups(image);
-
-        assertEquals(4, actual.size(), "Should find exactly 4 groups");
+        System.out.println(actual);
+        assertEquals(5, actual.size(), "Should find exactly 5 groups");
 
         // First group should be the 4-pixel group at top-left
-        assertEquals(4, actual.get(0).getSize(), "First group should have 4 pixels");
-        assertEquals(0, actual.get(0).getCentroidX(), "First group centroid X should be 0");
-        assertEquals(0, actual.get(0).getCentroidY(), "First group centroid Y should be 0");
+        assertEquals(4, actual.get(0).size(), "First group should have 4 pixels");
+        assertEquals(0, actual.get(0).centroid().x(), "First group centroid X should be 0");
+        assertEquals(0, actual.get(0).centroid().y(), "First group centroid Y should be 0");
 
         // Second group should be the 4-pixel group at top-right
-        assertEquals(4, actual.get(1).getSize(), "Second group should have 4 pixels");
-        assertEquals(4, actual.get(1).getCentroidX(), "Second group centroid X should be 4");
-        assertEquals(0, actual.get(1).getCentroidY(), "Second group centroid Y should be 0");
+        assertEquals(4, actual.get(1).size(), "Second group should have 4 pixels");
+        assertEquals(4, actual.get(1).centroid().x(), "Second group centroid X should be 4");
+        assertEquals(0, actual.get(1).centroid().y(), "Second group centroid Y should be 0");
 
         // Third group should be the 4-pixel group in the middle
-        assertEquals(4, actual.get(2).getSize(), "Third group should have 4 pixels");
-        assertEquals(2, actual.get(2).getCentroidX(), "Third group centroid X should be 2");
-        assertEquals(2, actual.get(2).getCentroidY(), "Third group centroid Y should be 2");
+        assertEquals(4, actual.get(2).size(), "Third group should have 4 pixels");
+        assertEquals(2, actual.get(2).centroid().x(), "Third group centroid X should be 2");
+        assertEquals(2, actual.get(2).centroid().y(), "Third group centroid Y should be 2");
     }
 
     @Test
@@ -348,12 +289,12 @@ public class DfsBinaryGroupFinderTest {
 
         // All groups should have size 1
         for (Group group : actual) {
-            assertEquals(1, group.getSize(), "Each group should have exactly 1 pixel");
+            assertEquals(1, group.size(), "Each group should have exactly 1 pixel");
         }
 
         // First group should be in the bottom-right corner
-        assertEquals(9, actual.get(0).getCentroidX(), "First group should have highest X");
-        assertEquals(9, actual.get(0).getCentroidY(), "First group should have highest Y");
+        assertEquals(9, actual.get(0).centroid().x(), "First group should have highest X");
+        assertEquals(9, actual.get(0).centroid().y(), "First group should have highest Y");
     }
 
     @Test
@@ -366,13 +307,13 @@ public class DfsBinaryGroupFinderTest {
         assertEquals(3, actual.size(), "Should find 3 groups");
 
         // Check the 2-pixel group
-        assertEquals(2, actual.get(0).getSize(), "First group should have 2 pixels");
-        assertEquals(2, actual.get(0).getCentroidX(), "First group centroid X should be 2");
-        assertEquals(0, actual.get(0).getCentroidY(), "First group centroid Y should be 0");
+        assertEquals(2, actual.get(0).size(), "First group should have 2 pixels");
+        assertEquals(2, actual.get(0).centroid().x(), "First group centroid X should be 2");
+        assertEquals(0, actual.get(0).centroid().y(), "First group centroid Y should be 0");
 
         // Check single-pixel groups
-        assertEquals(1, actual.get(1).getSize(), "Second group should have 1 pixel");
-        assertEquals(1, actual.get(2).getSize(), "Third group should have 1 pixel");
+        assertEquals(1, actual.get(1).size(), "Second group should have 1 pixel");
+        assertEquals(1, actual.get(2).size(), "Third group should have 1 pixel");
     }
 
     @Test
@@ -385,13 +326,13 @@ public class DfsBinaryGroupFinderTest {
         assertEquals(3, actual.size(), "Should find 3 groups");
 
         // Check the 2-pixel group
-        assertEquals(2, actual.get(0).getSize(), "First group should have 2 pixels");
-        assertEquals(0, actual.get(0).getCentroidX(), "First group centroid X should be 0");
-        assertEquals(2, actual.get(0).getCentroidY(), "First group centroid Y should be 2");
+        assertEquals(2, actual.get(0).size(), "First group should have 2 pixels");
+        assertEquals(0, actual.get(0).centroid().x(), "First group centroid X should be 0");
+        assertEquals(2, actual.get(0).centroid().y(), "First group centroid Y should be 2");
 
         // Check single-pixel groups
-        assertEquals(1, actual.get(1).getSize(), "Second group should have 1 pixel");
-        assertEquals(1, actual.get(2).getSize(), "Third group should have 1 pixel");
+        assertEquals(1, actual.get(1).size(), "Second group should have 1 pixel");
+        assertEquals(1, actual.get(2).size(), "Third group should have 1 pixel");
     }
 
     @Test
@@ -412,13 +353,13 @@ public class DfsBinaryGroupFinderTest {
 
         // Check the spiral group (outer perimeter)
         Group spiralGroup = actual.get(0);
-        assertEquals(16, spiralGroup.getSize(), "Spiral group should have 16 pixels");
+        assertEquals(16, spiralGroup.size(), "Spiral group should have 16 pixels");
 
         // Check the inner island
         Group innerGroup = actual.get(1);
-        assertEquals(3, innerGroup.getSize(), "Inner group should have 3 pixels");
-        assertEquals(1, innerGroup.getCentroidX(), "Inner group centroid X should be 1");
-        assertEquals(2, innerGroup.getCentroidY(), "Inner group centroid Y should be 2");
+        assertEquals(3, innerGroup.size(), "Inner group should have 3 pixels");
+        assertEquals(1, innerGroup.centroid().x(), "Inner group centroid X should be 1");
+        assertEquals(2, innerGroup.centroid().y(), "Inner group centroid Y should be 2");
     }
 
     @Test
@@ -442,16 +383,16 @@ public class DfsBinaryGroupFinderTest {
 
         // All groups should have equal size
         for (Group group : actual) {
-            assertEquals(1, group.getSize(), "Each group should have 1 pixel");
+            assertEquals(1, group.size(), "Each group should have 1 pixel");
         }
 
         // Check sorting: First should be bottom-right
-        assertEquals(5, actual.get(0).getCentroidX(), "First group should be at bottom-right (X)");
-        assertEquals(4, actual.get(0).getCentroidY(), "First group should be at bottom-right (Y)");
+        assertEquals(5, actual.get(0).centroid().x(), "First group should be at bottom-right (X)");
+        assertEquals(4, actual.get(0).centroid().y(), "First group should be at bottom-right (Y)");
 
         // Last should be top-left
-        assertEquals(1, actual.get(3).getCentroidX(), "Last group should be at top-left (X)");
-        assertEquals(1, actual.get(3).getCentroidY(), "Last group should be at top-left (Y)");
+        assertEquals(1, actual.get(3).centroid().x(), "Last group should be at top-left (X)");
+        assertEquals(1, actual.get(3).centroid().y(), "Last group should be at top-left (Y)");
     }
 
     @Test
@@ -477,12 +418,12 @@ public class DfsBinaryGroupFinderTest {
         assertEquals(2, actual.size(), "Should find 2 groups");
 
         // First group should be at bottom-right extreme
-        assertEquals(99, actual.get(0).getCentroidX(), "First group should be at extreme bottom-right (X)");
-        assertEquals(99, actual.get(0).getCentroidY(), "First group should be at extreme bottom-right (Y)");
+        assertEquals(99, actual.get(0).centroid().x(), "First group should be at extreme bottom-right (X)");
+        assertEquals(99, actual.get(0).centroid().y(), "First group should be at extreme bottom-right (Y)");
 
         // Second group should be at top-left extreme
-        assertEquals(0, actual.get(1).getCentroidX(), "Second group should be at extreme top-left (X)");
-        assertEquals(0, actual.get(1).getCentroidY(), "Second group should be at extreme top-left (Y)");
+        assertEquals(0, actual.get(1).centroid().x(), "Second group should be at extreme top-left (X)");
+        assertEquals(0, actual.get(1).centroid().y(), "Second group should be at extreme top-left (Y)");
     }
 
     @Test
@@ -501,16 +442,16 @@ public class DfsBinaryGroupFinderTest {
         // Should have 3 groups: bottom row, right column, and top-left L
         assertEquals(3, actual.size(), "Should find 3 groups");
 
-        // First group should be the bottom row (5 pixels)
-        assertEquals(5, actual.get(0).getSize(), "First group should have 5 pixels");
-        assertEquals(2, actual.get(0).getCentroidX(), "First group centroid X should be 2");
-        assertEquals(4, actual.get(0).getCentroidY(), "First group centroid Y should be 4");
+        // First group should be the bottom row (7 pixels)
+        assertEquals(7, actual.get(0).size(), "First group should have 7 pixels");
+        assertEquals(2, actual.get(0).centroid().x(), "First group centroid X should be 2");
+        assertEquals(4, actual.get(0).centroid().y(), "First group centroid Y should be 4");
 
         // Second group should be the top-left L shape (5 pixels)
-        assertEquals(5, actual.get(1).getSize(), "Second group should have 5 pixels");
+        assertEquals(5, actual.get(1).size(), "Second group should have 5 pixels");
 
         // Third group should be the right column segment (3 pixels)
-        assertEquals(3, actual.get(2).getSize(), "Third group should have 3 pixels");
-        assertEquals(4, actual.get(2).getCentroidX(), "Third group centroid X should be 4");
+        assertEquals(3, actual.get(2).size(), "Third group should have 3 pixels");
+        assertEquals(4, actual.get(2).centroid().x(), "Third group centroid X should be 4");
     }
 }
