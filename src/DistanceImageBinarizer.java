@@ -45,6 +45,16 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public int[][] toBinaryArray(BufferedImage image) {
+        if (image == null) throw new NullPointerException("Image is null");
+        
+        // Using getWidth() and getHeight() to get the respected size of image to populate a 2d array
+        int[][] bArray = new int[image.getHeight()][image.getWidth()];
+        
+        for (int r = 0; r < bArray.length; r++) {
+            for (int c = 0; c < bArray[r].length; c++) {
+                int pixel = image.getRGB(r, c);
+            }
+        }
         return null;
     }
 
