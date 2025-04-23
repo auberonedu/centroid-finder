@@ -82,6 +82,22 @@ public class DistanceImageBinarizer implements ImageBinarizer {
         if (image == null) throw new NullPointerException("Image array is null.");
         if (image.length == 0) throw new IllegalArgumentException("Image array is null.");
         
-        return null;
+        // Creating a BufferedImage with proportional height and width to image array
+        // Using BufferedImage.TYPE_INT_RGB represents an imagage with 8 bit rgb color components, that we will reassign with setRGB
+        BufferedImage monochrome = new BufferedImage(image[0].length, image.length, BufferedImage.TYPE_INT_RGB);
+
+        for (int r = 0; r < image.length; r++) {
+            for (int c = 0; c < image[r].length; c++) {
+                // As we go through the image array we reassign the rgb using set at the point of the array
+                if (image[r][c] == 1){
+                    // White
+                    monochrome.setRGB(r, c, 0xffffff);
+                } else {
+                    // Black
+                    monochrome.setRGB(r, c, 0x000000);
+                }
+            }
+        }
+        return monochrome;
     }
 }
