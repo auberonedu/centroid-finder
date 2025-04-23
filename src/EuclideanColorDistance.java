@@ -1,5 +1,3 @@
-import static java.lang.StrictMath.sqrt;
-
 public class EuclideanColorDistance implements ColorDistanceFinder {
     /**
      * Returns the euclidean color distance between two hex RGB colors.
@@ -32,7 +30,7 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
         int greenTwo = colorTwo[1];
         int blueTwo = colorTwo[2];
         
-        return sqrt(Math.pow((redOne - redTwo), 2) + Math.pow((greenOne - greenTwo),2) + Math.pow((blueOne - blueTwo),2));
+        return Math.sqrt(Math.pow((redOne - redTwo), 2) + Math.pow((greenOne - greenTwo),2) + Math.pow((blueOne - blueTwo),2));
     }
 
     public static int[] convertColor(int color) {
