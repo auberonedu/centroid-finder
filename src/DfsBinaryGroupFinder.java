@@ -86,13 +86,14 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         }
 
         // Sorting the groups in descending order
-        Collections.sort(groups, Collections.reverseOrder());
+        Collections.sort(groups);
+        System.out.println(groups);
         
         return groups;
     }
 
     // Helper method to find connected groups
-    private Group findPixelGroups(int[][] image, boolean[][] visited, int yCoord, int xCoord) {
+    public Group findPixelGroups(int[][] image, boolean[][] visited, int yCoord, int xCoord) {
 
         // List to store group pixel coordinates
         List<int[]> pixelCoordinates = new ArrayList<>();
@@ -107,8 +108,8 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         int yCoordSum = 0;
 
         for (int[] pixelCoord : pixelCoordinates) {
-            xCoordSum += pixelCoord[0];
-            yCoordSum += pixelCoord[1];
+            xCoordSum += pixelCoord[1];
+            yCoordSum += pixelCoord[0];
         }
 
         // Math to find the centroid
@@ -119,8 +120,8 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return new Group(groupSize, xCentroid, yCentroid);
     }
 
-    // Helper method for movement through connected groups
-    private static void pixelGroupTraversal(int[][] image, boolean[][] visited, int row, int col, List<int[]> pixels) {
+    // Helper method for movement through connected pixels
+    private static void pixelGroupTraversal(int[][] image, boolean[][] visited, int row, int col, List<int[]> pixelGroups) {
         int[][] directions = new int[][] 
         {
                 { -1, 0 },
@@ -130,7 +131,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         };
 
         visited[row][col] = true;
-        pixels.add(new int[]{row, col});
+        pixelGroups.add(new int[]{row, col});
 
         for (int[] direction : directions) {
             int newRow = row + direction[0];
@@ -141,10 +142,9 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             // If the cell col is within bounds
             newCol >= 0 && newCol < image[0].length &&
             // If the cell contains a 1
-            image[newRow][newCol] == 1 &&
-            // If we haven't visited the cell
-            !visited[newRow][newCol]) {
-            pixelGroupTraversal(image, visited, newRow, newCol, pixels);
+            image[newRow][newCol] == 1 && !visited[newRow][newCol])
+            {
+                pixelGroupTraversal(image, visited, newRow, newCol, pixelGroups);
             }
         }
     }
