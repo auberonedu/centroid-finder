@@ -1,4 +1,5 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.image.BufferedImage;
@@ -282,4 +283,85 @@ public class BinarizingImageGroupFinderTest {
         assertEquals(new Coordinate(1, 1), result.get(0).centroid());
     }
 
+    @Test
+    public void testNonSquareImage() {
+        // Arrange
+        BufferedImage fakeImage = new BufferedImage(5, 3, BufferedImage.TYPE_INT_RGB);
+
+        FakeImageBinarizer binarizer = new FakeImageBinarizer() {
+            @Override
+            public int[][] toBinaryArray(BufferedImage image) {
+                called = true;
+                return new int[][] {
+                        { 1, 0, 1, 0, 1 },
+                        { 0, 0, 0, 1, 0 },
+                        { 1, 0, 1, 0, 1 }
+                };
+            }
+        };
+
+        FakeBinaryGroupFinder groupFinder = new FakeBinaryGroupFinder() {
+            @Override
+            public List<Group> findConnectedGroups(int[][] binaryImage) {
+                called = true;
+                List<Group> groups = new ArrayList<>();
+                groups.add(new Group(3, new Coordinate(0, 0)));
+                groups.add(new Group(3, new Coordinate(1, 4)));
+                return groups;
+            }
+        };
+
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
+
+        // Act
+        List<Group> result = finder.findConnectedGroups(fakeImage);
+
+        // Assert
+        assertTrue(binarizer.called);
+        assertTrue(groupFinder.called);
+
+        assertEquals(2, result.size());
+        assertEquals(3, result.get(0).size());
+        assertEquals(new Coordinate(0, 0), result.get(0).centroid());
+        assertEquals(new Coordinate(1, 4), result.get(1).centroid());
+    }
+
+    @Test
+    public void testSingleRowImage() {
+        // Arrange
+        BufferedImage fakeImage = new BufferedImage(1, 5, BufferedImage.TYPE_INT_RGB);
+
+        FakeImageBinarizer binarizer = new FakeImageBinarizer() {
+            @Override
+            public int[][] toBinaryArray(BufferedImage image) {
+                called = true;
+                return new int[][] {
+                        { 1, 0, 1, 0, 1 }
+                };
+            }
+        };
+
+        FakeBinaryGroupFinder groupFinder = new FakeBinaryGroupFinder() {
+            @Override
+            public List<Group> findConnectedGroups(int[][] binaryImage) {
+                called = true;
+                List<Group> groups = new ArrayList<>();
+                groups.add(new Group(3, new Coordinate(0, 0)));
+                return groups;
+            }
+        };
+
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
+
+        // Act
+        List<Group> result = finder.findConnectedGroups(fakeImage);
+
+        // Assert
+        assertTrue(binarizer.called);
+        assertTrue(groupFinder.called);
+        
+        assertEquals(1, result.size());
+        assertEquals(3, result.get(0).size());
+        assertEquals(new Coordinate(0, 0), result.get(0).centroid());
+    }
 }
