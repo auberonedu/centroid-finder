@@ -80,68 +80,72 @@ class DistanceImageBinarizerTest {
     }
 
     @Test
-    void testToBufferedImage_AllWhitePixels() {
+    public void testToBufferedImage_allWhitePixels() {
         int[][] binary = {
             {1, 1},
             {1, 1}
         };
 
-        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(new EuclideanColorDistance(), 0, 50);
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
         BufferedImage image = binarizer.toBufferedImage(binary);
 
         assertEquals(2, image.getWidth());
         assertEquals(2, image.getHeight());
 
-        for (int y = 0; y < 2; y++) {
-            for (int x = 0; x < 2; x++) {
-                assertEquals(0xFFFFFF, image.getRGB(x, y));
-            }
-        }
+        assertEquals(0xffffffff, image.getRGB(0, 0));
+        assertEquals(0xffffffff, image.getRGB(1, 0));
+        assertEquals(0xffffffff, image.getRGB(0, 1));
+        assertEquals(0xffffffff, image.getRGB(1, 1));
     }
 
     @Test
-    void testToBufferedImage_AllBlackPixels() {
+    public void testToBufferedImage_allBlackPixels() {
         int[][] binary = {
             {0, 0},
             {0, 0}
         };
 
-        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(new EuclideanColorDistance(), 0, 50);
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
         BufferedImage image = binarizer.toBufferedImage(binary);
 
-        for (int y = 0; y < 2; y++) {
-            for (int x = 0; x < 2; x++) {
-                assertEquals(0x000000, image.getRGB(x, y));
-            }
-        }
+        assertEquals(2, image.getWidth());
+        assertEquals(2, image.getHeight());
+
+        assertEquals(0xff000000, image.getRGB(0, 0));
+        assertEquals(0xff000000, image.getRGB(1, 0));
+        assertEquals(0xff000000, image.getRGB(0, 1));
+        assertEquals(0xff000000, image.getRGB(1, 1));
     }
 
     @Test
-    void testToBufferedImage_MixedPixels() {
+    public void testToBufferedImage_mixedValues() {
         int[][] binary = {
             {0, 1},
             {1, 0}
         };
 
-        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(new EuclideanColorDistance(), 0, 50);
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
         BufferedImage image = binarizer.toBufferedImage(binary);
 
-        assertEquals(0x000000, image.getRGB(0, 0));
-        assertEquals(0xFFFFFF, image.getRGB(1, 0));
-        assertEquals(0xFFFFFF, image.getRGB(0, 1));
-        assertEquals(0x000000, image.getRGB(1, 1));
+        assertEquals(2, image.getWidth());
+        assertEquals(2, image.getHeight());
+
+        assertEquals(0xff000000, image.getRGB(0, 0));
+        assertEquals(0xffffffff, image.getRGB(1, 0));
+        assertEquals(0xffffffff, image.getRGB(0, 1));
+        assertEquals(0xff000000, image.getRGB(1, 1));
     }
 
     @Test
-    void testToBufferedImage_NullInput_ShouldThrowException() {
-        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(new EuclideanColorDistance(), 0, 50);
-        assertThrows(NullPointerException.class, () -> binarizer.toBufferedImage(null));
-    }
-
-    @Test
-    void testToBufferedImage_EmptyArray_ShouldThrowException() {
-        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(new EuclideanColorDistance(), 0, 50);
+    public void testToBufferedImage_emptyArray_shouldThrowException() {
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
         assertThrows(IllegalArgumentException.class, () -> binarizer.toBufferedImage(new int[0][0]));
+    }
+
+    @Test
+    public void testToBufferedImage_nullArray_shouldThrowException() {
+        ImageBinarizer binarizer = new DistanceImageBinarizer(null, 0, 0);
+        assertThrows(NullPointerException.class, () -> binarizer.toBufferedImage(null));
     }
 
 }
