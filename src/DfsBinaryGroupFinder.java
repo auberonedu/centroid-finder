@@ -79,7 +79,8 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 if (image[r][c] == 1 && !visited[r][c]) {
-                    // Logic goes here
+                    Group group = findPixelGroups(image, visited, r, c);
+                    groups.add(group);
                 }
             }
         }
@@ -92,9 +93,6 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
     // Helper method to find connected groups
     private Group findPixelGroups(int[][] image, boolean[][] visited, int yCoord, int xCoord) {
-
-        int rows = image.length;
-        int cols = image[0].length;
 
         // List to store group pixel coordinates
         List<int[]> pixelCoordinates = new ArrayList<>();
@@ -146,7 +144,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             image[newRow][newCol] == 1 &&
             // If we haven't visited the cell
             !visited[newRow][newCol]) {
-            pixelGroupTraversal(image, visited, row, col, pixels);
+            pixelGroupTraversal(image, visited, newRow, newCol, pixels);
             }
         }
     }
