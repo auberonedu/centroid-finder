@@ -86,20 +86,19 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         }
 
         // Sorting the groups in descending order
-        Collections.sort(groups);
-        System.out.println(groups);
+        groups.sort(Collections.reverseOrder());
         
         return groups;
     }
 
     // Helper method to find connected groups
-    public Group findPixelGroups(int[][] image, boolean[][] visited, int yCoord, int xCoord) {
+    public Group findPixelGroups(int[][] image, boolean[][] visited, int row, int col) {
 
         // List to store group pixel coordinates
         List<int[]> pixelCoordinates = new ArrayList<>();
 
         // DFS/Recursion to find all connected pixels
-        pixelGroupTraversal(image, visited, yCoord, xCoord, pixelCoordinates);
+        pixelGroupTraversal(image, visited, row, col, pixelCoordinates);
 
         int groupSize = pixelCoordinates.size();
 
@@ -117,7 +116,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         int yCentroid = yCoordSum / groupSize;
 
         // Create a new group and return it
-        return new Group(groupSize, xCentroid, yCentroid);
+        return new Group(groupSize, new Coordinate(xCentroid, yCentroid));
     }
 
     // Helper method for movement through connected pixels
