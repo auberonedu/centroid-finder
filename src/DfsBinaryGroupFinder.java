@@ -67,7 +67,13 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                 int totalX = 0;
                 int totalY = 0;
                 
+                for (Coordinate pixel : pixelGroup) {
+                    
+                    totalX += pixel.x();
+                    totalY += pixel.y();
 
+                    }    
+                    
                 int centroidX = totalX / size;
                 int centroidY = totalY / size;
 
@@ -75,6 +81,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                 }
             }
         }
+        //to return in decending order 
         Collections.sort(groups, Collections.reverseOrder());
         return groups;
     }

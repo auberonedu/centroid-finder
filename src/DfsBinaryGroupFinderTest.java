@@ -33,24 +33,28 @@ class DfsBinaryGroupFinderTest {
     @Test
     void testMultipleGroups() {
         int[][] image = {
-            {1, 0, 0},
+            {1, 0, 1},
             {0, 0, 0},
             {0, 0, 1}
         };
 
         List<Group> groups = finder.findConnectedGroups(image);
 
-        assertEquals(2, groups.size());
+        assertEquals(3, groups.size());
 
         Group first = groups.get(0);
         Group second = groups.get(1);
+        Group third = groups.get(2);
 
         // Both groups have size 1, so order is by descending Y then descending X
         assertEquals(1, first.size());
         assertEquals(new Coordinate(2, 2), first.centroid());
 
         assertEquals(1, second.size());
-        assertEquals(new Coordinate(0, 0), second.centroid());
+        assertEquals(new Coordinate(2, 0), second.centroid());
+
+        assertEquals(1, third.size());
+        assertEquals(new Coordinate(0, 0), third.centroid());
     }
 
     @Test
