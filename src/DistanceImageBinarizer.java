@@ -52,10 +52,21 @@ public class DistanceImageBinarizer implements ImageBinarizer {
         
         for (int r = 0; r < bArray.length; r++) {
             for (int c = 0; c < bArray[r].length; c++) {
+                // As we are looping over the array, we save the pixel at the point at row and column
                 int pixel = image.getRGB(r, c);
+
+                // Using EuclideanColorDistance, we compare the target and the pixel
+                double distance = distanceFinder.distance(pixel, targetColor);
+
+                // We find whether we set the point to 0/black or 1/white
+                if (distance < threshold) {
+                    bArray[r][c] = 1;
+                } else {
+                    bArray[r][c] = 0;
+                }
             }
         }
-        return null;
+        return bArray;
     }
 
     /**
