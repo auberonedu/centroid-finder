@@ -93,11 +93,36 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     // Helper method to find connected groups
     private Group findPixelGroups(int[][] image, boolean[][] visited, int yCoord, int xCoord) {
 
+        int rows = image.length;
+        int cols = image[0].length;
+
+        // List to store group pixel coordinates
+        List<int[]> pixelCoordinates = new ArrayList<>();
+
+        // DFS/Recursion to find all connected pixels
+        pixelGroupTraversal(image, visited, yCoord, xCoord, pixelCoordinates);
+
+        int groupSize = pixelCoordinates.size();
+
+        // Initiating variables to be used to calculate sum of x/y coordinates
+        int xCoordSum = 0;
+        int yCoordSum = 0;
+
+        for (int[] pixelCoord : pixelCoordinates) {
+            xCoordSum += pixelCoord[0];
+            yCoordSum += pixelCoord[1];
+        }
+
+        // Math to find the centroid
+        int xCentroid = xCoordSum / groupSize;
+        int yCentroid = yCoordSum / groupSize;
+
+        // Create a new group and return it
+        return new Group(groupSize, xCentroid, yCentroid);
     }
 
     // Helper method for movement through connected groups
-    private static void pixelGroupTraversal(int[][] image, boolean[][] visited, int row, int col,
-            List<Group> groups) {
+    private static void pixelGroupTraversal(int[][] image, boolean[][] visited, int row, int col, List<int[]> pixels) {
         int[][] directions = new int[][] 
         {
                 { -1, 0 },
@@ -107,7 +132,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         };
 
         visited[row][col] = true;
-        //groups.add(row, col);
+        pixels.add(new int[]{row, col});
 
         for (int[] direction : directions) {
             int newRow = row + direction[0];
@@ -121,7 +146,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             image[newRow][newCol] == 1 &&
             // If we haven't visited the cell
             !visited[newRow][newCol]) {
-            findConnectedGroupsHelper(image, visited, row, col, groups);
+            pixelGroupTraversal(image, visited, row, col, pixels);
             }
         }
     }
