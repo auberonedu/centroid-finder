@@ -18,6 +18,7 @@ public class DfsBinaryGroupFinderTest {
 
     @Test
     public void testLargeConnectedGroup() {
+        // All 1s form one large group
         int[][] image = {
             {1, 1, 1},
             {1, 1, 1},
@@ -32,6 +33,7 @@ public class DfsBinaryGroupFinderTest {
 
     @Test
     public void testVerticalLineGroup() {
+        // Vertical line of 1s
         int[][] image = {
             {0, 1, 0},
             {0, 1, 0},
@@ -46,6 +48,7 @@ public class DfsBinaryGroupFinderTest {
 
     @Test
     public void testHorizontalLineGroup() {
+        // Horizontal line of 1s
         int[][] image = {
             {0, 0, 0},
             {1, 1, 1},
@@ -61,6 +64,7 @@ public class DfsBinaryGroupFinderTest {
 
     @Test
     public void testNoGroups() {
+        // All 0s, no groups
         int[][] image = {
             {0, 0},
             {0, 0}
@@ -72,6 +76,7 @@ public class DfsBinaryGroupFinderTest {
 
     @Test
     public void testMixedGroupSizes() {
+        // Two groups of different sizes - one large and one small
         int[][] image = {
             {1, 1, 0, 1},
             {1, 0, 0, 0},
@@ -90,6 +95,7 @@ public class DfsBinaryGroupFinderTest {
 
     @Test
     public void testNullImageThrowsException() {
+        // Null image should throw an exception
         assertThrows(NullPointerException.class, () -> {
             finder.findConnectedGroups(null);
         });
@@ -97,6 +103,7 @@ public class DfsBinaryGroupFinderTest {
 
     @Test
     public void testJaggedArrayThrowsException() {
+        // Jagged array (non-rectangular) should throw an exception
         int[][] image = {
             {1, 0},
             null,
@@ -110,14 +117,11 @@ public class DfsBinaryGroupFinderTest {
 
     @Test
     public void testEmptyArrayThrowsException() {
+        // Empty array should throw an exception
         int[][] image = new int[0][0];
     
         assertThrows(IllegalArgumentException.class, () -> {
             finder.findConnectedGroups(image);
         });
     }
-
-
-
-
 }
