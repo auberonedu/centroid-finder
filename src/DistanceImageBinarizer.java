@@ -45,7 +45,28 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public int[][] toBinaryArray(BufferedImage image) {
-        return null;
+        if (image == null) throw new NullPointerException("Image is null");
+        
+        // Using getWidth() and getHeight() to get the respected size of image to populate a 2d array
+        int[][] bArray = new int[image.getHeight()][image.getWidth()];
+        
+        for (int r = 0; r < bArray.length; r++) {
+            for (int c = 0; c < bArray[r].length; c++) {
+                // As we are looping over the array, we save the pixel at the point at row and column
+                int pixel = image.getRGB(r, c);
+
+                // Using EuclideanColorDistance, we compare the target and the pixel
+                double distance = distanceFinder.distance(pixel, targetColor);
+
+                // We find whether we set the point to 0/black or 1/white
+                if (distance < threshold) {
+                    bArray[r][c] = 1;
+                } else {
+                    bArray[r][c] = 0;
+                }
+            }
+        }
+        return bArray;
     }
 
     /**
@@ -58,6 +79,25 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
-        return null;
+        if (image == null) throw new NullPointerException("Image array is null.");
+        if (image.length == 0) throw new IllegalArgumentException("Image array is null.");
+        
+        // Creating a BufferedImage with proportional height and width to image array
+        // Using BufferedImage.TYPE_INT_RGB represents an image with 8 bit rgb color components, that we will reassign with setRGB
+        BufferedImage monochrome = new BufferedImage(image[0].length, image.length, BufferedImage.TYPE_INT_RGB);
+
+        for (int r = 0; r < image.length; r++) {
+            for (int c = 0; c < image[r].length; c++) {
+                // As we go through the image array we reassign the rgb using set at the point of the array
+                if (image[r][c] == 1){
+                    // White
+                    monochrome.setRGB(r, c, 0xffffff);
+                } else {
+                    // Black
+                    monochrome.setRGB(r, c, 0x000000);
+                }
+            }
+        }
+        return monochrome;
     }
 }
