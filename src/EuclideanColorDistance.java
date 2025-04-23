@@ -1,7 +1,4 @@
-
 import static java.lang.StrictMath.sqrt;
-
-
 
 public class EuclideanColorDistance implements ColorDistanceFinder {
     /**
