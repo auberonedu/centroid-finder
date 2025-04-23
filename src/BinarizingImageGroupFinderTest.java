@@ -46,9 +46,9 @@ class BinarizingImageGroupFinderTest {
         
         // Verify results
         assertEquals(1, groups.size(), "Should find exactly one group");
-        assertEquals(4, groups.get(0).getSize(), "Group should have 4 pixels");
-        assertEquals(0, groups.get(0).getCentroidX(), "Centroid X should be 0");
-        assertEquals(0, groups.get(0).getCentroidY(), "Centroid Y should be 0");
+        assertEquals(4, groups.get(0).size(), "Group should have 4 pixels");
+        assertEquals(0, groups.get(0).centroid().x(), "Centroid X should be 0");
+        assertEquals(0, groups.get(0).centroid().y(), "Centroid Y should be 0");
     }
 
     @Test
@@ -77,11 +77,11 @@ class BinarizingImageGroupFinderTest {
         assertEquals(2, groups.size(), "Should find exactly two groups");
         
         // Both groups should be the same size
-        assertEquals(4, groups.get(0).getSize(), "First group should have 4 pixels");
-        assertEquals(4, groups.get(1).getSize(), "Second group should have 4 pixels");
+        assertEquals(4, groups.get(0).size(), "First group should have 4 pixels");
+        assertEquals(4, groups.get(1).size(), "Second group should have 4 pixels");
         
         // Groups should be sorted by centroid Y in descending order
-        assertTrue(groups.get(0).getCentroidY() > groups.get(1).getCentroidY(), 
+        assertTrue(groups.get(0).centroid().y() > groups.get(1).centroid().y(), 
                 "Groups should be sorted by centroid Y in descending order");
     }
 
@@ -117,9 +117,9 @@ class BinarizingImageGroupFinderTest {
         
         // Verify results
         assertEquals(1, groups.size(), "Should find one group in an all-white image");
-        assertEquals(16, groups.get(0).getSize(), "Group should contain all 16 pixels");
-        assertEquals(1, groups.get(0).getCentroidX(), "Centroid X should be 1");
-        assertEquals(1, groups.get(0).getCentroidY(), "Centroid Y should be 1");
+        assertEquals(16, groups.get(0).size(), "Group should contain all 16 pixels");
+        assertEquals(1, groups.get(0).centroid().x(), "Centroid X should be 1");
+        assertEquals(1, groups.get(0).centroid().y(), "Centroid Y should be 1");
     }
 
     @Test
@@ -144,7 +144,7 @@ class BinarizingImageGroupFinderTest {
         
         // Verify results
         assertEquals(1, groups.size(), "Should find one group for the L shape");
-        assertEquals(5, groups.get(0).getSize(), "Group should have 5 pixels");
+        assertEquals(5, groups.get(0).size(), "Group should have 5 pixels");
         // The centroid coordinates depend on the specific implementation of the L-shape
     }
 
@@ -175,12 +175,12 @@ class BinarizingImageGroupFinderTest {
         
         // All groups should be single pixels
         for (Group group : groups) {
-            assertEquals(1, group.getSize(), "Each group should be a single pixel");
+            assertEquals(1, group.size(), "Each group should be a single pixel");
         }
         
         // First group should be bottom-right (highest Y and X)
-        assertEquals(3, groups.get(0).getCentroidY(), "First group should have highest Y");
-        assertEquals(3, groups.get(0).getCentroidX(), "First group should have highest X");
+        assertEquals(3, groups.get(0).centroid().y(), "First group should have highest Y");
+        assertEquals(3, groups.get(0).centroid().x(), "First group should have highest X");
     }
 
     /**
