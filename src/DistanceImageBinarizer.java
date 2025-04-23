@@ -83,15 +83,32 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
+        //set white and black color codes
         int black = 0x000000;
         int white = 0xFFFFFF;
 
+        // get input height and width
         int height = image.length;
         int width = image[0].length;
 
+        // create new BufferImage
         BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
 
+        // loop through full 2d array
+        for(int row = 0; row < height; row++){
+            for(int col = 0; col < width; col++){
+                // if binary image is 1, set to white
+                if(image[row][col] == 1){
+                    resultImage.setRGB(col, row, white);
+                    //else set to black
+                } else {
+                    resultImage.setRGB(col, row, black);
+                }
+            }
+        }
+
+        //return the BufferedImage
         return resultImage;
     }
 }
