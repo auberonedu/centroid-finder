@@ -5,8 +5,6 @@ import java.util.List;
 
 public class DfsBinaryGroupFinderTest {
 
-
-
     // find Connected Groups
         // image has null row, NullPointerException
         // image row length = 0, IllegalArgumentException
@@ -24,7 +22,7 @@ public class DfsBinaryGroupFinderTest {
         }
 
         @Test
-        public void testFindConnectedGroups_oneGroups() {
+        public void testFindConnectedGroups_oneGroup() {
             // Create image
             int[][] image = new int[][]{
                 {0, 1},

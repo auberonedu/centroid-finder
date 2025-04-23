@@ -80,8 +80,14 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return groupsList;
     }
 
-        // getCoordinates
-        // Will this pass by reference or value?
+        /**
+         * Recurses over connected groups of 1s and adds their coordinates to a list.
+         * 
+         * @param image a 2d array of 1s and 0s representing a binary image
+         * @param row a row coordinate
+         * @param col a column coordinate
+         * @param groupCoordList a list of the coordinates of each 1 in a contiguous group
+         */
         public static void getCoordinates(int[][] image, int row, int col, List<Coordinate> groupCoordList){
             // base case to avoid recursive doom -- is directions valid? is this a 1?
             if (row < 0 || row >= image.length ||
@@ -106,12 +112,22 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             }
         }
 
-    // getArea
+    /**
+     * Returns total area of a connected group of coordinates.
+     * 
+     * @param coords a list of all coordinates in a connected group of 1s
+     * @return the total area
+     */
     public static int getArea(List<Coordinate> coords){
         return coords.size();
     }
     
-    // getCentroid
+    /**
+     * Returns a coordinate that is the at the center of a connected groups of 1s.
+     * 
+     * @param coords a list of all coordinates in a connected group of 1s
+     * @return a coordinate where x is the average of all x coordinates in the group and y is the average of all y coordinates in the group.
+     */
     public static Coordinate getCentroid(List<Coordinate> coords){
         int totalX = 0; // total x
         int totalY = 0; // total y

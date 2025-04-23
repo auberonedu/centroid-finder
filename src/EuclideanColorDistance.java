@@ -45,10 +45,17 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
         return Math.sqrt(distR * distR + distG * distG + distB * distB);
     }
 
-    // Helper method to convert a hex int into R, G, B components
+    /**
+     * Returns the aRGB version of a hexadecimal number representing a color.
+     * 
+     * @param hex a hexadecimal representation of a color
+     * @return an array containing alpha, red, green, and blue colors in int form, 0-255
+     */
     public static int[] hexToRGB(int hex) {
-        // conversion of red
+        // conversion of alpha
+            // int alpha = the hex >> 24
         int alpha = (hex >> 24) & mask;
+        // conversion of red
             // int red = the hex >> 16
         int red = (hex >> 16) & mask;
         // conversion of green

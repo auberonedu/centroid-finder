@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 
 public class DistanceImageBinarizerTest {
 
-
     // toBinaryArray
     @Test
     public void testToBinaryArray_fourPixelBlackWhite() {
@@ -29,10 +28,6 @@ public class DistanceImageBinarizerTest {
             assertArrayEquals(expect[i], actual[i]);
         }
     }
-    // TODO: toBufferedImage
-
-
-
 
     private static class MockColorDistanceFinder implements ColorDistanceFinder {
         private final double[][] mockDistances;
