@@ -43,7 +43,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         }
         int height = image.length;
         int width = image[0].length; 
-        boolean[][] visited = new boolean[hight][width];
+        boolean[][] visited = new boolean[height][width];
         List<Group> groups = new ArrayList<>();
 
 
