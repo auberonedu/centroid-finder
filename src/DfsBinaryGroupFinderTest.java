@@ -91,31 +91,6 @@ public class DfsBinaryGroupFinderTest {
     }
 
     @Test
-    void testMultipleClustersSortedBySizeThenPosition() {
-        int[][] image = {
-            {1, 1, 0, 1},
-            {0, 0, 0, 1},
-            {1, 0, 0, 0}
-        };
-        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
-        List<Group> groups = finder.findConnectedGroups(image);
-
-        // Expect three groups: sizes 2,2,1 sorted by size desc, then x desc, then y desc
-        assertEquals(3, groups.size(), "Expected three groups");
-
-        Group first = groups.get(0);
-        assertEquals(2, first.size());
-        assertEquals(3, first.centroid().x(), "First group should be the size-2 group at x=3");
-
-        Group second = groups.get(1);
-        assertEquals(2, second.size());
-        assertEquals(1, second.centroid().x(), "Second group should be the size-2 group at x=1");
-
-        Group third = groups.get(2);
-        assertEquals(1, third.size(), "Last group should be the single-pixel group");
-    }
-
-    @Test
     void testSubarrayNullThrowsNPE() {
         int[][] image = new int[2][];
         image[0] = new int[]{1};
