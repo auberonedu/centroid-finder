@@ -65,6 +65,7 @@ public class ImageSummaryApp {
         
         // Create the DistanceImageBinarizer with a EuclideanColorDistance instance.
         ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        
         ImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
         
         // Binarize the input image.

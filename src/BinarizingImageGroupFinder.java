@@ -22,6 +22,8 @@ public class BinarizingImageGroupFinder implements ImageGroupFinder {
     public BinarizingImageGroupFinder(ImageBinarizer binarizer, BinaryGroupFinder groupFinder) {
         this.binarizer = binarizer;
         this.groupFinder = groupFinder;
+
+        
     }
 
     /**
@@ -37,6 +39,15 @@ public class BinarizingImageGroupFinder implements ImageGroupFinder {
      */
     @Override
     public List<Group> findConnectedGroups(BufferedImage image) {
-        return null;
+
+        if(image == null){
+            throw new NullPointerException("The image can't be null... try again?");
+        }
+        //making it 1 and 0s
+        int[][] binary = binarizer.toBinaryArray(image);
+
+        List<Group> groupsOfOnes = groupFinder.findConnectedGroups(binary);
+
+        return groupsOfOnes;
     }
 }

@@ -16,7 +16,7 @@ For this wave, please have each partner make a commit below with their username 
 ## Wave 1: Understand
 Read through ImageSummaryApp in detail with your partner. Understand what each part does. This will involve looking through and reading ALL of the other classes records and interfaces. This will take a long time, but it is worth it! Do not skimp on this part, you will regret it! Also look at the sampleInput and sampleOutput folders to understand what comes in and what goes out.
 
-As you read through the files, take notes in notes.md to help you and your partner understand. Make frequent commits to your notes.
+As you read through the files, take notes in notes.md to help you and your partner undertsnad. Make frequent commits to your notes.
 
 ## Wave 2: Implement DfsBinaryGroupFinder
 This class takes in a binary image array and finds the connected groups. It will look very similar in many ways to the explorer problem you did for DFS! You'll need to understand the Group record to do this well.
@@ -43,20 +43,17 @@ Note that a lot of this class will be calling methods in BinaryGroupFinder and C
 
 MAKE SURE YOU MAKE THOROUGH UNIT TESTS. Consider asking the AI to teach you about mocks and fakes in unit testing and how they may be helpful here.
 
-HINT: `getRGB` returns a 32-bit AARRGGBB color (includes alpha channel). However, ColorDistanceFinder expects the colors to come in RRGGBB format (no alpha channel (most significant 8 bits set to 0)). What can you do to make this conversion happen?
-
 ## Wave 5: Implement BinarizingImageGroupFinder
 This implementation will be relatively short! It will mostly be calling methods in ImageBinarizer and BinaryGroupFinder.
 
-MAKE SURE YOU MAKE THOROUGH UNIT TESTS. Consider asking the AI to teach you about mocks and fakes in unit testing and how they may be helpful here. I recommend NOT using any external library other than JUnit. If the AI wants to use another external library, consider asking it not to and to make stubs instead.
+MAKE SURE YOU MAKE THOROUGH UNIT TESTS. Consider asking the AI to teach you about mocks and fakes in unit testing and how they may be helpful here.
 
 ## Wave 6: Validation
 To validate your code is working, make sure you're in the centroid-finder directory and run the below command:
 
 ```
-javac -cp lib/junit-platform-console-standalone-1.12.0.jar src/*.java && java -cp src ImageSummaryApp sampleInput/squares.jpg FFA200 164
+javac src/* && java -cp src ImageSummaryApp sampleInput/squares.jpg FFA200 164
 ```
-To run perceptual method to generate binarized image use - javac -cp lib/junit-platform-console-standalone-1.12.0.jar src/*.java && java -cp src ImageSummaryApp sampleInput/squares.jpg FFA200 55
 
 This will compile your files and run the main method in ImageSummaryApp against the sample image with a target color of orange and a threshold of 164. It should binarized.png and groups.csv which should match the corresponding files in the sampleOutput directory.
 
