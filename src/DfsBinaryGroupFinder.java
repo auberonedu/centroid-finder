@@ -36,10 +36,9 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     */
     @Override
     public List<Group> findConnectedGroups(int[][] image) {
-
         List<Group> groupList = new ArrayList<>();
 
-        // validate the input image
+        // check if the image is null
         if (image == null) {
             throw new NullPointerException("Image array cannot be null");
         }
@@ -71,28 +70,33 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return groupList;
     }
 
-    // findConnectedGroupsHelper 
+    // findConnectedGroupsHelper to find all connected 1s staring from current 
     public List<int[]> findConnectedGroupsHelper(int[][] image, int[] current, boolean[][] visited) {
         List<int[]> pixels = new ArrayList<>();
         Stack<int[]> stack = new Stack<>();
         stack.push(current);
 
+        // DFS to find all connected pixels
         while (!stack.isEmpty()) {
             int[] pixel = stack.pop();
             int row = pixel[0];
             int col = pixel[1];
 
+            // Check if the pixel is out of bounds
             if (row < 0 || row >= image.length || col < 0 || col >= image[0].length) {
                 continue; 
             }
 
+            // Check if the pixel is already visited or not a 1
             if (visited[row][col] || image[row][col] == 0) {
                 continue; 
             }
 
+            // Mark the pixel as visited
             visited[row][col] = true;
             pixels.add(new int[]{row, col});
 
+            // Add adjacent pixels to the stack
             stack.push(new int[]{row - 1, col}); // up
             stack.push(new int[]{row + 1, col}); // down
             stack.push(new int[]{row, col - 1}); // left
@@ -102,7 +106,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return pixels; 
     }
 
-    // getAdjacentPixels
+    // possibleDirections 
     public static List<int[]> possibleDirections(int[][] image, int[] current) {
         List<int[]> validMoves = new ArrayList<>();
 
@@ -116,11 +120,12 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             {0, 1}   // right
         };
 
-        
+        // Check all four possible directions
         for (int[] direction : directions) {
             int newRow = row + direction[0];
             int newCol = col + direction[1];
 
+             // Check if the new position is within bounds and is a 1
             if (newRow >= 0 && newRow < image.length && newCol >= 0 && newCol < image[0].length && image[newRow][newCol] == 1) {
                 validMoves.add(new int[]{newRow, newCol});
             }
@@ -129,6 +134,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return validMoves;
     }
 
+    
     private Group newGroup(List<int[]> pixels) {
         int size = pixels.size();
         int sumX = 0;

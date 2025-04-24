@@ -49,11 +49,13 @@ public class DistanceImageBinarizer implements ImageBinarizer {
         int height = image.getHeight();
         int[][] binaryImage = new int[height][width];
 
+        // loop through each pixel in the image
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int currentColor = image.getRGB(x, y);
                 double distance = distanceFinder.distance(currentColor, targetColor);
 
+                // decide whether to mark the pixel as white or black
                 if (distance <= threshold) {
                     binaryImage[y][x] = 1; // white 
                 } else {
@@ -74,11 +76,12 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
-
         int height = image.length;
         int width = image[0].length;
+
         BufferedImage binaryImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
+        // set each pixel in image based on 0 and 1
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {    
                 int color;
@@ -89,6 +92,7 @@ public class DistanceImageBinarizer implements ImageBinarizer {
                     color = 0x000000; // black
                 }
 
+                // set pixel color
                 binaryImage.setRGB(x, y, color);
             }
         }

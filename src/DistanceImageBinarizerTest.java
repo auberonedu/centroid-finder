@@ -31,6 +31,7 @@ public class DistanceImageBinarizerTest {
 
     @Test
     public void testAllWhitePixels() {
+        // all white pixels should be converted to 1
         BufferedImage img = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB);
         img.setRGB(0, 0, 0xFFFFFF);
         img.setRGB(1, 0, 0xFFFFFF);
@@ -46,6 +47,7 @@ public class DistanceImageBinarizerTest {
 
     @Test
     public void testAllBlackPixels() {
+        // all black pixels should be converted to 0
         BufferedImage img = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB);
         img.setRGB(0, 0, 0x000000);
         img.setRGB(1, 0, 0x000000);
@@ -61,6 +63,7 @@ public class DistanceImageBinarizerTest {
 
     @Test
     public void testMixedColorPixels() {
+        // mixed colors should be converted based on the threshold
         BufferedImage img = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB);
         img.setRGB(0, 0, 0xFFFFFF); 
         img.setRGB(1, 0, 0x646464); 
@@ -76,6 +79,7 @@ public class DistanceImageBinarizerTest {
 
     @Test
     public void testSinglePixelImage() {
+        // single pixel image should be converted based on the threshold
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
         img.setRGB(0, 0, 0xFFFFFF);
 
@@ -85,6 +89,7 @@ public class DistanceImageBinarizerTest {
 
     @Test
     public void testToBufferedImageConversion() {
+        // test binary array back to an image
         int[][] binaryArray = {
             {1, 0},
             {0, 1}
@@ -99,6 +104,7 @@ public class DistanceImageBinarizerTest {
 
     @Test
     public void testExactThresholdMatch() {
+        // pixel exactly at the threshold should return 1, or else 0
         DistanceImageBinarizer strictBinarizer = new DistanceImageBinarizer(new MockColorDistanceFinder(), 0xFFFFFF, 0);
         BufferedImage img = new BufferedImage(2, 1, BufferedImage.TYPE_INT_RGB);
         img.setRGB(0, 0, 0xFFFFFF); 
@@ -111,6 +117,7 @@ public class DistanceImageBinarizerTest {
 
     @Test
     public void testVeryHighThreshold() {
+        // large threshold should should convert all pixels to 1
         DistanceImageBinarizer lenientBinarizer = new DistanceImageBinarizer(new MockColorDistanceFinder(), 0xFFFFFF, 1000);
         BufferedImage img = new BufferedImage(2, 1, BufferedImage.TYPE_INT_RGB);
         img.setRGB(0, 0, 0x000000);
