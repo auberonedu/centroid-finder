@@ -16,6 +16,7 @@ public class BinarizingImageGroupFinderTest {
     //Will contain a single group of an arbitrary size and x/y; here to test against large images.
     BufferedImage imageFive = new BufferedImage(4096, 4096, BufferedImage.TYPE_INT_RGB);
 
+    //TODO: Create arrays of pixels (groups) that will be added to the buffered images, then passed to create groups.
 
 
 
