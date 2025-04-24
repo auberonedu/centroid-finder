@@ -43,6 +43,36 @@ public class DfsBinaryGroupFinderTest {
     }
 
     @Test
+    void testHorizontalLineCluster() {
+        int[][] image = {{1, 1, 1}};
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+        List<Group> groups = finder.findConnectedGroups(image);
+
+        assertEquals(1, groups.size(), "Expected one horizontal cluster");
+        Group g = groups.get(0);
+        assertEquals(3, g.size(), "Horizontal line cluster size should be 3");
+        assertEquals(1, g.centroid().x(), "Centroid X for horizontal line should be middle index");
+        assertEquals(0, g.centroid().y(), "Centroid Y for horizontal line should be row 0");
+    }
+
+    @Test
+    void testVerticalLineCluster() {
+        int[][] image = {
+            {1},
+            {1},
+            {1}
+        };
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+        List<Group> groups = finder.findConnectedGroups(image);
+
+        assertEquals(1, groups.size(), "Expected one vertical cluster");
+        Group g = groups.get(0);
+        assertEquals(3, g.size(), "Vertical line cluster size should be 3");
+        assertEquals(0, g.centroid().x(), "Centroid X for vertical line should be 0");
+        assertEquals(1, g.centroid().y(), "Centroid Y for vertical line should be middle row");
+    }
+
+    @Test
     void testConnectedCluster() {
         int[][] image = {
             {1, 1},
@@ -58,6 +88,53 @@ public class DfsBinaryGroupFinderTest {
         // Centroid: x = (0+1+0)/3 = 0  ;  y = (0+0+1)/3 = 0
         assertEquals(0, g.centroid().x(), "Centroid X for cluster should be 0");
         assertEquals(0, g.centroid().y(), "Centroid Y for cluster should be 0");
+    }
+
+    @Test
+    void testMultipleClustersSortedBySizeThenPosition() {
+        int[][] image = {
+            {1, 1, 0, 1},
+            {0, 0, 0, 1},
+            {1, 0, 0, 0}
+        };
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+        List<Group> groups = finder.findConnectedGroups(image);
+
+        // Expect three groups: sizes 2,2,1 sorted by size desc, then x desc, then y desc
+        assertEquals(3, groups.size(), "Expected three groups");
+
+        Group first = groups.get(0);
+        assertEquals(2, first.size());
+        assertEquals(3, first.centroid().x(), "First group should be the size-2 group at x=3");
+
+        Group second = groups.get(1);
+        assertEquals(2, second.size());
+        assertEquals(1, second.centroid().x(), "Second group should be the size-2 group at x=1");
+
+        Group third = groups.get(2);
+        assertEquals(1, third.size(), "Last group should be the single-pixel group");
+    }
+
+    @Test
+    void testSubarrayNullThrowsNPE() {
+        int[][] image = new int[2][];
+        image[0] = new int[]{1};
+        image[1] = null;
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+
+        assertThrows(NullPointerException.class,
+            () -> finder.findConnectedGroups(image),
+            "Null subarray should throw NullPointerException");
+    }
+
+    @Test
+    void testEmptyColumnsThrowsIAE() {
+        int[][] image = { new int[0] };
+        DfsBinaryGroupFinder finder = new DfsBinaryGroupFinder();
+
+        assertThrows(IllegalArgumentException.class,
+            () -> finder.findConnectedGroups(image),
+            "Empty columns (row length zero) should throw IllegalArgumentException");
     }
 
     @Test
