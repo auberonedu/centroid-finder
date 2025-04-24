@@ -45,7 +45,36 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public int[][] toBinaryArray(BufferedImage image) {
-        return null;
+        // declare variables for height and width
+        int width = image.getWidth();
+        int height = image.getHeight();
+        
+        int[][] binaryArray = new int[width][height];
+
+        // iterate through the 2d array
+        for (int r = 0; r < binaryArray.length; r++){
+            for (int c = 0; c < binaryArray[0].length; c++){
+                // do some logic
+                // get current pixel color
+                int currentColor = image.getRGB(r, c);
+
+                // find distance between currentColor and target color (use distanceFinder)
+                double distance = distanceFinder.distance(currentColor, targetColor);
+
+                // if distance < threshold -- set to 1 if distance >= threshold -- set to 0
+                if (distance < threshold){
+                    binaryArray[r][c] = 1; // white
+                } else if (distance >= threshold){
+                    binaryArray[r][c] = 0; // black
+                }
+
+                
+            }
+        }
+
+            
+        
+        return binaryArray;
     }
 
     /**
@@ -58,6 +87,26 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
-        return null;
+        // declare variables for height and width
+        int width = image.length;
+        int height = image[0].length;
+        // declare a BufferedImage object
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        // set a 2d array as same size as image
+        // iterate through the 2d array
+        for (int r = 0; r < image.length; r++) {
+            for (int c = 0; c < image[0].length; c++) {
+                // WHITE
+                if (image[r][c] == 1) {
+                    bufferedImage.setRGB(r, c, 0xFFFFFF);
+                } // BLACK
+                else if (image[r][c] == 0) {
+                    bufferedImage.setRGB(r, c, 0x000000);
+                }
+            }
+        }
+        
+        return bufferedImage;
     }
 }
