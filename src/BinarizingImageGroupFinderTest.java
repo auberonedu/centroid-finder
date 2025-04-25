@@ -93,4 +93,63 @@ public class BinarizingImageGroupFinderTest {
 
         assertNull(result, "Should return null if binary array is null");
     }
+
+    @Test
+    public void testFindConnectedGroups_allBlackImage_returnsEmptyList() {
+        BufferedImage image = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB);
+        image.setRGB(0, 0, 0x000000);
+        image.setRGB(0, 1, 0x000000);
+        image.setRGB(1, 0, 0x000000);
+        image.setRGB(1, 1, 0x000000);
+
+        ImageBinarizer binarizer = new TestBinarizer();
+        BinaryGroupFinder groupFinder = binary -> List.of();
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
+
+        List<Group> result = finder.findConnectedGroups(image);
+        assertTrue(result.isEmpty(), "Should return empty list for all-black image");
+    }
+
+    @Test
+    public void testFindConnectedGroups_singleWhitePixel_returnsOneGroup() {
+        BufferedImage image = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB);
+        image.setRGB(0, 0, 0x000000);
+        image.setRGB(0, 1, 0x000000);
+        image.setRGB(1, 0, 0xFFFFFF);
+        image.setRGB(1, 1, 0x000000);
+
+        ImageBinarizer binarizer = new TestBinarizer();
+        BinaryGroupFinder groupFinder = binary -> List.of(new Group(1, new Coordinate(1, 0)));
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
+
+        List<Group> result = finder.findConnectedGroups(image);
+        assertEquals(1, result.size());
+        assertEquals(new Group(1, new Coordinate(1, 0)), result.get(0));
+    }
+
+    @Test
+    public void testFindConnectedGroups_checkerboardPattern_returnsCorrectGroups() {
+        BufferedImage image = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                int color = (x + y) % 2 == 0 ? 0xFFFFFF : 0x000000;
+                image.setRGB(x, y, color);
+            }
+        }
+
+        ImageBinarizer binarizer = new TestBinarizer();
+        BinaryGroupFinder groupFinder = binary -> List.of(
+            new Group(1, new Coordinate(0, 0)),
+            new Group(1, new Coordinate(2, 0)),
+            new Group(1, new Coordinate(1, 1)),
+            new Group(1, new Coordinate(0, 2)),
+            new Group(1, new Coordinate(2, 2))
+        );
+        BinarizingImageGroupFinder finder = new BinarizingImageGroupFinder(binarizer, groupFinder);
+
+        List<Group> result = finder.findConnectedGroups(image);
+        assertEquals(5, result.size());
+    }
+
+    
 }
