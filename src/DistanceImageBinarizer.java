@@ -45,10 +45,31 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public int[][] toBinaryArray(BufferedImage image) {
-        return null;
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        int [][] binaryImage = new int[height][width];
+
+    
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                
+                //& 0xFFFFFF to mask the alpha value
+                int currentColor = image.getRGB(x, y) & 0xFFFFFF;
+
+                double distance = distanceFinder.distance(currentColor, targetColor);
+
+                binaryImage[y][x] = (distance < threshold) ? 1 : 0;
+            }
+        }
+        return binaryImage;
     }
 
+
     /**
+     * 
+     * 
      * Converts a binary 2D array into a BufferedImage.
      * Each value should be 0 (black) or 1 (white).
      * Black pixels are encoded as 0x000000 and white pixels as 0xFFFFFF.
@@ -58,6 +79,26 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
-        return null;
+        int height = image.length;
+        int width = image[0].length;
+
+        BufferedImage buffImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        //go through binary array matrix
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                
+                int pixel = (image[y][x]);
+                int color; 
+                
+                if (pixel == 1){
+                    color = 0xFFFFFF;
+                } else {
+                    color = 0x000000;
+                }
+                buffImage.setRGB(x, y, color);
+            }
+        }
+        return buffImage;
     }
 }
