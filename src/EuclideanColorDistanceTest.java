@@ -54,4 +54,18 @@ public class EuclideanColorDistanceTest {
         assertEquals(expected, distanceFinder.distance(maxBlue, black), 0.0001);
     }
 
+    @Test 
+    void testRandomColor() {
+        int colorA = 0x135955;
+        int colorB = 0x3E918B;
+
+        int dr = 0x13 - 0x3E;
+        int dg = 0x59 - 0x91;
+        int db = 0x55 - 0x8B;
+
+        double expected = Math.sqrt(dr * dr + dg * dg + db * db);
+        double result = distanceFinder.distance(colorA, colorB);
+        assertEquals(expected, result, 0.0001);
+    }
+
 }

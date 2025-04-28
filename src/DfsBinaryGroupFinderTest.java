@@ -81,4 +81,26 @@ class DfsBinaryGroupFinderTest {
         List<Group> groups = finder.findConnectedGroups(image);
         assertTrue(groups.isEmpty());
     }
+
+    @Test
+    void testCentroidCalculation() {
+        int[][] image = new int[][] {
+            {1, 0, 0},
+            {1, 1, 0},
+            {0, 0, 0}
+        };
+    
+        // Connected pixels: (0,0), (1,0), (1,1)
+        // x-values: 0, 0, 1 → totalX = 1 → centroidX = 1/3 = 0 (integer division)
+        // y-values: 0, 1, 1 → totalY = 2 → centroidY = 2/3 = 0 (integer division)
+    
+        List<Group> result = finder.findConnectedGroups(image);
+    
+        assertEquals(1, result.size());
+    
+        Group group = result.get(0);
+    
+        assertEquals(3, group.size());
+        assertEquals(new Coordinate(0, 0), group.centroid()); // centroidX = 0, centroidY = 0
+    }
 }

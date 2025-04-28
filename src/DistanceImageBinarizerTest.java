@@ -41,7 +41,7 @@ public class DistanceImageBinarizerTest {
         };
 
         int[][] result = binarizer.toBinaryArray(inputImage);
-
+       
         assertArrayEquals(expected[0], result[0]);
         assertArrayEquals(expected[1], result[1]);
     }
@@ -62,6 +62,27 @@ public class DistanceImageBinarizerTest {
         assertEquals(0x000000, result.getRGB(0, 1) & 0xFFFFFF);
         assertEquals(0xFFFFFF, result.getRGB(1, 1) & 0xFFFFFF);
     }
+
+    @Test
+    public void testToBufferedImageWithInvalidValues() {
+        DistanceImageBinarizer binarizer = new DistanceImageBinarizer(new FixedDistanceFinder(), 0, 0);
+
+        int[][] invalidBinary = {
+                {2, -1},
+                {99, 1}
+        };
+
+        BufferedImage result = binarizer.toBufferedImage(invalidBinary);
+
+        assertEquals(0x000000, result.getRGB(0, 0) & 0xFFFFFF); // should default to black
+        assertEquals(0x000000, result.getRGB(1, 0) & 0xFFFFFF);
+        assertEquals(0x000000, result.getRGB(0, 1) & 0xFFFFFF);
+        assertEquals(0xFFFFFF, result.getRGB(1, 1) & 0xFFFFFF);
+    }
+
+
 }
+
+
 
 
