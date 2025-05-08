@@ -1,3 +1,5 @@
+package io.github.alstondsouza1.centroidFinder;
+
 import java.util.List;
 
 public interface BinaryGroupFinder {

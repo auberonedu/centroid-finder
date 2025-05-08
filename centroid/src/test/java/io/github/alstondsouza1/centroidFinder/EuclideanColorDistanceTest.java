@@ -1,15 +1,13 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
+package io.github.alstondsouza1.centroidFinder;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 public class EuclideanColorDistanceTest {
     EuclideanColorDistance dist = new EuclideanColorDistance();
-    
+
     // color masks and shifts
     final int RED = 0x000000FF;
     final int GREEN = 0x0000FF00;
@@ -59,14 +57,14 @@ public class EuclideanColorDistanceTest {
         for(int i = 0; i < 256; i++) {
             res[i] = dist.distance(constantColor, constantColor+(i << GREEN_SHIFT)); //Const red, linear green
         }
-        Assert.assertTrue(Arrays.equals(test, res));
+        assertTrue(Arrays.equals(test, res));
 
         constantColor = constantColor << GREEN_SHIFT; //Green
         for(int i = 0; i < 256; i++) {
             res[i] = dist.distance(constantColor, constantColor+i); //Const green, linear red
         }
 
-        Assert.assertTrue(Arrays.equals(test, res));
+        assertTrue(Arrays.equals(test, res));
 
         constantColor = constantColor << GREEN_SHIFT; //Blue (Shifted by eight, not actually green).
 
@@ -74,7 +72,7 @@ public class EuclideanColorDistanceTest {
             res[i] = dist.distance(constantColor, constantColor+i); //Const blue, linear red
         }
 
-        Assert.assertTrue(Arrays.equals(test, res));
+        assertTrue(Arrays.equals(test, res));
     }
 
     @Test
@@ -89,17 +87,17 @@ public class EuclideanColorDistanceTest {
         for(int i  = 0; i < 256; i++) {
             cmp[i] = dist.distance(RED_GREEN, RED_GREEN+(i << BLUE_SHFT));
         }
-        Assert.assertTrue(Arrays.equals(cmp, test));
+        assertTrue(Arrays.equals(cmp, test));
 
         for(int i  = 0; i < 256; i++) {
             cmp[i] = dist.distance(RED_BLUE, RED_BLUE+(i << GREEN_SHFT));
         }
-        Assert.assertTrue(Arrays.equals(cmp, test));
+        assertTrue(Arrays.equals(cmp, test));
 
         for(int i  = 0; i < 256; i++) {
             cmp[i] = dist.distance(GREEN_BLUE, GREEN_BLUE+i);
         }
-        Assert.assertTrue(Arrays.equals(cmp, test));
+        assertTrue(Arrays.equals(cmp, test));
     }
 
     @Test

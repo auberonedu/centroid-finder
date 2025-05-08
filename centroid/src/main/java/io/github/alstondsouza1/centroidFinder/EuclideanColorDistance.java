@@ -1,3 +1,5 @@
+package io.github.alstondsouza1.centroidFinder;
+
 public class EuclideanColorDistance implements ColorDistanceFinder {
     final int SHIFT_ONE_BYTE = 8;
     final int SHIFT_TWO_BYTE = 16;

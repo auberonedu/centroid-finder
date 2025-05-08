@@ -1,0 +1,11 @@
+io/github/alstondsouza1/centroidFinder/EuclideanColorDistance.class
+io/github/alstondsouza1/centroidFinder/Group.class
+io/github/alstondsouza1/centroidFinder/ColorDistanceFinder.class
+io/github/alstondsouza1/centroidFinder/BinaryGroupFinder.class
+io/github/alstondsouza1/centroidFinder/BinarizingImageGroupFinder.class
+io/github/alstondsouza1/centroidFinder/DistanceImageBinarizer.class
+io/github/alstondsouza1/centroidFinder/ImageBinarizer.class
+io/github/alstondsouza1/centroidFinder/ImageGroupFinder.class
+io/github/alstondsouza1/centroidFinder/DfsBinaryGroupFinder.class
+io/github/alstondsouza1/centroidFinder/ImageSummaryApp.class
+io/github/alstondsouza1/centroidFinder/Coordinate.class

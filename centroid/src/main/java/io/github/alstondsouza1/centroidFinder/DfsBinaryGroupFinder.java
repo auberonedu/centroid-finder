@@ -1,3 +1,5 @@
+package io.github.alstondsouza1.centroidFinder;
+
 import java.util.List;
 import java.util.Stack;
 import java.util.ArrayList;

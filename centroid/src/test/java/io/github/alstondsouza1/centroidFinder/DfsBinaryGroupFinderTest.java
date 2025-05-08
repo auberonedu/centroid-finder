@@ -1,3 +1,5 @@
+package io.github.alstondsouza1.centroidFinder;
+
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
