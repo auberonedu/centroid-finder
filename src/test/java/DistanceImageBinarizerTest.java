@@ -1,6 +1,10 @@
+package test.java;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import main.java.ColorDistanceFinder;
+import main.java.DistanceImageBinarizer;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;

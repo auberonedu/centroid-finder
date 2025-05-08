@@ -1,3 +1,4 @@
+package test.java;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -5,6 +6,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
+
+import main.java.BinarizingImageGroupFinder;
+import main.java.BinaryGroupFinder;
+import main.java.ColorDistanceFinder;
+import main.java.Coordinate;
+import main.java.DfsBinaryGroupFinder;
+import main.java.DistanceImageBinarizer;
+import main.java.Group;
+import main.java.ImageBinarizer;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
