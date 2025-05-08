@@ -1,0 +1,9 @@
+io\github\qopci\centroidFinder\DistanceImageBinarizerTest$MockColorDistanceFinder.class
+io\github\qopci\centroidFinder\EuclideanColorDistanceTest.class
+io\github\qopci\centroidFinder\BinarizingImageGroupFinderTest$SimpleBinaryGroupFinder.class
+io\github\qopci\centroidFinder\DistanceImageBinarizerTest.class
+io\github\qopci\centroidFinder\BinarizingImageGroupFinderTest$2.class
+io\github\qopci\centroidFinder\BinarizingImageGroupFinderTest.class
+io\github\qopci\centroidFinder\DfsBinaryGroupFinderTest.class
+io\github\qopci\centroidFinder\BinarizingImageGroupFinderTest$1.class
+io\github\qopci\centroidFinder\BinarizingImageGroupFinderTest$SimpleImageBinarizer.class

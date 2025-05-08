@@ -1,0 +1,11 @@
+io\github\qopci\centroidFinder\DfsBinaryGroupFinder.class
+io\github\qopci\centroidFinder\BinarizingImageGroupFinder.class
+io\github\qopci\centroidFinder\ColorDistanceFinder.class
+io\github\qopci\centroidFinder\Group.class
+io\github\qopci\centroidFinder\ImageBinarizer.class
+io\github\qopci\centroidFinder\ImageGroupFinder.class
+io\github\qopci\centroidFinder\DistanceImageBinarizer.class
+io\github\qopci\centroidFinder\BinaryGroupFinder.class
+io\github\qopci\centroidFinder\EuclideanColorDistance.class
+io\github\qopci\centroidFinder\Coordinate.class
+io\github\qopci\centroidFinder\ImageSummaryApp.class
