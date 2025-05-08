@@ -1,4 +1,4 @@
-package main.java;
+package io.github.TiaMarieG.centroidFinder;
 import java.awt.image.BufferedImage;
 
 /**

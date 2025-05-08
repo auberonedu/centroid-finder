@@ -1,8 +1,7 @@
-package test.java;
+package io.github.TiaMarieG.centroidFinder;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import main.java.EuclideanColorDistance;
 
 public class EuclideanColorDistanceTest {
     EuclideanColorDistance ecd = new EuclideanColorDistance();

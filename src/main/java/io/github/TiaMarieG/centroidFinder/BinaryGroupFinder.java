@@ -1,4 +1,4 @@
-package main.java;
+package io.github.TiaMarieG.centroidFinder;
 import java.util.List;
 
 public interface BinaryGroupFinder {

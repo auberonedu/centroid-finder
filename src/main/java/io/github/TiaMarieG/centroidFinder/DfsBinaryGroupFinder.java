@@ -1,4 +1,4 @@
-package main.java;
+package io.github.TiaMarieG.centroidFinder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
