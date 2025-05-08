@@ -1,4 +1,4 @@
-/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/test/java/io/github/f3liz/centroidFinder/BinarizingImageGroupFinderTest.java
-/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/test/java/io/github/f3liz/centroidFinder/DfsBinaryGroupFinderTest.java
-/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/test/java/io/github/f3liz/centroidFinder/DistanceImageBinarizerTest.java
-/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/test/java/io/github/f3liz/centroidFinder/EuclideanColorDistanceTest.java
+/Users/felix/Documents/SDEV334/centroid-finder/src/test/java/io/github/f3liz/centroidFinder/BinarizingImageGroupFinderTest.java
+/Users/felix/Documents/SDEV334/centroid-finder/src/test/java/io/github/f3liz/centroidFinder/DfsBinaryGroupFinderTest.java
+/Users/felix/Documents/SDEV334/centroid-finder/src/test/java/io/github/f3liz/centroidFinder/DistanceImageBinarizerTest.java
+/Users/felix/Documents/SDEV334/centroid-finder/src/test/java/io/github/f3liz/centroidFinder/EuclideanColorDistanceTest.java
