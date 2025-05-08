@@ -1,4 +1,5 @@
 package io.github.qopci.centroidFinder;
+
 /**
  * Represents a location in an image or array
  * 

@@ -7,9 +7,6 @@ import java.awt.image.BufferedImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import io.github.qopci.centroidFinder.ColorDistanceFinder;
-import io.github.qopci.centroidFinder.DistanceImageBinarizer;
-
 // AI used to create Junit testcases for DistanceImageBinarizerTest.java
 public class DistanceImageBinarizerTest {
 

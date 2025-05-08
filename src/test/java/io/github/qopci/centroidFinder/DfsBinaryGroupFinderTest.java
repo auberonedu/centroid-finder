@@ -1,12 +1,9 @@
 package io.github.qopci.centroidFinder;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import io.github.qopci.centroidFinder.DfsBinaryGroupFinder;
 
 import java.util.List;
 

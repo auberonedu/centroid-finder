@@ -2,8 +2,6 @@ package io.github.qopci.centroidFinder;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.qopci.centroidFinder.EuclideanColorDistance;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 // Used AI to generate and fix tests for EuclideanColorDistance.java
