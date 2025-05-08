@@ -1,0 +1,11 @@
+main/java/ImageBinarizer.class
+main/java/Group.class
+main/java/DistanceImageBinarizer.class
+main/java/BinaryGroupFinder.class
+main/java/ColorDistanceFinder.class
+main/java/Coordinate.class
+main/java/BinarizingImageGroupFinder.class
+main/java/ImageSummaryApp.class
+main/java/ImageGroupFinder.class
+main/java/DfsBinaryGroupFinder.class
+main/java/EuclideanColorDistance.class

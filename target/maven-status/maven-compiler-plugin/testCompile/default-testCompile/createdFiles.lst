@@ -1,0 +1,8 @@
+test/java/DistanceImageBinarizerTest$FakeColorDistanceFinder.class
+test/java/BinarizingImageGroupFinderTest$FakeImageBinarizer.class
+test/java/DfsBinaryGroupFinderTest.class
+test/java/DistanceImageBinarizerTest.class
+test/java/BinarizingImageGroupFinderTest$1.class
+test/java/BinarizingImageGroupFinderTest$FakeGroupFinder.class
+test/java/EuclideanColorDistanceTest.class
+test/java/BinarizingImageGroupFinderTest.class
