@@ -1,4 +1,4 @@
-package main.java;
+package main.java.io.github.oakes777;
 public class EuclideanColorDistance implements ColorDistanceFinder {
     /**
      * Returns the euclidean color distance between two hex RGB colors.

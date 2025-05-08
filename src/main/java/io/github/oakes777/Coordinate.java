@@ -1,4 +1,4 @@
-package main.java;
+package main.java.io.github.oakes777;
 /**
  * Represents a location in an image or array
  * 

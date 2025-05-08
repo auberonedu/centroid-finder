@@ -1,4 +1,4 @@
-package main.java;
+package main.java.io.github.oakes777;
 /**
  * Defines an interface for computing the distance between two colors.
  * 

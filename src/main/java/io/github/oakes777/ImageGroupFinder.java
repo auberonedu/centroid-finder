@@ -1,4 +1,4 @@
-package main.java;
+package main.java.io.github.oakes777;
 import java.util.List;
 import java.awt.image.BufferedImage;
 
