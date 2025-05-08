@@ -26,6 +26,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.10.1</version>
         <configuration>
+            <mainClass>io.github.AugyBoBaugles.centroid-finder.ImageSummaryApp</mainClass>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
         </configuration>
