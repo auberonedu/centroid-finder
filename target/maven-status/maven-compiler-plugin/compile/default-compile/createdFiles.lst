@@ -1,0 +1,11 @@
+main\java\io\github\AugleBoBaugles\centroidFinder\DfsBinaryGroupFinder.class
+main\java\io\github\AugleBoBaugles\centroidFinder\EuclideanColorDistance.class
+main\java\io\github\AugleBoBaugles\centroidFinder\BinarizingImageGroupFinder.class
+main\java\io\github\AugleBoBaugles\centroidFinder\DistanceImageBinarizer.class
+main\java\io\github\AugleBoBaugles\centroidFinder\Coordinate.class
+main\java\io\github\AugleBoBaugles\centroidFinder\ImageBinarizer.class
+main\java\io\github\AugleBoBaugles\centroidFinder\ImageSummaryApp.class
+main\java\io\github\AugleBoBaugles\centroidFinder\Group.class
+main\java\io\github\AugleBoBaugles\centroidFinder\ColorDistanceFinder.class
+main\java\io\github\AugleBoBaugles\centroidFinder\BinaryGroupFinder.class
+main\java\io\github\AugleBoBaugles\centroidFinder\ImageGroupFinder.class

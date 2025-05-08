@@ -1,5 +1,5 @@
 package test.java.io.github.AugleBoBaugles.centroidFinder;
-import org.junit.Test;
+import org.junit.io.github;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

@@ -1,6 +1,6 @@
 package test.java.io.github.AugleBoBaugles.centroidFinder;
 import static org.junit.Assert.*;
-import org.junit.Test;
+import org.junit.io.github;
 import java.awt.image.BufferedImage;
 
 public class DistanceImageBinarizerTest {

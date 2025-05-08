@@ -1,6 +1,6 @@
 package test.java.io.github.AugleBoBaugles.centroidFinder;
 import static org.junit.Assert.*;
-import org.junit.Test;
+import org.junit.io.github;
 
 // COLORS USED IN TESTS (Google Color Picker: https://g.co/kgs/DG41Bvm)
 // Also from Rapid Tables: https://www.rapidtables.com/web/color/RGB_Color.html
