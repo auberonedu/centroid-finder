@@ -1,3 +1,4 @@
+package test.java.io.github.AugleBoBaugles.centroidFinder;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

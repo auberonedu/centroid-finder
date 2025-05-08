@@ -1,11 +1,6 @@
-DistanceImageBinarizer.class
-DfsBinaryGroupFinder.class
 BinarizingImageGroupFinder.class
-ImageGroupFinder.class
-Coordinate.class
-ImageSummaryApp.class
 BinaryGroupFinder.class
 ImageBinarizer.class
-ColorDistanceFinder.class
-EuclideanColorDistance.class
+ImageGroupFinder.class
+Coordinate.class
 Group.class

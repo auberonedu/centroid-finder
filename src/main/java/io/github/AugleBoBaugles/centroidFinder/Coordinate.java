@@ -1,4 +1,4 @@
-
+package main.java.io.github.AugleBoBaugles.centroidFinder;
 /**
  * Represents a location in an image or array
  * 

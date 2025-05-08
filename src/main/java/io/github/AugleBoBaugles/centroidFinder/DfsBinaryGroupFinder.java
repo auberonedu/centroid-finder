@@ -1,3 +1,4 @@
+package main.java.io.github.AugleBoBaugles.centroidFinder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
