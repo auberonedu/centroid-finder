@@ -18,20 +18,30 @@
     <maven.compiler.target>17</maven.compiler.target>
   </properties>
 
-  <build>
+<build>
     <plugins>
-      <!-- Compiler plugin to use Java 17 -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version>
-        <configuration>
-            <mainClass>io.github.AugyBoBaugles.centroid-finder.ImageSummaryApp</mainClass>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.target}</target>
-        </configuration>
-      </plugin>
+        <!-- Compiler plugin to use Java 17 -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.10.1</version>
+            <configuration>
+                <source>${maven.compiler.source}</source>
+                <target>${maven.compiler.target}</target>
+            </configuration>
+        </plugin>
+
+        <!-- Exec plugin to run Java main class -->
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.1.0</version>
+            <configuration>
+                <mainClass>io.github.AugleBoBaugles.centroid_finder.ImageSummaryApp</mainClass>
+            </configuration>
+        </plugin>
     </plugins>
-  </build>
+</build>
+
 
 </project>
