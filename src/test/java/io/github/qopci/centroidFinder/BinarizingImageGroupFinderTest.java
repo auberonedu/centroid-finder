@@ -1,4 +1,9 @@
+package io.github.qopci.centroidFinder;
+
 import org.junit.jupiter.api.Test;
+
+import io.github.qopci.centroidFinder.BinarizingImageGroupFinder;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.image.BufferedImage;

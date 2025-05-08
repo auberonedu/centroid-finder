@@ -1,3 +1,4 @@
+package io.github.qopci.centroidFinder;
 import java.util.List;
 
 public interface BinaryGroupFinder {
