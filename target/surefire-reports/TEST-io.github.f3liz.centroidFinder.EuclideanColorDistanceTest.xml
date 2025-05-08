@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.005" tests="12" errors="0" skipped="0" failures="0">
+=======
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.018" tests="12" errors="0" skipped="0" failures="0">
+>>>>>>> b4e88d4a5690e2924a95f8a14bfe0c4151b487c7
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -11,8 +15,13 @@
     <property name="java.vm.specification.version" value="23"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
+<<<<<<< HEAD
     <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/23.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
     <property name="sun.java.command" value="/Users/felix/Documents/SDEV334/centroid-finder/target/surefire/surefirebooter-20250508142622396_3.jar /Users/felix/Documents/SDEV334/centroid-finder/target/surefire 2025-05-08T14-26-22_360-jvmRun1 surefire-20250508142622396_1tmp surefire_0-20250508142622396_2tmp"/>
+=======
+    <property name="sun.boot.library.path" value="/usr/local/Cellar/openjdk/23.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/target/surefire/surefirebooter-20250508142512333_3.jar /Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/target/surefire 2025-05-08T14-25-12_247-jvmRun1 surefire-20250508142512333_1tmp surefire_0-20250508142512333_2tmp"/>
+>>>>>>> b4e88d4a5690e2924a95f8a14bfe0c4151b487c7
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/felix/Documents/SDEV334/centroid-finder/target/test-classes:/Users/felix/Documents/SDEV334/centroid-finder/target/classes:/Users/felix/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.0/junit-jupiter-5.10.0.jar:/Users/felix/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.0/junit-jupiter-api-5.10.0.jar:/Users/felix/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/felix/.m2/repository/org/junit/platform/junit-platform-commons/1.10.0/junit-platform-commons-1.10.0.jar:/Users/felix/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/felix/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.0/junit-jupiter-params-5.10.0.jar:/Users/felix/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.0/junit-jupiter-engine-5.10.0.jar:/Users/felix/.m2/repository/org/junit/platform/junit-platform-engine/1.10.0/junit-platform-engine-1.10.0.jar:"/>
@@ -29,7 +38,11 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
+<<<<<<< HEAD
     <property name="surefire.real.class.path" value="/Users/felix/Documents/SDEV334/centroid-finder/target/surefire/surefirebooter-20250508142622396_3.jar"/>
+=======
+    <property name="surefire.real.class.path" value="/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/target/surefire/surefirebooter-20250508142512333_3.jar"/>
+>>>>>>> b4e88d4a5690e2924a95f8a14bfe0c4151b487c7
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="23.0.2"/>
@@ -58,6 +71,7 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
+<<<<<<< HEAD
   <testcase name="testDistance_BlackToWhite" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.0"/>
   <testcase name="testDistance_RedToBlue" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.0"/>
   <testcase name="testConvertHexToRGB_RandomColor" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.001"/>
@@ -68,6 +82,18 @@
   <testcase name="testDistance_RedToGreen" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.0"/>
   <testcase name="testDistance_RandomColors" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.001"/>
   <testcase name="testConvertHexToRGB_Blue" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.0"/>
+=======
+  <testcase name="testDistance_BlackToWhite" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.001"/>
+  <testcase name="testDistance_RedToBlue" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.001"/>
+  <testcase name="testConvertHexToRGB_RandomColor" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.001"/>
+  <testcase name="testConvertHexToRGB_Black" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.001"/>
+  <testcase name="testConvertHexToRGB_White" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.0"/>
+  <testcase name="testDistance_MaxColor" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.0"/>
+  <testcase name="testDistance_BlackAndBlack" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.001"/>
+  <testcase name="testDistance_RedToGreen" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.0"/>
+  <testcase name="testDistance_RandomColors" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.001"/>
+  <testcase name="testConvertHexToRGB_Blue" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.001"/>
+>>>>>>> b4e88d4a5690e2924a95f8a14bfe0c4151b487c7
   <testcase name="testConvertHexToRGB_Yellow" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.001"/>
   <testcase name="testDistance_SmallDifference" classname="io.github.f3liz.centroidFinder.EuclideanColorDistanceTest" time="0.0"/>
 </testsuite>
