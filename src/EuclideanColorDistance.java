@@ -1,4 +1,10 @@
 public class EuclideanColorDistance implements ColorDistanceFinder {
+    final int SHIFT_ONE_BYTE = 8;
+    final int SHIFT_TWO_BYTE = 16;
+
+    final int RED_MASK = 0x000000FF;
+    final int GREEN_MASK = 0x0000FF00;
+    final int BLUE_MASK = 0x00FF0000;
     /**
      * Returns the euclidean color distance between two hex RGB colors.
      * 
@@ -19,6 +25,25 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
      */
     @Override
     public double distance(int colorA, int colorB) {
-        return 0;
+
+        // Extract the red, green, and blue components from each color
+        int aR = (colorA & RED_MASK);
+        int bR = (colorB & RED_MASK);
+
+        int aG = ((colorA & GREEN_MASK) >> SHIFT_ONE_BYTE);
+        int bG = ((colorB & GREEN_MASK) >> SHIFT_ONE_BYTE);
+
+        int aB = ((colorA & BLUE_MASK) >> SHIFT_TWO_BYTE);
+        int bB = ((colorB & BLUE_MASK) >> SHIFT_TWO_BYTE);
+
+        int red = bR - aR;
+        int green = bG - aG;
+        int blue = bB - aB;
+
+
+        int intRet = (red * red) + (green * green) + (blue * blue);
+        double ret = Math.sqrt((double)intRet);
+
+        return ret;
     }
 }
