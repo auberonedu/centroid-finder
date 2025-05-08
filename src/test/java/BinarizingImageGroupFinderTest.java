@@ -1,6 +1,12 @@
+package test.java;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import main.java.BinarizingImageGroupFinder;
+import main.java.DfsBinaryGroupFinder;
+import main.java.Group;
+import main.java.ImageBinarizer;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

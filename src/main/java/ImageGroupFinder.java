@@ -1,5 +1,6 @@
-import java.util.List;
+package main.java;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public interface ImageGroupFinder {
     /**

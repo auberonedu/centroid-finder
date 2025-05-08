@@ -1,7 +1,11 @@
+package test.java;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import main.java.DfsBinaryGroupFinder;
+import main.java.Group;
 
 import java.util.List;
 
