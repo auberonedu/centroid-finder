@@ -1,9 +1,9 @@
-package test.java.io.github.oakes777;
+package io.github.oakes777.salamander;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import main.java.io.github.oakes777.EuclideanColorDistance;
+import io.github.oakes777.salamander.EuclideanColorDistance;
 
 /**
  * Unit tests for the EuclideanColorDistance class.

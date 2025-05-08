@@ -1,10 +1,10 @@
-package test.java.io.github.oakes777;
+package io.github.oakes777.salamander;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import main.java.io.github.oakes777.ColorDistanceFinder;
-import main.java.io.github.oakes777.DistanceImageBinarizer;
+import io.github.oakes777.salamander.ColorDistanceFinder;
+import io.github.oakes777.salamander.DistanceImageBinarizer;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;

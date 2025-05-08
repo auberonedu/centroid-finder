@@ -1,4 +1,4 @@
-package test.java.io.github.oakes777;
+package io.github.oakes777.salamander;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -7,14 +7,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
-import main.java.io.github.oakes777.BinarizingImageGroupFinder;
-import main.java.io.github.oakes777.BinaryGroupFinder;
-import main.java.io.github.oakes777.ColorDistanceFinder;
-import main.java.io.github.oakes777.Coordinate;
-import main.java.io.github.oakes777.DfsBinaryGroupFinder;
-import main.java.io.github.oakes777.DistanceImageBinarizer;
-import main.java.io.github.oakes777.Group;
-import main.java.io.github.oakes777.ImageBinarizer;
+import io.github.oakes777.salamander.BinarizingImageGroupFinder;
+import io.github.oakes777.salamander.BinaryGroupFinder;
+import io.github.oakes777.salamander.ColorDistanceFinder;
+import io.github.oakes777.salamander.Coordinate;
+import io.github.oakes777.salamander.DfsBinaryGroupFinder;
+import io.github.oakes777.salamander.DistanceImageBinarizer;
+import io.github.oakes777.salamander.Group;
+import io.github.oakes777.salamander.ImageBinarizer;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;

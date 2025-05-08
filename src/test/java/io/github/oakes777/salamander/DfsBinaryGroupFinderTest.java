@@ -1,11 +1,11 @@
-package test.java.io.github.oakes777;
+package io.github.oakes777.salamander;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import main.java.io.github.oakes777.Coordinate;
-import main.java.io.github.oakes777.DfsBinaryGroupFinder;
-import main.java.io.github.oakes777.Group;
+import io.github.oakes777.salamander.Coordinate;
+import io.github.oakes777.salamander.DfsBinaryGroupFinder;
+import io.github.oakes777.salamander.Group;
 
 import java.util.List;
 

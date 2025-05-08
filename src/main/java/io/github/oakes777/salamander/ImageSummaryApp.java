@@ -1,4 +1,4 @@
-package main.java.io.github.oakes777;
+package io.github.oakes777.salamander;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.PrintWriter;

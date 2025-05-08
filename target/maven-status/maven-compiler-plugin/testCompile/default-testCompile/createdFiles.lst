@@ -1,8 +1,8 @@
-test/java/io/github/oakes777/EuclideanColorDistanceTest.class
-test/java/io/github/oakes777/DistanceImageBinarizerTest.class
-test/java/io/github/oakes777/BinarizingImageGroupFinderTest.class
-test/java/io/github/oakes777/DistanceImageBinarizerTest$FakeColorDistanceFinder.class
-test/java/io/github/oakes777/BinarizingImageGroupFinderTest$FakeImageBinarizer.class
-test/java/io/github/oakes777/BinarizingImageGroupFinderTest$1.class
-test/java/io/github/oakes777/DfsBinaryGroupFinderTest.class
-test/java/io/github/oakes777/BinarizingImageGroupFinderTest$FakeGroupFinder.class
+io/github/oakes777/salamander/BinarizingImageGroupFinderTest$1.class
+io/github/oakes777/salamander/DistanceImageBinarizerTest.class
+io/github/oakes777/salamander/EuclideanColorDistanceTest.class
+io/github/oakes777/salamander/DfsBinaryGroupFinderTest.class
+io/github/oakes777/salamander/BinarizingImageGroupFinderTest$FakeGroupFinder.class
+io/github/oakes777/salamander/DistanceImageBinarizerTest$FakeColorDistanceFinder.class
+io/github/oakes777/salamander/BinarizingImageGroupFinderTest$FakeImageBinarizer.class
+io/github/oakes777/salamander/BinarizingImageGroupFinderTest.class
