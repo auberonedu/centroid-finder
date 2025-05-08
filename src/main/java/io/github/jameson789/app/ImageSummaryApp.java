@@ -1,3 +1,5 @@
+package io.github.jameson789.app;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.PrintWriter;
@@ -30,6 +32,7 @@ import javax.imageio.ImageIO;
  */
 public class ImageSummaryApp {
     public static void main(String[] args) {
+        System.out.println("fdjsakl;fjdsaklfjasdklfjdsaklfjadskl;fjadskl;fa");
         if (args.length < 3) {
             System.out.println("Usage: java ImageSummaryApp <input_image> <hex_target_color> <threshold>");
             return;

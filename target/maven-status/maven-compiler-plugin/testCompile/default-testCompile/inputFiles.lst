@@ -1,4 +1,4 @@
-/Users/jamesonfarmer/sdev334/centroid-finder/src/test/java/com/yourcompany/app/DistanceImageBinarizerTest.java
-/Users/jamesonfarmer/sdev334/centroid-finder/src/test/java/com/yourcompany/app/DfsBinaryGroupFinderTest.java
-/Users/jamesonfarmer/sdev334/centroid-finder/src/test/java/com/yourcompany/app/BinarizingImageGroupFinderTest.java
-/Users/jamesonfarmer/sdev334/centroid-finder/src/test/java/com/yourcompany/app/EuclideanColorDistanceTest.java
+/Users/jamesonfarmer/sdev334/centroid-finder/src/test/java/io/github/jameson789/app/BinarizingImageGroupFinderTest.java
+/Users/jamesonfarmer/sdev334/centroid-finder/src/test/java/io/github/jameson789/app/DfsBinaryGroupFinderTest.java
+/Users/jamesonfarmer/sdev334/centroid-finder/src/test/java/io/github/jameson789/app/EuclideanColorDistanceTest.java
+/Users/jamesonfarmer/sdev334/centroid-finder/src/test/java/io/github/jameson789/app/DistanceImageBinarizerTest.java

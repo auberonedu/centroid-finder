@@ -1,3 +1,4 @@
+package io.github.jameson789.app;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 

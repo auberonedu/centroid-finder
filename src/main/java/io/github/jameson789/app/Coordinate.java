@@ -1,3 +1,4 @@
+package io.github.jameson789.app;
 /**
  * Represents a location in an image or array
  * 

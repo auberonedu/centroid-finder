@@ -1,3 +1,4 @@
+package io.github.jameson789.app;
 import org.junit.jupiter.api.Test;
 
 import java.awt.image.BufferedImage;

@@ -1,3 +1,5 @@
+package io.github.jameson789.app;
+
 import java.util.List;
 
 public interface BinaryGroupFinder {
