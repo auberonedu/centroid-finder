@@ -1,11 +1,11 @@
-/Users/felix/Documents/SDEV334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/BinarizingImageGroupFinder.java
-/Users/felix/Documents/SDEV334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/BinaryGroupFinder.java
-/Users/felix/Documents/SDEV334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/ColorDistanceFinder.java
-/Users/felix/Documents/SDEV334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/Coordinate.java
-/Users/felix/Documents/SDEV334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/DfsBinaryGroupFinder.java
-/Users/felix/Documents/SDEV334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/DistanceImageBinarizer.java
-/Users/felix/Documents/SDEV334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/EuclideanColorDistance.java
-/Users/felix/Documents/SDEV334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/Group.java
-/Users/felix/Documents/SDEV334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/ImageBinarizer.java
-/Users/felix/Documents/SDEV334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/ImageGroupFinder.java
-/Users/felix/Documents/SDEV334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/ImageSummaryApp.java
+/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/BinarizingImageGroupFinder.java
+/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/BinaryGroupFinder.java
+/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/ColorDistanceFinder.java
+/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/Coordinate.java
+/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/DfsBinaryGroupFinder.java
+/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/DistanceImageBinarizer.java
+/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/EuclideanColorDistance.java
+/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/Group.java
+/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/ImageBinarizer.java
+/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/ImageGroupFinder.java
+/Users/alex/SynologyDrive/Spring quarter 2025/SDEV 334/centroid-finder/src/main/java/io/github/f3liz/centroidFinder/ImageSummaryApp.java
