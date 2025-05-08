@@ -1,4 +1,4 @@
-package main.java.io.github.AugleBoBaugles.centroidFinder;
+package io.github.AugleBoBaugles.centroidFinder;
 import java.util.List;
 
 public interface BinaryGroupFinder {

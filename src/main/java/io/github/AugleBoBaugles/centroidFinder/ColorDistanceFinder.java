@@ -1,4 +1,4 @@
-package main.java.io.github.AugleBoBaugles.centroidFinder;
+package io.github.AugleBoBaugles.centroidFinder;
 /**
  * Defines an interface for computing the distance between two colors.
  * 
