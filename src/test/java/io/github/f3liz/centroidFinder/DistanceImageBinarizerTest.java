@@ -1,10 +1,11 @@
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+package io.github.f3liz.centroidFinder;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-
-import org.junit.Test;
 
 public class DistanceImageBinarizerTest {
 

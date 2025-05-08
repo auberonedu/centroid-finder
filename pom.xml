@@ -36,7 +36,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
-          <mainClass>io.github.f3liz.centroid-finder.ImageSummaryApp</mainClass>
+          <mainClass>io.github.f3liz.centroidFinder.ImageSummaryApp</mainClass>
         </configuration>
       </plugin>
     </plugins>

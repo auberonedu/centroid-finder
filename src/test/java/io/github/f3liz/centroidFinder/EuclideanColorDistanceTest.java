@@ -1,7 +1,8 @@
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+package io.github.f3liz.centroidFinder;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class EuclideanColorDistanceTest {
     

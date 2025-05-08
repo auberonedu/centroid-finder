@@ -1,11 +1,12 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+package io.github.f3liz.centroidFinder;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Test;
 
 public class BinarizingImageGroupFinderTest {
 

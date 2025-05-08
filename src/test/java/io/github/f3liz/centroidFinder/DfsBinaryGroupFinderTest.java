@@ -1,9 +1,10 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+package io.github.f3liz.centroidFinder;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import java.util.List;
-
-import org.junit.Test;
 
 public class DfsBinaryGroupFinderTest {
 

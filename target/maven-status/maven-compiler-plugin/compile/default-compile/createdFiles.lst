@@ -1,0 +1,11 @@
+io/github/f3liz/centroidFinder/ImageGroupFinder.class
+io/github/f3liz/centroidFinder/ColorDistanceFinder.class
+io/github/f3liz/centroidFinder/BinarizingImageGroupFinder.class
+io/github/f3liz/centroidFinder/DistanceImageBinarizer.class
+io/github/f3liz/centroidFinder/ImageSummaryApp.class
+io/github/f3liz/centroidFinder/ImageBinarizer.class
+io/github/f3liz/centroidFinder/EuclideanColorDistance.class
+io/github/f3liz/centroidFinder/BinaryGroupFinder.class
+io/github/f3liz/centroidFinder/Coordinate.class
+io/github/f3liz/centroidFinder/Group.class
+io/github/f3liz/centroidFinder/DfsBinaryGroupFinder.class

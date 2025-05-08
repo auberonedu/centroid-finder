@@ -1,3 +1,5 @@
+package io.github.f3liz.centroidFinder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

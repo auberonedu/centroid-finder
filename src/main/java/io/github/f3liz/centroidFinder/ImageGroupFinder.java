@@ -1,3 +1,5 @@
+package io.github.f3liz.centroidFinder;
+
 import java.util.List;
 import java.awt.image.BufferedImage;
 
