@@ -18,7 +18,7 @@ Cons:
 
 # Xuggler 
 
-- Pros:
+Pros:
 * Designed specifically for Java video/audio encoding and decoding.
 
 * Lets you grab frames and video info in Java.
