@@ -3,6 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>io.github.qopci</groupId>
   <artifactId>centroidFinder</artifactId>
   <version>1.0-SNAPSHOT</version>
@@ -13,20 +14,20 @@
   </properties>
 
   <dependencies>
-  <!-- https://mvnrepository.com/artifact/com.orsonpdf/orsonpdf -->
+    <!-- OrsonPDF -->
     <dependency>
       <groupId>com.orsonpdf</groupId>
       <artifactId>orsonpdf</artifactId>
       <version>1.9.1</version>
     </dependency>
 
-  <!-- JFreeChart for plotting -->
+    <!-- JFreeChart for plotting -->
     <dependency>
       <groupId>org.jfree</groupId>
       <artifactId>jfreechart</artifactId>
       <version>1.5.3</version>
     </dependency>
-    
+
     <!-- JUnit Jupiter -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -34,23 +35,31 @@
       <version>5.10.0</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- JavaCV with native platform support -->
+    <dependency>
+      <groupId>org.bytedeco</groupId>
+      <artifactId>javacv-platform</artifactId>
+      <version>1.5.9</version>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <!-- Surefire -->
+      <!-- Surefire plugin for running tests -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.3</version>
       </plugin>
-      <!-- Exec -->
+
+      <!-- Exec plugin to run a specific class -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
-          <mainClass>io.github.qopci.centroidFinder.ImageSummaryApp</mainClass>
+          <mainClass>io.github.qopci.centroidFinder.VideoExperiment</mainClass>
         </configuration>
       </plugin>
     </plugins>
