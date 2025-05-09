@@ -9,7 +9,7 @@ import static org.bytedeco.opencv.global.opencv_imgcodecs.imwrite;
 public class VideoExperiment {
 
     public static void main(String[] args) {
-        String videoPath = "chiikawa.mp4"; // Make sure this file is in your project root
+        String videoPath = "chiikawa.mp4"; 
 
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath)) {
             grabber.start();
@@ -21,10 +21,9 @@ public class VideoExperiment {
             System.out.println("Frame Rate: " + grabber.getFrameRate());
             System.out.println("Total Frames: " + grabber.getLengthInFrames());
 
-            // Grab the first image frame
             Frame frame = null;
             while ((frame = grabber.grabImage()) == null) {
-                // Skip any non-image frames (e.g., audio)
+                
             }
 
             if (frame != null) {
