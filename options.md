@@ -1,16 +1,16 @@
-## Video Library Options for Java
+## Video Library Options for Java:
 --------------------------------------------------------------------------------------------------------------------------
 
 # JavaCV 
 
-- Pros:
+Pros:
 * Can handle a wide range of video formats and operations.
 
 * Actively maintained and widely used in computer vision projects.
 
 * Can extract frame data, read metadata, and even do live video capture.
 
-- Cons:
+Cons:
 * Can be a bit complex to set up with native dependencies.
 
 * The API is low-level, so it takes more effort to do basic things.
@@ -25,7 +25,7 @@
 
 * Can combine video and audio into one file.
 
-- Cons:
+Cons:
 * No longer is updated/maintained.
 
 * Can be tricky to install on newer systems.
@@ -35,14 +35,14 @@
 
 # JCodec
 
-- Pros:
+Pros:
 * Easy to include, just Java code no system installs.
 
 * Can decode MP4 and extract frames.
 
 * Good for simple tasks like frame grabbing.
 
-- Cons:
+Cons:
 * Doesn’t support as many video formats.
 
 * Slower because it's all written in Java.
