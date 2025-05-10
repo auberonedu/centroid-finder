@@ -44,7 +44,6 @@ public class BinarizingImageGroupFinder implements ImageGroupFinder {
         // locate connected group with BinaryGroupFinder
         List<Group> connectedGroups = groupFinder.findConnectedGroups(imageConvertedToArray);
 
-
         return connectedGroups;
     }
 }

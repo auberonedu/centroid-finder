@@ -1,8 +1,12 @@
 package io.github.AugleBoBaugles.centroidFinder;
-import static org.junit.Assert.*;
-import org.junit.io.github;
-import java.util.ArrayList;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.ArrayList;
+
 
 public class DfsBinaryGroupFinderTest {
 
