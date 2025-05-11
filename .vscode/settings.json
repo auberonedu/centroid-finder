@@ -3,5 +3,6 @@
         "Binarizer",
         "RRGGBB",
         "binarization"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
