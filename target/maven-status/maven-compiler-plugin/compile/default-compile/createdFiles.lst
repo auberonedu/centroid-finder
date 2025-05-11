@@ -8,4 +8,5 @@ io\github\AugleBoBaugles\centroidFinder\ColorDistanceFinder.class
 io\github\AugleBoBaugles\centroidFinder\EuclideanColorDistance.class
 io\github\AugleBoBaugles\centroidFinder\ImageGroupFinder.class
 io\github\AugleBoBaugles\centroidFinder\Coordinate.class
+io\github\AugleBoBaugles\centroidFinder\VideoConversionApp.class
 io\github\AugleBoBaugles\centroidFinder\ImageBinarizer.class
