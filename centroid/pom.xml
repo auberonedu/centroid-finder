@@ -14,12 +14,34 @@
     </properties>
 
     <dependencies>
+
+        <!-- OrsonPDF -->
+        <dependency>
+            <groupId>com.orsonpdf</groupId>
+            <artifactId>orsonpdf</artifactId>
+            <version>1.9.1</version>
+        </dependency>
+        
         <!-- JUnit 5 (Jupiter) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.12.0</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- JCodec core -->
+        <dependency>
+            <groupId>org.jcodec</groupId>
+            <artifactId>jcodec</artifactId>
+            <version>0.2.5</version>
+        </dependency>
+
+        <!-- JCodec JavaSE-specific tools -->
+        <dependency>
+            <groupId>org.jcodec</groupId>
+            <artifactId>jcodec-javase</artifactId>
+            <version>0.2.5</version>
         </dependency>
     </dependencies>
 
@@ -42,13 +64,13 @@
                 <version>3.0.0</version>
             </plugin>
 
-            <!-- Exec plugin -->
+            <!-- Exec plugin to run the VideoExperiment main class -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>io.github.alstondsouza1.centroidFinder.ImageSummaryApp</mainClass>
+                    <mainClass>io.github.alstondsouza1.centroidFinder.VideoExperiment</mainClass>
                 </configuration>
             </plugin>
         </plugins>

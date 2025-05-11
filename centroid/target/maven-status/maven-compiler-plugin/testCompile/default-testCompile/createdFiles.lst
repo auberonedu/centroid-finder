@@ -1,8 +1,0 @@
-io/github/alstondsouza1/centroidFinder/BinarizingImageGroupFinderTest.class
-io/github/alstondsouza1/centroidFinder/DistanceImageBinarizerTest.class
-io/github/alstondsouza1/centroidFinder/BinarizingImageGroupFinderTest$FixedGroupFinder.class
-io/github/alstondsouza1/centroidFinder/DistanceImageBinarizerTest$MockColorDistanceFinder.class
-io/github/alstondsouza1/centroidFinder/EuclideanColorDistanceTest.class
-io/github/alstondsouza1/centroidFinder/BinarizingImageGroupFinderTest$TestBinarizer.class
-io/github/alstondsouza1/centroidFinder/BinarizingImageGroupFinderTest$1.class
-io/github/alstondsouza1/centroidFinder/DfsBinaryGroupFinderTest.class
