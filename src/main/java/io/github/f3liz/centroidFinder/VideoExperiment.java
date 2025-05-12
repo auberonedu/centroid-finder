@@ -1,47 +1,66 @@
 package io.github.f3liz.centroidFinder;
 
+import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.OpenCVFrameConverter;
 import org.bytedeco.opencv.opencv_core.Mat;
 import org.bytedeco.opencv.opencv_videoio.VideoCapture;
 
-import static org.bytedeco.opencv.global.opencv_highgui.*;
+import javax.swing.*;
 
 public class VideoExperiment {
     public static void main(String[] args) {
         // Path to your test video file (relative to project root)
         String videoPath = "sampleInput/sample-10s.mp4";
 
-        // Create a VideoCapture object to open the video file
+        // Open video file
         VideoCapture capture = new VideoCapture(videoPath);
-
-        // Check if the video file was successfully opened
+        // Check if it can open, if not exit program
         if (!capture.isOpened()) {
             System.out.println("Error: Cannot open video file.");
             return;
         }
 
-        // Create a Mat object to hold each frame
+        // OpenCV Mat object
         Mat frame = new Mat();
+
+        // counter for frames processed
         int frameCount = 0;
 
-        // Loop through each frame of the video
-        while (capture.read(frame)) {
-            frameCount++;
+        // Create CanvasFrame for displaying video
+        CanvasFrame canvas = new CanvasFrame("Video Frame", CanvasFrame.getDefaultGamma() / 2.2);
 
-            // Display the current frame in a window titled "Video Frame"
-            // imshow("Video Frame", frame); // Doesn't work currently
+        // closes java program if video window is closed
+        canvas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            // Wait 30 milliseconds between frames (approx. 30 FPS)
-            // If a key is pressed, break out of the loop
-            if (waitKey(30) >= 0) break;
+        // convert Mat frames to Frame objects
+        OpenCVFrameConverter.ToMat converter = new OpenCVFrameConverter.ToMat();
 
-            // Print progress to the console
-            System.out.println("Frame " + frameCount + " processed.");
+        // to process the frames
+        try {
+            while (capture.read(frame)) {
+                if (frame.empty()) break;
+                frameCount++;
+
+                // Show frame
+                canvas.showImage(converter.convert(frame));
+
+                // Exit if window is closed
+                if (!canvas.isVisible()) break;
+
+                // Delay for ~30 FPS
+                Thread.sleep(30);
+
+                System.out.println("Frame " + frameCount + " processed.");
+            }
+        } catch (InterruptedException e) {
+            System.err.println("Interrupted: " + e.getMessage());
+        } finally {
+            // Clean up
+            capture.release();
+            canvas.dispose();
+            System.out.println("Processed " + frameCount + " frames.");
         }
-
-        // Release the video file and close OpenCV windows
-        capture.release();
-        // destroyAllWindows(); // Doesn't work currently
-
-        System.out.println("Processed " + frameCount + " frames.");
     }
 }
+// metadata and extracting frame data can be done using .get() from the VideoCapture class
+// ex: capture.get(org.bytedeco.opencv.global.opencv_videoio.CAP_PROP_FRAME_WIDTH) for width of the frames
