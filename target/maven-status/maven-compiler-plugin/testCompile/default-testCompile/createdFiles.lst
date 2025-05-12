@@ -1,0 +1,12 @@
+test\java\io\github\AugleBoBaugles\centroidFinder\BinarizingImageGroupFinderTest$MockGroupFinder.class
+test\java\io\github\AugleBoBaugles\centroidFinder\BinarizingImageGroupFinderTest$2.class
+test\java\io\github\AugleBoBaugles\centroidFinder\DistanceImageBinarizerTest.class
+test\java\io\github\AugleBoBaugles\centroidFinder\EuclideanColorDistanceTest.class
+test\java\io\github\AugleBoBaugles\centroidFinder\BinarizingImageGroupFinderTest$3.class
+test\java\io\github\AugleBoBaugles\centroidFinder\BinarizingImageGroupFinderTest$StubBinarizer.class
+test\java\io\github\AugleBoBaugles\centroidFinder\DfsBinaryGroupFinderTest.class
+test\java\io\github\AugleBoBaugles\centroidFinder\DistanceImageBinarizerTest$MockColorDistanceFinder.class
+test\java\io\github\AugleBoBaugles\centroidFinder\DistanceImageBinarizerTest$2.class
+test\java\io\github\AugleBoBaugles\centroidFinder\BinarizingImageGroupFinderTest$1.class
+test\java\io\github\AugleBoBaugles\centroidFinder\BinarizingImageGroupFinderTest.class
+test\java\io\github\AugleBoBaugles\centroidFinder\DistanceImageBinarizerTest$1.class
