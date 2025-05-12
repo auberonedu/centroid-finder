@@ -1,3 +1,5 @@
+package io.github.humagitgud.centroidfinder;
+
 import java.util.List;
 import java.awt.image.BufferedImage;
 

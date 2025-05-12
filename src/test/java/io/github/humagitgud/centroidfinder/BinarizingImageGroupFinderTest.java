@@ -1,3 +1,5 @@
+package io.github.humagitgud.centroidfinder;
+
 import org.junit.jupiter.api.Test;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
