@@ -1,6 +1,11 @@
-package io.github.AugleBoBaugles.centroidFinder;
+package test.java.io.github.AugleBoBaugles.centroidFinder;
 
 import org.junit.jupiter.api.Test;
+
+import main.java.io.github.AugleBoBaugles.centroidFinder.ColorDistanceFinder;
+import main.java.io.github.AugleBoBaugles.centroidFinder.DistanceImageBinarizer;
+import main.java.io.github.AugleBoBaugles.centroidFinder.EuclideanColorDistance;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.image.BufferedImage;

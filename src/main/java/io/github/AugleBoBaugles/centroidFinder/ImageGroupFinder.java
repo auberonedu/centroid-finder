@@ -1,4 +1,4 @@
-package io.github.AugleBoBaugles.centroidFinder;
+package main.java.io.github.AugleBoBaugles.centroidFinder;
 import java.util.List;
 import java.awt.image.BufferedImage;
 
