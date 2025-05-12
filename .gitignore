@@ -24,4 +24,7 @@ hs_err_pid*
 replay_pid*
 
 # compiled files
-target/*
+target/
+
+# Sample Outputs
+sampleOutput/
