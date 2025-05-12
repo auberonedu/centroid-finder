@@ -34,7 +34,7 @@
     </dependency>
 
 
-    <!-- JCodec dependency -->
+    <!-- JCodec dependency (NOTE: we either need this OR JavaCV; not both!)-->
     <dependency>
     <groupId>org.jcodec</groupId>
     <artifactId>jcodec</artifactId>
@@ -45,6 +45,15 @@
       <artifactId>jcodec-javase</artifactId>
       <version>0.2.5</version>
     </dependency>
+
+  
+    <!-- JavaCV dependency (NOTE: we either need this OR JCodec; not both!)-->
+    <dependency>
+      <groupId>org.bytedeco</groupId>
+      <artifactId>javacv-platform</artifactId>
+      <version>1.5.11</version>
+    </dependency>
+
   </dependencies>
 
   <build>
