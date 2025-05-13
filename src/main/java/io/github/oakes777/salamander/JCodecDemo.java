@@ -1,54 +1,42 @@
 package io.github.oakes777.salamander;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
 import org.jcodec.common.io.NIOUtils;
+import org.jcodec.common.io.SeekableByteChannel;
 import org.jcodec.common.model.Picture;
-import org.jcodec.scale.AWTUtil;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.channels.SeekableByteChannel;
-
-
-/**
- * Demo: Extracts one frame per second from a video using JCodec.
- * Saves each frame as frame_0.png, frame_1.png, etc.
- */
 public class JCodecDemo {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, JCodecException {
         if (args.length < 1) {
             System.out.println("Usage: java JCodecDemo <video_file>");
             return;
         }
 
-        String videoPath = args[0];
+        File videoFile = new File(args[0]);
+        SeekableByteChannel channel = null;
+
         try {
-            SeekableByteChannel ch = NIOUtils.readableChannel(new File(videoPath));
-            FrameGrab grab = FrameGrab.createFrameGrab(ch);
+            channel = NIOUtils.readableChannel(videoFile);
+            FrameGrab grab = FrameGrab.createFrameGrab(channel);
 
             int frameNumber = 0;
-            double secondsStep = 1.0;
-
-            while (true) {
-                grab.seekToSecondPrecise(frameNumber * secondsStep);
-                Picture picture = grab.getNativeFrame();
-                if (picture == null) break;
-
-                BufferedImage frame = AWTUtil.toBufferedImage(picture);
-                File output = new File("frame_" + frameNumber + ".png");
-                ImageIO.write(frame, "png", output);
-                System.out.println("Saved frame_" + frameNumber + ".png");
-
+            Picture picture;
+            while ((picture = grab.getNativeFrame()) != null && frameNumber < 5) {
+                System.out.println("Frame " + frameNumber +
+                        " | Width: " + picture.getWidth() +
+                        " | Height: " + picture.getHeight() +
+                        " | Format: " + picture.getColor());
                 frameNumber++;
             }
 
-            System.out.println("✅ Done extracting frames.");
-        } catch (IOException | JCodecException e) {
-            System.err.println("Error processing video: " + videoPath);
-            e.printStackTrace();
+        } finally {
+            if (channel != null) {
+                channel.close();
+            }
         }
     }
 }
