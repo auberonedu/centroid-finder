@@ -34,3 +34,31 @@ Pros:
 cons 
 - does not support computer vision, object detection, or tracking.
 - VLCJ is designed for playing or streaming video, not for analysis.
+
+JCodec
+Description:
+JCodec is a pure Java library for video encoding and decoding, supporting formats like H.264 and VP8. It facilitates operations such as video transcoding, resizing, and watermarking.
+
+Pros:
+
+Pure Java implementation, eliminating the need for native libraries.
+Suitable for basic video processing tasks, including transcoding and resizing.
+Useful for applications requiring lightweight video manipulation.
+Cons:
+
+Limited support for advanced video processing features.
+May not be as performant as libraries leveraging native code for intensive tasks.
+
+Xuggler
+Description:
+Xuggler is a Java library that provides Java bindings to the FFmpeg multimedia framework, enabling developers to decode, encode, and manipulate video and audio streams.
+
+Pros:
+
+Comprehensive support for various media formats and codecs.
+Facilitates tasks like video transcoding, streaming, and frame extraction.
+Integrates well with Java applications requiring media manipulation.
+Cons:
+
+Development has been discontinued, and the library is no longer actively maintained.
+May pose compatibility issues with newer systems and Java versions.
