@@ -9,3 +9,5 @@ Consider using ImageGroupFinder.java interface, try to convert frame to Buffered
 So now we will work on figuring out converting from a singular frame to a BufferedImage while processing video and have it write x and y coordinates of largest centroid to csv then proceed to next frame and repeat the same thing until end of the video.
 
 Later on when testing where salamander is location wise, potentially use metadata from the video resolution to determine the boundaries and which of the three areas the salamander is in. May include math to separate 3 boundaries.
+
+JavaCV has a built in method to convert from frame to BufferedImage called Java2DFrameConverter. We will try to implement this into our logic to process each frame.
