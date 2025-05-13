@@ -62,3 +62,21 @@ Cons:
 
 Development has been discontinued, and the library is no longer actively maintained.
 May pose compatibility issues with newer systems and Java versions.
+
+Discussion: Since real-time video acquisition is on the roadmap, our library choice should support live video stream input, frame-by-frame access in real time, compatibility with image processing, and also Java integration.
+
+JavaCV (OpenCV Wrapper) is our best long-term choice:
+Can do both real-time capture (via VideoCapture(0) for webcam) and offline MP4 decoding.
+Has access to OpenCV's full computer vision toolkit (object tracking, contour analysis).
+Is widely used in academic and industrial CV systems.
+Has easy image manipulation (thresholding, blurring, resizing).
+Good OpenCV tutorials (although mostly for Python/C++).
+
+Potential cons:
+Native setup (need OpenCV libraries and Java bindings).
+Slight learning curve.
+
+VLCJ would work to stream from network cams or IP feeds BUT:
+Not for frame-level analysis unless we build a pixel grabber pipeline.
+Doesn't offer tracking, detection.
+
