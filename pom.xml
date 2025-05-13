@@ -21,6 +21,13 @@
         <version>5.12.0</version>
         <scope>test</scope>
     </dependency>
+
+    <!-- JCodec for video frame extraction-->
+    <dependency>
+            <groupId>org.jcodec</groupId>
+            <artifactId>jcodec</artifactId>
+            <version>0.2.5</version>
+        </dependency>
 </dependencies>
 
 
