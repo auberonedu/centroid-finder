@@ -4,6 +4,7 @@ For this project, we have considered several different Java video processing lib
 ## Overview
 - JCodec
 - JavaCV
+- VLCJ
 
 ## [JCodec](http://jcodec.org/)
 A library that implements video and audio codecs.
@@ -24,3 +25,13 @@ Contains wrappers of commonly used computer vision libraries with utility classe
 ### Cons  
 - Contains way more functionality than we need
 - Steep learning curve
+
+## [Xuggle/Xuggler](https://github.com/artclarke/xuggle-xuggler?tab=readme-ov-file)
+A library that is a wrapper around FFmpeg for decoding multimedia files. This includes processing frames of a video.
+### Pros  
+- Supports lots of video formats without needing to implement specific logic
+- Java Friendly 👍
+- Sometimes lightweight - for simple operations 
+### Cons  
+- Not actively maintained
+- Complex setup - need to set up native libraries on each machine
