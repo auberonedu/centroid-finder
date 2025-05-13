@@ -27,7 +27,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>io.github.TiaMarieG.centroidFinder.ImageSummaryApp</mainClass>
+                    <mainClass>io.github.TiaMarieG.centroidFinder.ChartDemoVideoTest</mainClass>
                 </configuration>
             </plugin>
         </plugins>
@@ -39,6 +39,18 @@
             <artifactId>junit-jupiter</artifactId>
             <version>5.10.0</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.knowm.xchart</groupId>
+            <artifactId>xchart</artifactId>
+            <version>3.8.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv-platform</artifactId>
+            <version>1.5.9</version>
         </dependency>
     </dependencies>
 </project>
