@@ -2,18 +2,35 @@
 
 ## Options:
 
-### 1. Xuggler
-It allows you to play, create, and manipulate media files (video and audio). It wraps the powerful FFmpeg tool behind the scenes. Xuggler lets you:
-- Convert video formats
-- Extract frames from videos
-- Capture webcam input
-- Stream or record audio/video
-
-### 2. JavaCV
-JavaCV is a wrapper for OpenCV and FFmpeg allowing you to work with video and computer vision tasks. JavaCV lets you:
+### 1. JavaCV
+JavaCV is a wrapper for OpenCV and FFmpeg allowing you to work with video and computer vision tasks.
+Pros:
 - Read and write video files
 - Capture video from a camera
-- Apply filters (blud, edge detection, etc.)
+- Encode/Decode multiple formats
+Cons:
+- Steep learning curve
+- VLC required to be installed
+- Not pure Java
 
-### 3. VLCJ
+### 2. VLCJ
 VLCJ provides bindings to VLC media player. It can be used to play, stream, and process video and audio making it a simple solution for video playback and metadata extraction.
+Pros:
+- Play audio and video
+- Control playback (pause, resume, etc.)
+- Capture web cam input
+Cons:
+- Memory intensive due to VLC dependencies
+- Playback might not be the fastest
+- Might be difficult to use in non-GUI apps without VLC support
+
+### 3. GStreamer
+GStreamer is a multimedia framework written in C, widely used in professional and open-source projects. It allows complex media processing. 
+Pros:
+- Wide format and protocol support
+- Professional grade features
+- Good community
+Cons:
+- Native library install (not 100% Java)
+- Steep learning curve
+- Limited java-specific documentation
