@@ -9,8 +9,25 @@ public class VideoReader {
     private double frameRate;
     private int frameNumber = 0;
 
-    //Constructor here:
+    //Constructor here: this is the video grabber, where it starts
+    public VideoReader(String path) throws Exception {
+        grabber = new FFmpegFrameGrabber(path); // Use JavaCV to open the video file
+        grabber.start(); 
+        frameRate = grabber.getFrameRate(); 
+    }
+
     //Read the next frame from vid, then return the bufferedImage
+    public BufferedImage nextFrame() throws Exception {
+        Frame frame = grabber.grabImage(); 
+        frameNumber++;
+    
+        if (frame != null) {
+            return converter.convert(frame); 
+        } else {
+            return null;
+        }
+    }
+
     //then check whether the current frame should processed as new SECOND
     //Close the video grabber 
 
