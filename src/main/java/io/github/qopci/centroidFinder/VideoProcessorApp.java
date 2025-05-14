@@ -2,8 +2,6 @@ package io.github.qopci.centroidFinder;
 
 import java.awt.image.BufferedImage;
 
-
-
 public class VideoProcessorApp {
      public static void main(String[] args) {
         try {
@@ -24,7 +22,7 @@ public class VideoProcessorApp {
                     }
                 }
             }
-            
+
             System.out.println("Done. CSV written to " + parser.outputCsv);
         } catch (Exception e) {
             e.printStackTrace(); // Print errors if any
