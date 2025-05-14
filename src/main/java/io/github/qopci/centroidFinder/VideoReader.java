@@ -29,6 +29,13 @@ public class VideoReader {
     }
 
     //then check whether the current frame should processed as new SECOND
+    public boolean shouldProcessThisFrame() {
+        // Only process one fps — if frameNumber crosses a second boundary
+        return (int)((frameNumber - 1) / frameRate) != (int)(frameNumber / frameRate);
+    }
+    
     //Close the video grabber 
-
+    public void close() throws Exception {
+        grabber.close();
+    }
 }
