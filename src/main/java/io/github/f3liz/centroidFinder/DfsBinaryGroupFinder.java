@@ -3,6 +3,9 @@ package io.github.f3liz.centroidFinder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
+
+import org.bytedeco.leptonica.SARRAY;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
@@ -117,6 +120,39 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
             findConnectedGroups(image, new int[] { newR, newC}, visited, pixelatedGroup);
         }
     }
+
+    // iterative approach (wrote in case our dfs didn't work later on for video processing)
+    // private void findConnectedGroups(int[][] image, int[] location, boolean[][] visited, List<int[]> pixelatedGroup) {
+    //     Stack<int[]> stack = new Stack<>();
+
+    //     stack.push(location);
+
+    //     while(!stack.isEmpty()) {
+    //         int[] current = stack.pop();
+
+    //         int curR = current[0];
+    //         int curC = current[1];
+
+    //         // Validate coordinates to ensure they are within the boundaries of image
+    //         if (curR < 0 || curR >= image.length || curC < 0 || curC >= image[0].length)
+    //             continue;
+
+    //         // Skip if the current pixel has already been visited or is a '0'
+    //         if (visited[curR][curC] || image[curR][curC] == 0)
+    //             continue;
+
+    //         // Mark the pixel as visited and add it to the group
+    //         visited[curR][curC] = true;
+    //         pixelatedGroup.add(new int[]{curR, curC});
+
+    //         for (int[] direction : directions) {
+    //             int newR = curR + direction[0];
+    //             int newC = curC + direction[1];
+
+    //             stack.push(new int[]{newR, newC});
+    //         }
+    //     }
+    // }
 
     /**
      * Converts a list of pixel coordinates into a Group. 
