@@ -3,7 +3,7 @@ package io.github.qopci.centroidFinder;
 import org.bytedeco.javacv.*;
 import java.awt.image.BufferedImage;
 
-public class VideoReader {
+public class VideoReader implements AutoCloseable {
     private final FFmpegFrameGrabber grabber;
     private final Java2DFrameConverter converter = new Java2DFrameConverter();
     private double frameRate;

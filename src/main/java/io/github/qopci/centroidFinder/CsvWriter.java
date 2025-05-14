@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CsvWriter {
+public class CsvWriter implements AutoCloseable {
     private final PrintWriter writer;
 
     // Constructor here: open the output file and write the headerline
