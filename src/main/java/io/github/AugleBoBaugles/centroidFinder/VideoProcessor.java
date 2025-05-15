@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class VideoConversionAppTwo {
+public class VideoProcessor {
 
     public static void extractFrames(String videoPath, String outputDir) throws Exception {
         FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath);

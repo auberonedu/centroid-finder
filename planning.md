@@ -13,9 +13,8 @@ Link to flowchart: https://docs.google.com/drawings/d/1PYy6h4iulJ7FepGHRRITSQBkA
 <!-- To view the diagram below in preview, add Markdown Preview Mermaid Support extension -->
 ```mermaid
 graph LR
-    MainApp:::new --> DataTracker:::new --> VideoProcessor:::new 
-    
-    DataTracker --> LargestCentroid/ImageSummaryApp:::prev --> EuclideanColorDistance:::prev & DistanceImageBinarizer:::prev & BinarizingImageGroupFinder:::prev
+    MainApp:::new --> 
+    VideoProcessor:::new --> LargestCentroid/ImageSummaryApp:::prev --> EuclideanColorDistance:::prev & DistanceImageBinarizer:::prev & BinarizingImageGroupFinder:::prev
 
     classDef new fill:#922, stroke:#fff, stroke-width:3px;
     classDef prev fill:#229, stroke:#fff, stroke-width:2px;
@@ -25,23 +24,33 @@ graph LR
 classDiagram
     class Main["Main App"] {
     }
-    class DataTracker["Data Tracker"] {
-        +int color
-        +int threshhold
-        +String filePath
-        +createCSV()
-        +addData(data, CSV)
-    }
+
     class Video["VideoProcessor"]{
         +String filePath
-        +int timeStamp
-        +File outPut
+        +int color
+        +int threshhold
+        +File csv
+        +int framesPerSec = empty
+        +int secondIncrement = 1
+        +extractFrames(videoPath, outputDir, fps)
+        -frameToData(frame)
         +getFileAt(timeStamp)
     }
 
 
     classDef default fill:#a22,stroke:#fff,stroke-width:2px;
 ```
+
+<!-- 
+    class DataTracker["Data Tracker"] {
+        +int color
+        +int threshhold
+        +String filePath
+        +File CSV
+        +VideoProcessor processor
+        -processVideoData(data, CSV, videoProcessor)
+    }
+    -->
 
 
 
