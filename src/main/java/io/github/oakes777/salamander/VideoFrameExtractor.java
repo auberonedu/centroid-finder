@@ -118,7 +118,7 @@ public class VideoFrameExtractor implements Iterable<VideoFrame>, AutoCloseable 
      * Cleans up the video track when done (needed for file resource cleanup).
      */
     @Override
-    public void close() throws Exception {
+    public void close() throws IOException {
         channel.close(); // Close the video file properly
     }
 }
