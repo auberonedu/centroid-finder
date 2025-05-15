@@ -14,42 +14,59 @@
     </properties>
 
     <dependencies>
-    <!-- JUnit 5 (Jupiter API + Engine) -->
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter</artifactId>
-        <version>5.12.0</version>
-        <scope>test</scope>
-    </dependency>
+        <!-- JUnit 5 (Jupiter API + Engine) -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.12.0</version>
+            <scope>test</scope>
+        </dependency>
 
-    <!-- JCodec core -->
-    <dependency>
-        <groupId>org.jcodec</groupId>
-        <artifactId>jcodec</artifactId>
-        <version>0.2.5</version> <!-- 🔼 updated from 0.2.3 -->
-    </dependency>
+        <!-- JCodec core -->
+        <dependency>
+            <groupId>org.jcodec</groupId>
+            <artifactId>jcodec</artifactId>
+            <version>0.2.5</version> <!-- 🔼 updated from 0.2.3 -->
+        </dependency>
 
-    <!-- JCodec JavaSE utilities (AWTUtil, BufferedImage support) -->
-    <dependency>
-        <groupId>org.jcodec</groupId>
-        <artifactId>jcodec-javase</artifactId>
-        <version>0.2.5</version> <!-- ✅ required for AWTUtil -->
-    </dependency>
-</dependencies>
+        <!-- JCodec JavaSE utilities (AWTUtil, BufferedImage support) -->
+        <dependency>
+            <groupId>org.jcodec</groupId>
+            <artifactId>jcodec-javase</artifactId>
+            <version>0.2.5</version> <!-- ✅ required for AWTUtil -->
+        </dependency>
+    </dependencies>
 
 
 
     <build>
         <plugins>
-            <!-- Plugin to run Java apps -->
+            <!-- Other plugins here -->
+
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.1.0</version>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
                 <configuration>
-                    <mainClass>io.github.oakes777.salamander.JCodecDemo</mainClass>
+                    <archive>
+                        <manifest>
+                            <mainClass>io.github.oakes777.salamander.VideoProcessorMain</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id> <!-- unique ID -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
+
 </project>

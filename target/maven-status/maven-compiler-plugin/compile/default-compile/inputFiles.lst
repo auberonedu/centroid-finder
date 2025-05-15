@@ -5,8 +5,13 @@
 /Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/DfsBinaryGroupFinder.java
 /Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/DistanceImageBinarizer.java
 /Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/EuclideanColorDistance.java
+/Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/FrameAnalyzer.java
 /Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/Group.java
 /Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/ImageBinarizer.java
 /Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/ImageGroupFinder.java
 /Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/ImageSummaryApp.java
 /Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/JCodecDemo.java
+/Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/VideoCentroidTracker.java
+/Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/VideoFrame.java
+/Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/VideoFrameExtractor.java
+/Users/mb16/sdev334/salamander/centroid-finder/src/main/java/io/github/oakes777/salamander/VideoProcessorMain.java
