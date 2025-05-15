@@ -7,7 +7,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 /**
- * The Image Summary Application.
+ * The Image Summary Application. / Largest Centroid
  * 
  * This application takes three command-line arguments:
  * 1. The path to an input image file (for example, "image.png").
@@ -30,41 +30,27 @@ import javax.imageio.ImageIO;
  * Usage:
  *   java ImageSummaryApp <input_image> <hex_target_color> <threshold>
  */
-public class ImageSummaryApp {
-    public static void main(String[] args) {
-        if (args.length < 3) {
-            System.out.println("Usage: java ImageSummaryApp <input_image> <hex_target_color> <threshold>");
-            return;
-        }
-        
-        String inputImagePath = args[0];
-        String hexTargetColor = args[1];
-        int threshold = 0;
-        try {
-            threshold = Integer.parseInt(args[2]);
-        } catch (NumberFormatException e) {
-            System.err.println("Threshold must be an integer.");
-            return;
-        }
-        
-        BufferedImage inputImage = null;
-        try {
-            inputImage = ImageIO.read(new File(inputImagePath));
-        } catch (Exception e) {
-            System.err.println("Error loading image: " + inputImagePath);
-            e.printStackTrace();
-            return;
-        }
-        
-        // Parse the target color from a hex string (format RRGGBB) into a 24-bit integer (0xRRGGBB)
-        int targetColor = 0;
-        try {
-            targetColor = Integer.parseInt(hexTargetColor, 16);
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid hex target color. Please provide a color in RRGGBB format.");
-            return;
-        }
-        
+public class LargestCentroid {
+    public BufferedImage inputImage;
+    public String targetColor;
+    public int threshold = 0;
+    public int seconds;
+
+    // Constructors
+    public LargestCentroid(BufferedImage inputImage, String hexTargetColor, int threshold, int seconds) {
+        this.inputImage = inputImage;
+        this.targetColor = targetColor;
+        this.threshold = threshold;
+        this.seconds = seconds;
+    }
+
+    public LargestCentroid(BufferedImage inputImage, String hexTargetColor, int seconds) {
+        this.inputImage = inputImage;
+        this.targetColor = hexTargetColor;
+        this.seconds = seconds;
+    }
+
+    public LargestCentroidRecord findLargestCentroid() {
         // Create the DistanceImageBinarizer with a EuclideanColorDistance instance.
         ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
         ImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
@@ -100,5 +86,6 @@ public class ImageSummaryApp {
             System.err.println("Error writing groups.csv");
             e.printStackTrace();
         }
+
     }
 }
