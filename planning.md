@@ -10,5 +10,40 @@
 
 Link to flowchart: https://docs.google.com/drawings/d/1PYy6h4iulJ7FepGHRRITSQBkAGDCtvwggX7IKSOrPlc/edit
 
+<!-- To view the diagram below in preview, add Markdown Preview Mermaid Support extension -->
+```mermaid
+graph LR
+    MainApp:::new --> DataTracker:::new --> VideoProcessor:::new 
+    
+    DataTracker --> LargestCentroid/ImageSummaryApp:::prev --> EuclideanColorDistance:::prev & DistanceImageBinarizer:::prev & BinarizingImageGroupFinder:::prev
+
+    classDef new fill:#922, stroke:#fff, stroke-width:3px;
+    classDef prev fill:#229, stroke:#fff, stroke-width:2px;
+```
+
+```mermaid
+classDiagram
+    class Main["Main App"] {
+    }
+    class DataTracker["Data Tracker"] {
+        +int color
+        +int threshhold
+        +String filePath
+        +createCSV()
+        +addData(data, CSV)
+    }
+    class Video["VideoProcessor"]{
+        +String filePath
+        +int timeStamp
+        +File outPut
+        +getFileAt(timeStamp)
+    }
+
+
+    classDef default fill:#a22,stroke:#fff,stroke-width:2px;
+```
+
+
+
 
 
