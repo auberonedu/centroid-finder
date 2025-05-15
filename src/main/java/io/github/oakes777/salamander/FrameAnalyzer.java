@@ -53,6 +53,18 @@ public class FrameAnalyzer {
     }
 
     /**
+     * Applies binarization to the provided image using the configured target color and threshold.
+     * This method does not compute groups or centroids — just returns the binarized image.
+     *
+     * @param image the BufferedImage to binarize
+     * @return a black-and-white BufferedImage representing pixels within the threshold
+     */
+    public BufferedImage binarizeOnly(BufferedImage image) {
+        int[][] binary = binarizer.toBinaryArray(image);         // Create binary mask
+        return binarizer.toBufferedImage(binary);                // Convert to image
+    }
+
+    /**
      * Processes a BufferedImage to find the largest group of white pixels.
      * 
      * @param image Input image to analyze
