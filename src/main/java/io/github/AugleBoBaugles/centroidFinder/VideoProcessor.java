@@ -10,52 +10,22 @@ import java.io.File;
 import java.io.PrintWriter;
 
 public class VideoProcessor {
-    public BufferedImage inputImage; // TODO - Make this video
-    public int targetColor;
-    public int threshhold;
-    public PrintWriter csv;
-    public int framesPerSec = 30; // TODO: Maybe remove this?
-    public int secondIncrement = 1; // TODO: Possible customizable feature later
+    private String videoPath; 
+    private int targetColor;
+    private int threshhold;
+    private PrintWriter csv;
+    private int framesPerSec = 30; // TODO: Maybe remove this?
+    private int secondIncrement = 1; // TODO: Possible customizable feature later
 
-    public VideoProcessor(BufferedImage inputImage, int targetColor, int threshhold) {
-        this.inputImage = inputImage;
+    public VideoProcessor(String videoPath, int targetColor, int threshhold) {
+        this.videoPath = videoPath;
         this.targetColor = targetColor;
         this.threshhold = threshhold;
     }
 
-    
-    // Loop through whole video, at each fps increment, run frameToData on frame
-    public static void extractFrames(String videoPath, String outputDir) throws Exception {
-        
-        FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath);
-        grabber.start();
-
-        Java2DFrameConverter converter = new Java2DFrameConverter();
-
-        // TODO: convert frames to seconds
-        int frameNumber = 0;
-        Frame frame;
-
-        while ((frame = grabber.grabImage()) != null) {
-            BufferedImage bufferedImage = converter.convert(frame);
-            if (bufferedImage != null) {
-                File outputFile = new File(outputDir, String.format("frame_%05d.png", frameNumber++));
-                ImageIO.write(bufferedImage, "png", outputFile);
-
-                // TODO: seconds = frameNumber / fps
-            }
-        }
-
-        grabber.stop();
-        grabber.release();
-        System.out.println("Done: Extracted " + frameNumber + " frames.");
-    }
-
-
-
-    public static void main(String[] args) {
+    public void extractFrames() {
+        // TODO: Figure out what this is actually doing
         try {
-            String videoPath = "sampleInput/sample_video_1.mp4"; // adjust as needed
             String outputDir = "sampleOutput"; // ensure this directory exists or create it
             new File(outputDir).mkdirs();
             extractFrames(videoPath, outputDir);
@@ -64,14 +34,43 @@ public class VideoProcessor {
         }
     }
 
+    // Loop through whole video, at each fps increment, run frameToData on frame
+    private void extractFrames(String videoPath, String outputDir) throws Exception {
+        
+        FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath);
+        grabber.start(); //Start reading in the video
+
+        Java2DFrameConverter converter = new Java2DFrameConverter();
+
+        int frameNumber = 0;  // Counter for total frames processed
+        Frame frame; // Holds the current frame being used
+
+        while ((frame = grabber.grabImage()) != null) {
+            // Add logic to check
+            if (frameNumber % framesPerSec == 0) { // check if the frame is at a whole second
+                BufferedImage bufferedImage = converter.convert(frame);
+                if (bufferedImage != null) {
+                    // File outputFile = new File(outputDir, String.format("frame_%05d.png", frameNumber));
+                    // ImageIO.write(bufferedImage, "png", outputFile);
+
+                    // run logic to get data
+                    frameToData(bufferedImage, (frameNumber/framesPerSec));  
+                }
+            }
+            frameNumber++;  // Move to the next frame
+        }
+
+        grabber.stop(); // Stop reading the video file
+        grabber.release(); 
+    }
+
     // TODO: frameToData method takes in framePath and passes that into an
     // LargestCentroid with color and threshold, add returned data to csv
-    public void frameToData(String framePath, int seconds){
-        LargestCentroid currentCentroid = new LargestCentroid(framePath, targetColor, threshhold, seconds);
+    public void frameToData(BufferedImage frame, int seconds){
+        
+        LargestCentroid currentCentroid = new LargestCentroid(frame, targetColor, threshhold, seconds);
         LargestCentroidRecord record = currentCentroid.findLargestCentroid();
         // TODO: add record data to csv file
-        
-        // extract timestamp from file
 
         // get seconds, x, and y from record
 

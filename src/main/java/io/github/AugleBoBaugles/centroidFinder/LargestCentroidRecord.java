@@ -9,4 +9,9 @@ package io.github.AugleBoBaugles.centroidFinder;
  */
 
 record LargestCentroidRecord(int seconds, int x, int y) {
+    
+    public String toCsvRow() {
+        return String.format("%d,%d,%d", this.seconds, this.x, this.y);
+    }
+
 }

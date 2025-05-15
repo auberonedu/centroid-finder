@@ -32,21 +32,21 @@ import javax.imageio.ImageIO;
  */
 public class LargestCentroid {
     public BufferedImage inputImage;
-    public String targetColor;
+    public int targetColor;
     public int threshold = 0;
     public int seconds;
 
     // Constructors
-    public LargestCentroid(BufferedImage inputImage, String hexTargetColor, int threshold, int seconds) {
+    public LargestCentroid(BufferedImage inputImage, int targetColor, int threshold, int seconds) {
         this.inputImage = inputImage;
         this.targetColor = targetColor;
         this.threshold = threshold;
         this.seconds = seconds;
     }
 
-    public LargestCentroid(BufferedImage inputImage, String hexTargetColor, int seconds) {
+    public LargestCentroid(BufferedImage inputImage, int targetColor, int seconds) {
         this.inputImage = inputImage;
-        this.targetColor = hexTargetColor;
+        this.targetColor = targetColor;
         this.seconds = seconds;
     }
 
@@ -60,13 +60,13 @@ public class LargestCentroid {
         BufferedImage binaryImage = binarizer.toBufferedImage(binaryArray);
         
         // Write the binarized image to disk as "binarized.png".
-        try {
-            ImageIO.write(binaryImage, "png", new File("binarized.png"));
-            System.out.println("Binarized image saved as binarized.png");
-        } catch (Exception e) {
-            System.err.println("Error saving binarized image.");
-            e.printStackTrace();
-        }
+        // try {
+        //     ImageIO.write(binaryImage, "png", new File("binarized.png"));
+        //     System.out.println("Binarized image saved as binarized.png");
+        // } catch (Exception e) {
+        //     System.err.println("Error saving binarized image.");
+        //     e.printStackTrace();
+        // }
         
         // Create an ImageGroupFinder using a BinarizingImageGroupFinder with a DFS-based BinaryGroupFinder.
         ImageGroupFinder groupFinder = new BinarizingImageGroupFinder(binarizer, new DfsBinaryGroupFinder());
@@ -76,16 +76,34 @@ public class LargestCentroid {
         // then locate connected groups of white pixels.
         List<Group> groups = groupFinder.findConnectedGroups(inputImage);
         
-        // Write the groups information to a CSV file "groups.csv".
-        try (PrintWriter writer = new PrintWriter("groups.csv")) {
-            for (Group group : groups) {
-                writer.println(group.toCsvRow());
+        //LargestCentroidRecord largest = new LargestCentroidRecord() // Create record
+        Group largeGroup = new Group(0, new Coordinate(-1, -1));
+
+        // cycle through Groups and pick largest
+        for (Group gr: groups) {
+            if (largeGroup.size() <= gr.size()) {
+                largeGroup = gr;
             }
-            System.out.println("Groups summary saved as groups.csv");
-        } catch (Exception e) {
-            System.err.println("Error writing groups.csv");
-            e.printStackTrace();
         }
+
+
+        LargestCentroidRecord largestCentroid = new LargestCentroidRecord(seconds, largeGroup.centroid().x(), largeGroup.centroid().y());
+
+        // get the 
+
+
+        // Write the groups information to a CSV file "groups.csv".
+        // try (PrintWriter writer = new PrintWriter("groups.csv")) {
+        //     for (Group group : groups) {
+        //         writer.println(group.toCsvRow());
+        //     }
+        //     System.out.println("Groups summary saved as groups.csv");
+        // } catch (Exception e) {
+        //     System.err.println("Error writing groups.csv");
+        //     e.printStackTrace();
+        // }
+
+        return largestCentroid;
 
     }
 }

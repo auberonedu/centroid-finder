@@ -20,7 +20,7 @@ public class Main {
             return;
         }
         
-        String inputVideoPath = args[0];
+        String videoPath = args[0];
         String hexTargetColor = args[1];
         int threshold = 0;
 
@@ -35,14 +35,17 @@ public class Main {
 
         // Handling that path is an actual path
         // TODO : remove image path check, replace with video path check??
-        BufferedImage inputImage = null;
-        try {
-            inputImage = ImageIO.read(new File(inputImagePath));
-        } catch (Exception e) {
-            System.err.println("Error loading image: " + inputImagePath);
-            e.printStackTrace();
-            return;
-        }
+        // BufferedImage inputImage = null;
+        // try {
+        //     inputImage = ImageIO.read(new File(inputImagePath));
+        // } catch (Exception e) {
+        //     System.err.println("Error loading image: " + inputImagePath);
+        //     e.printStackTrace();
+        //     return;
+        // }
+
+
+        // TODO: check videoPath is a valid path
 
         // Parse the target color from a hex string (format RRGGBB) into a 24-bit integer (0xRRGGBB)
         int targetColor = 0;
@@ -55,9 +58,12 @@ public class Main {
             return;
         }
 
-        // TODO: Instantiate VideoProcessor
-        VideoProcessor processor = new VideoProcessor(inputImage, targetColor, threshold); 
-        // TODO: tell processor to process data
+        // Instantiate VideoProcessor
+        VideoProcessor processor = new VideoProcessor(videoPath, targetColor, threshold); 
+        // tell processor to process data
+        processor.extractFrames();
+
+        // CREATE CSV, (Check out Group.java for formatting!)N
     }
     
 }
