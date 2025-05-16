@@ -116,3 +116,6 @@ ImageGroupFinder.java notes
 
 example command:
 mvn exec:java -Dexec.args="ensantina.mp4 output.csv 255,0,0 30"
+
+java -jar target/centroidFinder-1.0-SNAPSHOT-jar-with-dependencies.jar ensantina.mp4 output.csv 255,0,0 30 2>&1 | tee logs
+
