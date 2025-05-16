@@ -1,4 +1,5 @@
-package main.java.io.github.AugleBoBaugles.centroidFinder;
+// package main.java.io.github.AugleBoBaugles.centroidFinder;
+package io.github.AugleBoBaugles.centroidFinder;
 public class EuclideanColorDistance implements ColorDistanceFinder {
     /**
      * Returns the euclidean color distance between two hex RGB colors.

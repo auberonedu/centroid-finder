@@ -1,7 +1,7 @@
 package io.github.AugleBoBaugles.centroidFinder;
 
 import org.junit.jupiter.api.Test;
-import main.java.io.github.AugleBoBaugles.centroidFinder.VideoProcessor;
+import io.github.AugleBoBaugles.centroidFinder.VideoProcessor;
 import static org.junit.jupiter.api.Assertions.*;
 import java.awt.image.BufferedImage;
 

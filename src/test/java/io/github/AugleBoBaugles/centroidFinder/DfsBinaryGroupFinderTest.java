@@ -1,10 +1,10 @@
-package test.java.io.github.AugleBoBaugles.centroidFinder;
+package io.github.AugleBoBaugles.centroidFinder;
 
 import org.junit.jupiter.api.Test;
 
-import main.java.io.github.AugleBoBaugles.centroidFinder.Coordinate;
-import main.java.io.github.AugleBoBaugles.centroidFinder.DfsBinaryGroupFinder;
-import main.java.io.github.AugleBoBaugles.centroidFinder.Group;
+import io.github.AugleBoBaugles.centroidFinder.Coordinate;
+import io.github.AugleBoBaugles.centroidFinder.DfsBinaryGroupFinder;
+import io.github.AugleBoBaugles.centroidFinder.Group;
 
 import static org.junit.jupiter.api.Assertions.*;
 

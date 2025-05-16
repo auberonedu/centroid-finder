@@ -8,7 +8,7 @@ package io.github.AugleBoBaugles.centroidFinder;
     y => y coordinate of the centroid
  */
 
-record LargestCentroidRecord(int seconds, int x, int y) {
+public record LargestCentroidRecord(int seconds, int x, int y) {
     
     public String toCsvRow() {
         return String.format("%d,%d,%d", this.seconds, this.x, this.y);
