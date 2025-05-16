@@ -18,6 +18,12 @@ public class ImageProcessor {
         Group largest = groups.stream()
                               .max((a, b) -> Integer.compare(a.size(), b.size()))
                               .orElse(null);
+        System.out.println("Groups found: " + groups.size());
         return (largest != null) ? new CentroidResult(largest.centroid().x(), largest.centroid().y()) : null;
+    } 
+
+    public BufferedImage getBinarizedImage(BufferedImage image) {
+        return binarizer.toBufferedImage(binarizer.toBinaryArray(image));
     }
+
 }
