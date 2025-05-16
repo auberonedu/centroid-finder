@@ -44,6 +44,28 @@ public class Main {
         //     return;
         // }
 
+        // Check that video exists, is a file, ends with ".mp4", and can be opened (written with AI assist)
+        // TODO: Test this!!
+        try {
+            File file = new File(videoPath);
+            if (!file.exists()) {
+                System.out.println("File does not exist.");
+            }
+            if (!file.isFile()) {
+                System.out.println("Path is not a file.");
+            }
+            if (!videoPath.toLowerCase().endsWith(".mp4")) {
+                System.out.println("File is not an mp4.");
+            }
+            // Optionally: try opening a stream to test access
+            try (var fis = new java.io.FileInputStream(file)) {
+                // Just opening and closing to verify we can read it
+            }
+
+        } catch (Exception e) {
+            System.out.println("An error occurred while checking the file: " + e.getMessage());
+        }
+
 
         // TODO: check videoPath is a valid path
 
