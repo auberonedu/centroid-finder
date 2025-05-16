@@ -16,10 +16,8 @@ public class ImageProcessor {
     public CentroidResult processImage(BufferedImage image) {
         List<Group> groups = groupFinder.findConnectedGroups(image);
         Group largest = groups.stream()
-                .max((a, b) -> Integer.compare(a.size(), b.size()))
-                .orElse(null);
-        return (largest != null)
-                ? new CentroidResult(largest.centroid().x(), largest.centroid().y())
-                : null;
+                              .max((a, b) -> Integer.compare(a.size(), b.size()))
+                              .orElse(null);
+        return (largest != null) ? new CentroidResult(largest.centroid().x(), largest.centroid().y()) : null;
     }
 }
