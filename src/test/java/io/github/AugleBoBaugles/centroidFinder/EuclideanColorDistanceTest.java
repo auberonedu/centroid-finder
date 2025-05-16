@@ -1,9 +1,7 @@
 package test.java.io.github.AugleBoBaugles.centroidFinder;
 
 import org.junit.jupiter.api.Test;
-
 import main.java.io.github.AugleBoBaugles.centroidFinder.EuclideanColorDistance;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 // COLORS USED IN TESTS (Google Color Picker: https://g.co/kgs/DG41Bvm)
