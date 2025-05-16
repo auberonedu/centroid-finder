@@ -112,8 +112,6 @@ ImageGroupFinder.java notes
 
 - Result should be a list of Group objects, sorted in decending order, by size, by y, then by x
 
-
-
 example command:
 mvn exec:java -Dexec.args="ensantina.mp4 output.csv 255,0,0 30"
 
