@@ -10,6 +10,8 @@
 
 Link to flowchart: https://docs.google.com/drawings/d/1PYy6h4iulJ7FepGHRRITSQBkAGDCtvwggX7IKSOrPlc/edit
 
+Link to centroid flowchard: https://docs.google.com/drawings/d/1APfHESu6xwbwyQqTZXW2G4OGoleH2Nut88yQMnYuCtY/edit?usp=sharing
+
 <!-- To view the diagram below in preview, add Markdown Preview Mermaid Support extension -->
 ```mermaid
 graph LR
