@@ -54,3 +54,7 @@ If nothing is found in a frame, it writes `-1, -1` for that time.
 **What it does:**
 - Writes each frame’s result to a CSV file
 - One line for each second
+
+### Test with mp4 video.
+- Used Command-line: `java -jar videoprocessor.jar inputPath outputCsv targetColor threshold`
+- Ran Maven command to run the project. 
