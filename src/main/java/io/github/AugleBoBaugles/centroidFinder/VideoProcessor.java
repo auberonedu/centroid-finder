@@ -32,7 +32,8 @@ public class VideoProcessor {
             String outputDir = "sampleOutput"; // ensure this directory exists or create it
             new File(outputDir).mkdirs();
 
-            String csvFile = "newfile.csv";  // Path to the new CSV file
+            // TODO: Make sure this puts it into sampleOutput directory
+            String csvFile = "sampleOutput/largestCentroids.csv";  // Path to the new CSV file
             new File(csvFile);
             
             extractFrames(videoPath, outputDir);
