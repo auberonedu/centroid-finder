@@ -7,6 +7,8 @@ import org.bytedeco.javacv.Java2DFrameConverter;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 public class VideoProcessor {
@@ -26,8 +28,13 @@ public class VideoProcessor {
     public void extractFrames() {
         // TODO: Figure out what this is actually doing
         try {
+            // making a directory to hold the output files
             String outputDir = "sampleOutput"; // ensure this directory exists or create it
             new File(outputDir).mkdirs();
+
+            String csvFile = "newfile.csv";  // Path to the new CSV file
+            new File(csvFile);
+            
             extractFrames(videoPath, outputDir);
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,17 +71,20 @@ public class VideoProcessor {
         grabber.release(); 
     }
 
-    // TODO: frameToData method takes in framePath and passes that into an
+    // frameToData method takes in framePath and passes that into a
     // LargestCentroid with color and threshold, add returned data to csv
     public void frameToData(BufferedImage frame, int seconds){
         
         LargestCentroid currentCentroid = new LargestCentroid(frame, targetColor, threshhold, seconds);
-        LargestCentroidRecord record = currentCentroid.findLargestCentroid();
-        // TODO: add record data to csv file
+        LargestCentroidRecord currentLargestCentroidRecord = currentCentroid.findLargestCentroid();
 
-        // get seconds, x, and y from record
+        // add record data to csv file
 
-        // write to csv
+        try (PrintWriter writer = new PrintWriter("largestCentroids.csv")) {
+        } catch (Exception e) {
+            System.err.println("Error creating largestCentroids.csv");
+            e.printStackTrace();
+        }
     }
 
 }
