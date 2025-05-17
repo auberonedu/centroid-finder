@@ -1,5 +1,8 @@
 package io.github.alstondsouza1.centroidFinder;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 public class CommandLineParser {
     private final String inputPath;
     private final String outputCsv;
@@ -31,5 +34,30 @@ public class CommandLineParser {
 
     public int getThreshold() {
         return threshold;
+    }
+
+    public boolean checkVideoArg(String arg) throws Exception {
+        //Not sure if throws Exception is a good practice, but I'll go with this. -Raymond
+        boolean RET = true;
+        if(arg.substring(arg.length()-5).equals(".mp4") != false) {
+            throw new IllegalArgumentException("File is required to be .mp4");
+        }
+
+        char slash = 0;
+        int fileNameLength = 0;
+        for(int i = 0; slash != '/'; i++) {
+            slash = arg.charAt(arg.length()-1-i);
+            fileNameLength++;
+        }
+        if(fileNameLength > 256) {
+            throw new IllegalArgumentException("Filename is too long:"+fileNameLength+" chars, expected <=256 ");
+        }
+
+
+        File fakeFile = new File(arg);
+        if(!fakeFile.exists()) {
+            throw new FileNotFoundException(arg + " is not found!");
+        }
+        return RET;
     }
 }
