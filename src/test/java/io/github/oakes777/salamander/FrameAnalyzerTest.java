@@ -1,10 +1,10 @@
 package io.github.oakes777.salamander;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
 
 public class FrameAnalyzerTest {
 
@@ -72,8 +72,6 @@ public class FrameAnalyzerTest {
     @Test
     public void testBinarizedLargest() {
 
-    
-        
         BufferedImage testImage = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
         
         // Fill pixels with red
@@ -84,7 +82,7 @@ public class FrameAnalyzerTest {
         // Group 1 (1 pixel)
         testImage.setRGB(0, 0, 0x0000FF);  // blue
         testImage.setRGB(1, 0, 0x0000FF);
-        // Group 2 (3 connected blue pixels)
+        // Group 2 (4 connected blue pixels)
         testImage.setRGB(3, 3, 0x0000FF);  // blue
         testImage.setRGB(4, 3, 0x0000FF);  // blue
         testImage.setRGB(4, 4, 0x0000FF);  // blue
@@ -98,12 +96,14 @@ public class FrameAnalyzerTest {
         testImage.setRGB(8, 8, 0x00FF00);
         testImage.setRGB(7, 8, 0x00FF00);
         
-        FrameAnalyzer analyzer = new FrameAnalyzer(0x0000FF, 50);
+        FrameAnalyzer analyzer = new FrameAnalyzer(0x0000FF, 1);
         // Binarize and analyze
+        
+        Group largest = analyzer.findLargestGroup(testImage);
+        assertNotNull(largest, "Expected a largest group but got null. Check if binarization matched blue pixels.");
+        assertEquals(4, largest.size(), "Largest group should have 4 white pixels.");
+
         BufferedImage result = analyzer.binarizeOnly(testImage);
-        Group largest = analyzer.findLargestGroup(result);
-    
-        assertEquals(4, largest.size(), "Largest group should have 3 white pixels.");
         assertEquals(Color.WHITE.getRGB(), result.getRGB(0, 0), "Blue pixel should be white in binarized image.");
         assertEquals(Color.WHITE.getRGB(), result.getRGB(4, 4), "Blue pixel should be white in binarized image.");
         assertEquals(Color.BLACK.getRGB(), result.getRGB(7, 8), "Green pixel should be black in binarized image.");
