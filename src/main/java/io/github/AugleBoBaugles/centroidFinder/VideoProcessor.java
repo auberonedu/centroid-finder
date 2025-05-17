@@ -13,7 +13,6 @@ public class VideoProcessor {
     private String videoPath; 
     private int targetColor;
     private int threshold;
-    private int framesPerSec = 30; // TODO: Maybe remove this?
     private int secondIncrement = 1; // TODO: Possible customizable feature later
 
     // Constructor
@@ -99,12 +98,6 @@ public class VideoProcessor {
         writer.printf("%d,%d,%d%n", seconds, x, y); // Write one row to CSV: second, x, y
         System.out.printf("Frame %d: Centroid (%d, %d)%n", seconds, x, y); 
 
-        // // TODO: PrintWriter needs to create the CSV file BEFORE we loop through and add data
-        // try (PrintWriter writer = new PrintWriter("largestCentroids.csv")) {
-        // } catch (Exception e) {
-        //     System.err.println("Error creating largestCentroids.csv");
-        //     e.printStackTrace();
-        // }
     }
 
 }

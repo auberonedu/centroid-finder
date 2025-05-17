@@ -8,6 +8,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 /**
+ * TODO: Update documentation
  * The Image Summary Application. / Largest Centroid
  * 
  * This application takes three command-line arguments:
@@ -58,16 +59,6 @@ public class LargestCentroid {
         
         // Binarize the input image.
         int[][] binaryArray = binarizer.toBinaryArray(inputImage);
-        BufferedImage binaryImage = binarizer.toBufferedImage(binaryArray);
-        
-        // Write the binarized image to disk as "binarized.png".
-        // try {
-        //     ImageIO.write(binaryImage, "png", new File("binarized.png"));
-        //     System.out.println("Binarized image saved as binarized.png");
-        // } catch (Exception e) {
-        //     System.err.println("Error saving binarized image.");
-        //     e.printStackTrace();
-        // }
         
         // Create an ImageGroupFinder using a BinarizingImageGroupFinder with a DFS-based BinaryGroupFinder.
         ImageGroupFinder groupFinder = new BinarizingImageGroupFinder(binarizer, new DfsBinaryGroupFinder());
@@ -87,22 +78,7 @@ public class LargestCentroid {
             }
         }
 
-
         LargestCentroidRecord largestCentroid = new LargestCentroidRecord(seconds, largeGroup.centroid().x(), largeGroup.centroid().y());
-
-        // get the 
-
-
-        // Write the groups information to a CSV file "groups.csv".
-        // try (PrintWriter writer = new PrintWriter("groups.csv")) {
-        //     for (Group group : groups) {
-        //         writer.println(group.toCsvRow());
-        //     }
-        //     System.out.println("Groups summary saved as groups.csv");
-        // } catch (Exception e) {
-        //     System.err.println("Error writing groups.csv");
-        //     e.printStackTrace();
-        // }
 
         return largestCentroid;
 

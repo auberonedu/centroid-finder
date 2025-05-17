@@ -4,14 +4,14 @@ import org.junit.jupiter.api.Test;
 import io.github.AugleBoBaugles.centroidFinder.VideoProcessor;
 import static org.junit.jupiter.api.Assertions.*;
 import java.awt.image.BufferedImage;
-
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VideoProcessorTest {
 
         // AI Helped create this "spy" to override the frameToData function
-        public class TestVideoProcessor extends VideoProcessor {
+    public class TestVideoProcessor extends VideoProcessor {
         public int callCounter = 0;
 
         public TestVideoProcessor(String path, int targetColor, int threshold) {
@@ -19,7 +19,7 @@ public class VideoProcessorTest {
         }
 
         @Override
-        public void frameToData(BufferedImage frame, int seconds) {
+        public void frameToData(BufferedImage frame, int seconds, PrintWriter x) {
             callCounter++;
         }
     }
@@ -38,9 +38,5 @@ public class VideoProcessorTest {
     // extractFrames() pulls out correct frames
 
 
-
-
-
     // frameToData() generates expects CSV content
-    // NOTE: I OVERRODE THE FUNCTION ABOVE - HOW DO I TEST THIS PROPERLY??
 }
