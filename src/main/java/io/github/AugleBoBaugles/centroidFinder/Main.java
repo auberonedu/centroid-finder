@@ -1,9 +1,6 @@
 package io.github.AugleBoBaugles.centroidFinder;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-
-import javax.imageio.ImageIO;
 
 
 /* 
@@ -22,7 +19,7 @@ public class Main {
         
         String videoPath = args[0];
         String hexTargetColor = args[1];
-        int threshold = 0;
+        int threshold;
 
         // TEST
         // String videoPath = "sampleInput/sample_video_1.mp4";
@@ -40,29 +37,32 @@ public class Main {
 
         // Check that video exists, is a file, ends with ".mp4", and can be opened (written with AI assist)
         // TODO: Test this!!
-        try {
-            File file = new File(videoPath);
-            if (!file.exists()) {
-                System.out.println("File does not exist.");
-            }
-            if (!file.isFile()) {
-                System.out.println("Path is not a file.");
-            }
-            if (!videoPath.toLowerCase().endsWith(".mp4")) {
-                System.out.println("File is not an mp4.");
-            }
-            // Optionally: try opening a stream to test access
-            try (var fis = new java.io.FileInputStream(file)) {
+        File file = new File(videoPath);
+        if (!file.exists()) {
+            System.out.println("File does not exist.");
+            return;
+        }
+        if (!file.isFile()) {
+            System.out.println("Path is not a file.");
+            return;
+        }
+        if (!videoPath.toLowerCase().endsWith(".mp4")) {
+            System.out.println("File is not an mp4.");
+            return;
+        }
+        // Optionally: try opening a stream to test access
+        try (var fis = new java.io.FileInputStream(file)) {
                 // Just opening and closing to verify we can read it
-            }
-
         } catch (Exception e) {
             System.out.println("An error occurred while checking the file: " + e.getMessage());
+            return;
         }
 
+        // Support optional '#' prefix in hex color
+        if (hexTargetColor.startsWith("#")) hexTargetColor = hexTargetColor.substring(1);
 
         // Parse the target color from a hex string (format RRGGBB) into a 24-bit integer (0xRRGGBB)
-        int targetColor = 0;
+        int targetColor;
 
         // Handling that target color is a valid color
         try {
@@ -76,6 +76,8 @@ public class Main {
         VideoProcessor processor = new VideoProcessor(videoPath, targetColor, threshold); 
         // tell processor to process data
         processor.extractFrames();
+
+        System.out.println("Video processing complete. Output saved to sampleOutput/largestCentroids.csv");
     }
     
 }
