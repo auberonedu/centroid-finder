@@ -32,18 +32,6 @@ public class Main {
             return;
         }
 
-
-        // Handling that path is an actual path
-        // TODO : remove image path check, replace with video path check??
-        // BufferedImage inputImage = null;
-        // try {
-        //     inputImage = ImageIO.read(new File(inputImagePath));
-        // } catch (Exception e) {
-        //     System.err.println("Error loading image: " + inputImagePath);
-        //     e.printStackTrace();
-        //     return;
-        // }
-
         // Check that video exists, is a file, ends with ".mp4", and can be opened (written with AI assist)
         // TODO: Test this!!
         try {
@@ -67,8 +55,6 @@ public class Main {
         }
 
 
-        // TODO: check videoPath is a valid path
-
         // Parse the target color from a hex string (format RRGGBB) into a 24-bit integer (0xRRGGBB)
         int targetColor = 0;
 
@@ -84,8 +70,6 @@ public class Main {
         VideoProcessor processor = new VideoProcessor(videoPath, targetColor, threshold); 
         // tell processor to process data
         processor.extractFrames();
-
-        // CREATE CSV, (Check out Group.java for formatting!)N
     }
     
 }

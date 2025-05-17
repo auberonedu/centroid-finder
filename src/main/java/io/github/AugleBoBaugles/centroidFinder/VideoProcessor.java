@@ -50,7 +50,7 @@ public class VideoProcessor {
 
         Java2DFrameConverter converter = new Java2DFrameConverter();
 
-        int frameNumber = 0;  // Counter for total frames processed
+        int frameNumber = 0;  // Counter for total frames processed 
         Frame frame; // Holds the current frame being used
 
         while ((frame = grabber.grabImage()) != null) {

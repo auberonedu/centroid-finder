@@ -26,13 +26,13 @@ public class VideoProcessorTest {
 
     @Test
     public void testExtractFramesCallsFrameToDataAtOneSecondIntervals() {
-        String videoPath = getClass().getResource("sampleInput/sample_video_1.mp4").getPath(); // TODO: Check that this path is accurate
+        String videoPath = "sampleInput/sample_video_1.mp4";
         TestVideoProcessor vp = new TestVideoProcessor(videoPath, 0xFF0000, 30); 
 
         vp.extractFrames();
 
-        // If video is 3 seconds long, expect calls at 0, 1, 2
-        int expected = 4;
+        // result = number of seconds + 1
+        int expected = 5;
         assertEquals(expected, vp.callCounter);
     }
     // extractFrames() pulls out correct frames
