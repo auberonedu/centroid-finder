@@ -134,8 +134,8 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                 
                 // for directions... 
                 for (var direction : directions){
-                    int newRow = direction[0] + row;
-                    int newCol = direction[1] + col;
+                    int newRow = direction[0] + check.x();
+                    int newCol = direction[1] + check.y();
                     
                     // if direction is on map AND has a value of 1, add to stack
                     if (newRow >= 0 && newRow < image.length &&
