@@ -51,4 +51,31 @@ public class CsvWriterTest {
             }
         });
     }
+
+    @Test
+    public void testCsvWriterHandlesExtremeValues() throws IOException {
+        File tempFile = File.createTempFile("test", ".csv");
+        tempFile.deleteOnExit();
+
+        try (CsvWriter writer = new CsvWriter(tempFile.getAbsolutePath())) {
+            writer.write(new Coordinate(Integer.MAX_VALUE, Integer.MIN_VALUE));
+        }
+
+        List<String> lines = Files.readAllLines(tempFile.toPath());
+        assertEquals(String.format("%d,%d", Integer.MAX_VALUE, Integer.MIN_VALUE), lines.get(1));
+    }
+
+    @Test
+    public void testEmptyFileHasOnlyHeader() throws IOException {
+        File tempFile = File.createTempFile("test", ".csv");
+        tempFile.deleteOnExit();
+
+        try (CsvWriter writer = new CsvWriter(tempFile.getAbsolutePath())) {
+            // no coordinates written
+        }
+
+        List<String> lines = Files.readAllLines(tempFile.toPath());
+        assertEquals(1, lines.size());
+        assertEquals("x,y", lines.get(0));
+    }
 }

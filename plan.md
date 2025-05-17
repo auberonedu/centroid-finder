@@ -55,6 +55,7 @@ If nothing is found in a frame, it writes `-1, -1` for that time.
 - Writes each frame’s result to a CSV file
 - One line for each second
 
-### Test with mp4 video.
-- Used Command-line: `java -jar videoprocessor.jar inputPath outputCsv targetColor threshold`
-- Ran Maven command to run the project. 
+### Tests that validated mp4 video is working.
+- Used the Command-Line: `java -jar videoprocessor.jar inputPath outputCsv targetColor threshold`
+- Ran a Maven command to run the project. 
+- JUnit tests ran successfully using the provided video, showing the Metadata in the console.

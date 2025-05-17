@@ -8,7 +8,7 @@ import java.io.File;
 
 // AI Used to generate tests for VideoReaderTest.java
 public class VideoReaderTest {
-    private static final String TEST_VIDEO_PATH = "src/test/resources/test.mp4";
+    private static final String TEST_VIDEO_PATH = "ensantina.mp4";
 
     @Test
     public void testConstructorInitializesReader() {

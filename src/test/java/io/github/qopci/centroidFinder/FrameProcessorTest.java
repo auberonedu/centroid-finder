@@ -40,4 +40,46 @@ class FrameProcessorTest {
         // Expected centroid: (4,4) for a 3x3 block
         assertEquals(new Coordinate(4, 4), result);
     }
+
+    @Test
+    void findsCentroidInFullRedImage() {
+        BufferedImage image = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+        int red = new Color(255, 0, 0).getRGB();
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                image.setRGB(x, y, red);
+            }
+        }
+
+        FrameProcessor processor = new FrameProcessor(red, 5);
+        Coordinate result = processor.process(image);
+
+        // Full image centroid: (4,4) or (5,5) depending on implementation
+        assertTrue(
+            result.equals(new Coordinate(4, 4)) || result.equals(new Coordinate(5, 5)),
+            "Centroid should be around the center for full red image"
+        );
+    }
+
+    @Test
+    void ignoresColorsOutsideThreshold() {
+        BufferedImage image = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
+        int red = new Color(255, 0, 0).getRGB();
+        int almostRed = new Color(200, 50, 50).getRGB();
+
+        // Only one pixel is exactly red
+        image.setRGB(5, 5, red);
+        // Rest are almost red but outside threshold
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                if (x != 5 || y != 5) {
+                    image.setRGB(x, y, almostRed);
+                }
+            }
+        }
+
+        FrameProcessor processor = new FrameProcessor(red, 10); // Too strict
+        Coordinate result = processor.process(image);
+        assertEquals(new Coordinate(5, 5), result);
+    }
 }

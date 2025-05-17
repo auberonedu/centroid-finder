@@ -113,9 +113,10 @@ ImageGroupFinder.java notes
 - Result should be a list of Group objects, sorted in decending order, by size, by y, then by x
 
 --------------------------------------------------------------------------------------------------------------------------
+
 Example commands:
-mvn exec:java -Dexec.args="ensantina.mp4 output.csv 255,0,0 30"
+- `mvn exec:java -Dexec.args="ensantina.mp4 output.csv 255,0,0 30"` --> Throws an IllegalArgumentException for HEX colors
 
-java -jar target/centroidFinder-1.0-SNAPSHOT-jar-with-dependencies.jar ensantina.mp4 output.csv 255,0,0 30 2>&1 | tee logs
+- `java -jar target/videoprocessor.jar ensantina.mp4 output.csv RED 100 2>&1 | tee logs`
 
-java -jar target/videoprocessor.jar ensantina.mp4 output.csv RED 30
+- `java -jar target/videoprocessor.jar ensantina.mp4 output.csv RED 95`

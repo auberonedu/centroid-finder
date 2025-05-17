@@ -41,4 +41,32 @@ class CommandLineParserTest {
         String[] args = {"video.mp4", "output.csv", "RED", "notAnInt"};
         assertThrows(IllegalArgumentException.class, () -> new CommandLineParser(args));
     }
+
+    @Test
+    void acceptsLowercaseColorNames() {
+        String[] args = {"video.mp4", "output.csv", "pink", "10"};
+        CommandLineParser parser = new CommandLineParser(args);
+        assertEquals(0xFFC0CB, parser.targetColor);
+    }
+
+    @Test
+    void trimsWhitespaceInColorNames() {
+        String[] args = {"video.mp4", "output.csv", "  white  ", "15"};
+        CommandLineParser parser = new CommandLineParser(args);
+        assertEquals(0xFFFFFF, parser.targetColor);
+    }
+
+    @Test
+    void parsesThresholdBoundaryZero() {
+        String[] args = {"video.mp4", "output.csv", "BLACK", "0"};
+        CommandLineParser parser = new CommandLineParser(args);
+        assertEquals(0, parser.threshold);
+    }
+
+    @Test
+    void parsesThresholdLargeValue() {
+        String[] args = {"video.mp4", "output.csv", "RED", "999"};
+        CommandLineParser parser = new CommandLineParser(args);
+        assertEquals(999, parser.threshold);
+    }
 }
