@@ -69,4 +69,13 @@ class CommandLineParserTest {
         CommandLineParser parser = new CommandLineParser(args);
         assertEquals(999, parser.threshold);
     }
+
+    @Test
+    public void testNegativeThresholdThrowsException() {
+        String[] args = {"video.mp4", "output.csv", "BLACK", "-1"};
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            new CommandLineParser(args);
+        });
+        assertEquals("Threshold must be non-negative", ex.getMessage());
+    }
 }

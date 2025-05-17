@@ -23,8 +23,12 @@ public class CommandLineParser {
         this.inputPath = args[0];
         this.outputCsv = args[1];
         this.targetColor = parseColor(args[2]);
+
         try {
             this.threshold = Integer.parseInt(args[3]);
+            if (this.threshold < 0) {
+                throw new IllegalArgumentException("Threshold must be non-negative");
+            }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Threshold must be an integer", e);
         }
