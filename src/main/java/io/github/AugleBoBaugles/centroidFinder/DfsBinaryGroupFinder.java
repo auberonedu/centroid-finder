@@ -2,6 +2,7 @@ package io.github.AugleBoBaugles.centroidFinder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
    /**
@@ -48,7 +49,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         if (image == null) throw new NullPointerException("Image not found or empty"); 
         if (image.length == 0 || image[0].length == 0) throw new IllegalArgumentException("Invalid image");
         
-        // make List of Groups'
+        // make List of Groups
         List<Group> groupsList = new ArrayList<>();
 
         // Loop through 2D array (image) - for row
@@ -70,7 +71,6 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                     // add the group to that list of groups
                     groupsList.add(currentGroup);
                 }
-                    
             }
         }
 
@@ -89,7 +89,7 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
          * @param col a column coordinate
          * @param groupCoordList a list of the coordinates of each 1 in a contiguous group
          */
-        public static void getCoordinates(int[][] image, int row, int col, List<Coordinate> groupCoordList){
+        public void getCoordinatesRecursive(int[][] image, int row, int col, List<Coordinate> groupCoordList){
             // base case to avoid recursive doom -- is directions valid? is this a 1?
             if (row < 0 || row >= image.length ||
                 col < 0 || col >= image[0].length 
@@ -112,6 +112,41 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
                 getCoordinates(image, newRow, newCol, groupCoordList);
             }
         }
+
+        // ** TODO: ITERATIVE ALTERNATIVE BELOW ********************
+
+        public void getCoordinates(int[][] image, int row, int col, List<Coordinate> groupCoordList) {
+    
+            // Make a stack of coordinates
+            Stack<Coordinate> coorStack = new Stack<>();
+            // Add coordinate
+            coorStack.add(new Coordinate(row, col));
+    
+            // While stack is not empty...
+            while(!coorStack.isEmpty()) {
+                // pop off stack
+                Coordinate check = coorStack.pop();
+
+                // update value at coord to 2 to avoid recursive doom
+                image[check.x()][check.y()] = 2;
+                // add to list of coordinates
+                groupCoordList.add(check);
+                
+                // for directions... 
+                for (var direction : directions){
+                    int newRow = direction[0] + row;
+                    int newCol = direction[1] + col;
+                    
+                    // if direction is on map AND has a value of 1, add to stack
+                    if (newRow >= 0 && newRow < image.length &&
+                    newCol >= 0 && newCol < image[0].length && image[newRow][newCol] == 1) { 
+                        coorStack.add(new Coordinate(newRow, newCol));
+                    }
+                }
+            }
+        }
+    
+        // ITERATIVE ALTERNATIVE ABOVE  *****************
 
     /**
      * Returns total area of a connected group of coordinates.
