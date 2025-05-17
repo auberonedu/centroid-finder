@@ -81,6 +81,7 @@ public class VideoProcessor {
 
         // add record data to csv file
 
+        // TODO: PrintWriter needs to create the CSV file BEFORE we loop through and add data
         try (PrintWriter writer = new PrintWriter("largestCentroids.csv")) {
         } catch (Exception e) {
             System.err.println("Error creating largestCentroids.csv");

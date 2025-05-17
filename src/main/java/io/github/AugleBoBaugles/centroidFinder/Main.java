@@ -24,6 +24,12 @@ public class Main {
         String hexTargetColor = args[1];
         int threshold = 0;
 
+        // TEST
+        // String videoPath = "sampleInput/sample_video_1.mp4";
+        // String hexTargetColor = "#FF0000";
+        // int threshold = 50;
+
+
         // Handling that threshold is a valid number.
         try {
             threshold = Integer.parseInt(args[2]);
