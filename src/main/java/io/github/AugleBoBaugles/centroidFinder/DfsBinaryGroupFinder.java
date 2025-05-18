@@ -1,8 +1,9 @@
 package io.github.AugleBoBaugles.centroidFinder;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
+import java.util.Queue;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
    /**
@@ -81,72 +82,33 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return groupsList;
     }
 
-        /**
-         * Recurses over connected groups of 1s and adds their coordinates to a list.
-         * 
-         * @param image a 2d array of 1s and 0s representing a binary image
-         * @param row a row coordinate
-         * @param col a column coordinate
-         * @param groupCoordList a list of the coordinates of each 1 in a contiguous group
-         */
-        public void getCoordinatesRecursive(int[][] image, int row, int col, List<Coordinate> groupCoordList){
-            // base case to avoid recursive doom -- is directions valid? is this a 1?
-            if (row < 0 || row >= image.length ||
-                col < 0 || col >= image[0].length 
-                || image[row][col] != 1){
-                    return;
-            }
-    
-            // add new Coordinate(row, col) to groupCoordList
-            Coordinate newCoord = new Coordinate(row, col);
-            groupCoordList.add(newCoord);
+    public static void getCoordinates(int[][] image, int r, int c, List<Coordinate> coordinates) {
+        Queue<Coordinate> que = new LinkedList<>();
+        que.add(new Coordinate(r, c));
 
-            // change the 1 to 2 (stops infinite looping)
-            image[row][col] = 2;
-    
-            // recurse over all directions
-            for (var direction : directions){
-                int newRow = direction[0] + row;
-                int newCol = direction[1] + col;
+        while(!que.isEmpty()) {
+            Coordinate current = que.poll();
 
-                getCoordinates(image, newRow, newCol, groupCoordList);
-            }
-        }
+            int x = current.x();
+            int y = current.y();
 
-        // ** TODO: ITERATIVE ALTERNATIVE BELOW ********************
+            if(image[x][y] != 1) continue;
 
-        public void getCoordinates(int[][] image, int row, int col, List<Coordinate> groupCoordList) {
-    
-            // Make a stack of coordinates
-            Stack<Coordinate> coorStack = new Stack<>();
-            // Add coordinate
-            coorStack.add(new Coordinate(row, col));
-    
-            // While stack is not empty...
-            while(!coorStack.isEmpty()) {
-                // pop off stack
-                Coordinate check = coorStack.pop();
+            image[x][y] = 2; // marking the coordinates of the image - visited
+            coordinates.add(current);
 
-                // update value at coord to 2 to avoid recursive doom
-                image[check.x()][check.y()] = 2;
-                // add to list of coordinates
-                groupCoordList.add(check);
-                
-                // for directions... 
-                for (var direction : directions){
-                    int newRow = direction[0] + check.x();
-                    int newCol = direction[1] + check.y();
-                    
-                    // if direction is on map AND has a value of 1, add to stack
-                    if (newRow >= 0 && newRow < image.length &&
-                    newCol >= 0 && newCol < image[0].length && image[newRow][newCol] == 1) { 
-                        coorStack.add(new Coordinate(newRow, newCol));
-                    }
+            for(int[] dir : directions) {
+                int newX = x + dir[0];
+                int newY = y + dir[1];
+
+                if (newX >= 0 && newX < image.length &&
+                    newY >= 0 && newY < image[0].length &&
+                    image[newX][newY] == 1) {
+                    que.add(new Coordinate(newX, newY));
                 }
             }
         }
-    
-        // ITERATIVE ALTERNATIVE ABOVE  *****************
+    }
 
     /**
      * Returns total area of a connected group of coordinates.
