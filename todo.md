@@ -1,11 +1,10 @@
 # Todo
 
-## Urgent
-- Add tests to VideoProcessorTest
-- Test frameToData() 
+## Urgent 
 - Figure out why DfsBinaryGroupFinderTest is not working.
 
 ## Medium
+- Add tests to VideoProcessorTest
 - Test that main correctly filters non-video files
 - Update documentation and comments (everywhere!)
 
