@@ -10,11 +10,15 @@ public class CommandLineParser {
     private final int threshold;
 
     // constructor that takes and validates command line arguments
-    public CommandLineParser(String[] args) {
+    public CommandLineParser(String[] args) throws Exception {
         if (args.length != 4) {
             throw new IllegalArgumentException("Usage: java -jar videoprocessor.jar inputPath outputCsv targetColor threshold");
         }
-        this.inputPath = args[0];
+        try {
+            this.inputPath = checkVideoArg(args[0]);
+        } catch (Exception e) {
+            throw e;
+        }
         this.outputCsv = args[1];
         this.targetColor = Integer.parseInt(args[2], 16); // parse color from hex
         this.threshold = Integer.parseInt(args[3]); // parse threshold as int
@@ -36,9 +40,9 @@ public class CommandLineParser {
         return threshold;
     }
 
-    public boolean checkVideoArg(String arg) throws Exception {
+    public String checkVideoArg(String arg) throws Exception {
         //Not sure if throws Exception is a good practice, but I'll go with this. -Raymond
-        boolean RET = true;
+        String RET = new String(arg);
         if(arg.substring(arg.length()-5).equals(".mp4") != false) {
             throw new IllegalArgumentException("File is required to be .mp4");
         }
