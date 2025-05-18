@@ -12,26 +12,29 @@ JavaCV
 JavaCV is a Java wrapper for OpenCV, which is a powerful, open-source computer vision library widely used for object detection and tracking.
 
 Pros:
+
 - Features for object tracking
-- frame by frame analysis available 
-- 
+- frame by frame analysis available
+-
 - access to image processing tools
 
 cons
-- large library
-    - more to learn how to use and set up project 
--Most tutorials, examples, and docs are for C++ or Python OpenCV.
 
-VLCJ   
+- large library - more to learn how to use and set up project
+  -Most tutorials, examples, and docs are for C++ or Python OpenCV.
+
+VLCJ
 
 VLCJ is a Java library that provides bindings to the native VLC media player, allowing you to control VLC and play audio/video from within Java application
 
 Pros:
--simple frame grabing 
--Can be used to stream or receive live feeds with minimal configuration. 
+-simple frame grabing
+-Can be used to stream or receive live feeds with minimal configuration.
+
 - You'll get pixel data (e.g., in RGBA or YUV) for each frame.
 
-cons 
+cons
+
 - does not support computer vision, object detection, or tracking.
 - VLCJ is designed for playing or streaming video, not for analysis.
 
@@ -80,3 +83,4 @@ VLCJ would work to stream from network cams or IP feeds BUT:
 Not for frame-level analysis unless we build a pixel grabber pipeline.
 Doesn't offer tracking, detection.
 
+Google Doc Link to Project Architecture Picture: https://docs.google.com/document/d/1bHNQ3UmWAYq2u3JhgFjrHw29OtLaLDJNvfh6tMkLdOk/edit?usp=sharing
