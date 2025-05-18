@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import org.jcodec.api.JCodecException;
 
+// Used AI to generate and fixed the errors for VideoReaderTest
 public class VideoReaderTest {
 
     private final String VALID_VIDEO_PATH = "sample.mp4"; 

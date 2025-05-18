@@ -7,6 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Used AI to generate and fixed the errors for FrameProcessorTest
 public class FrameProcessorTest {
 
     class MockImageGroupFinder implements ImageGroupFinder {

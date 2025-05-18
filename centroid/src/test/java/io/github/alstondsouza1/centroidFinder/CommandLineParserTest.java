@@ -3,6 +3,7 @@ package io.github.alstondsouza1.centroidFinder;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+// Used AI to generate and fixed the errors for CommandLineParserTest
 public class CommandLineParserTest {
 
     @Test
