@@ -64,7 +64,7 @@
                 <version>3.0.0</version>
             </plugin>
 
-            <!-- Exec plugin to run the VideoExperiment main class -->
+            <!-- Exec plugin for dev testing -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -72,6 +72,32 @@
                 <configuration>
                     <mainClass>io.github.alstondsouza1.centroidFinder.VideoExperiment</mainClass>
                 </configuration>
+            </plugin>
+
+            <!-- Assembly plugin to create executable jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>io.github.alstondsouza1.centroidFinder.VideoProcessorApp</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
