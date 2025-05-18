@@ -15,13 +15,13 @@ import org.bytedeco.javacv.Frame;
 
 public class VideoSummaryApp {
     public static void main(String[] args) {
-        // Logic to make sure only 4 arguements are given
+        // Logic to make sure only 4 arguments are given
         if(args.length < 4) {
             System.out.println("Usage: java -jar videoprocessor.jar <inputPath> <outputCsv> <targetColor> <threshold>");
             return;
         }
 
-        // Take in and parse the command line arguements
+        // Take in and parse the command line arguments
         String inputPath = args[0];
         String outputCsv = args[1];
         int targetColor = Integer.parseInt(args[2], 16);
@@ -49,7 +49,7 @@ public class VideoSummaryApp {
             int frameNum = 0;
             Frame frame;
 
-            // loops through each frame and records the x and y coordinates
+            // Loops through each frame and records the x and y coordinates
             while((frame = grabber.grabImage()) != null) {
                 BufferedImage image = converter.convert(frame);
                 List<Group> groups = groupFinder.findConnectedGroups(image);
@@ -64,7 +64,7 @@ public class VideoSummaryApp {
                 frameNum++;
             }
 
-            // stops/ends the reading of frames
+            // Stops/ends the reading of frames
             grabber.stop();
             System.out.println("Processing complete, saved to: " + outputCsv);
         } catch (Exception e) {

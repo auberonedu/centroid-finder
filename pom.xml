@@ -45,7 +45,7 @@
         <configuration>
           <!-- Temporarily switch main class to VideoExperiment -->
           <!-- <mainClass>io.github.f3liz.centroidFinder.ImageSummaryApp</mainClass> -->
-          <mainClass>io.github.f3liz.centroidFinder.VideoExperiment</mainClass>
+          <mainClass>io.github.f3liz.centroidFinder.VideoSummaryApp</mainClass>
         </configuration>
       </plugin>
     </plugins>
