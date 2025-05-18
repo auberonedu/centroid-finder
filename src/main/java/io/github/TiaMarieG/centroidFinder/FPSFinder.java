@@ -47,4 +47,25 @@ public class FPSFinder {
         return totalFrames;
     }
 
+    /*
+     * Exports the total frames a mp4 file has.
+     * Prints the complete stack trace if there is an error.
+     * 
+     * @param videoPath String value of the path of the given video
+     * 
+     */
+    public double lengthOfVideo(String videoPath) {
+        double totalLength = 0;
+
+        // Using getLengthInFrames to access the amount of frames in the file
+        try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath)) {
+            grabber.start();
+            totalLength = grabber.getLengthInTime() / 1_000_000.0;
+            grabber.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return totalLength;
+    }
+
 }

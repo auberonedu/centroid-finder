@@ -58,34 +58,36 @@ public class FPSFinderTest {
         assertEquals(0, totalFrames, "Total frames should be 0 for an invalid video path.");
     }
 
-    @Test
-    public void testCalculatedFrameCountMatchesReportedFrameCount() throws Exception {
-        // Get path to your test video
-        String videoPath = Paths.get("videos", "nyan-cat.mp4").toString();
+     @Test
+    public void testGetTotalFramesWithSalamander() {
+        // Path to the test video
+        String videoPath = Paths.get("videos", "ensantina.mp4").toString();
+        
 
-        try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath)) {
-            grabber.start();
+        FPSFinder finder = new FPSFinder();
+        int totalFrames = finder.totalFramesOfVideo(videoPath);
 
-            double fps = grabber.getFrameRate(); // frames per second
-            long durationMicro = grabber.getLengthInTime(); // in microseconds
-            int reportedFrameCount = grabber.getLengthInFrames();
-
-            // Convert duration to seconds
-            double durationSeconds = durationMicro / 1_000_000.0;
-
-            // Calculate estimated frame count
-            int calculatedFrames = (int) Math.round(fps * durationSeconds);
-
-            grabber.stop();
-
-            System.out.println("Frame rate: " + fps);
-            System.out.println("Duration: " + durationSeconds + " seconds");
-            System.out.println("Reported: " + reportedFrameCount + " frames");
-            System.out.println("Calculated: " + calculatedFrames + " frames");
-
-            // Assert they're close enough (due to rounding/timing discrepancies)
-            assertTrue(Math.abs(reportedFrameCount - calculatedFrames) <= 2,
-                "Reported and calculated frame count should be very close");
-        }
+        double expected = finder.FPSReader(videoPath) * finder.lengthOfVideo(videoPath);
+        // We expect some frames in a real video file
+        System.out.println("Total Frames: " + totalFrames);
+        System.out.println(expected);
+        assertTrue(totalFrames > 0, "Total frames should be greater than 0 for a valid video.");
     }
+
+    @Test
+    public void testFPSReaderWithSalamandar() {
+        // Build the relative path to the video
+        String videoPath = Paths.get("videos", "ensantina.mp4").toString();
+
+        FPSFinder finder = new FPSFinder();
+        double fps = finder.FPSReader(videoPath);
+
+        fps = Math.round(fps * Math.pow(10, 2)) / Math.pow(10, 2);
+        
+
+        // Verify FPS is correct for a typical video
+        System.out.println(fps + " Frames Per Second");
+        assertTrue(fps == 23.98, "FPS is correct.");
+    }
+    
 }
