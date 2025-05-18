@@ -47,26 +47,4 @@ public class FPSFinder {
         return totalFrames;
     }
 
-    public static void main(String[] args) {
-        String videoPath = Paths.get("videos", "nyan-cat.mp4").toString();
-
-        try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath)) {
-            grabber.start();
-
-            System.out.println("Frame Rate: " + grabber.getFrameRate());
-            System.out.println("Total Frames: " + grabber.getLengthInFrames());
-            System.out.println("Duration (ms): " + grabber.getLengthInTime() / 1000);
-            System.out.println("Format: " + grabber.getFormat());
-            System.out.println("Video Codec: " + grabber.getVideoCodecName());
-            System.out.println("Audio Channels: " + grabber.getAudioChannels());
-            System.out.println("Sample Rate: " + grabber.getSampleRate());
-
-            grabber.stop();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    
-
 }
