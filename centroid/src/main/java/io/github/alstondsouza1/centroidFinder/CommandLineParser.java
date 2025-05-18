@@ -9,16 +9,27 @@ public class CommandLineParser {
     private final int targetColor;
     private final int threshold;
 
+
+    
+    private byte videoState = 0;
+    private final byte video_OK = 0b000;
+    private final byte video_EXTENSION = 0b001;
+    private final byte video_LONG = 0b010;
+    private final byte video_NOT_FOUND = 0b100;
+
+    /*
+     * 0b00 = OK
+     * 0b01 = Incorrect extension.
+     * 0b10 = Filename too long.
+     * 0b100 = File not found.
+     */
+
     // constructor that takes and validates command line arguments
-    public CommandLineParser(String[] args) throws Exception {
+    public CommandLineParser(String[] args) {
         if (args.length != 4) {
             throw new IllegalArgumentException("Usage: java -jar videoprocessor.jar inputPath outputCsv targetColor threshold");
         }
-        try {
-            this.inputPath = checkVideoArg(args[0]);
-        } catch (Exception e) {
-            throw e;
-        }
+        this.inputPath = args[0];
         this.outputCsv = args[1];
         this.targetColor = Integer.parseInt(args[2], 16); // parse color from hex
         this.threshold = Integer.parseInt(args[3]); // parse threshold as int
@@ -40,11 +51,15 @@ public class CommandLineParser {
         return threshold;
     }
 
-    public String checkVideoArg(String arg) throws Exception {
+    public byte getVideoState() {
+        return videoState;
+    }
+
+    /*private String checkVideoArg(String arg) {
         //Not sure if throws Exception is a good practice, but I'll go with this. -Raymond
         String RET = new String(arg);
-        if(arg.substring(arg.length()-5).equals(".mp4") != false) {
-            throw new IllegalArgumentException("File is required to be .mp4");
+        if(!arg.endsWith(".mp4")) {
+            this.videoState = (byte) (this.videoState | video_EXTENSION);
         }
 
         char slash = 0;
@@ -54,14 +69,14 @@ public class CommandLineParser {
             fileNameLength++;
         }
         if(fileNameLength > 256) {
-            throw new IllegalArgumentException("Filename is too long:"+fileNameLength+" chars, expected <=256 ");
+            this.videoState = (byte) (this.videoState | video_LONG);
         }
 
 
         File fakeFile = new File(arg);
         if(!fakeFile.exists()) {
-            throw new FileNotFoundException(arg + " is not found!");
+            this.videoState = (byte) (this.videoState | video_NOT_FOUND);
         }
         return RET;
-    }
+    }*/
 }

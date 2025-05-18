@@ -39,4 +39,11 @@ public class CommandLineParserTest {
             new CommandLineParser(args);
         });
     }
+    /*@Test
+    public void testInvalidVideoFile() {
+        String[] args = {"video.mp", "output.csv", "FF0000", "50"};
+        assertThrows(Exception.class, () -> {
+            new CommandLineParser(args);
+        });
+    }*/
 }
