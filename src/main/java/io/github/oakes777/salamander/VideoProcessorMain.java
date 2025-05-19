@@ -114,13 +114,39 @@ public class VideoProcessorMain {
                 String csvPath = scanner.nextLine().trim();
 
                 // Run the full centroid-tracking analysis
+                // try {
+                // // Create the tracker with the user-provided color and threshold
+                // VideoCentroidTracker tracker = new VideoCentroidTracker(targetColor,
+                // threshold);
+
+                // // Start processing the full video
+                // tracker.trackCentroids(videoPath, csvPath);
+
+                // System.out.println("Video processed. CSV saved to " + csvPath);
+                // } catch (Exception e) {
+                // System.err.println("Error processing video:");
+                // e.printStackTrace();
+                // }
+
+                // Ask for frame interval (e.g., 1 = every frame, 2 = half, ..., 24 = 1/sec)
+                System.out.print("Enter frame interval (1 = every frame, up to 24 = one per second): ");
+                String intervalInput = scanner.nextLine().trim();
+
+                int frameInterval;
                 try {
-                    // Create the tracker with the user-provided color and threshold
+                    frameInterval = Integer.parseInt(intervalInput);
+                    if (frameInterval < 1 || frameInterval > 24) {
+                        throw new IllegalArgumentException("Frame interval must be between 1 and 24.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid interval. Defaulting to 1 (every frame).");
+                    frameInterval = 1;
+                }
+
+                // Run the full centroid-tracking analysis
+                try {
                     VideoCentroidTracker tracker = new VideoCentroidTracker(targetColor, threshold);
-
-                    // Start processing the full video
-                    tracker.trackCentroids(videoPath, csvPath);
-
+                    tracker.trackCentroids(videoPath, csvPath, frameInterval); // 🆕 pass interval
                     System.out.println("Video processed. CSV saved to " + csvPath);
                 } catch (Exception e) {
                     System.err.println("Error processing video:");
