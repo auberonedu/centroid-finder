@@ -14,8 +14,8 @@ we will reuse code from the orginal Centroid Finder project and built around it 
 ## 1. VideoProcessorApp (main clas)
 
 - entry point of the application
-- parses the command line arguments
-- coordinates video reading, frame processing, and CSV writing
+- parses the command line arguments using `CommandLineParser`
+- coordinates: video reading - (`VideoReader`), processing each frame - (`FrameProcessor`), and writing output to CSV - (`CsvWriter`)
 
 
 ## 2. CommandLineParser
@@ -26,6 +26,7 @@ we will reuse code from the orginal Centroid Finder project and built around it 
     - target color
     - color threshold
 - converts the target color into a format
+- may include error checking for `.mp4` and `.csv` file
 
 
 ## 3. VideoReader
@@ -60,3 +61,22 @@ we will reuse code from the orginal Centroid Finder project and built around it 
 - all new classes will be under -100 lines and broken into smaller methods
 - comments will be added for any logic
 - following name conventions and java best practices
+
+
+### Testing Plan
+
+- `CommandLineParser`: argument length, color parsing and threshold parsing
+- `VideoReader`: frame rate extracting and first frame loading
+- `FrameProcessor`: corrects centroid returns or fallback to (-1, -1)
+- `CsvWriter`: file creation and formatted output
+
+tests will be managed through Maven and the Surefire plugin
+
+## Flow
+VideoProcessorApp
+↓
+CommandLineParser → VideoReader → FrameProcessor → CsvWriter
+↘
+BinarizingImageGroupFinder
+↘
+DistanceImageBinarizer + DfsBinaryGroupFinder
