@@ -16,7 +16,7 @@ import org.bytedeco.javacv.Frame;
 public class VideoSummaryApp {
     public static void main(String[] args) {
         // Logic to make sure only 4 arguments are given
-        if(args.length < 4) {
+        if (args.length < 4) {
             System.out.println("Usage: java -jar videoprocessor.jar <inputPath> <outputCsv> <targetColor> <threshold>");
             return;
         }
@@ -39,28 +39,38 @@ public class VideoSummaryApp {
 
         // Grabber to read frames and writer to write to the output CSV
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(new File(inputPath));
+             PrintWriter writer = new PrintWriter(outputCsv)) {
 
-            PrintWriter writer = new PrintWriter(outputCsv); ) {
-    
             grabber.start();
 
-            writer.println("frame: x, y");
+            // Write header line in required format
+            writer.println("time,x,y");
 
             int frameNum = 0;
+            double frameRate = grabber.getFrameRate();
             Frame frame;
 
             // Loops through each frame and records the x and y coordinates
-            while((frame = grabber.grabImage()) != null) {
+            while ((frame = grabber.grabImage()) != null) {
                 BufferedImage image = converter.convert(frame);
                 List<Group> groups = groupFinder.findConnectedGroups(image);
 
-                Group biggest = groups.get(0);
+                int xCoord = -1;
+                int yCoord = -1;
 
-                int xCoord = biggest.centroid().x();
+                // Only update coordinates if a group was found
+                if (!groups.isEmpty()) {
+                    Group biggest = groups.get(0);
+                    xCoord = biggest.centroid().x();
+                    yCoord = biggest.centroid().y();
+                }
 
-                int yCoord = biggest.centroid().y();
+                // Compute the time in seconds
+                double seconds = frameNum / frameRate;
 
-                writer.println(frameNum + ": " + xCoord + ", " + yCoord);
+                // Write the time and coordinates to CSV
+                writer.printf("%.3f,%d,%d%n", seconds, xCoord, yCoord);
+
                 frameNum++;
             }
 
@@ -71,6 +81,5 @@ public class VideoSummaryApp {
             System.out.println("Error processing video: ");
             e.printStackTrace();
         }
-
     }
 }
