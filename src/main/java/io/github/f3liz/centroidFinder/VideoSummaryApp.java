@@ -13,7 +13,6 @@ import org.bytedeco.javacv.Frame;
  * largest centroid and write
  * to a CSV that centroids x and y coordinates by frame
  */
-
 public class VideoSummaryApp {
     public static void main(String[] args) {
         // Logic to make sure only 4 arguments are given
@@ -21,6 +20,8 @@ public class VideoSummaryApp {
             System.out.println("Usage: java -jar videoprocessor.jar <inputPath> <outputCsv> <targetColor> <threshold>");
             return;
         }
+
+        long startTime = System.currentTimeMillis(); // Start timer
 
         // Take in and parse the command line arguments
         String inputPath = args[0];
@@ -50,8 +51,8 @@ public class VideoSummaryApp {
             int totalFrames = grabber.getLengthInFrames();
             double frameRate = grabber.getFrameRate();
 
-            System.out.printf("Video frame count: %d\n", totalFrames);
-            System.out.printf("Frame rate: %.2f fps\n", frameRate);
+            System.out.println("Video frame count: " + totalFrames);
+            System.out.println("Frame rate: " + frameRate + " fps");
 
             int frameNum = 0;
             Frame frame;
@@ -78,15 +79,21 @@ public class VideoSummaryApp {
                 writer.printf("%.3f,%d,%d%n", seconds, xCoord, yCoord);
 
                 if (frameNum % 100 == 0) {
-                    System.out.printf("Processed frame %d (%.2f seconds)\n", frameNum, seconds);
+                    System.out.println("Processed frame " + frameNum + " (" + seconds + " seconds)");
                 }
-                
+
                 frameNum++;
             }
 
-            // Stops/ends the reading of frames
             grabber.stop();
             System.out.println("Processing complete, saved to: " + outputCsv);
+
+            // Print total elapsed time
+            long endTime = System.currentTimeMillis();
+            double elapsedSeconds = (endTime - startTime) / 1000.0;
+            System.out.println("Elapsed time: " + elapsedSeconds + " seconds");
+            System.out.flush();
+
         } catch (Exception e) {
             System.out.println("Error processing video: ");
             e.printStackTrace();
