@@ -2,34 +2,39 @@ package io.github.TiaMarieG.centroidFinder;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.nio.file.Files;
+import java.awt.image.BufferedImage;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CentroidCoordsPerFrameTest {
 
+    /**
+     * DummyCentroidFinder returns no groups (simulates a frame with no matches)
+     */
+    static class DummyCentroidFinder extends CentroidFinderPerFrame {
+        public DummyCentroidFinder() {
+            super(null, null);
+        }
+
+        @Override
+        public List<Group> findGroups(BufferedImage image) {
+            return Collections.emptyList(); // No groups detected
+        }
+    }
+
     @Test
-    void testCsvExportCreatesOutput() throws Exception {
+    void testReturnsNegativeOneIfNoGroupsFound() {
         // Arrange
-        List<CentroidFinderPerFrame.DataPoint> data = List.of(
-            new CentroidFinderPerFrame.DataPoint(0, 50, 40),
-            new CentroidFinderPerFrame.DataPoint(1, 48, 39)
-        );
-        String outputPath = "test_output/cb_bg_centroids_test.csv";
+        BufferedImage blankImage = new BufferedImage(10, 10, BufferedImage.TYPE_3BYTE_BGR);
+        CentroidCoordsPerFrame processor = new CentroidCoordsPerFrame(new DummyCentroidFinder());
 
         // Act
-        CentroidCoordsPerFrame exporter = new CentroidCoordsPerFrame();
-        exporter.exportToCsv(data, outputPath);
+        Coordinate result = processor.findCentroid(blankImage);
 
         // Assert
-        File file = new File(outputPath);
-        assertTrue(file.exists(), "CSV file should be created");
-
-        List<String> lines = Files.readAllLines(file.toPath());
-        assertEquals("frame,x,y", lines.get(0));
-        assertEquals("0,50,40", lines.get(1));
-        assertEquals("1,48,39", lines.get(2));
+        assertEquals(-1, result.x());
+        assertEquals(-1, result.y());
     }
 }

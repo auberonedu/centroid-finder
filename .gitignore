@@ -24,4 +24,6 @@ hs_err_pid*
 replay_pid*
 
 # Video files
-/videos/
+*.mp4
+*.csv
+test_output/

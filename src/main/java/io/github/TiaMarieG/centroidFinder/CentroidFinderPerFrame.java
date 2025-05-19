@@ -14,8 +14,8 @@ public class CentroidFinderPerFrame {
     }
 
     public List<Group> findGroups(BufferedImage image) {
-    int[][] binary = binarizer.toBinaryArray(image); // fix here
-    return groupFinder.findConnectedGroups(binary);  // fix here
+    int[][] binary = binarizer.toBinaryArray(image);
+    return groupFinder.findConnectedGroups(binary);
 }
 
     // Existing record type (used for batch export, not frame-by-frame use)

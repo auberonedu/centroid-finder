@@ -37,9 +37,7 @@ public class VideoFrameRunner {
 
             CentroidFinderPerFrame frameProcessor = new CentroidFinderPerFrame(binarizer, groupFinder);
 
-            CentroidCoordsPerFrame centroidProcessor = new CentroidCoordsPerFrame(
-                  new LargestCentroidPerFrameSelector(),
-                  frameProcessor);
+            CentroidCoordsPerFrame centroidProcessor = new CentroidCoordsPerFrame(frameProcessor);
 
             CsvLogger logger = new CsvLogger(outputCsv);
             logger.writeHeader();
