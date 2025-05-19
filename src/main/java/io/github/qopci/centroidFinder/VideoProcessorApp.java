@@ -12,7 +12,7 @@ public class VideoProcessorApp {
                  CsvWriter writer = new CsvWriter(parser.outputCsv)) {
 
                 // Hardcoded frame rate, ensantina has a frame rate of 23.98
-                // But we'll still with 24 fps
+                // But we'll stick with 24 fps
                 double frameRate = 24;  
                 int frameCount = 0;
 
@@ -21,7 +21,14 @@ public class VideoProcessorApp {
                     if (reader.shouldProcessThisFrame()) {
                         Coordinate centroid = processor.process(frame);
                         double timeInSeconds = frameCount / frameRate;
-                        writer.write(timeInSeconds, centroid);
+
+                        int totalSeconds = (int) timeInSeconds;
+                        int hours = totalSeconds / 3600;
+                        int minutes = (totalSeconds % 3600) / 60;
+                        int seconds = totalSeconds % 60;
+                        String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+
+                        writer.write(formattedTime, centroid);
                         frameCount++;
                     }
                 }
