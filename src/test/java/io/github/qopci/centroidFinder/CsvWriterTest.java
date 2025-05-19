@@ -22,7 +22,7 @@ public class CsvWriterTest {
 
         List<String> lines = Files.readAllLines(tempFile.toPath());
         assertFalse(lines.isEmpty(), "CSV file should not be empty");
-        assertEquals("x,y", lines.get(0), "Header should be 'x,y'");
+        assertEquals("time,x,y", lines.get(0), "Header should be 'time,x,y'");
     }
 
     @Test
@@ -31,14 +31,14 @@ public class CsvWriterTest {
         tempFile.deleteOnExit();
 
         try (CsvWriter writer = new CsvWriter(tempFile.getAbsolutePath())) {
-            writer.write(new Coordinate(10, 20));
-            writer.write(new Coordinate(-5, 0));
+            writer.write(0.0, new Coordinate(10, 20));
+            writer.write(1.5, new Coordinate(-5, 0));
         }
 
         List<String> lines = Files.readAllLines(tempFile.toPath());
         assertEquals(3, lines.size(), "CSV should contain header and two lines");
-        assertEquals("10,20", lines.get(1));
-        assertEquals("-5,0", lines.get(2));
+        assertEquals("0.00,10,20", lines.get(1));
+        assertEquals("1.50,-5,0", lines.get(2));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class CsvWriterTest {
             File tempFile = File.createTempFile("test", ".csv");
             tempFile.deleteOnExit();
             try (CsvWriter writer = new CsvWriter(tempFile.getAbsolutePath())) {
-                writer.write(new Coordinate(1, 1));
+                writer.write(0.0, new Coordinate(1, 1));
             }
         });
     }
@@ -58,11 +58,11 @@ public class CsvWriterTest {
         tempFile.deleteOnExit();
 
         try (CsvWriter writer = new CsvWriter(tempFile.getAbsolutePath())) {
-            writer.write(new Coordinate(Integer.MAX_VALUE, Integer.MIN_VALUE));
+            writer.write(12345.67, new Coordinate(Integer.MAX_VALUE, Integer.MIN_VALUE));
         }
 
         List<String> lines = Files.readAllLines(tempFile.toPath());
-        assertEquals(String.format("%d,%d", Integer.MAX_VALUE, Integer.MIN_VALUE), lines.get(1));
+        assertEquals("12345.67," + Integer.MAX_VALUE + "," + Integer.MIN_VALUE, lines.get(1));
     }
 
     @Test
@@ -76,6 +76,6 @@ public class CsvWriterTest {
 
         List<String> lines = Files.readAllLines(tempFile.toPath());
         assertEquals(1, lines.size());
-        assertEquals("x,y", lines.get(0));
+        assertEquals("time,x,y", lines.get(0));
     }
 }
