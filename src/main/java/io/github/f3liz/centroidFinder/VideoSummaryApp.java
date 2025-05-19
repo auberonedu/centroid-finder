@@ -9,7 +9,8 @@ import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 
 /**
- * Command-line tool to process each frame of an MP4 video file to find the largest centroid and write
+ * Command-line tool to process each frame of an MP4 video file to find the
+ * largest centroid and write
  * to a CSV that centroids x and y coordinates by frame
  */
 
@@ -39,15 +40,20 @@ public class VideoSummaryApp {
 
         // Grabber to read frames and writer to write to the output CSV
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(new File(inputPath));
-             PrintWriter writer = new PrintWriter(outputCsv)) {
+                PrintWriter writer = new PrintWriter(outputCsv)) {
 
             grabber.start();
 
             // Write header line in required format
             writer.println("time,x,y");
 
-            int frameNum = 0;
+            int totalFrames = grabber.getLengthInFrames();
             double frameRate = grabber.getFrameRate();
+
+            System.out.printf("Video frame count: %d\n", totalFrames);
+            System.out.printf("Frame rate: %.2f fps\n", frameRate);
+
+            int frameNum = 0;
             Frame frame;
 
             // Loops through each frame and records the x and y coordinates
@@ -71,6 +77,10 @@ public class VideoSummaryApp {
                 // Write the time and coordinates to CSV
                 writer.printf("%.3f,%d,%d%n", seconds, xCoord, yCoord);
 
+                if (frameNum % 100 == 0) {
+                    System.out.printf("Processed frame %d (%.2f seconds)\n", frameNum, seconds);
+                }
+                
                 frameNum++;
             }
 
