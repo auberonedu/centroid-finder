@@ -83,6 +83,9 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     }
 
     public static void getCoordinates(int[][] image, int r, int c, List<Coordinate> coordinates) {
+        // if invalid coord, return
+        if (r < 0 || r >= image.length || c < 0 || c >= image[0].length || image[r][c] != 1) return;
+
         Queue<Coordinate> que = new LinkedList<>();
         que.add(new Coordinate(r, c));
 
