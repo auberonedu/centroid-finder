@@ -80,3 +80,9 @@ CommandLineParser → VideoReader → FrameProcessor → CsvWriter
 BinarizingImageGroupFinder
 ↘
 DistanceImageBinarizer + DfsBinaryGroupFinder
+
+## Command Line Used
+
+- java -jar target/centroid-1.0-SNAPSHOT-jar-with-dependencies.jar sample.mp4 output.csv FF0000 50
+
+- java -jar target/centroid-1.0-SNAPSHOT-jar-with-dependencies.jar ensantina.mp4 mander.csv FF0000 100 

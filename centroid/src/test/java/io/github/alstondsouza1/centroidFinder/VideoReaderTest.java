@@ -11,7 +11,7 @@ import org.jcodec.api.JCodecException;
 // Used AI to generate and fixed the errors for VideoReaderTest
 public class VideoReaderTest {
 
-    private final String VALID_VIDEO_PATH = "sample.mp4"; 
+    private final String VALID_VIDEO_PATH = "ensantina.mp4"; 
 
     @Test
     public void testFileExists() {
