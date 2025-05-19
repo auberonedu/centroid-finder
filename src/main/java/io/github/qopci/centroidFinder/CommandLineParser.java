@@ -17,7 +17,7 @@ public class CommandLineParser {
 
     public CommandLineParser(String[] args) {
         if (args.length < 4) {
-            throw new IllegalArgumentException("Usage: java VideoProcessorApp <video_path> <csv_output> <color_name> <threshold>");
+            throw new IllegalArgumentException("Usage: java -jar videoprocessor.jar <video_path> <csv_output> <target_color> <threshold>");
         }
 
         this.inputPath = args[0];

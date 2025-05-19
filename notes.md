@@ -111,12 +111,18 @@ ImageGroupFinder.java notes
 - findConnectedGroups, input is a colored image, or a BufferedIMage,  
 
 - Result should be a list of Group objects, sorted in decending order, by size, by y, then by x
-
 --------------------------------------------------------------------------------------------------------------------------
 
-Example commands:
+## Example commands:
 - `mvn exec:java -Dexec.args="ensantina.mp4 output.csv 255,0,0 30"` --> Throws an IllegalArgumentException for HEX colors
 
 - `java -jar target/videoprocessor.jar ensantina.mp4 output.csv RED 100 2>&1 | tee logs`
 
 - `java -jar target/videoprocessor.jar ensantina.mp4 output.csv RED 95`
+--------------------------------------------------------------------------------------------------------------------------
+
+## Rebuild jar:
+
+- `mvn clean compile assembly:single` OR `mvn clean package`
+
+- `mv target/centroidFinder-1.0-SNAPSHOT-jar-with-dependencies.jar videoprocessor.jar`
