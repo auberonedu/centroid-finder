@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import org.bytedeco.leptonica.SARRAY;
-
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
 
     // Directions to move in the grid: up, down, left, right
@@ -88,71 +86,71 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
         return groups;
     }
 
-    /**
-     * Locates connected groups of pixels in the image from a given location.
-     * 
-     * @param image a rectangular 2D array containing only 1s and 0s
-     * @param location the starting coordinates (row, column) for the search
-     * @param visited the boolean array used to track visited pixels
-     * @param pixelatedGroup a list that contains the found connected pixels
-     */
-    private void findConnectedGroups(int[][] image, int[] location, boolean[][] visited, List<int[]> pixelatedGroup) {
-        int curR = location[0];
-        int curC = location[1];
-
-        // Validate coordinates to ensure they are within the boundaries of image
-        if (curR < 0 || curR >= image.length || curC < 0 || curC >= image[0].length)
-            return;
-
-        // Skip if the current pixel has already been visited or is a '0'
-        if (visited[curR][curC] || image[curR][curC] == 0)
-            return;
-
-        // Mark the pixel as visited and add it to the group
-        visited[curR][curC] = true;
-        pixelatedGroup.add(location);
-
-        // Exploring all four directions (up, down, left, right)
-        for (int[] direction : directions) {
-            int newR = curR + direction[0];
-            int newC = curC + direction[1];
-
-            findConnectedGroups(image, new int[] { newR, newC}, visited, pixelatedGroup);
-        }
-    }
-
-    // iterative approach (wrote in case our dfs didn't work later on for video processing)
+    // /**
+    //  * Locates connected groups of pixels in the image from a given location.
+    //  * 
+    //  * @param image a rectangular 2D array containing only 1s and 0s
+    //  * @param location the starting coordinates (row, column) for the search
+    //  * @param visited the boolean array used to track visited pixels
+    //  * @param pixelatedGroup a list that contains the found connected pixels
+    //  */
     // private void findConnectedGroups(int[][] image, int[] location, boolean[][] visited, List<int[]> pixelatedGroup) {
-    //     Stack<int[]> stack = new Stack<>();
+    //     int curR = location[0];
+    //     int curC = location[1];
 
-    //     stack.push(location);
+    //     // Validate coordinates to ensure they are within the boundaries of image
+    //     if (curR < 0 || curR >= image.length || curC < 0 || curC >= image[0].length)
+    //         return;
 
-    //     while(!stack.isEmpty()) {
-    //         int[] current = stack.pop();
+    //     // Skip if the current pixel has already been visited or is a '0'
+    //     if (visited[curR][curC] || image[curR][curC] == 0)
+    //         return;
 
-    //         int curR = current[0];
-    //         int curC = current[1];
+    //     // Mark the pixel as visited and add it to the group
+    //     visited[curR][curC] = true;
+    //     pixelatedGroup.add(location);
 
-    //         // Validate coordinates to ensure they are within the boundaries of image
-    //         if (curR < 0 || curR >= image.length || curC < 0 || curC >= image[0].length)
-    //             continue;
+    //     // Exploring all four directions (up, down, left, right)
+    //     for (int[] direction : directions) {
+    //         int newR = curR + direction[0];
+    //         int newC = curC + direction[1];
 
-    //         // Skip if the current pixel has already been visited or is a '0'
-    //         if (visited[curR][curC] || image[curR][curC] == 0)
-    //             continue;
-
-    //         // Mark the pixel as visited and add it to the group
-    //         visited[curR][curC] = true;
-    //         pixelatedGroup.add(new int[]{curR, curC});
-
-    //         for (int[] direction : directions) {
-    //             int newR = curR + direction[0];
-    //             int newC = curC + direction[1];
-
-    //             stack.push(new int[]{newR, newC});
-    //         }
+    //         findConnectedGroups(image, new int[] { newR, newC}, visited, pixelatedGroup);
     //     }
     // }
+
+    // iterative approach (wrote in case our dfs didn't work later on for video processing)
+    private void findConnectedGroups(int[][] image, int[] location, boolean[][] visited, List<int[]> pixelatedGroup) {
+        Stack<int[]> stack = new Stack<>();
+
+        stack.push(location);
+
+        while(!stack.isEmpty()) {
+            int[] current = stack.pop();
+
+            int curR = current[0];
+            int curC = current[1];
+
+            // Validate coordinates to ensure they are within the boundaries of image
+            if (curR < 0 || curR >= image.length || curC < 0 || curC >= image[0].length)
+                continue;
+
+            // Skip if the current pixel has already been visited or is a '0'
+            if (visited[curR][curC] || image[curR][curC] == 0)
+                continue;
+
+            // Mark the pixel as visited and add it to the group
+            visited[curR][curC] = true;
+            pixelatedGroup.add(new int[]{curR, curC});
+
+            for (int[] direction : directions) {
+                int newR = curR + direction[0];
+                int newC = curC + direction[1];
+
+                stack.push(new int[]{newR, newC});
+            }
+        }
+    }
 
     /**
      * Converts a list of pixel coordinates into a Group. 
