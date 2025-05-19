@@ -1,148 +1,127 @@
-# Centroid Finder Video Processing Extension Plan
+# Video Processor Extension Plan
 
 ## Overview
-This plan outlines the approach for extending the existing centroid finder project to process MP4 videos and generate CSV files tracking the largest centroid over time.
+We'll extend the existing centroid-finder project to process videos frame by frame, tracking the largest color centroid over time. The output will be a CSV file with timestamps and coordinates.
 
 ## Architecture
-```mermaid
-classDiagram
-    class VideoProcessor {
-        -VideoReader videoReader
-        -CentroidTracker centroidTracker
-        -CSVWriter csvWriter
-        +processVideo(String inputPath, String outputPath, Color targetColor, double threshold)
-    }
-    
-    class VideoReader {
-        -FFmpegFrameGrabber frameGrabber
-        +readFrame()
-        +getFrameRate()
-        +getTotalFrames()
-        +close()
-    }
-    
-    class CentroidTracker {
-        -BinarizingImageGroupFinder groupFinder
-        -Color targetColor
-        -double threshold
-        +findLargestCentroid(Frame frame)
-    }
-    
-    class CSVWriter {
-        -FileWriter writer
-        +writeHeader()
-        +writeCentroidData(double timestamp, Coordinate centroid)
-        +close()
-    }
-    
-    VideoProcessor --> VideoReader
-    VideoProcessor --> CentroidTracker
-    VideoProcessor --> CSVWriter
-    CentroidTracker --> BinarizingImageGroupFinder
+
+### Existing Components (to reuse)
+- `ImageBinarizer` interface and `DistanceImageBinarizer` implementation
+- `BinaryGroupFinder` interface and `DfsBinaryGroupFinder` implementation
+- `ImageGroupFinder` interface and `BinarizingImageGroupFinder` implementation
+- `ColorDistanceFinder` interface and `EuclideanColorDistance` implementation
+- `Group` and `Coordinate` classes
+
+### New Components
+1. **VideoProcessor** - Core class to process video files
+   - Takes a video file path, processes frames, and tracks centroids
+   - Uses existing centroid finder components
+   - Outputs CSV with timestamps and coordinates
+
+2. **VideoProcessorApp** - Main application class
+   - Parses command line arguments
+   - Validates input
+   - Instantiates VideoProcessor and runs the processing
+
+3. **CentroidTracker** - Optional class to track centroids between frames
+   - Ensures continuity in centroid tracking
+   - Handles cases where centroids disappear/reappear
+
+4. **CsvWriter** - Utility class for writing CSV output
+   - Creates and writes to the output CSV file
+   - Formats timestamp and centroid data correctly
+
+### Diagram
+
 ```
-
-## Component Responsibilities
-
-### 1. VideoProcessor (Main Class)
-- Entry point for video processing
-- Coordinates between VideoReader, CentroidTracker, and CSVWriter
-- Handles command line argument parsing
-- Manages the overall processing workflow
-
-### 2. VideoReader
-- Uses JavaCV's FFmpegFrameGrabber for video processing
-- Provides frame-by-frame access to video
-- Handles video metadata (frame rate, total frames)
-- Manages video resource cleanup
-- Converts frames to appropriate format for centroid processing
-
-### 3. CentroidTracker
-- Reuses existing BinarizingImageGroupFinder
-- Processes individual frames to find centroids
-- Identifies the largest centroid in each frame
-- Returns (-1, -1) when no centroid is found
-- Handles frame format conversion if needed
-
-### 4. CSVWriter
-- Handles CSV file creation and writing
-- Manages proper formatting of timestamp and coordinate data
-- Ensures proper resource cleanup
+┌───────────────────┐     ┌────────────────┐
+│ VideoProcessorApp │─────┤ VideoProcessor │
+└───────────────────┘     └────────┬───────┘
+                                  │
+                                  │ uses
+                                  ▼
+┌────────────────────────────────────────────────────┐
+│               Existing Components                  │
+│                                                    │
+│  ┌─────────────────┐      ┌───────────────────┐   │
+│  │ ImageBinarizer  │      │ BinaryGroupFinder │   │
+│  └─────────────────┘      └───────────────────┘   │
+│                                                    │
+│  ┌─────────────────┐      ┌───────────────────┐   │
+│  │ ImageGroupFinder│      │ColorDistanceFinder│   │
+│  └─────────────────┘      └───────────────────┘   │
+└────────────────────────────────────────────────────┘
+        │                           │
+        │ produces                  │ used by
+        ▼                           ▼
+┌──────────────┐             ┌────────────────┐
+│ CsvWriter    │◄────────────┤CentroidTracker │
+└──────────────┘             └────────────────┘
+```
 
 ## Implementation Plan
 
-### Phase 1: Core Components
-1. Create VideoReader class
-   - Implement frame reading using FFmpegFrameGrabber
-   - Add frame rate and total frame counting
-   - Add proper resource management
-   - Implement frame format conversion utilities
+### 1. Setup Maven Assembly Plugin
+- Configure pom.xml to create an executable JAR
+- Set main class to the new VideoProcessorApp
+- Include all dependencies in the JAR
 
-2. Create CentroidTracker class
-   - Adapt existing BinarizingImageGroupFinder for frame processing
-   - Implement largest centroid selection
-   - Add proper error handling for no centroid cases
-   - Handle frame format conversion
+### 2. Create VideoProcessorApp
+- Parse command line arguments (inputPath, outputCsv, targetColor, threshold)
+- Validate inputs
+- Set up VideoProcessor with appropriate parameters
 
-3. Create CSVWriter class
-   - Implement CSV file writing functionality
-   - Add proper formatting for timestamp and coordinates
-   - Implement resource management
+### 3. Implement VideoProcessor
+- Use JavaCV/FFmpegFrameGrabber to read video frames
+- Process each frame using existing centroid finder components
+- Track largest centroid over time
+- Generate CSV output with timestamp, x, y coordinates
+- Handle errors gracefully
 
-### Phase 2: Integration
-1. Create VideoProcessor class
-   - Implement command line argument parsing
-   - Create main processing loop
-   - Coordinate between components
-   - Add proper error handling
+### 4. Implement CsvWriter
+- Create utility for writing CSV data
+- Format timestamp as seconds since start
+- Format x, y coordinates
+- Use (-1, -1) when no centroid is found
 
-2. Add Maven configuration
-   - Configure Maven Assembly Plugin
-   - Set up JavaCV dependencies
-   - Configure JAR creation
+### 5. (Optional) Implement CentroidTracker
+- Track centroids between frames for better continuity
 
-### Phase 3: Testing
-1. Unit Tests
-   - Test VideoReader frame extraction
-   - Test CentroidTracker with sample frames
-   - Test CSVWriter formatting
-   - Test VideoProcessor integration
+### 6. Testing
+- Create unit tests for each new component
+- Test with sample videos
+- Validate CSV output format
 
-2. Integration Tests
-   - Test with sample videos
-   - Verify CSV output format
-   - Test error handling
+### 7. Packaging
+- Build executable JAR with Maven Assembly Plugin
+- Ensure all dependencies are included
 
-### Phase 4: Validation
-1. Test with salamander video
-   - Experiment with different color values
-   - Test different threshold values
-   - Verify tracking accuracy
-   - Document testing results
+## Validation Strategy
+- Use a sample video with known color regions
+- Compare tracked centroids with expected positions
+- Test edge cases:
+  - No centroids in frame
+  - Multiple similarly-sized centroids
+  - Fast-moving centroids
+- Test with actual salamander video and validate results visually
 
-## Dependencies
-- JavaCV (org.bytedeco:javacv-platform)
-- Existing centroid finder components
-- Maven Assembly Plugin (for JAR creation)
+## Timeline
+1. Setup Maven configuration - 1 hour
+2. Create basic app structure - 2 hours
+3. Implement core video processing - 4 hours
+4. Implement CSV writing - 1 hour
+5. Testing and refinement - 2 hours
+6. Packaging and final validation - 1 hour
 
-## Testing Strategy
-1. Unit Tests
-   - Test each component in isolation
-   - Mock dependencies where appropriate
-   - Verify error handling
+## Salamander Video Validation
+For validating with the salamander video, we will:
 
-2. Integration Tests
-   - Test with sample videos
-   - Verify CSV output format
-   - Test end-to-end processing
-
-3. Validation Tests
-   - Test with real salamander video
-   - Document color and threshold selection process
-   - Verify tracking accuracy
-
-## Notes
-- Will need to add JavaCV dependencies to pom.xml
-- Need to ensure proper resource cleanup
-- Will need to handle video format compatibility
-- Should add proper error messages for invalid inputs
-- May need to handle frame format conversion between JavaCV and existing image processing code 
+1. Use a video player to visually identify the salamander's color
+2. Extract a sample frame and use an image editor to get the RGB value of the salamander
+3. Test different threshold values to find the optimal setting that isolates the salamander
+4. Run our video processor on the salamander video with the identified color and threshold
+5. Visualize the results by:
+   - Plotting the centroid coordinates over time
+   - Checking if the tracked path matches the salamander's movement
+   - Verifying that the centroid is consistently tracking the salamander and not other objects
+6. Refine the color and threshold values if needed based on the results
