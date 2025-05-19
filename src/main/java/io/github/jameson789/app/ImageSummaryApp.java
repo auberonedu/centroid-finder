@@ -70,11 +70,12 @@ public class ImageSummaryApp {
                 var frame = grabber.grabImage();
                 System.out.println("Processing frame " + i);
                 System.out.println("Frame is null: " + (frame == null));
-                if (frame == null)
+                if (frame == null){
                     continue;
+                } 
                 BufferedImage image = converter.getBufferedImage(frame);
                 CentroidResult result = processor.processImage(image);
-                if (i % 1000 == 0) { 
+                if (i % 1000 == 0) {
                     BufferedImage bin = processor.getBinarizedImage(image);
                     if (bin != null) {
                         String filename = String.format("binarized_frames/frame_%03d.png", i);
