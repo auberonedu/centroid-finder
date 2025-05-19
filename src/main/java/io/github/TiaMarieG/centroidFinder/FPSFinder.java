@@ -68,4 +68,7 @@ public class FPSFinder {
         return totalLength;
     }
 
+    public static int findFPS(FFmpegFrameGrabber grabber) {
+        return (int) grabber.getFrameRate();
+    }
 }
