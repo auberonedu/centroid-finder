@@ -53,47 +53,48 @@ public class VideoProcessor {
             double secondsPerFrame = 1.0 / frameRate;
             
             // Converter to convert frames to BufferedImage
-            Java2DFrameConverter converter = new Java2DFrameConverter();
-            
-            // Process frames
-            Frame frame;
-            int frameCount = 0;
-            
-            System.out.println("Processing video: " + inputPath);
-            System.out.println("Frame rate: " + frameRate + " fps");
-            
-            while ((frame = grabber.grabImage()) != null) {
-                double timestamp = frameCount * secondsPerFrame;
+            try (Java2DFrameConverter converter = new Java2DFrameConverter()) {
+                // Process frames
+                Frame frame;
+                int frameCount = 0;
                 
-                // Convert frame to BufferedImage
-                BufferedImage bufferedImage = converter.convert(frame);
-                if (bufferedImage == null) {
-                    writer.writeRow(timestamp, null);
+                System.out.println("Processing video: " + inputPath);
+                System.out.println("Frame rate: " + frameRate + " fps");
+                
+                while ((frame = grabber.grabImage()) != null) {
+                    double timestamp = frameCount * secondsPerFrame;
+                    
+                    // Convert frame to BufferedImage
+                    BufferedImage bufferedImage = converter.convert(frame);
+                    if (bufferedImage == null) {
+                        writer.writeRow(timestamp, null);
+                        frameCount++;
+                        continue;
+                    }
+                    
+                    // Find connected groups in the frame
+                    List<Group> groups = groupFinder.findConnectedGroups(bufferedImage);
+                    
+                    // Get the largest centroid (if any)
+                    Coordinate largestCentroid = null;
+                    if (!groups.isEmpty()) {
+                        // Groups are sorted in descending order, so the first one is the largest
+                        largestCentroid = groups.get(0).centroid();
+                    }
+                    
+                    // Write to CSV
+                    writer.writeRow(timestamp, largestCentroid);
+                    
                     frameCount++;
-                    continue;
+                    if (frameCount % 100 == 0) {
+                        System.out.printf("Processed %d frames (%.1f seconds)%n", frameCount, timestamp);
+                        writer.flush();
+                    }
                 }
                 
-                // Find connected groups in the frame
-                List<Group> groups = groupFinder.findConnectedGroups(bufferedImage);
-                
-                // Get the largest centroid (if any)
-                Coordinate largestCentroid = null;
-                if (!groups.isEmpty()) {
-                    // Groups are sorted in descending order, so the first one is the largest
-                    largestCentroid = groups.get(0).centroid();
-                }
-                
-                // Write to CSV
-                writer.writeRow(timestamp, largestCentroid);
-                
-                frameCount++;
-                if (frameCount % 100 == 0) {
-                    System.out.printf("Processed %d frames (%.1f seconds)%n", frameCount, timestamp);
-                    writer.flush();
-                }
+                System.out.println("Total frames processed: " + frameCount);
             }
             
-            System.out.println("Total frames processed: " + frameCount);
             System.out.println("Output written to: " + outputPath);
         }
     }

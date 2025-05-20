@@ -17,15 +17,15 @@ import java.io.IOException;
  */
 public class VideoProcessorApp {
     public static void main(String[] args) {
-        if (args.length < 4) {
-            printUsage();
+        if (args.length != 4) {
+            printUsage("Invalid number of args!");
             return;
         }
         
         String inputPath = args[0];
         String outputCsv = args[1];
         String hexTargetColor = args[2];
-        int threshold;
+        int threshold, targetColor;
         
         // Validate input path
         File inputFile = new File(inputPath);
@@ -43,7 +43,6 @@ public class VideoProcessorApp {
         }
         
         // Validate and parse target color
-        int targetColor;
         try {
             targetColor = Integer.parseInt(hexTargetColor, 16);
         } catch (NumberFormatException e) {
@@ -61,9 +60,8 @@ public class VideoProcessorApp {
         }
     }
     
-    private static void printUsage() {
-        System.out.println("Usage: java -jar videoprocessor.jar inputPath outputCsv targetColor threshold");
-        System.out.println("");
+    private static void printUsage(String errorMessage) {
+        System.out.println("Usage: java -jar videoprocessor.jar <inputPath> <outputCsv> <targetColor> <threshold>");
         System.out.println("Where:");
         System.out.println("  inputPath: Path to the input video file");
         System.out.println("  outputCsv: Path to the output CSV file");
