@@ -36,3 +36,4 @@ output/*.png
 # Optional: Ignore IntelliJ/VSCode project files
 .idea/
 .vscode/
+/target/
