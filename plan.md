@@ -81,6 +81,9 @@ BinarizingImageGroupFinder
 ↘
 DistanceImageBinarizer + DfsBinaryGroupFinder
 
+Wave 4: Validation
+To validate the functionality, I tested with the video ensantina.mp4. I confirmed the output in mander.csv and checked the centroid points visually through the frontend React interface. The coordinates aligned with the expected salamander positions. If no centroid was detected, the output correctly logged -1, -1.
+
 ## Command Line Used
 
 - java -jar target/centroid-1.0-SNAPSHOT-jar-with-dependencies.jar sample.mp4 output.csv FF0000 50
