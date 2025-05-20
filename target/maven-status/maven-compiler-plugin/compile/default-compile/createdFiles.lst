@@ -1,0 +1,17 @@
+io\github\brittLiban\centroidfinder\BinaryGroupFinder.class
+io\github\brittLiban\centroidfinder\DfsBinaryGroupFinder.class
+io\github\brittLiban\centroidfinder\ImageGroupFinder.class
+io\github\brittLiban\centroidfinder\VideoAnalyzer.class
+io\github\brittLiban\centroidfinder\OpenCVLoader.class
+io\github\brittLiban\centroidfinder\EuclideanColorDistance.class
+io\github\brittLiban\centroidfinder\OldVideoTestApp.class
+io\github\brittLiban\centroidfinder\ColorDistanceFinder.class
+io\github\brittLiban\centroidfinder\VideoProcessor.class
+io\github\brittLiban\centroidfinder\DistanceImageBinarizer.class
+io\github\brittLiban\centroidfinder\Group.class
+io\github\brittLiban\centroidfinder\ImageSummaryApp.class
+io\github\brittLiban\centroidfinder\ImageBinarizer.class
+io\github\brittLiban\centroidfinder\OpenCVUtils.class
+io\github\brittLiban\centroidfinder\BinarizingImageGroupFinder.class
+io\github\brittLiban\centroidfinder\OldVideoTestApp$1.class
+io\github\brittLiban\centroidfinder\Coordinate.class

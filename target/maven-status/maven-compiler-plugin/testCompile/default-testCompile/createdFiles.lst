@@ -1,0 +1,7 @@
+io\github\brittLiban\centroidfinder\BinarizingImageGroupFinderTest.class
+io\github\brittLiban\centroidfinder\DfsBinaryGroupFinderTest.class
+io\github\brittLiban\centroidfinder\DistanceImageBinarizerTest.class
+io\github\brittLiban\centroidfinder\DistanceImageBinarizerTest$FakeDistanceFinder.class
+io\github\brittLiban\centroidfinder\VideoAnalyzerTest.class
+io\github\brittLiban\centroidfinder\EuclideanColorDistanceTest.class
+io\github\brittLiban\centroidfinder\OpenCVLoaderTest.class
