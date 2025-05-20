@@ -28,3 +28,7 @@ sampleInput/*.mp4
 
 # Output images
 output/*.png
+# don't upload target stuff!
+/target/
+*.log
+*.class
