@@ -25,6 +25,10 @@ replay_pid*
 
 # maven 
 /target/
+*.jar
 
 # vscode
 .vscode/
+
+# files
+*.mp4

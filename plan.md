@@ -1,7 +1,7 @@
 # Video Processor Extension Plan
 
 ## Overview
-We'll extend the existing centroid-finder project to process videos frame by frame, tracking the largest color centroid over time. The output will be a CSV file with timestamps and coordinates.
+Extend the centroid-finder project to process videos frame by frame, tracking the largest color centroid over time. Output results as a CSV file with timestamps and coordinates.
 
 ## Architecture
 
@@ -104,14 +104,6 @@ We'll extend the existing centroid-finder project to process videos frame by fra
   - Multiple similarly-sized centroids
   - Fast-moving centroids
 - Test with actual salamander video and validate results visually
-
-## Timeline
-1. Setup Maven configuration - 1 hour
-2. Create basic app structure - 2 hours
-3. Implement core video processing - 4 hours
-4. Implement CSV writing - 1 hour
-5. Testing and refinement - 2 hours
-6. Packaging and final validation - 1 hour
 
 ## Salamander Video Validation
 For validating with the salamander video, we will:
