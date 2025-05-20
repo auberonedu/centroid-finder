@@ -1,3 +1,4 @@
+package io.github.oakes777.salamander;
 /**
  * Represents a location in an image or array
  * 

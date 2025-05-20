@@ -1,3 +1,4 @@
+package io.github.oakes777.salamander;
 import java.util.List;
 import java.awt.image.BufferedImage;
 

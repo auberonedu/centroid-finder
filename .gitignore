@@ -18,7 +18,24 @@
 *.zip
 *.tar.gz
 *.rar
+*.csv
+*.png
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Local video test files
+sampleInput/*.mp4
+
+# Output images
+output/*.png
+# don't upload target stuff!
+/target/
+*.log
+*.class
+
+# Optional: Ignore IntelliJ/VSCode project files
+.idea/
+.vscode/
+/target/

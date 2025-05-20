@@ -1,3 +1,4 @@
+package io.github.oakes777.salamander;
 /**
  * Defines an interface for computing the distance between two colors.
  * 
