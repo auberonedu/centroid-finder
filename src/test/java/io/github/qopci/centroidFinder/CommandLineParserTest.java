@@ -10,7 +10,7 @@ class CommandLineParserTest {
         String[] args = {
             "video.mp4",
             "output.csv",
-            "ff0000",
+            "0xFF0000",
             "30"
         };
         CommandLineParser parser = new CommandLineParser(args);
@@ -64,7 +64,7 @@ class CommandLineParserTest {
     }
 
     @Test
-    public void testNegativeThresholdThrowsException() {
+    void testNegativeThresholdThrowsException() {
         String[] args = {"video.mp4", "output.csv", "000000", "-1"};
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             new CommandLineParser(args);
