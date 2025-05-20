@@ -15,6 +15,7 @@ io\github\TiaMarieG\centroidFinder\ColorParser.class
 io\github\TiaMarieG\centroidFinder\BinarizingImageGroupFinder.class
 io\github\TiaMarieG\centroidFinder\ChartDemoVideoTest.class
 io\github\TiaMarieG\centroidFinder\CsvLogger.class
+io\github\TiaMarieG\centroidFinder\CentroidPlotter.class
 io\github\TiaMarieG\centroidFinder\DfsBinaryGroupFinder.class
 io\github\TiaMarieG\centroidFinder\Group.class
 io\github\TiaMarieG\centroidFinder\ImageSummaryApp.class

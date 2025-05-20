@@ -18,13 +18,12 @@
         <plugins>
             <!-- Run single classes during development -->
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <!-- ✅ TEMP: change to CentroidPlotter for testing -->
-                    <mainClass>io.github.TiaMarieG.centroidFinder.CentroidPlotter</mainClass>
-                </configuration>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.1.0</version>
+            <configuration>
+                <mainClass>io.github.TiaMarieG.centroidFinder.VideoProcessor</mainClass>
+            </configuration>
             </plugin>
 
             <!-- Enable running unit tests -->
