@@ -1,3 +1,8 @@
-const getVideos = () => {
+const getVideos = (req, res) => {
+
     
 }
+
+export default {
+    getVideos
+}; 
