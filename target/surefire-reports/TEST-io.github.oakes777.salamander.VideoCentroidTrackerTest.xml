@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="io.github.oakes777.salamander.VideoCentroidTrackerTest" time="3.196" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="io.github.oakes777.salamander.VideoCentroidTrackerTest" time="3.151" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/23.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193603009_3.jar /Users/mb16/sdev334/salamander/centroid-finder/target/surefire 2025-05-19T19-36-02_961-jvmRun1 surefire-20250519193603009_1tmp surefire_0-20250519193603009_2tmp"/>
+    <property name="sun.java.command" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193824760_3.jar /Users/mb16/sdev334/salamander/centroid-finder/target/surefire 2025-05-19T19-38-24_709-jvmRun1 surefire-20250519193824760_1tmp surefire_0-20250519193824760_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/mb16/sdev334/salamander/centroid-finder/target/test-classes:/Users/mb16/sdev334/salamander/centroid-finder/target/classes:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter/5.12.0/junit-jupiter-5.12.0.jar:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.12.0/junit-jupiter-api-5.12.0.jar:/Users/mb16/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/mb16/.m2/repository/org/junit/platform/junit-platform-commons/1.12.0/junit-platform-commons-1.12.0.jar:/Users/mb16/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.12.0/junit-jupiter-params-5.12.0.jar:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.12.0/junit-jupiter-engine-5.12.0.jar:/Users/mb16/.m2/repository/org/junit/platform/junit-platform-engine/1.12.0/junit-platform-engine-1.12.0.jar:/Users/mb16/.m2/repository/org/jcodec/jcodec/0.2.5/jcodec-0.2.5.jar:/Users/mb16/.m2/repository/org/jcodec/jcodec-javase/0.2.5/jcodec-javase-0.2.5.jar:"/>
@@ -29,7 +29,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193603009_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193824760_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="23.0.2"/>
@@ -58,14 +58,14 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
-  <testcase name="testConstructorInitializesAnalyzer" classname="io.github.oakes777.salamander.VideoCentroidTrackerTest" time="0.04"/>
+  <testcase name="testConstructorInitializesAnalyzer" classname="io.github.oakes777.salamander.VideoCentroidTrackerTest" time="0.037"/>
   <testcase name="testGracefulFailureOnBadInput" classname="io.github.oakes777.salamander.VideoCentroidTrackerTest" time="0.003"/>
-  <testcase name="testOutputFormatIsCorrect" classname="io.github.oakes777.salamander.VideoCentroidTrackerTest" time="1.808">
-    <system-out><![CDATA[Centroid CSV written to /var/folders/5s/l5byb66961g9hp3v74tqr9y40000gn/T/junit-16235786233632491794/test_output.csv
+  <testcase name="testOutputFormatIsCorrect" classname="io.github.oakes777.salamander.VideoCentroidTrackerTest" time="1.775">
+    <system-out><![CDATA[Centroid CSV written to /var/folders/5s/l5byb66961g9hp3v74tqr9y40000gn/T/junit-5237257463282511689/test_output.csv
 ]]></system-out>
   </testcase>
-  <testcase name="testTrackCentroidsProcessesEveryNthFrame" classname="io.github.oakes777.salamander.VideoCentroidTrackerTest" time="1.336">
-    <system-out><![CDATA[Centroid CSV written to /var/folders/5s/l5byb66961g9hp3v74tqr9y40000gn/T/junit-8114513987789374046/output_nth.csv
+  <testcase name="testTrackCentroidsProcessesEveryNthFrame" classname="io.github.oakes777.salamander.VideoCentroidTrackerTest" time="1.324">
+    <system-out><![CDATA[Centroid CSV written to /var/folders/5s/l5byb66961g9hp3v74tqr9y40000gn/T/junit-2788048173328591162/output_nth.csv
 ]]></system-out>
   </testcase>
 </testsuite>
