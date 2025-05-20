@@ -7,4 +7,5 @@ io/github/jameson789/app/EuclideanColorDistanceTest$ColorAnalyzer.class
 io/github/jameson789/app/BinarizingImageGroupFinderTest$StubImageBinarizer.class
 io/github/jameson789/app/DistanceImageBinarizerTest.class
 io/github/jameson789/app/DfsBinaryGroupFinderTest.class
+io/github/jameson789/app/ImageProcessorTest.class
 io/github/jameson789/app/BinarizingImageGroupFinderTest$2.class

@@ -18,88 +18,91 @@ import javax.imageio.ImageIO;
  * 
  * 1. Loads the input image.
  * 2. Parses the target color from the hex string into a 24-bit integer.
- * 3. Binarizes the image by comparing each pixel's Euclidean color distance to the target color.
- *    A pixel is marked white (1) if its distance is less than the threshold; otherwise, it is marked black (0).
- * 4. Converts the binary array back to a BufferedImage and writes the binarized image to disk as "binarized.png".
+ * 3. Binarizes the image by comparing each pixel's Euclidean color distance to
+ * the target color.
+ * A pixel is marked white (1) if its distance is less than the threshold;
+ * otherwise, it is marked black (0).
+ * 4. Converts the binary array back to a BufferedImage and writes the binarized
+ * image to disk as "binarized.png".
  * 5. Finds connected groups of white pixels in the binary image.
- *    Pixels are connected vertically and horizontally (not diagonally).
- *    For each group, the size (number of pixels) and the centroid (calculated using integer division) are computed.
- * 6. Writes a CSV file named "groups.csv" containing one row per group in the format "size,x,y".
- *    Coordinates follow the convention: (x:0, y:0) is the top-left, with x increasing to the right and y increasing downward.
+ * Pixels are connected vertically and horizontally (not diagonally).
+ * For each group, the size (number of pixels) and the centroid (calculated
+ * using integer division) are computed.
+ * 6. Writes a CSV file named "groups.csv" containing one row per group in the
+ * format "size,x,y".
+ * Coordinates follow the convention: (x:0, y:0) is the top-left, with x
+ * increasing to the right and y increasing downward.
  * 
  * Usage:
- *   java ImageSummaryApp <input_image> <hex_target_color> <threshold>
+ * java ImageSummaryApp <input_image> <hex_target_color> <threshold>
  */
 public class ImageSummaryApp {
     public static void main(String[] args) {
-        System.out.println("fdjsakl;fjdsaklfjasdklfjdsaklfjadskl;fjadskl;fa");
         if (args.length < 3) {
-            System.out.println("Usage: java ImageSummaryApp <input_image> <hex_target_color> <threshold>");
+            System.out.println("Usage: java ImageSummaryApp <input_video> <hex_target_color> <threshold>");
             return;
         }
-        
-        String inputImagePath = args[0];
-        String hexTargetColor = args[1];
-        int threshold = 0;
+
+        String videoPath = args[0];
+        int targetColor;
+        int threshold;
+
         try {
+            targetColor = Integer.parseInt(args[1], 16);
             threshold = Integer.parseInt(args[2]);
-        } catch (NumberFormatException e) {
-            System.err.println("Threshold must be an integer.");
-            return;
-        }
-        
-        BufferedImage inputImage = null;
-        try {
-            inputImage = ImageIO.read(new File(inputImagePath));
         } catch (Exception e) {
-            System.err.println("Error loading image: " + inputImagePath);
-            e.printStackTrace();
+            System.err.println("Error parsing color or threshold.");
             return;
         }
-        
-        // Parse the target color from a hex string (format RRGGBB) into a 24-bit integer (0xRRGGBB)
-        int targetColor = 0;
-        try {
-            targetColor = Integer.parseInt(hexTargetColor, 16);
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid hex target color. Please provide a color in RRGGBB format.");
-            return;
-        }
-        
-        // Create the DistanceImageBinarizer with a EuclideanColorDistance instance.
-        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
-        ImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
-        
-        // Binarize the input image.
-        int[][] binaryArray = binarizer.toBinaryArray(inputImage);
-        BufferedImage binaryImage = binarizer.toBufferedImage(binaryArray);
-        
-        // Write the binarized image to disk as "binarized.png".
-        try {
-            ImageIO.write(binaryImage, "png", new File("binarized.png"));
-            System.out.println("Binarized image saved as binarized.png");
-        } catch (Exception e) {
-            System.err.println("Error saving binarized image.");
-            e.printStackTrace();
-        }
-        
-        // Create an ImageGroupFinder using a BinarizingImageGroupFinder with a DFS-based BinaryGroupFinder.
-        ImageGroupFinder groupFinder = new BinarizingImageGroupFinder(binarizer, new DfsBinaryGroupFinder());
-        
-        // Find connected groups in the input image.
-        // The BinarizingImageGroupFinder is expected to internally binarize the image,
-        // then locate connected groups of white pixels.
-        List<Group> groups = groupFinder.findConnectedGroups(inputImage);
-        
-        // Write the groups information to a CSV file "groups.csv".
-        try (PrintWriter writer = new PrintWriter("groups.csv")) {
-            for (Group group : groups) {
-                writer.println(group.toCsvRow());
+
+        try (org.bytedeco.javacv.FFmpegFrameGrabber grabber = new org.bytedeco.javacv.FFmpegFrameGrabber(videoPath);
+                PrintWriter writer = new PrintWriter(new File("frame_centroids.csv"))) {
+
+            grabber.start();
+            new File("binarized_frames").mkdirs();
+            org.bytedeco.javacv.Java2DFrameConverter converter = new org.bytedeco.javacv.Java2DFrameConverter();
+            ImageProcessor processor = new ImageProcessor(targetColor, threshold);
+
+            int frameCount = grabber.getLengthInFrames();
+            System.out.println("Total frames to process: " + frameCount);
+            for (int i = 0; i < frameCount; i++) {
+
+                var frame = grabber.grabImage();
+                System.out.println("Processing frame " + i);
+                System.out.println("Frame is null: " + (frame == null));
+                if (frame == null){
+                    continue;
+                } 
+                BufferedImage image = converter.getBufferedImage(frame);
+                CentroidResult result = processor.processImage(image);
+                if (i % 1000 == 0) {
+                    BufferedImage bin = processor.getBinarizedImage(image);
+                    if (bin != null) {
+                        String filename = String.format("binarized_frames/frame_%03d.png", i);
+                        try {
+                            javax.imageio.ImageIO.write(bin, "png", new File(filename));
+                            System.out.println("Saved: " + filename);
+                        } catch (Exception e) {
+                            System.err.println("Failed to save " + filename);
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.out.println("Null binary image at frame " + i);
+                    }
+                }
+
+                if (result != null) {
+                    writer.printf("%d,%d,%d%n", i, result.x(), result.y());
+                }
             }
-            System.out.println("Groups summary saved as groups.csv");
+
+            grabber.stop();
+            System.out.println("Processing complete. Output: frame_centroids.csv");
+
         } catch (Exception e) {
-            System.err.println("Error writing groups.csv");
+            System.err.println("Error processing video.");
             e.printStackTrace();
         }
     }
+
 }

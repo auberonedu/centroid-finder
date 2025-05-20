@@ -1,6 +1,7 @@
 package io.github.jameson789.app;
 
 import java.awt.image.BufferedImage;
+import java.util.Comparator;
 import java.util.List;
 
 public class ImageProcessor {
@@ -14,12 +15,29 @@ public class ImageProcessor {
     }
 
     public CentroidResult processImage(BufferedImage image) {
+        if (image == null) {
+            return null;
+        }
         List<Group> groups = groupFinder.findConnectedGroups(image);
-        Group largest = groups.stream()
-                .max((a, b) -> Integer.compare(a.size(), b.size()))
-                .orElse(null);
-        return (largest != null)
-                ? new CentroidResult(largest.centroid().x(), largest.centroid().y())
-                : null;
+
+        Group largestGroup = null;
+        for (Group group : groups) {
+            if (largestGroup == null || group.size() > largestGroup.size()) {
+                largestGroup = group;
+            }
+        }
+
+        if (largestGroup == null) {
+            return null;
+        }
+
+        int x = largestGroup.centroid().x();
+        int y = largestGroup.centroid().y();
+        return new CentroidResult(x, y);
     }
+
+    public BufferedImage getBinarizedImage(BufferedImage image) {
+        return binarizer.toBufferedImage(binarizer.toBinaryArray(image));
+    }
+
 }
