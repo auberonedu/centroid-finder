@@ -1,6 +1,8 @@
+package io.github.humagitgud.centroidfinder;
+
 import java.util.List;
 
-public class DfsBinaryGroupFinder implements BinaryGroupFinder {
+public interface BinaryGroupFinder {
    /**
     * Finds connected pixel groups of 1s in an integer array representing a binary image.
     * 
@@ -31,9 +33,5 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     * @param image a rectangular 2D array containing only 1s and 0s
     * @return the found groups of connected pixels in descending order
     */
-    @Override
-    public List<Group> findConnectedGroups(int[][] image) {
-        return null;
-    }
-    
+   public List<Group> findConnectedGroups(int[][] image);
 }
