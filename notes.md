@@ -116,6 +116,8 @@ ImageGroupFinder.java notes
 ## Example commands:
 - `mvn exec:java -Dexec.args="ensantina.mp4 output.csv 255,0,0 30"` --> Throws an IllegalArgumentException for HEX colors
 
+- `mvn test` --> Runs all the tests, ensures whether the Build was a success or not
+
 - `java -jar target/videoprocessor.jar ensantina.mp4 output.csv ff0000 100 2>&1 | tee logs`
 
 - `java -jar target/videoprocessor.jar ensantina.mp4 output.csv ff0000 95`
