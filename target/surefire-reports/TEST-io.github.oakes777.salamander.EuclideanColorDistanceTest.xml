@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/23.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193345238_3.jar /Users/mb16/sdev334/salamander/centroid-finder/target/surefire 2025-05-19T19-33-45_191-jvmRun1 surefire-20250519193345238_1tmp surefire_0-20250519193345238_2tmp"/>
+    <property name="sun.java.command" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193603009_3.jar /Users/mb16/sdev334/salamander/centroid-finder/target/surefire 2025-05-19T19-36-02_961-jvmRun1 surefire-20250519193603009_1tmp surefire_0-20250519193603009_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/mb16/sdev334/salamander/centroid-finder/target/test-classes:/Users/mb16/sdev334/salamander/centroid-finder/target/classes:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter/5.12.0/junit-jupiter-5.12.0.jar:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.12.0/junit-jupiter-api-5.12.0.jar:/Users/mb16/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/mb16/.m2/repository/org/junit/platform/junit-platform-commons/1.12.0/junit-platform-commons-1.12.0.jar:/Users/mb16/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.12.0/junit-jupiter-params-5.12.0.jar:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.12.0/junit-jupiter-engine-5.12.0.jar:/Users/mb16/.m2/repository/org/junit/platform/junit-platform-engine/1.12.0/junit-platform-engine-1.12.0.jar:/Users/mb16/.m2/repository/org/jcodec/jcodec/0.2.5/jcodec-0.2.5.jar:/Users/mb16/.m2/repository/org/jcodec/jcodec-javase/0.2.5/jcodec-javase-0.2.5.jar:"/>
@@ -29,7 +29,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193345238_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193603009_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="23.0.2"/>
@@ -60,18 +60,18 @@
   </properties>
   <testcase name="testGrayVsLighterGray" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
   <testcase name="testBlackVsBlack" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
-  <testcase name="testBlackVsWhite" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.001"/>
+  <testcase name="testBlackVsWhite" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
   <testcase name="testOffByOne" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
   <testcase name="testRedVsDarkRed" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
-  <testcase name="testMaxColorVsMaxColor" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.001"/>
-  <testcase name="testTooLargeColorThrows" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
+  <testcase name="testMaxColorVsMaxColor" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
+  <testcase name="testTooLargeColorThrows" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.001"/>
   <testcase name="testCustomColors" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
   <testcase name="testRedVsGreen" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
-  <testcase name="testRedVsWhite" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.001"/>
+  <testcase name="testRedVsWhite" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
   <testcase name="testSameColor" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
   <testcase name="testGreenVsBlue" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
   <testcase name="testNegativeColorThrows" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
   <testcase name="testRedVsBlue" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
-  <testcase name="testBothInvalidThrow" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.001"/>
-  <testcase name="testOneBadOneGoodThrows" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
+  <testcase name="testBothInvalidThrow" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.0"/>
+  <testcase name="testOneBadOneGoodThrows" classname="io.github.oakes777.salamander.EuclideanColorDistanceTest" time="0.001"/>
 </testsuite>

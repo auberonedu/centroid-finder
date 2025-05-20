@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/23.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193345238_3.jar /Users/mb16/sdev334/salamander/centroid-finder/target/surefire 2025-05-19T19-33-45_191-jvmRun1 surefire-20250519193345238_1tmp surefire_0-20250519193345238_2tmp"/>
+    <property name="sun.java.command" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193603009_3.jar /Users/mb16/sdev334/salamander/centroid-finder/target/surefire 2025-05-19T19-36-02_961-jvmRun1 surefire-20250519193603009_1tmp surefire_0-20250519193603009_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/mb16/sdev334/salamander/centroid-finder/target/test-classes:/Users/mb16/sdev334/salamander/centroid-finder/target/classes:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter/5.12.0/junit-jupiter-5.12.0.jar:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.12.0/junit-jupiter-api-5.12.0.jar:/Users/mb16/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/mb16/.m2/repository/org/junit/platform/junit-platform-commons/1.12.0/junit-platform-commons-1.12.0.jar:/Users/mb16/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.12.0/junit-jupiter-params-5.12.0.jar:/Users/mb16/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.12.0/junit-jupiter-engine-5.12.0.jar:/Users/mb16/.m2/repository/org/junit/platform/junit-platform-engine/1.12.0/junit-platform-engine-1.12.0.jar:/Users/mb16/.m2/repository/org/jcodec/jcodec/0.2.5/jcodec-0.2.5.jar:/Users/mb16/.m2/repository/org/jcodec/jcodec-javase/0.2.5/jcodec-javase-0.2.5.jar:"/>
@@ -29,7 +29,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193345238_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/mb16/sdev334/salamander/centroid-finder/target/surefire/surefirebooter-20250519193603009_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="23.0.2"/>
@@ -61,8 +61,8 @@
   <testcase name="testLargeBinaryImageDoesNotCrash" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.001"/>
   <testcase name="testMixedBinaryMap" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.001"/>
   <testcase name="testMultipleWhitePixelsConnected" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.0"/>
-  <testcase name="testSingleWhitePixelReturnsSingleGroup" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.001"/>
-  <testcase name="testGroupFinderReturnsFixedGroups" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.001"/>
+  <testcase name="testSingleWhitePixelReturnsSingleGroup" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.0"/>
+  <testcase name="testGroupFinderReturnsFixedGroups" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.0"/>
   <testcase name="testEmptyImageReturnsEmptyGroupList" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.0"/>
   <testcase name="testIntegrationWithRealComponents" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.005">
     <system-out><![CDATA[---- DEBUG OUTPUT ----
@@ -78,7 +78,7 @@ Groups found: 1
 ----------------------
 ]]></system-out>
   </testcase>
-  <testcase name="testAllBlackReturnsNoGroups" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.0"/>
+  <testcase name="testAllBlackReturnsNoGroups" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.001"/>
   <testcase name="testBinaryArrayPassedToGroupFinderCorrectly" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.001"/>
-  <testcase name="testNullImageThrowsException" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.001"/>
+  <testcase name="testNullImageThrowsException" classname="io.github.oakes777.salamander.BinarizingImageGroupFinderTest" time="0.0"/>
 </testsuite>
