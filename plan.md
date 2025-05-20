@@ -20,4 +20,8 @@
 
 2. Create a class that will call the other centroid-finder methods that we previously implemented to find connected group and process each frame. (Possibly convert DFSBinaryGroupFinder to iterative approach).
 
+# Validating
 
+Right now for our validation our method is to manually validate that it is tracking the salamander correctly. By looking at the coordinates in the output.csv and comparing the timestamp to the time in the video we can manually track movements of the salamander and see if the values in the csv are correct. If the salamander moves to the left the x should be decreasing and if it moves to the right it should increase. This is the same if the salamander moves up or down.
+
+Later on, we would like to validate the tracking by overlaying a circle or something similar to the location of the largest centroid and have it follow that the whole time the video plays so we can see with our eyes if the algorithm is tracking the biggest centroid correctly.
