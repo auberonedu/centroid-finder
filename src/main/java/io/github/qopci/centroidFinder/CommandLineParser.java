@@ -1,19 +1,10 @@
 package io.github.qopci.centroidFinder;
 
-import java.util.Map;
-
 public class CommandLineParser {
     public final String inputPath;
     public final String outputCsv;
     public final int targetColor;
     public final int threshold;
-
-    private static final Map<String, Integer> COLOR_MAP = Map.of(
-        "RED", 0xFF0000,
-        "PINK", 0xFFC0CB,
-        "BLACK", 0x000000,
-        "WHITE", 0xFFFFFF
-    );
 
     public CommandLineParser(String[] args) {
         if (args.length < 4) {
@@ -35,11 +26,17 @@ public class CommandLineParser {
     }
 
     private int parseColor(String input) {
-        input = input.trim().toUpperCase();
+        String hex = input.trim().toLowerCase();
 
-        if (!COLOR_MAP.containsKey(input)) {
-            throw new IllegalArgumentException("Invalid color name. Supported names: " + COLOR_MAP.keySet());
+        if (hex.startsWith("0x")) {
+            hex = hex.substring(2);
         }
-        return COLOR_MAP.get(input);
+
+        // Validate hex length (up to 6 digits for RGB)
+        if (!hex.matches("[0-9a-f]{1,6}")) {
+            throw new IllegalArgumentException("Invalid hex color format: " + input);
+        }
+
+        return Integer.parseInt(hex, 16);
     }
 }
