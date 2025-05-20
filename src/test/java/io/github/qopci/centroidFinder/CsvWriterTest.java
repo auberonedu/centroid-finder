@@ -22,7 +22,7 @@ public class CsvWriterTest {
 
         List<String> lines = Files.readAllLines(tempFile.toPath());
         assertFalse(lines.isEmpty(), "CSV file should not be empty");
-        assertEquals("time\tx\ty", lines.get(0), "Header should be 'time\\tx\\ty'");
+        assertEquals("time,x,y", lines.get(0), "Header should be 'time,x,y'");
     }
 
     @Test
@@ -37,8 +37,8 @@ public class CsvWriterTest {
 
         List<String> lines = Files.readAllLines(tempFile.toPath());
         assertEquals(3, lines.size(), "CSV should contain header and two lines");
-        assertEquals("0.00\t10\t20", lines.get(1));
-        assertEquals("1.50\t-5\t0", lines.get(2));
+        assertEquals("0.00,10,20", lines.get(1));
+        assertEquals("1.50,-5,0", lines.get(2));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class CsvWriterTest {
         }
 
         List<String> lines = Files.readAllLines(tempFile.toPath());
-        assertEquals("12345.67\t" + Integer.MAX_VALUE + "\t" + Integer.MIN_VALUE, lines.get(1));
+        assertEquals("12345.67," + Integer.MAX_VALUE + "," + Integer.MIN_VALUE, lines.get(1));
     }
 
     @Test
@@ -76,6 +76,6 @@ public class CsvWriterTest {
 
         List<String> lines = Files.readAllLines(tempFile.toPath());
         assertEquals(1, lines.size());
-        assertEquals("time\tx\ty", lines.get(0));
+        assertEquals("time,x,y", lines.get(0));
     }
 }
