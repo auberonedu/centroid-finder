@@ -6,18 +6,18 @@ import org.bytedeco.javacv.CanvasFrame;
 
 public class VideoPlayer {
     public static void main(String[] args) throws Exception {
-        // 1. Point to your video file
+        // Get video file path
         String videoFile = "sampleInput/sampleVideo.mp4";
 
-        // 2. Set up the grabber
+        // Set up the grabber
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoFile)) {
             grabber.start();
 
-            // 3. Create a window to show frames
+            // Create a window to show frames
             CanvasFrame canvas = new CanvasFrame("JavaCV Video");
             canvas.setDefaultCloseOperation(CanvasFrame.EXIT_ON_CLOSE);
 
-            // 4. Read & display frames in a loop
+            // Read & display frames in a loop
             Frame frame;
             double frameRate = grabber.getFrameRate(); // e.g. 24, 30, etc.
             long delay = (long)(1000 / frameRate);
@@ -26,10 +26,6 @@ public class VideoPlayer {
                 canvas.showImage(frame);
                 Thread.sleep(delay);
             }
-
-            // 5. Clean up
-            canvas.dispose();
-            grabber.stop();
         }
     }
 }
