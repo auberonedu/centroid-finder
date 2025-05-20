@@ -73,9 +73,9 @@ class CommandLineParserTest {
     }
 
     @Test
-    void acceptsShortHexColor() {
-        String[] args = {"video.mp4", "output.csv", "abc", "12"};
+    void acceptsValidHexColor() {
+        String[] args = {"video.mp4", "output.csv", "aabbcc", "12"};
         CommandLineParser parser = new CommandLineParser(args);
-        assertEquals(0xABC, parser.targetColor);
+        assertEquals(0xAABBCC, parser.targetColor);
     }
 }

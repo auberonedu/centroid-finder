@@ -32,8 +32,8 @@ public class CommandLineParser {
             hex = hex.substring(2);
         }
 
-        // Validate hex length (up to 6 digits for RGB)
-        if (!hex.matches("[0-9a-f]{1,6}")) {
+        // Validate hex length (only 6 digits for RGB)
+        if (!hex.matches("[0-9a-f]{6}")) {
             throw new IllegalArgumentException("Invalid hex color format: " + input);
         }
 
