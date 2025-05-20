@@ -28,3 +28,6 @@ target/
 
 # Salamander Test Video
 *.mp4
+
+# Node Modules
+node_modules/
