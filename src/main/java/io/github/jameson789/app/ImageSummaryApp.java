@@ -39,8 +39,8 @@ import javax.imageio.ImageIO;
 public class ImageSummaryApp {
     public static void main(String[] args) {
         if (args.length < 3) {
-            System.out.println("Usage: java ImageSummaryApp <input_video> <hex_target_color> <threshold>");
-            return;
+            // System.out.println("Usage: java ImageSummaryApp <input_video> <hex_target_color> <threshold>");
+            throw new IllegalArgumentException("Usage: java ImageSummaryApp <input_video> <hex_target_color> <threshold>");
         }
 
         String videoPath = args[0];
