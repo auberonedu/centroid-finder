@@ -37,19 +37,19 @@ We'll extend the existing centroid-finder project to process videos frame by fra
 ┌───────────────────┐     ┌────────────────┐
 │ VideoProcessorApp │─────┤ VideoProcessor │
 └───────────────────┘     └────────┬───────┘
-                                  │
-                                  │ uses
-                                  ▼
+                                   │
+                                   │ uses
+                                   ▼
 ┌────────────────────────────────────────────────────┐
 │               Existing Components                  │
 │                                                    │
-│  ┌─────────────────┐      ┌───────────────────┐   │
-│  │ ImageBinarizer  │      │ BinaryGroupFinder │   │
-│  └─────────────────┘      └───────────────────┘   │
+│  ┌─────────────────┐      ┌───────────────────┐    │
+│  │ ImageBinarizer  │      │ BinaryGroupFinder │    │
+│  └─────────────────┘      └───────────────────┘    │
 │                                                    │
-│  ┌─────────────────┐      ┌───────────────────┐   │
-│  │ ImageGroupFinder│      │ColorDistanceFinder│   │
-│  └─────────────────┘      └───────────────────┘   │
+│  ┌─────────────────┐      ┌───────────────────┐    │
+│  │ ImageGroupFinder│      │ColorDistanceFinder│    │
+│  └─────────────────┘      └───────────────────┘    │
 └────────────────────────────────────────────────────┘
         │                           │
         │ produces                  │ used by
