@@ -27,7 +27,7 @@
 
 - CentroidPlotter class: Takes the csv file in output and converts it to a displayable chart using XChart
 
-- FPSFinder - Finds the fps of the provided video.
+- FPSFinder - Finds the fps of the provided video, the amount of frames, and the accurate length of the video.
 
 - CentroidFinderPerFrame - Finds all centroids of the provided color in a frame
 
