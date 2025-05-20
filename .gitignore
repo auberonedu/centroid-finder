@@ -32,3 +32,7 @@ output/*.png
 /target/
 *.log
 *.class
+
+# Optional: Ignore IntelliJ/VSCode project files
+.idea/
+.vscode/
