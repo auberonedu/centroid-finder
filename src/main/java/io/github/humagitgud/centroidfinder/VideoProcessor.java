@@ -61,6 +61,9 @@ public class VideoProcessor {
                 System.out.println("Processing video: " + inputPath);
                 System.out.println("Frame rate: " + frameRate + " fps");
                 
+                // Supresses unneeded warnings about pixel formatting.
+                org.bytedeco.ffmpeg.global.avutil.av_log_set_level(org.bytedeco.ffmpeg.global.avutil.AV_LOG_ERROR);
+                
                 while ((frame = grabber.grabImage()) != null) {
                     double timestamp = frameCount * secondsPerFrame;
                     
