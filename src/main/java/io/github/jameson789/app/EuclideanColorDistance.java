@@ -1,3 +1,5 @@
+package io.github.jameson789.app;
+
 public class EuclideanColorDistance implements ColorDistanceFinder {
     /**
      * Returns the euclidean color distance between two hex RGB colors.
@@ -19,6 +21,18 @@ public class EuclideanColorDistance implements ColorDistanceFinder {
      */
     @Override
     public double distance(int colorA, int colorB) {
-        return 0;
+        int redA = (colorA >> 16) & 0xff;
+        int greenA = (colorA >> 8) & 0xff;
+        int blueA = colorA & 0xff;
+
+        int redB = (colorB >> 16) & 0xff;
+        int greenB = (colorB >> 8) & 0xff;
+        int blueB = colorB & 0xff;
+        
+        int redDiff = redA - redB;
+        int greenDiff = greenA - greenB;
+        int blueDiff = blueA - blueB;
+
+        return Math.sqrt(redDiff * redDiff + greenDiff * greenDiff + blueDiff * blueDiff);
     }
 }

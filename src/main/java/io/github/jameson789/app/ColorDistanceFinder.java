@@ -1,3 +1,4 @@
+package io.github.jameson789.app;
 /**
  * Defines an interface for computing the distance between two colors.
  * 

@@ -1,3 +1,5 @@
+package io.github.jameson789.app;
+
 import java.util.List;
 import java.awt.image.BufferedImage;
 

@@ -1,3 +1,5 @@
+package io.github.jameson789.app;
+
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -37,6 +39,12 @@ public class BinarizingImageGroupFinder implements ImageGroupFinder {
      */
     @Override
     public List<Group> findConnectedGroups(BufferedImage image) {
-        return null;
+        int[][] binaryImage = binarizer.toBinaryArray(image);
+        if (binaryImage == null) throw new NullPointerException("Binarizer returned null");
+
+        List<Group> groups = groupFinder.findConnectedGroups(binaryImage);
+        if (groups == null) throw new NullPointerException("GroupFinder returned null");
+
+        return groups;
     }
 }
