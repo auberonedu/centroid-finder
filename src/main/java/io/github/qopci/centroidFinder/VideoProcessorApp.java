@@ -11,9 +11,7 @@ public class VideoProcessorApp {
             try (VideoReader reader = new VideoReader(parser.inputPath);
                  CsvWriter writer = new CsvWriter(parser.outputCsv)) {
 
-                // Hardcoded frame rate, ensantina has a frame rate of 23.98
-                // But we'll stick with 24 fps
-                double frameRate = 24;  
+                double frameRate = reader.getFrameRate();  
                 int frameCount = 0;
 
                 BufferedImage frame;

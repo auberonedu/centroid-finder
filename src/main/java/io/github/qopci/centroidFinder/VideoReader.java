@@ -30,10 +30,14 @@ public class VideoReader implements AutoCloseable {
 
     // Check whether the current frame should processed as new SECOND
     public boolean shouldProcessThisFrame() {
-        // Only process one fps — if frameNumber crosses a second boundary
-        return (int)((frameNumber - 1) / frameRate) != (int)(frameNumber / frameRate);
-    }
+        return (int)(frameNumber / frameRate) != (int)((frameNumber - 1) / frameRate);
+    }   
     
+    // Lets other classes access the actual frame rate of the video
+    public double getFrameRate() {
+        return grabber.getFrameRate();
+    }
+
     // Close the video grabber 
     public void close() throws Exception {
         grabber.close();
