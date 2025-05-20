@@ -25,6 +25,18 @@ replay_pid*
 
 # maven 
 /target/
+target/videoprocessor.jar
 
 # vscode
 .vscode/
+
+# Video files
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+
+# Output files
+*.csv
+videoprocessor.jar
