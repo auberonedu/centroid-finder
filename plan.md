@@ -14,6 +14,11 @@
 
 - ~~Class that chooses what the centroid color is~~ 
 
+# Jar Command (Created by Tav for personal Jar)
+- mvn clean compile assembly:single <!-- Create a single jar file -->
+- mv target/centroid-finder-1.0-SNAPSHOT-jar-with-dependencies.jar videoprocessor.jar <!-- Renaming the jar file -->
+- java -jar target/videoprocessor.jar videos/ensantina.mp4  output/output.csv 255,0,0  95 <!-- Executing the class -->
+
 # Final Touches
 - VideoProcessor class - Handles the CLI prompt and is the merging point for the ColorParser and PathHandler logic
 
