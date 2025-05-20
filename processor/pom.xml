@@ -25,7 +25,7 @@
     <dependency>
       <groupId>org.bytedeco</groupId>
       <artifactId>javacv-platform</artifactId>
-      <version>1.5.10</version> 
+      <version>1.5.10</version>
     </dependency>
   </dependencies>
 
@@ -37,7 +37,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.3</version>
       </plugin>
-      <!-- Exec -->
+
+      <!-- Exec Plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
@@ -46,7 +47,8 @@
           <mainClass>io.github.f3liz.centroidFinder.VideoSummaryApp</mainClass>
         </configuration>
       </plugin>
-      <!-- Apache Maven Assembly -->
+
+      <!-- Assembly Plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -56,8 +58,8 @@
             <descriptorRef>jar-with-dependencies</descriptorRef>
           </descriptorRefs>
           <finalName>videoprocessor</finalName>
-          <appendAssemblyId>false</appendAssemblyId> <!-- prevents "-jar-with-dependencies" -->
-          <outputDirectory>${project.basedir}</outputDirectory>
+          <appendAssemblyId>false</appendAssemblyId>
+          <outputDirectory>${project.basedir}</outputDirectory> <!-- This is already in processor/ -->
           <archive>
             <manifest>
               <mainClass>io.github.f3liz.centroidFinder.VideoSummaryApp</mainClass>
