@@ -18,17 +18,18 @@
 2. How do we ensure our Centroid finder is working as intended? 
 -----------------------------------------------------------------------------------------------------------------------------------------
 # Server Plan
-1. we understand the Salamander API 
+1. Understand the Salamander API 
 2. Define and make the .env variables use dotenv for easy access
-3. job management strats 
+3. Job Management Strats 
     - UUID 
-    - use filesystem to track job statuses
-    - store input video and output here
+    - Use filesystem to track job statuses
+    - Store input video and output here
 4. API endpoints 
-    - define the route for salamander API
-    - start jobs async, use 'child_process' idk look at hints 
-    - plan routes to check job status and show results
-5. handle video and results
-    - express.static to serve videos and processed results
-6. err handinlign and edge cases 
-    - plan for missing files, invalid or missing args or paramenter, process errots idk
+    - Define the route for salamander API
+    - Start jobs async, use 'child_process' (look at hints)
+    - Plan routes to check job status and show results
+5. Handle Video and Results
+    - Express.static to serve videos and processed results
+6. Error Handling/Edge Cases 
+    - Plan for missing files, invalid/missing args/paramenter, process errors
+-----------------------------------------------------------------------------------------------------------------------------------------
