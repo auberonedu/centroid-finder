@@ -12,12 +12,20 @@
 - Host the results for ease of access.
 - Tracks the job state nad evn configuration
 
+
 ### Using Express
-- Server gets teh `/process-video` path to video saved locally.
+- Server gets the `/process-video` path to video saved locally.
 - Generate a `jobId` through (UUID).
 - `child-process` used to run JAR (in background).
 - JAR saves results in `results/`
 - Job result will be accessed through the job ID.
+
+### Other Needs
+- .env variables that will hold information like the inputted videos directory, the result directory, and the path of the jar.
+- There will be several endpoints:
+    - POST /process-video -> Will start the process and return the job ID
+    - GET /jobs/:jobId -> Checks the status and results of the completed or incomplete job.
+    - GET /results/:filename -> Access the processed files.
 
 ### Architecture
 ```
@@ -32,4 +40,4 @@ Client (Postman)
         |
         |---> [Output Directory (public)] — stores results
         |
-        |---> [Job Tracker (in-memory or file-based/db)]
+        |---> [Job Tracker (in-memory)]
