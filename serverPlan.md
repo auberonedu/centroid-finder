@@ -5,6 +5,7 @@
 Our basic file structure will loosely look like this:
 ```
 server/
+├── .env <-- *
 ├── controllers/
     ├── controller.js <-- logic 
 ├── node_modules/
@@ -14,6 +15,8 @@ server/
 ├── package.json
 └── server.js <-- set up server
 ```
+**Store paths to video directory and videoProcessor.jar here, and use dotenv in server to access this.*
+
 In **server.js**, we will mount the main router:
 ```
 import router from './router/router.js';
@@ -58,10 +61,41 @@ const getColor = (req, res) => {
     
 }
 ```
-## Salamander API
+## Project Architecture
+```mermaid
+flowchart LR
+    subgraph Client
+        React[React App]
+    end
+
+    subgraph Server
+        Express[Express Server]
+        App[Centroid Finder App]
+        Files[Files]
+    end
+
+    React --Request--> Express
+    Express --Start job--> App
+    Files --Read videos--> App
+    App --Write CSV--> Files
+    Files --Read results--> Express
+    Express --Response--> React
+```
+## Salamander API Summary
+### Summary
 Information about Salamander API found here: https://github.com/auberonedu/salamander-api
 
-### List Available Videos
+Routes:
+- GET /api/videos
+- GET /thumbnail/{filename}
+    - *Hint: Use ffmpeg to fetch first frame*
+- POST /process/{filename}
+    - *Hint: Use UUID to generate jobIDs*
+- GET /process/{jobId}/status
+
+### Details
+
+#### List Available Videos
 
 **GET** `/api/videos`
 
@@ -86,7 +120,7 @@ Return a list of all video files in the mounted directory, available publicly at
 
 ---
 
-### Generate Thumbnail
+#### Generate Thumbnail
 
 **GET** `/thumbnail/{filename}`
 
@@ -114,7 +148,7 @@ Extract and return the first frame from the video as a JPEG.
 
 ---
 
-### Start Video Processing Job
+#### Start Video Processing Job
 
 **POST** `/process/{filename}`  
 _Query parameters:_ `?targetColor=<hex>&threshold=<int>`
@@ -160,7 +194,7 @@ Kick off an asynchronous job to analyze the video. Returns a `jobId` you can pol
 
 ---
 
-### Get Processing Job Status
+#### Get Processing Job Status
 
 **GET** `/process/{jobId}/status`
 
