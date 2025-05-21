@@ -27,6 +27,7 @@
 4. API endpoints 
     - Define the route for salamander API
     - Start jobs async, use 'child_process' (look at hints)
+    - The server runs the videoprocessor.jar using child_process module and passes the `input`, `output`, `color`, and `threshold` as arguments.
     - Plan routes to check job status and show results
 5. Handle Video and Results
     - Express.static to serve videos and processed results
