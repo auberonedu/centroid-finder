@@ -1,4 +1,63 @@
 # Server Plan
+## Server Structure
+*Note: Refer to web-api project from SDEV 328 for reference to create API paths. Refer to express-project from SDEV 328 for router-controller logic.*
+
+Our basic file structure will loosely look like this:
+```
+server/
+├── controllers/
+    ├── controller.js <-- logic 
+├── node_modules/
+├── routers/
+    ├── router.js <-- define routes
+├── package-lock.json
+├── package.json
+└── server.js <-- set up server
+```
+In **server.js**, we will mount the main router:
+```
+import router from './router/router.js';
+...
+app.use("/", router);
+```
+In **router.js**, we will access logic data from the controller. We will define methods and paths (GET at the /food path below is an example).
+```
+import express from 'express';
+import controller from '.controllers/controller.js';
+
+const { getFood, getColor } = controller;
+
+const router = express.Router();
+router.get("/food", getFood);
+router.get("/color/:colorChoice", getColor);
+
+export default router;
+```
+In **controller.js**, we will define logic for routes. Example:
+```
+const statusOK = 200;
+const statusServerError = 500;
+
+const getFood = (req, res) => {
+    const food = ["pizza"];
+
+    res.status(statusOK);
+    res.json(food)
+}
+
+const getColor = (req, res) => {
+    const color = req.params.colorChoice;
+    const isFavorite = req.query.favorite;
+
+    res.status(statusOK);
+    if (isFavorite) {
+        res.send(`${color} is a lovely color!`)
+    } else {
+        res.send(`You chose: ${color}.`)
+    }
+    
+}
+```
 ## Salamander API
 Information about Salamander API found here: https://github.com/auberonedu/salamander-api
 
