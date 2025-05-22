@@ -9,3 +9,50 @@ Express and Java - Steps and Responsibilities
 5. Java JAR processing: process the video using given parameters; output results to /public/results/jobId.csv
 6. Job completion detection: server checks if jobId.csv exists; if yes, update jobId.json to “status”: “done” and add result path
 7. GET /process/:jobId/status: read the corresponding jobId.json and return the current status to client (including error message if processing fails)
+
+╭────────────────────────────────────────────────────────────╮
+│                      React Front End                       │
+│                                                            │
+│  • User picks video:   /api/videos                         │
+│  • Sees frame preview:  /thumbnail/:filename               │
+│  • Picks color + threshold + interval                      │
+│  • Clicks "Submit" → POST /process/:filename               │
+│  • Sees status → GET /process/:jobId/status                │
+╰────────────────────────────────────────────────────────────╯
+                             │
+╭────────────────────────────────────────────────────────────╮
+│                    Express Server (Node.js)                │
+│                                                            │
+│  • Uses dotenv to load paths to:                           │
+│      - videos folder                                       │
+│      - results folder                                      │
+│      - Java JAR path                                       │
+│                                                            │
+│  • Serves static files from:                               │
+│      - /public/videos                                      │
+│      - /public/results                                     │
+│                                                            │
+│  • Handles:                                                │
+│      - GET /api/videos:  list video filenames              │
+│      - GET /thumbnail/:filename:  extract frame via ffmpeg │
+│      - POST /process/:filename                             │
+│         - generates jobId (UUID)                           │
+│         - spawns Java JAR with args (detached)             │
+│         - writes jobs/jobId.json: {"status": "processing"} │
+│                                                            │
+│      - GET /process/:jobId/status                          │
+│         - reads jobId.json                                 │
+│         - checks if result CSV exists                      │
+│         - returns status + optional result path            │
+╰────────────────────────────────────────────────────────────╯
+                             │
+╭────────────────────────────────────────────────────────────╮
+│                Java JAR (videoProcessor.jar)               │
+│                                                            │
+│  • Reads video (.mp4) from /public/videos/                 │
+│  • Applies thresholding + centroid logic                   │
+│  • Writes CSV result to /public/results/jobId.csv          │
+│                                                            │
+│  • Optional: could support extracting preview frame        │
+│    in future version if ffmpeg not used                    │
+╰────────────────────────────────────────────────────────────╯
