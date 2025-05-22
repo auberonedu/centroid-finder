@@ -18,11 +18,26 @@ flowchart TB
 ```
 ## Testing Plan
 We will use Jest for unit tests, and Cypress for E2E tests.
+What we'll test, how, and why.
 ### Unit Tests
 #### Happy Path
+### Integration Tests? 
 ### E2E Tests
 #### Happy Path
-- User can properly select video, choose color, set thresshold, and click submit
+- User can properly select video, choose color, set threshold, and click submit
+- When a user selects a video ...
+    - update page structure
+    - First frame loads
+- When a user selects target color...
+    - initialize/update binarized frame
+    - centroid updates
+- When user changes threshold ...
+    - initialize/update binarized frame
+    - centroid updates
+- When user selects run...
+    - sends a request to API (maybe an integration test?)
+    - Loading starts
 - Each of the nav buttons leads to proper route
+    - pick a different video
 #### Unhappy Path
 #### Edge Case
