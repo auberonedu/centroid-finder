@@ -26,3 +26,42 @@ store the following
 - `VIDEO_DIR=absolute/path/to/videos`
 - `JAR_PATH=absolute/path/to/centroid-1.0-SNAPSHOT-jar-with-dependencies.jar`
 - `RESULTS_DIR=absolute/path/to/results`
+
+### Express Routes Cutdown
+
+Route                               Description                         What it does
+`GET /api/videos`                   list video filenames                reads files from VIDEO_DIR
+`GET /thumbnail/:filename`          gets the first video frame          uses ffmpeg to extract frame 0 as JPEG
+`POST /process/:filename`           starts processing video             spams detached child process to run the jar
+`GET /process/:jobId/status`        gets the job status                 checks statsu file 
+
+
+## Server Processor Architecture
+
+User/Frontend
+↓
+Express Server (Node.js)
+↓
+Video Processor (Java JAR)
+↓
+CSV Output → Status File → Result Folder
+
+- the express server calls the JAR with child_process.spawn
+- the jar runs detached and writes the result to the /results folder
+- Job stats is tracked in a jobs.json file or as per .status files
+
+
+## Tools Needs
+
+`child_process.spawn` in detached mode to run the JAR
+`uuid` package to generate unique job IDs
+`dotenv` toaccess paths from .env
+`fs.promises` and `path` for file operation
+`ffmpeg` to generate thumbnails
+
+## Testing Plan
+
+- Use of the Postman to test all endpoints
+- add some console logs for key server actions
+- mock the JAR call for development
+- validating that the output CSV appears in right directory

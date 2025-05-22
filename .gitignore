@@ -1,4 +1,4 @@
-# Compiled class file
+ === Java / Maven ===
 *.class
 
 # Log file
@@ -27,3 +27,19 @@ replay_pid*
 /target/
 
 mander.csv
+
+ === Node.js ===
+ server/node_modules/
+ server/.env
+
+
+# === IDEs and Editors ===
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# === OS-specific ===
+.DS_Store
+Thumbs.db
