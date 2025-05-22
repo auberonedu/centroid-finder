@@ -34,7 +34,7 @@ Client (Postman)
         v
 [Express Server (Index.js)]
         |
-        |---> [Video Directory (local)] — receives input videos
+        |---> [Video Directory (local/database)] — receives input videos
         |
         |---> [Java JAR via child_process] — processes videos
         |
