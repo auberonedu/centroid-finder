@@ -24,7 +24,7 @@ hs_err_pid*
 replay_pid*
 
 *.mp4
-
+/server/frame_centroids.csv
 node_modules
 .DS_Store
 **/target/

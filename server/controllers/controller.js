@@ -72,7 +72,7 @@ const getThumbnail = (req, res) => {
       const child = spawn('java', [
         '-jar',
         '../Processor/target/centroidFinderVideo-jar-with-dependencies.jar',
-        "target/" + filename,
+        "videos/" + filename,
         targetColor,
         thresholdNum.toString(),
         jobId

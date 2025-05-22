@@ -7,6 +7,6 @@ router.get('/api/videos', controller.getVideos);
 
 router.get('/thumbnail/:filename', controller.getThumbnail); 
 
-router.post('/process/:id', controller.startVideoProcess);
+router.post('/process/:filename', controller.startVideoProcess);
 
 export default router;
