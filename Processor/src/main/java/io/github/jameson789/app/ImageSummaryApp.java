@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.util.List;
 import javax.imageio.ImageIO;
 
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.Java2DFrameConverter;
 /**
  * The Image Summary Application.
  * 
@@ -38,55 +40,54 @@ import javax.imageio.ImageIO;
  */
 public class ImageSummaryApp {
     public static void main(String[] args) {
-        if (args.length < 3) {
-            // System.out.println("Usage: java ImageSummaryApp <input_video> <hex_target_color> <threshold>");
-            throw new IllegalArgumentException("Usage: java ImageSummaryApp <input_video> <hex_target_color> <threshold>");
+        if (args.length < 4) {
+            throw new IllegalArgumentException("Usage: java ImageSummaryApp <input_video> <hex_target_color> <threshold> <task_id>");
         }
 
         String videoPath = args[0];
+        String hexTargetColor = args[1];
+        String taskId = args[3];
         int targetColor;
         int threshold;
 
         try {
-            targetColor = Integer.parseInt(args[1], 16);
+            targetColor = Integer.parseInt(hexTargetColor, 16);
             threshold = Integer.parseInt(args[2]);
         } catch (Exception e) {
             System.err.println("Error parsing color or threshold.");
             return;
         }
 
-        try (org.bytedeco.javacv.FFmpegFrameGrabber grabber = new org.bytedeco.javacv.FFmpegFrameGrabber(videoPath);
-                PrintWriter writer = new PrintWriter(new File("frame_centroids.csv"))) {
+        try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath);
+             PrintWriter writer = new PrintWriter(new File(taskId + ".csv"))) {
 
             grabber.start();
-            new File("binarized_frames").mkdirs();
-            org.bytedeco.javacv.Java2DFrameConverter converter = new org.bytedeco.javacv.Java2DFrameConverter();
+            Java2DFrameConverter converter = new Java2DFrameConverter();
             ImageProcessor processor = new ImageProcessor(targetColor, threshold);
 
+            double fps = grabber.getFrameRate();
             int frameCount = grabber.getLengthInFrames();
-            System.out.println("Total frames to process: " + frameCount);
-            for (int i = 0; i < frameCount; i++) {
+            System.out.printf("Total frames: %d, FPS: %.2f%n", frameCount, fps);
 
+            for (int i = 0; i < frameCount; i++) {
                 var frame = grabber.grabImage();
-                System.out.println("Processing frame " + i);
-                if (frame == null){
-                    continue;
-                } 
+                if (frame == null) continue;
+
                 BufferedImage image = converter.getBufferedImage(frame);
                 CentroidResult result = processor.processImage(image);
 
                 if (result != null) {
-                    writer.printf("%d,%d,%d%n", i, result.x(), result.y());
+                    double timestampSeconds = i / fps;
+                    writer.printf("%.2f,%d,%d%n", timestampSeconds, result.x(), result.y());
                 }
             }
 
             grabber.stop();
-            System.out.println("Processing complete. Output: frame_centroids.csv");
+            System.out.println("Processing complete. Output: " + taskId + ".csv");
 
         } catch (Exception e) {
             System.err.println("Error processing video.");
             e.printStackTrace();
         }
     }
-
 }
