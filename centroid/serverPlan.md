@@ -65,3 +65,9 @@ CSV Output → Status File → Result Folder
 - add some console logs for key server actions
 - mock the JAR call for development
 - validating that the output CSV appears in right directory
+
+## Questions We Still Have
+
+- should we have `.mov` and `.mp4` videos or should we just restrict to one type?
+- how should we clean up the old results?
+- how will we display job errors in the frontend or do we have to log them?
