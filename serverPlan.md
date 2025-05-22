@@ -21,3 +21,4 @@ We'll implement the separate routes outlined in the salamander-api for each requ
 ## Testing and Validation
 
 Once the routes are implemented, we will conduct comprehensive testing to ensure all endpoints and application logic work as we intended.
+Use Jest to test JavaScript backend. Test for status codes and other stuff.
