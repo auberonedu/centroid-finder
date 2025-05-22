@@ -28,7 +28,7 @@ processor/target/
 output/*.png
 
 # Local test videos
-sampleInput/*.mp4
+*.mp4
 
 # BlueJ
 *.ctxt
