@@ -1,13 +1,15 @@
 import fs from 'fs/promises';
 import path from 'path';
 import ffmpeg from 'fluent-ffmpeg';
+import { spawn } from 'child_process';
+
 
 // this is built in into node so no need to install 
 import { randomUUID } from 'crypto';
 
 const getVideos = async (req, res) => {
 
-  console.log(process.env.VIDEO_PATH)
+  // console.log(process.env.VIDEO_PATH)
 
   try {
     // const videoDir = path.join(process.cwd(), 'videos');
@@ -43,35 +45,58 @@ const getThumbnail = (req, res) => {
     });
   };
 
-  const startProcess = (req, res) => {
+}
+
+  const startVideoProcess = (req, res) => {
+    const { filename } = req.params;
     const { targetColor, threshold } = req.query;
 
+    // Validate required query params
     if (!targetColor || !threshold) {
-      return res.status(400).json({ error: "Missing targetColor or threshold query parameter." })
+      return res.status(400).json({
+        error: 'Missing targetColor or threshold query parameter.'
+      });
     }
+
+    // Validate threshold is a number
+    const thresholdNum = Number(threshold);
+    if (Number.isNaN(thresholdNum)) {
+      return res.status(400).json({
+        error: 'Threshold must be a valid number.'
+      });
+    }
+
     try {
-      const videoDir = process.env.VIDEO_PATH;
-
-
       const jobId = randomUUID();
 
-      // TODO: Start async job (e.g. queue system or background worker)
-      console.log(`Starting processing job for ${filename}`);
-      console.log(`Target Color: ${targetColor}, Threshold: ${threshold}`);
-      console.log(`Job ID: ${jobId}`);
+      // Spawn detached child process to run the Java jar asynchronously
+      const child = spawn('java', [
+        '-jar',
+        './Processor/target/centroidFinderVideo.jar',
+        filename,
+        targetColor,
+        thresholdNum.toString(),
+        jobId
+      ], {
+        detached: true,
+        stdio: 'ignore'
+      });
 
-      // Respond to client with 202 Accepted and jobId
+      // Let child run independently
+      child.unref();
+
+      // Immediately respond with 202 and jobId
       res.status(202).json({ jobId });
-
     } catch (err) {
       console.error('Error starting job:', err);
       res.status(500).json({ error: 'Error starting job' });
     }
   };
 
-}
+
 
 export default {
   getVideos,
-  getThumbnail
+  getThumbnail,
+  startVideoProcess
 };
