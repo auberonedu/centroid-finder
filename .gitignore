@@ -40,3 +40,6 @@ sampleInput/*.mp4
 *.zip
 *.tar.gz
 *.rar
+
+# Node
+node_modules/
