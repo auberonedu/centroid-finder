@@ -71,14 +71,14 @@ const getThumbnail = (req, res) => {
       // Spawn detached child process to run the Java jar asynchronously
       const child = spawn('java', [
         '-jar',
-        './Processor/target/centroidFinderVideo.jar',
-        filename,
+        '../Processor/target/centroidFinderVideo-jar-with-dependencies.jar',
+        "target/" + filename,
         targetColor,
         thresholdNum.toString(),
         jobId
       ], {
         detached: true,
-        stdio: 'ignore'
+        stdio: 'inherit'
       });
 
       // Let child run independently
