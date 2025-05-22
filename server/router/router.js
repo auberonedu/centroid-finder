@@ -5,4 +5,6 @@ const router = Router();
 
 router.get('/api/videos', controller.getVideos);
 
+router.get('/thumbnail/:filename', controller.getThumbnail);
+
 export default router;
