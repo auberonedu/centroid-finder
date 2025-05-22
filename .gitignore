@@ -1,41 +1,42 @@
-# Compiled class file
+# Compiled Java class files
 *.class
 
-# Log file
+# Java archive files
+*.jar
+*.war
+*.nar
+*.ear
+
+# Log files
 *.log
 
-# BlueJ files
+# IDE/project config
+.idea/
+.vscode/
+
+# Java crash logs
+hs_err_pid*
+replay_pid*
+
+# Maven build output
+/target/
+processor/target/
+
+# Output files
+*.csv
+*.png
+output/*.png
+
+# Local test videos
+sampleInput/*.mp4
+
+# BlueJ
 *.ctxt
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
+# Compressed archives
 *.zip
 *.tar.gz
 *.rar
-*.csv
-*.png
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
-
-# Local video test files
-sampleInput/*.mp4
-
-# Output images
-output/*.png
-# don't upload target stuff!
-/target/
-*.log
-*.class
-
-# Optional: Ignore IntelliJ/VSCode project files
-.idea/
-.vscode/
-/target/
