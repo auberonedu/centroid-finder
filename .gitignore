@@ -26,5 +26,9 @@ replay_pid*
 *.mp4
 
 node_modules
-
-binarized_frames
+.DS_Store
+**/target/
+**/surefire-reports/
+**/maven-status/
+.idea/
+.vscode/
