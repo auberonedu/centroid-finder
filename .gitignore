@@ -32,3 +32,4 @@ node_modules
 **/maven-status/
 .idea/
 .vscode/
+server/frame_centroids.csv
