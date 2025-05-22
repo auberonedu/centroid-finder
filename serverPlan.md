@@ -1,7 +1,23 @@
-Plan
+# Server Application Plan
 
-Overall we want the server to handle requests to Salamander API. When a POST request is made to the server it should process the video by using the jar made previously. We also want the server to track status of jobs (Deciding whether to use database or filesystem). We will also want to be able to return csv file with the information we get from processing the video and maybe return the beginning frame for users.
+## Project Overview
 
-We will achieve this by building out routes for each task that we would like our server to be able to do, such as take POST requests, run the jar for videos from the request, track jobs, and return output.
+The goal is to build an application that communicates with the back-end server to handles API requests for the Salamander Tracker system. The application should support:
 
-After we build the routes we will do some testing to make sure the routes function as we intended them to do. 
+- **GET requests**: Return data such as a list of available videos for processing.
+- **POST requests**: Accept video processing requests and run our previously developed JAR file.
+- **Job tracking**: Monitor the status of each processing job (we're still deciding whether to use a database or the filesystem for this).
+- **Result delivery**: Return a downloadable CSV file containing the processed data and possibly an image of the first frame of the video for user preview.
+
+## Implementation Strategy
+
+We'll implement the separate routes outlined in the salamander-api for each required functionality:
+
+- Handling GET and POST requests.
+- Triggering the video processing JAR.
+- Tracking job progress and status.
+- Serving output files and other relevant responses.
+
+## Testing and Validation
+
+Once the routes are implemented, we will conduct comprehensive testing to ensure all endpoints and application logic work as we intended.
