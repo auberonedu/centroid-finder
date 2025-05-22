@@ -1,3 +1,5 @@
+package io.github.brittLiban.centroidFinder;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.PrintWriter;
@@ -65,6 +67,7 @@ public class ImageSummaryApp {
         
         // Create the DistanceImageBinarizer with a EuclideanColorDistance instance.
         ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        
         ImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
         
         // Binarize the input image.

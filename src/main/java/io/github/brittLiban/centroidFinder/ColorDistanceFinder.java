@@ -1,3 +1,6 @@
+package io.github.brittLiban.centroidFinder;
+
+
 /**
  * Defines an interface for computing the distance between two colors.
  * 
