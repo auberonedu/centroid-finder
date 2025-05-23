@@ -28,3 +28,6 @@ processor/target/
 
 # Sample Outputs
 processor/sampleOutput/
+
+# Node modules
+server/node_modules
