@@ -10,10 +10,11 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const VIDEOS_DIR = path.resolve(__dirname, '../../videos');
-const RESULTS_DIR = path.resolve(__dirname, '../../results');
-const JOBS_DIR = path.resolve(__dirname, '../../jobs');
-const JAR_PATH = process.env.JAR_PATH || './processor/target/video-processor.jar';
+// Resolve environment paths relative to project root
+const VIDEOS_DIR = path.resolve(__dirname, '..', '..', process.env.VIDEO_DIR || 'videos');
+const RESULTS_DIR = path.resolve(__dirname, '..', '..', process.env.RESULTS_DIR || 'results');
+const JOBS_DIR = path.resolve(__dirname, '..', '..', 'jobs'); // no env var defined for jobs
+const JAR_PATH = path.resolve(__dirname, '..', '..', process.env.JAR_PATH || 'processor/target/video-processor.jar');
 
 // Ensure required directories exist
 fs.mkdirSync(VIDEOS_DIR, { recursive: true });
@@ -28,7 +29,6 @@ export async function listVideos(req, res) {
     res.status(200).json(videoFiles);
   } catch (err) {
     console.error(err);
-    // Salamander API exact error response for directory read failure
     res.status(500).json({ error: 'Error reading video directory' });
   }
 }
@@ -39,7 +39,6 @@ export function generateThumbnail(req, res) {
   const inputPath = path.join(VIDEOS_DIR, filename);
 
   if (!fs.existsSync(inputPath)) {
-    // Salamander API does NOT specify 404 for thumbnail but makes sense to send 500 with error msg:
     return res.status(500).json({ error: 'Error generating thumbnail' });
   }
 
@@ -53,9 +52,7 @@ export function generateThumbnail(req, res) {
   ];
 
   const ffmpeg = spawn('ffmpeg', args);
-
   res.setHeader('Content-Type', 'image/jpeg');
-
   ffmpeg.stdout.pipe(res);
 
   let errorOccurred = false;
@@ -72,7 +69,6 @@ export function generateThumbnail(req, res) {
 
   ffmpeg.on('close', (code) => {
     if (errorOccurred || code !== 0) {
-      // If ffmpeg failed, send Salamander API error response
       if (!res.headersSent) {
         res.status(500).json({ error: 'Error generating thumbnail' });
       }
@@ -86,14 +82,11 @@ export function startProcessingJob(req, res) {
   const { targetColor, threshold } = req.query;
 
   if (!targetColor || !threshold) {
-    // Exactly as Salamander API expects for missing params
     return res.status(400).json({ error: 'Missing targetColor or threshold query parameter.' });
   }
 
   const inputPath = path.join(VIDEOS_DIR, filename);
-
   if (!fs.existsSync(inputPath)) {
-    // Salamander API doesn't explicitly specify 404 here but let's be consistent:
     return res.status(500).json({ error: 'Error starting job' });
   }
 
@@ -125,8 +118,6 @@ export function startProcessingJob(req, res) {
     });
 
     child.unref();
-
-    // Return jobId with 202 Accepted
     res.status(202).json({ jobId });
   } catch (err) {
     console.error(err);
@@ -140,7 +131,6 @@ export function getJobStatus(req, res) {
   const jobFile = path.join(JOBS_DIR, `${jobId}.json`);
 
   if (!fs.existsSync(jobFile)) {
-    // Salamander API 404 response when job id not found
     return res.status(404).json({ error: 'Job ID not found' });
   }
 
@@ -156,7 +146,6 @@ export function getJobStatus(req, res) {
     }
   } catch (err) {
     console.error(err);
-    // Salamander API exact error message for job status fetch failure
     res.status(500).json({ error: 'Error fetching job status' });
   }
 }
