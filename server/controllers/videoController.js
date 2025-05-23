@@ -25,35 +25,40 @@ const getAllVideos = async (req, res) => {
 
 const getVideoThumbnail = async (req, res) => {
   try {
+    // Retrieving the filename from the url using req.params
     const { filename } = req.params;
 
-    // Checking if no file name was passed
+    // Validating that a filename was provided
     if (!filename) {
       return res.status(400).json({ error: "Filename is required" })
     }
 
+    // Creating the full path to the video
     const videoPath = path.join(VIDEO_DIR, filename);
 
-    // Checking if the file was found
+    // Checking that the video file exists
     try {
       await fs.access(videoPath);
     } catch {
       return res.status(404).json({ error: "Video file not found" });
     }
-    // Generate a thumbnail in memory
+
+    // Using ffmpeg to extract the first frame at timestamp 0
     ffmpeg(videoPath)
       .on('error', (err) => {
+        // Logging and returning an error if ffmpeg fails
         console.error('FFmpeg error:', err);
         return res.status(500).json({ error: 'Error generating thumbnail' });
       })
       .screenshots({
-        count: 1,
-        timestamps: ['0'],
-        filename: 'thumbnail.jpg',
-        folder: '/tmp',
-        size: '320x240',
+        count: 1, // Only take 1 screenshot
+        timestamps: ['0'], // Take the screenshot at 0 seconds
+        filename: 'thumbnail.jpg', // Name of the temporary jpeg
+        folder: '/tmp', // Name of the temporary directory to store the image
+        size: '320x240', // Resizing the output image
       })
       .on('end', () => {
+        // When the screenshot/thumbnail is finished, send it back to the client
         const thumbPath = path.join('/tmp', 'thumbnail.jpg');
         res.setHeader('Content-Type', 'image/jpeg');
         res.sendFile(thumbPath, (err) => {
@@ -64,6 +69,7 @@ const getVideoThumbnail = async (req, res) => {
         });
       });
   } catch (err) {
+    // Catch any unexpected errors and respond with a status code of 500 and a message
     console.error("Error generating thumbnail", err);
     res.status(500).json({ error: "Error generating thumbnail" })
   }
