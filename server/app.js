@@ -9,6 +9,10 @@ app.use('/videos', express.static(path.resolve('../videos')));
 app.use('/results', express.static(path.resolve('../results')));
 app.use('/', router);
 
+//EXAMPLE download path:
+//http://localhost:3000/videos/chiikawa.mp4
+//http://localhost:3000/results/chiikawa.mp4.csv
+
 // console.log(path.resolve('../videos'))
 
 app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));

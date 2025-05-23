@@ -6,19 +6,25 @@ import { v4 as uuidv4 } from 'uuid';
 import dotenv from 'dotenv';
 import ffmpegPath from 'ffmpeg-static'; 
 
-dotenv.config();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+dotenv.config({ path: path.resolve(__dirname, '..', '..', '.env') });
+
 // Assume root of project is 2 levels up from this controller file
 const ROOT_DIR = path.resolve(__dirname, '..', '..');
+//This ensures the variables load from centroid-finder/.env
 
 // Use environment variables relative to the root
 const VIDEOS_DIR = path.resolve(ROOT_DIR, process.env.VIDEO_DIR);
 const RESULTS_DIR = path.resolve(ROOT_DIR, process.env.RESULTS_DIR);
 const JOBS_DIR = path.resolve(ROOT_DIR, process.env.JOBS_DIR);
 const JAR_PATH = path.resolve(ROOT_DIR, process.env.JAR_PATH);
+
+console.log('VIDEOS_DIR:', VIDEOS_DIR);
+console.log('RESULTS_DIR:', RESULTS_DIR);
+console.log('JOBS_DIR:', JOBS_DIR);
+console.log('JAR_PATH:', JAR_PATH);
 
 // Ensure required directories exist
 fs.mkdirSync(VIDEOS_DIR, { recursive: true });
