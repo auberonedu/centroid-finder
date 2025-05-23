@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { spawn } from 'child_process';
 import { v4 as uuidv4 } from 'uuid';
 import dotenv from 'dotenv';
-import ffmpegPath from 'ffmpeg-static'; //Added to use ffmpeg-static
+import ffmpegPath from 'ffmpeg-static'; 
 
 dotenv.config();
 
@@ -52,7 +52,7 @@ export function generateThumbnail(req, res) {
     'pipe:1'
   ];
 
-  const ffmpeg = spawn(ffmpegPath, args); // ✅ Use ffmpeg-static path
+  const ffmpeg = spawn(ffmpegPath, args); 
   res.setHeader('Content-Type', 'image/jpeg');
   ffmpeg.stdout.pipe(res);
 
