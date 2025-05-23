@@ -9,7 +9,7 @@ import static org.bytedeco.opencv.global.opencv_imgcodecs.imwrite;
 public class VideoExperiment {
 
     public static void main(String[] args) {
-        String videoPath = "chiikawa.mp4"; 
+        String videoPath = "videos/chiikawa.mp4"; 
 
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath)) {
             grabber.start();

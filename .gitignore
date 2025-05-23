@@ -14,7 +14,7 @@
 *.csv
 hs_err_pid*
 replay_pid*
-/target/
+processor/target/
 videos
 
 # === Node.js ===
