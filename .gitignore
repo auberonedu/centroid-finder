@@ -15,6 +15,7 @@
 hs_err_pid*
 replay_pid*
 /target/
+videos
 
 # === Node.js ===
 server/node_modules/

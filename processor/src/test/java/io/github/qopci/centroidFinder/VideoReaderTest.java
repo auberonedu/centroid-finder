@@ -6,12 +6,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-// AI Used to generate tests for VideoReaderTest.java
 public class VideoReaderTest {
-    private static final String TEST_VIDEO_PATH = "ensantina.mp4";
+    // Use relative path to videos folder from working directory
+    private static final String TEST_VIDEO_PATH = "videos/ensantina.mp4";
 
     @Test
     public void testConstructorInitializesReader() {
+        System.out.println("Working directory: " + System.getProperty("user.dir"));
+
         if (!new File(TEST_VIDEO_PATH).exists()) {
             System.out.println("Test video not found. Skipping testConstructorInitializesReader.");
             return;

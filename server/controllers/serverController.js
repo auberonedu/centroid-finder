@@ -28,6 +28,7 @@ export async function listVideos(req, res) {
     res.status(200).json(videoFiles);
   } catch (err) {
     console.error(err);
+    // Salamander API exact error response for directory read failure
     res.status(500).json({ error: 'Error reading video directory' });
   }
 }
@@ -38,7 +39,8 @@ export function generateThumbnail(req, res) {
   const inputPath = path.join(VIDEOS_DIR, filename);
 
   if (!fs.existsSync(inputPath)) {
-    return res.status(404).json({ error: 'Video file not found' });
+    // Salamander API does NOT specify 404 for thumbnail but makes sense to send 500 with error msg:
+    return res.status(500).json({ error: 'Error generating thumbnail' });
   }
 
   const args = [
@@ -56,12 +58,25 @@ export function generateThumbnail(req, res) {
 
   ffmpeg.stdout.pipe(res);
 
+  let errorOccurred = false;
+
   ffmpeg.stderr.on('data', data => {
     console.error(`FFmpeg error: ${data}`);
+    errorOccurred = true;
   });
 
   ffmpeg.on('error', () => {
+    errorOccurred = true;
     res.status(500).json({ error: 'Error generating thumbnail' });
+  });
+
+  ffmpeg.on('close', (code) => {
+    if (errorOccurred || code !== 0) {
+      // If ffmpeg failed, send Salamander API error response
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Error generating thumbnail' });
+      }
+    }
   });
 }
 
@@ -71,43 +86,52 @@ export function startProcessingJob(req, res) {
   const { targetColor, threshold } = req.query;
 
   if (!targetColor || !threshold) {
+    // Exactly as Salamander API expects for missing params
     return res.status(400).json({ error: 'Missing targetColor or threshold query parameter.' });
   }
 
   const inputPath = path.join(VIDEOS_DIR, filename);
-  const outputPath = path.join(RESULTS_DIR, `${filename}.csv`);
 
   if (!fs.existsSync(inputPath)) {
-    return res.status(404).json({ error: 'Video file not found' });
+    // Salamander API doesn't explicitly specify 404 here but let's be consistent:
+    return res.status(500).json({ error: 'Error starting job' });
   }
 
-  const jobId = uuidv4();
-  const jobFile = path.join(JOBS_DIR, `${jobId}.json`);
+  try {
+    const jobId = uuidv4();
+    const jobFile = path.join(JOBS_DIR, `${jobId}.json`);
 
-  const initialStatus = {
-    status: 'processing',
-    resultFile: `${filename}.csv`
-  };
+    const initialStatus = {
+      status: 'processing',
+      resultFile: `${filename}.csv`
+    };
 
-  fs.writeFileSync(jobFile, JSON.stringify(initialStatus));
+    fs.writeFileSync(jobFile, JSON.stringify(initialStatus));
 
-  const javaArgs = [
-    '-jar',
-    JAR_PATH,
-    inputPath,
-    outputPath,
-    targetColor,
-    threshold
-  ];
+    const outputPath = path.join(RESULTS_DIR, `${filename}.csv`);
 
-  const child = spawn('java', javaArgs, {
-    detached: true,
-    stdio: 'ignore'
-  });
+    const javaArgs = [
+      '-jar',
+      JAR_PATH,
+      inputPath,
+      outputPath,
+      targetColor,
+      threshold
+    ];
 
-  child.unref();
+    const child = spawn('java', javaArgs, {
+      detached: true,
+      stdio: 'ignore'
+    });
 
-  res.status(202).json({ jobId });
+    child.unref();
+
+    // Return jobId with 202 Accepted
+    res.status(202).json({ jobId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error starting job' });
+  }
 }
 
 // GET /process/:jobId/status
@@ -116,6 +140,7 @@ export function getJobStatus(req, res) {
   const jobFile = path.join(JOBS_DIR, `${jobId}.json`);
 
   if (!fs.existsSync(jobFile)) {
+    // Salamander API 404 response when job id not found
     return res.status(404).json({ error: 'Job ID not found' });
   }
 
@@ -123,14 +148,15 @@ export function getJobStatus(req, res) {
     const jobData = JSON.parse(fs.readFileSync(jobFile, 'utf-8'));
 
     if (jobData.status === 'done') {
-      res.json({ status: 'done', result: `/results/${jobData.resultFile}` });
+      return res.status(200).json({ status: 'done', result: `/results/${jobData.resultFile}` });
     } else if (jobData.status === 'error') {
-      res.json({ status: 'error', error: jobData.error });
+      return res.status(200).json({ status: 'error', error: jobData.error });
     } else {
-      res.json({ status: 'processing' });
+      return res.status(200).json({ status: 'processing' });
     }
   } catch (err) {
     console.error(err);
+    // Salamander API exact error message for job status fetch failure
     res.status(500).json({ error: 'Error fetching job status' });
   }
 }
