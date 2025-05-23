@@ -7,6 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Absolute path to the public/videos directory
+// Move this later to the .env file using dotenv
 const VIDEO_DIR = path.resolve(__dirname, '../public/videos');
 
 const getAllVideos = async (req, res) => {
@@ -54,7 +55,7 @@ const getVideoThumbnail = async (req, res) => {
         count: 1, // Only take 1 screenshot
         timestamps: ['0'], // Take the screenshot at 0 seconds
         filename: 'thumbnail.jpg', // Name of the temporary jpeg
-        folder: '/tmp', // Name of the temporary directory to store the image
+        folder: '/tmp', // Name of the temporary directory to store the image. Move this later to the .env file using dotenv
         size: '320x240', // Resizing the output image
       })
       .on('end', () => {
@@ -73,6 +74,6 @@ const getVideoThumbnail = async (req, res) => {
     console.error("Error generating thumbnail", err);
     res.status(500).json({ error: "Error generating thumbnail" })
   }
-}
+};
 
-export default { getAllVideos, getVideoThumbnail }
+export default { getAllVideos, getVideoThumbnail };
