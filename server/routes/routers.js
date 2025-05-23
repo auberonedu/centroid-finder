@@ -1,10 +1,10 @@
 import express from 'express';
-import * as controller from '../controllers/controller.js';
+import videoController from '../controllers/videoController.js';
 
 const router = express.Router();
 
-router.get("/api/videos", controller.getAllVideos);
-router.get("/thumbnail/:filename",);
+router.get("/api/videos", videoController.getAllVideos);
+router.get("/thumbnail/:filename", videoController.getVideoThumbnail);
 router.post("/process/:filename",);
 router.get("/process/:jobId/status",);
 
