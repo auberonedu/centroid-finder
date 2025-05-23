@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { spawn } from 'child_process';
 import { v4 as uuidv4 } from 'uuid';
 import dotenv from 'dotenv';
+import ffmpegPath from 'ffmpeg-static'; //Added to use ffmpeg-static
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ const __dirname = path.dirname(__filename);
 // Resolve environment paths relative to project root
 const VIDEOS_DIR = path.resolve(__dirname, '..', '..', process.env.VIDEO_DIR || 'videos');
 const RESULTS_DIR = path.resolve(__dirname, '..', '..', process.env.RESULTS_DIR || 'results');
-const JOBS_DIR = path.resolve(__dirname, '..', '..', 'jobs'); // no env var defined for jobs
+const JOBS_DIR = path.resolve(__dirname, '..', '..', 'jobs');
 const JAR_PATH = path.resolve(__dirname, '..', '..', process.env.JAR_PATH || 'processor/target/video-processor.jar');
 
 // Ensure required directories exist
@@ -39,7 +40,7 @@ export function generateThumbnail(req, res) {
   const inputPath = path.join(VIDEOS_DIR, filename);
 
   if (!fs.existsSync(inputPath)) {
-    return res.status(500).json({ error: 'Error generating thumbnail' });
+    return res.status(404).json({ error: 'Video file not found' });
   }
 
   const args = [
@@ -51,7 +52,7 @@ export function generateThumbnail(req, res) {
     'pipe:1'
   ];
 
-  const ffmpeg = spawn('ffmpeg', args);
+  const ffmpeg = spawn(ffmpegPath, args); // ✅ Use ffmpeg-static path
   res.setHeader('Content-Type', 'image/jpeg');
   ffmpeg.stdout.pipe(res);
 
@@ -64,10 +65,12 @@ export function generateThumbnail(req, res) {
 
   ffmpeg.on('error', () => {
     errorOccurred = true;
-    res.status(500).json({ error: 'Error generating thumbnail' });
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Error generating thumbnail' });
+    }
   });
 
-  ffmpeg.on('close', (code) => {
+  ffmpeg.on('close', code => {
     if (errorOccurred || code !== 0) {
       if (!res.headersSent) {
         res.status(500).json({ error: 'Error generating thumbnail' });
@@ -102,7 +105,6 @@ export function startProcessingJob(req, res) {
     fs.writeFileSync(jobFile, JSON.stringify(initialStatus));
 
     const outputPath = path.join(RESULTS_DIR, `${filename}.csv`);
-
     const javaArgs = [
       '-jar',
       JAR_PATH,
