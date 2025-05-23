@@ -11,11 +11,14 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Resolve environment paths relative to project root
-const VIDEOS_DIR = path.resolve(__dirname, '..', '..', process.env.VIDEO_DIR || 'videos');
-const RESULTS_DIR = path.resolve(__dirname, '..', '..', process.env.RESULTS_DIR || 'results');
-const JOBS_DIR = path.resolve(__dirname, '..', '..', 'jobs');
-const JAR_PATH = path.resolve(__dirname, '..', '..', process.env.JAR_PATH || 'processor/target/videoprocessor.jar');
+// Assume root of project is 2 levels up from this controller file
+const ROOT_DIR = path.resolve(__dirname, '..', '..');
+
+// Use environment variables relative to the root
+const VIDEOS_DIR = path.resolve(ROOT_DIR, process.env.VIDEO_DIR);
+const RESULTS_DIR = path.resolve(ROOT_DIR, process.env.RESULTS_DIR);
+const JOBS_DIR = path.resolve(ROOT_DIR, process.env.JOBS_DIR);
+const JAR_PATH = path.resolve(ROOT_DIR, process.env.JAR_PATH);
 
 // Ensure required directories exist
 fs.mkdirSync(VIDEOS_DIR, { recursive: true });

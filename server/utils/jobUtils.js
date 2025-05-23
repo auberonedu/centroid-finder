@@ -8,7 +8,8 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const JOBS_DIR = path.resolve(__dirname, '..', '..', 'jobs');
+const ROOT_DIR = path.resolve(__dirname, '..', '..');
+const JOBS_DIR = path.resolve(ROOT_DIR, process.env.JOBS_DIR);
 
 // Ensure the jobs directory exists
 fs.mkdirSync(JOBS_DIR, { recursive: true });
