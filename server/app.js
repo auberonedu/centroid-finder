@@ -1,11 +1,8 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 import express from 'express';
-import router from './routes/serverApi.js'; // assuming this uses env vars
+import router from './routes/serverApi.js'; 
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 app.use('/', router);
 
