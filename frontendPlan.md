@@ -20,6 +20,11 @@ flowchart TB
 We will use Jest for unit tests, and Cypress for E2E tests.
 What we'll test, how, and why.
 ### Unit Tests
+Our unit tests will be written with Jest in a tests folder inside the src folder of our frontend. 
+We will use Jest to test:
+- If components render (with or without props)
+- How components render with state changes
+- How components react to user interactions
 #### Happy Path
 ### Integration Tests? 
 ### E2E Tests
