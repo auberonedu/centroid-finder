@@ -33,3 +33,4 @@ node_modules
 .idea/
 .vscode/
 server/frame_centroids.csv
+*.csv
