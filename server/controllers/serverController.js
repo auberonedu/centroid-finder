@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 const VIDEOS_DIR = path.resolve(__dirname, '..', '..', process.env.VIDEO_DIR || 'videos');
 const RESULTS_DIR = path.resolve(__dirname, '..', '..', process.env.RESULTS_DIR || 'results');
 const JOBS_DIR = path.resolve(__dirname, '..', '..', 'jobs');
-const JAR_PATH = path.resolve(__dirname, '..', '..', process.env.JAR_PATH || 'processor/target/video-processor.jar');
+const JAR_PATH = path.resolve(__dirname, '..', '..', process.env.JAR_PATH || 'processor/target/videoprocessor.jar');
 
 // Ensure required directories exist
 fs.mkdirSync(VIDEOS_DIR, { recursive: true });
@@ -113,6 +113,8 @@ export function startProcessingJob(req, res) {
       targetColor,
       threshold
     ];
+
+    console.log(javaArgs);
 
     const child = spawn('java', javaArgs, {
       detached: true,

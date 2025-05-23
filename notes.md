@@ -121,6 +121,8 @@ ImageGroupFinder.java notes
 - `java -jar target/videoprocessor.jar ensantina.mp4 output.csv ff0000 100 2>&1 | tee logs`
 
 - `java -jar target/videoprocessor.jar ensantina.mp4 output.csv ff0000 95`
+
+java -jar target/videoprocessor.jar chiikawa.mp4 results/chiikawa.mp4.csv ff0000 95
 --------------------------------------------------------------------------------------------------------------------------
 
 ## Rebuild jar:
@@ -128,3 +130,6 @@ ImageGroupFinder.java notes
 - `mvn clean compile assembly:single` OR `mvn clean package`
 
 - `mv target/centroidFinder-1.0-SNAPSHOT-jar-with-dependencies.jar videoprocessor.jar`
+
+--check for post route :
+curl -X POST "http://localhost:3000/process/ensantina.mp4?targetColor=ff0000&threshold=100"
