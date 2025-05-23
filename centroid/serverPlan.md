@@ -2,13 +2,15 @@
 
 ## What we understood from the API
 
-we are building an Express.js server that will handle the endpoints as mentioned in the Salamander API
+we are building a backend using Express.js that connects to our exisiting Java JAR to process videos and generate CSV outputs and the server should have API endpoints
 
 1. **GET /api/videos**
-- returns a list of all available video filenames from a directory (eg. "salamander1.mp4")
+- returns a list of all videos in a public folder
+- will be used to pick which video to analyze
 
 2. **GET /thumbnail/:filename**
-- returns the first frame of a given video as a JPEG image
+- grabs the first frame from a video using ffmpeg and sends it as a JPEG
+- helps user preview the video
 
 3. **POST /process/:filename?targetColor=FF0000&threshold=100**
 - starts the video processing job bu calling our Java JAR
@@ -16,6 +18,7 @@ we are building an Express.js server that will handle the endpoints as mentioned
 
 4. **GET /process/:jobId/status**
 - returns the current status of the processing job like `processing`, `done`, or `error`
+- if done then returns the path to th CSV result
 
 -------------------------
 
@@ -51,13 +54,16 @@ CSV Output → Status File → Result Folder
 - Job stats is tracked in a jobs.json file or as per .status files
 
 
-## Tools Needs
+## Tools and NPM Packages
 
-`child_process.spawn` in detached mode to run the JAR
-`uuid` package to generate unique job IDs
-`dotenv` toaccess paths from .env
-`fs.promises` and `path` for file operation
-`ffmpeg` to generate thumbnails
+dotenv → Load paths from .env
+express → Handle routing
+uuid → Generate jobIds
+child_process.spawn → Call Java JAR
+fs/promises → File ops
+path → Resolve directories
+ffmpeg → Create thumbnails
+
 
 ## Testing Plan
 
