@@ -11,6 +11,7 @@ const statusUserError = 404;
 const statusServerError = 500;
 
 const getVideos = (req, res) => {
+    // TODO: Write a try catch that returns list of video names or status 500
     console.log("getVideos successfully called!")
 
     // How to display files in a directory: https://www.geeksforgeeks.org/how-to-display-all-files-in-a-directory-using-node-js/
@@ -31,5 +32,23 @@ const getVideos = (req, res) => {
 
 };
 
+const getThumbnail = (req, res) => {
+    // TODO: Return thumbnail
+    const { filename } = req.params;
+    console.log("getThumbnail successfully called!")
+};
 
-export default { getVideos };
+const postVideo = (req, res) => {
+    // TODO: use queries and filename to create Java jar, return job id
+    const { filename } = req.params;
+    console.log("postVideo successfully called!")
+};
+
+const getStatus = (req, res) => {
+    // TODO: return status
+    const { jobId } = req.params;
+    console.log("getStatus successfully called!")
+};
+
+
+export default { getVideos, getThumbnail, postVideo, getStatus };
