@@ -9,6 +9,6 @@ app.use('/videos', express.static(path.resolve('../videos')));
 app.use('/results', express.static(path.resolve('../results')));
 app.use('/', router);
 
-console.log(path.resolve('../videos'))
+// console.log(path.resolve('../videos'))
 
 app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));

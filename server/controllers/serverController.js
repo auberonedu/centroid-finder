@@ -114,7 +114,7 @@ export function startProcessingJob(req, res) {
       threshold
     ];
 
-    console.log(javaArgs);
+    // console.log(javaArgs);
 
     const child = spawn('java', javaArgs, {
       detached: true,

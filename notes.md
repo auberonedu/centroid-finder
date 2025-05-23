@@ -130,6 +130,8 @@ java -jar target/videoprocessor.jar chiikawa.mp4 results/chiikawa.mp4.csv ff0000
 - `mvn clean compile assembly:single` OR `mvn clean package`
 
 - `mv target/centroidFinder-1.0-SNAPSHOT-jar-with-dependencies.jar videoprocessor.jar`
+--------------------------------------------------------------------------------------------------------------------------
 
---check for post route :
-curl -X POST "http://localhost:3000/process/ensantina.mp4?targetColor=ff0000&threshold=100"
+## Post route command:
+- curl -X POST "http://localhost:3000/process/ensantina.mp4?targetColor=ff0000&threshold=100"
+--------------------------------------------------------------------------------------------------------------------------
