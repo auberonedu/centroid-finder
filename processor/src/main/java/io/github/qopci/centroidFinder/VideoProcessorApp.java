@@ -19,24 +19,20 @@ public class VideoProcessorApp {
                 BufferedImage frame;
                 while ((frame = reader.nextFrame()) != null) {
                     double timeInSeconds = totalFrameIndex / frameRate;
-                
-                    int totalSeconds = (int) timeInSeconds; // drop milliseconds
-                    int hours = totalSeconds / 3600;
-                    int minutes = (totalSeconds % 3600) / 60;
-                    int seconds = totalSeconds % 60;
-                
-                    String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-                
+
+                    // Use the new helper method for formatting time:
+                    String formattedTime = formatTime(timeInSeconds);
+
                     System.out.printf("Frame %d, timeInSeconds=%.3f, formattedTime=%s%n", totalFrameIndex, timeInSeconds, formattedTime);
-                
+
                     if (reader.shouldProcessThisFrame()) {
                         Coordinate centroid = processor.process(frame);
                         writer.write(formattedTime, centroid);
                     }
-                
+
                     totalFrameIndex++;
                 }
-                
+
             }
 
             System.out.println("Done. CSV written to " + parser.outputCsv);
@@ -44,4 +40,18 @@ public class VideoProcessorApp {
             e.printStackTrace();
         }
     }
+
+    // New static helper method for time formatting
+    public static String formatTime(double timeInSeconds) {
+        if (timeInSeconds < 0) {
+            timeInSeconds = 0;  
+        }
+        int totalSeconds = (int) timeInSeconds;
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+    
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+    
 }
