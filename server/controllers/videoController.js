@@ -29,7 +29,7 @@ const getVideoThumbnail = async (req, res) => {
 
     // Checking if no file name was passed
     if (!filename) {
-      return res.status(400).json({ error: "Filename is required"})
+      return res.status(400).json({ error: "Filename is required" })
     }
 
     const videoPath = path.join(VIDEO_DIR, filename);
@@ -40,10 +40,32 @@ const getVideoThumbnail = async (req, res) => {
     } catch {
       return res.status(404).json({ error: "Video file not found" });
     }
-
+    // Generate a thumbnail in memory
+    ffmpeg(videoPath)
+      .on('error', (err) => {
+        console.error('FFmpeg error:', err);
+        return res.status(500).json({ error: 'Error generating thumbnail' });
+      })
+      .screenshots({
+        count: 1,
+        timestamps: ['0'],
+        filename: 'thumbnail.jpg',
+        folder: '/tmp',
+        size: '320x240',
+      })
+      .on('end', () => {
+        const thumbPath = path.join('/tmp', 'thumbnail.jpg');
+        res.setHeader('Content-Type', 'image/jpeg');
+        res.sendFile(thumbPath, (err) => {
+          if (err) {
+            console.error('Error sending thumbnail:', err);
+            res.status(500).json({ error: 'Error sending thumbnail' });
+          }
+        });
+      });
   } catch (err) {
     console.error("Error generating thumbnail", err);
-    res.status(500).json({ error: "Error generating thumbnail"})
+    res.status(500).json({ error: "Error generating thumbnail" })
   }
 }
 
