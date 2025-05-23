@@ -11,22 +11,19 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, '..', '..', '.env') });
 
-// Assume root of project is 2 levels up from this controller file
 const ROOT_DIR = path.resolve(__dirname, '..', '..');
-//This ensures the variables load from centroid-finder/.env
 
-// Use environment variables relative to the root
 const VIDEOS_DIR = path.resolve(ROOT_DIR, process.env.VIDEO_DIR);
 const RESULTS_DIR = path.resolve(ROOT_DIR, process.env.RESULTS_DIR);
 const JOBS_DIR = path.resolve(ROOT_DIR, process.env.JOBS_DIR);
 const JAR_PATH = path.resolve(ROOT_DIR, process.env.JAR_PATH);
 
-console.log('VIDEOS_DIR:', VIDEOS_DIR);
-console.log('RESULTS_DIR:', RESULTS_DIR);
-console.log('JOBS_DIR:', JOBS_DIR);
-console.log('JAR_PATH:', JAR_PATH);
+// console.log('VIDEOS_DIR:', VIDEOS_DIR);
+// console.log('RESULTS_DIR:', RESULTS_DIR);
+// console.log('JOBS_DIR:', JOBS_DIR);
+// console.log('JAR_PATH:', JAR_PATH);
 
-// Ensure required directories exist
+// Ensure directories exist
 fs.mkdirSync(VIDEOS_DIR, { recursive: true });
 fs.mkdirSync(RESULTS_DIR, { recursive: true });
 fs.mkdirSync(JOBS_DIR, { recursive: true });
@@ -61,7 +58,7 @@ export function generateThumbnail(req, res) {
     'pipe:1'
   ];
 
-  const ffmpeg = spawn(ffmpegPath, args); 
+  const ffmpeg = spawn(ffmpegPath, args);
   res.setHeader('Content-Type', 'image/jpeg');
   ffmpeg.stdout.pipe(res);
 
@@ -99,7 +96,7 @@ export function startProcessingJob(req, res) {
 
   const inputPath = path.join(VIDEOS_DIR, filename);
   if (!fs.existsSync(inputPath)) {
-    return res.status(500).json({ error: 'Error starting job' });
+    return res.status(500).json({ error: 'Video file not found' });
   }
 
   try {
@@ -123,14 +120,43 @@ export function startProcessingJob(req, res) {
       threshold
     ];
 
-    // console.log(javaArgs);
+    console.log('Spawning java with args:', javaArgs.join(' '));
 
+    // Spawn the Java process with stdio: 'inherit' to see output in terminal
     const child = spawn('java', javaArgs, {
-      detached: true,
-      stdio: 'ignore'
+      stdio: 'inherit',
+      detached: true
+    });
+
+    child.on('error', (err) => {
+      console.error('Failed to start Java process:', err);
+      // Update job status file to error
+      fs.writeFileSync(jobFile, JSON.stringify({
+        status: 'error',
+        error: err.message,
+        resultFile: `${filename}.csv`
+      }));
+    });
+
+    child.on('exit', (code, signal) => {
+      if (code === 0) {
+        console.log(`Java process finished successfully for job ${jobId}`);
+        fs.writeFileSync(jobFile, JSON.stringify({
+          status: 'done',
+          resultFile: `${filename}.csv`
+        }));
+      } else {
+        console.error(`Java process exited with code ${code} or signal ${signal} for job ${jobId}`);
+        fs.writeFileSync(jobFile, JSON.stringify({
+          status: 'error',
+          error: `Process exited with code ${code} or signal ${signal}`,
+          resultFile: `${filename}.csv`
+        }));
+      }
     });
 
     child.unref();
+
     res.status(202).json({ jobId });
   } catch (err) {
     console.error(err);
