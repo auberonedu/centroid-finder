@@ -1,10 +1,8 @@
-//AI used to generate Jest mock tests for serverController.test.js
-
+// AI used to generate Jest mock tests for serverController.test.js
 import { jest, describe, test, expect, beforeAll, beforeEach, afterEach, afterAll } from '@jest/globals';
 import dotenv from 'dotenv';
 import path from 'path';
 
-import * as uuid from 'uuid'; // real uuid
 import fs from 'fs';
 
 // Mock 'child_process' correctly
@@ -14,8 +12,6 @@ jest.mock('child_process', () => ({
     unref: jest.fn(),
   })),
 }));
-
-import { spawn } from 'child_process';
 
 // Mock 'fs' module
 jest.mock('fs');

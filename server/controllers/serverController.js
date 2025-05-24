@@ -18,11 +18,6 @@ const RESULTS_DIR = path.resolve(ROOT_DIR, process.env.RESULTS_DIR);
 const JOBS_DIR = path.resolve(ROOT_DIR, process.env.JOBS_DIR);
 const JAR_PATH = path.resolve(ROOT_DIR, process.env.JAR_PATH);
 
-// console.log('VIDEOS_DIR:', VIDEOS_DIR);
-// console.log('RESULTS_DIR:', RESULTS_DIR);
-// console.log('JOBS_DIR:', JOBS_DIR);
-// console.log('JAR_PATH:', JAR_PATH);
-
 // Ensure directories exist
 fs.mkdirSync(VIDEOS_DIR, { recursive: true });
 fs.mkdirSync(RESULTS_DIR, { recursive: true });
@@ -128,11 +123,8 @@ export function startProcessingJob(req, res) {
       threshold
     ];
 
-    // console.log('Spawning java with args:', javaArgs.join(' '));
-
-    // Spawn the Java process with stdio: 'inherit' to see output in terminal
     const child = spawn('java', javaArgs, {
-      stdio: 'inherit',
+      stdio: 'ignore',
       detached: true
     });
 
