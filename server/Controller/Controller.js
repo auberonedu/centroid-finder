@@ -13,7 +13,7 @@ const getJobStatus = async(req, res) => {
 
 }
 
-export defualt {
+export default {
     getVideos,
     getPreview,
     startVideoProcessing,
