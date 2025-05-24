@@ -1,20 +1,37 @@
-// AI used to generate Jest mock tests for serverController.test.js
+//AI used to generate Jest mock tests for serverController.test.js
 import { jest, describe, test, expect, beforeAll, beforeEach, afterEach, afterAll } from '@jest/globals';
 import dotenv from 'dotenv';
 import path from 'path';
-
 import fs from 'fs';
 
-// Mock 'child_process' correctly
-jest.mock('child_process', () => ({
-  spawn: jest.fn(() => ({
-    on: jest.fn(),
-    unref: jest.fn(),
-  })),
-}));
+// Mock child_process BEFORE anything else
+jest.mock('child_process', () => {
+  const events = {};
+  return {
+    spawn: jest.fn(() => {
+      return {
+        on: (event, cb) => {
+          events[event] = cb;
+          return this;
+        },
+        unref: jest.fn(),
+      };
+    }),
+  };
+});
 
-// Mock 'fs' module
-jest.mock('fs');
+// MOCK fs methods BEFORE import of the controller
+jest.spyOn(fs, 'mkdirSync').mockImplementation(() => {});
+jest.spyOn(fs, 'mkdir').mockImplementation((path, options, callback) => {
+  if (typeof options === 'function') {
+    callback = options;
+  }
+  callback && callback(null);
+});
+jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
+jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+jest.spyOn(fs, 'readFileSync').mockReturnValue('{}');
+jest.spyOn(fs.promises, 'readdir').mockResolvedValue([]);
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
@@ -22,11 +39,6 @@ process.env.VIDEO_DIR = process.env.VIDEO_DIR;
 process.env.RESULTS_DIR = process.env.RESULTS_DIR;
 process.env.JOBS_DIR = process.env.JOBS_DIR;
 process.env.JAR_PATH = process.env.JAR_PATH;
-
-fs.existsSync = jest.fn();
-fs.readFileSync = jest.fn();
-fs.writeFileSync = jest.fn();
-jest.spyOn(fs.promises, 'readdir').mockImplementation(() => Promise.resolve([]));
 
 let serverController;
 
@@ -49,6 +61,14 @@ describe('serverController', () => {
       json: jest.fn(),
       setHeader: jest.fn(),
     };
+
+    // Clear mocks between tests
+    fs.mkdirSync.mockClear();
+    fs.mkdir.mockClear();
+    fs.writeFileSync.mockClear();
+    fs.existsSync.mockClear();
+    fs.readFileSync.mockClear();
+    fs.promises.readdir.mockClear();
   });
 
   afterEach(() => {
