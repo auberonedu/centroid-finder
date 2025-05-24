@@ -13,6 +13,4 @@ app.use('/', router);
 //http://localhost:3000/videos/chiikawa.mp4
 //http://localhost:3000/results/chiikawa.mp4.csv
 
-// console.log(path.resolve('../videos'))
-
 app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));

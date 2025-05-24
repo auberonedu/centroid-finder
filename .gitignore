@@ -17,6 +17,7 @@ replay_pid*
 processor/target/
 videos
 jobs
+results
 
 # === Node.js ===
 server/node_modules/

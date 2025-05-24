@@ -120,7 +120,7 @@ export function startProcessingJob(req, res) {
       threshold
     ];
 
-    console.log('Spawning java with args:', javaArgs.join(' '));
+    // console.log('Spawning java with args:', javaArgs.join(' '));
 
     // Spawn the Java process with stdio: 'inherit' to see output in terminal
     const child = spawn('java', javaArgs, {
