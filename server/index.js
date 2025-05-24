@@ -1,11 +1,14 @@
+import router from './Router/Router.js';
+import express from 'express';
+import dotenv from 'dotenv';
+
 const express = require('express');
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello, Express!');
-});
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+app.use('/', router);
+
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });
