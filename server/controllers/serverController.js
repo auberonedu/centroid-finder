@@ -94,6 +94,14 @@ export function startProcessingJob(req, res) {
     return res.status(400).json({ error: 'Missing targetColor or threshold query parameter.' });
   }
 
+  if (threshold < 0) {
+    return res.status(400).json({ error: 'Invalid threshold. Must be greater than 0.' });
+  }
+
+  if (targetColor.length > 6 || targetColor.length < 6) {
+    return res.status(400).json({ error: 'Invalid HEX color format.' });
+  }
+
   const inputPath = path.join(VIDEOS_DIR, filename);
   if (!fs.existsSync(inputPath)) {
     return res.status(500).json({ error: 'Video file not found' });
