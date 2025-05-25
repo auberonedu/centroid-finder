@@ -1,4 +1,4 @@
-//AI used to generate Jest mock tests for serverController.test.js
+// AI used to generate Jest mock tests for serverController.test.js
 import { jest, describe, test, expect, beforeAll, beforeEach, afterEach, afterAll } from '@jest/globals';
 import dotenv from 'dotenv';
 import path from 'path';

@@ -3,6 +3,6 @@ export default {
   transform: {},
   testMatch: ['**/tests/**/*.test.js'],
   moduleFileExtensions: ['js', 'json', 'node'],
-  transformIgnorePatterns: [], // tell Jest to not transform the files (including serverController.js)
+  transformIgnorePatterns: [], // tell Jest to not transform the files 
 };
   
