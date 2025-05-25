@@ -1,9 +1,9 @@
-require('dotenv').config();
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
 
 // import express framework and create an instance of it
 const express = require('express');
 const app = express();
-const path = require('path');
 
 const videoRoutes = require('./routes/videoRoutes');
 const processRoutes = require('./routes/processRoutes');
