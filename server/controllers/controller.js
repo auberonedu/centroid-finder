@@ -14,6 +14,8 @@ const getVideos = (req, res) => {
     // TODO: Write a try catch that returns list of video names or status 500
     console.log("getVideos successfully called!")
 
+    try {
+
     // How to display files in a directory: https://www.geeksforgeeks.org/how-to-display-all-files-in-a-directory-using-node-js/
     const directory_name = process.env.videoDirPath;
 
@@ -22,14 +24,17 @@ const getVideos = (req, res) => {
     let filenames = readdirSync(directory_name);
 
     console.log("\nFilenames in directory:");
+    // This currently just display names in console
+    // TODO: Convert this into a json object
     filenames.forEach((file) => {
         console.log("File:", file);
     });
 
     res.status(statusOK);
-    // if okay, return res.status(statusOK) and object list of files
-    // if not okay, return res
 
+    } catch {
+        res.status(statusServerError);
+    }
 };
 
 const getThumbnail = (req, res) => {
