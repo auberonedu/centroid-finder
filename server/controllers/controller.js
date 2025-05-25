@@ -36,26 +36,37 @@ const getVideos = (req, res) => {
 
     } catch {
         res.status(statusServerError);
+        // TODO: Add error json
     }
 };
 
 const getThumbnail = (req, res) => {
     // TODO: Return thumbnail
+    // Augy
+    // ffmpeg package
     const { filename } = req.params;
     console.log("getThumbnail successfully called!")
 };
 
 const postVideo = (req, res) => {
     // TODO: use queries and filename to create Java jar, return job id
+    // Tyler
+    // get query info
+    // call processor with data
+    // figure out how to run this ... separately? child_process to run in the background, use detached mode ... (see hint)
     const { filename } = req.params;
     console.log("postVideo successfully called!")
 };
 
 const getStatus = (req, res) => {
     // TODO: return status
+    // Rebecca
+    // figure out how... (see hint)
     const { jobId } = req.params;
     console.log("getStatus successfully called!")
 };
+
+// Meeting: Wed 4:15pm
 
 
 export default { getVideos, getThumbnail, postVideo, getStatus };
