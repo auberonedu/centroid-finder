@@ -5,8 +5,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-const videoRoutes = require('./routes/videoRoutes');
-const processRoutes = require('./routes/processRoutes');
+const videoRoutes = require('../routes/videoRoutes');
+const processRoutes = require('../routes/processRoutes');
 
 // middleware to parse JSON bodies
 app.use(express.json());
