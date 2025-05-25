@@ -77,3 +77,12 @@ ffmpeg → Create thumbnails
 - should we have `.mov` and `.mp4` videos or should we just restrict to one type?
 - how should we clean up the old results?
 - how will we display job errors in the frontend or do we have to log them?
+
+## Command's used
+node index.js - to run the server
+
+http://localhost:3000/api/videos
+
+http://localhost:3000/api/videos/thumbnail/sample.mp4
+
+
