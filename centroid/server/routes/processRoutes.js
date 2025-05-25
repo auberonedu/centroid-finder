@@ -8,11 +8,11 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
 // load environment variables
-const VIDEO_DIR = path.resolve(__dirname, process.env.VIDEO_DIR);
-const RESULTS_DIR = path.resolve(__dirname, process.env.RESULTS_DIR);
-const JAR_PATH = path.resolve(__dirname, process.env.JAR_PATH);
+const VIDEO_DIR = path.resolve(__dirname, '../../', process.env.VIDEO_DIR);
+const RESULTS_DIR = path.resolve(__dirname, '../../', process.env.RESULTS_DIR);
+const JAR_PATH = path.resolve(__dirname, '../../', process.env.JAR_PATH);
 
-// Directory to store job statuses
+// directory to store job statuses
 const JOBS_DIR = path.join(__dirname, '../utils/jobs');
 if (!fs.existsSync(JOBS_DIR)) {
   fs.mkdirSync(JOBS_DIR, { recursive: true });

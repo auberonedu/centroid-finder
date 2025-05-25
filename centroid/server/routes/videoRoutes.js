@@ -6,12 +6,13 @@ const router = express.Router();
 const fs = require('fs');
 const { exec } = require('child_process');
 
-const VIDEO_DIR = path.resolve(__dirname, process.env.VIDEO_DIR);
-const RESULTS_DIR = path.resolve(__dirname, process.env.RESULTS_DIR);
-const JAR_PATH = path.resolve(__dirname, process.env.JAR_PATH);
+const VIDEO_DIR = path.resolve(__dirname, '../../', process.env.VIDEO_DIR);
+const RESULTS_DIR = path.resolve(__dirname, '../../', process.env.RESULTS_DIR);
+const JAR_PATH = path.resolve(__dirname, '../../', process.env.JAR_PATH);
 
 // GET /api/videos - List video files in VIDEO_DIR
 router.get('/', async (req, res) => {
+  console.log("Looking for videos in:", VIDEO_DIR);
   try {
     const files = await fs.promises.readdir(VIDEO_DIR);
     const videoFiles = files.filter(file => file.endsWith('.mp4') || file.endsWith('.mov'));
