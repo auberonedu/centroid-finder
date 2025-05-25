@@ -5,8 +5,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-const videoRoutes = require('../routes/videoRoutes');
-const processRoutes = require('../routes/processRoutes');
+const videoRoutes = require('./routes/videoRoutes');
+const processRoutes = require('./routes/processRoutes');
 
 // middleware to parse JSON bodies
 app.use(express.json());
@@ -16,7 +16,13 @@ app.use('/videos', express.static(path.resolve(process.env.VIDEO_DIR)));
 
 // routes
 app.use('/api/videos', videoRoutes);
-app.use('/process', processRoutes);
+app.use('/api/process', processRoutes);
+
+console.log("Loaded ENV:", {
+  VIDEO_DIR: process.env.VIDEO_DIR,
+  RESULTS_DIR: process.env.RESULTS_DIR,
+  JAR_PATH: process.env.JAR_PATH,
+});
 
 // start the server on specified port
 const PORT = process.env.PORT || 3000;

@@ -1,10 +1,14 @@
+require('dotenv').config();
+
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
-const VIDEO_DIR = path.resolve(process.env.VIDEO_DIR);
+const VIDEO_DIR = path.resolve(__dirname, process.env.VIDEO_DIR);
+const RESULTS_DIR = path.resolve(__dirname, process.env.RESULTS_DIR);
+const JAR_PATH = path.resolve(__dirname, process.env.JAR_PATH);
 
 // GET /api/videos - List video files in VIDEO_DIR
 router.get('/', async (req, res) => {
