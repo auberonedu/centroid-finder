@@ -1,22 +1,23 @@
 package io.github.alstondsouza1.centroidFinder;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import org.jcodec.api.JCodecException;
+import org.junit.jupiter.api.Test;
 
 // Used AI to generate and fixed the errors for VideoReaderTest
 public class VideoReaderTest {
 
-    private final String VALID_VIDEO_PATH = "ensantina.mp4"; 
+    private final String VALID_VIDEO_PATH = "sampleInput/ensantina.mp4";
 
     @Test
     public void testFileExists() {
         File file = new File(VALID_VIDEO_PATH);
-        assertTrue(file.exists(), "sample.mp4 must exist in root directory for this test.");
+        assertTrue(file.exists(), VALID_VIDEO_PATH + " must exist for this test.");
     }
 
     @Test

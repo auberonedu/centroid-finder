@@ -1,16 +1,16 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
 const express = require('express');
 const router = express.Router();
 const { spawn } = require('child_process');
 const fs = require('fs');
-const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 // load environment variables
-const VIDEO_DIR = path.resolve(process.env.VIDEO_DIR);
-const RESULTS_DIR = path.resolve(process.env.RESULTS_DIR);
-const JAR_PATH = path.resolve(process.env.JAR_PATH);
+const VIDEO_DIR = path.resolve(__dirname, process.env.VIDEO_DIR);
+const RESULTS_DIR = path.resolve(__dirname, process.env.RESULTS_DIR);
+const JAR_PATH = path.resolve(__dirname, process.env.JAR_PATH);
 
 // Directory to store job statuses
 const JOBS_DIR = path.join(__dirname, '../utils/jobs');

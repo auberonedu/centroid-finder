@@ -1,0 +1,17 @@
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/BinarizingImageGroupFinder.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/BinaryGroupFinder.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/ColorDistanceFinder.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/CommandLineParser.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/Coordinate.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/CsvWriter.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/DfsBinaryGroupFinder.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/DistanceImageBinarizer.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/EuclideanColorDistance.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/FrameProcessor.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/Group.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/ImageBinarizer.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/ImageGroupFinder.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/ImageSummaryApp.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/VideoExperiment.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/VideoProcessorApp.java
+/Users/alston/Downloads/centroid-finder/centroid/processor/src/main/java/io/github/alstondsouza1/centroidFinder/VideoReader.java

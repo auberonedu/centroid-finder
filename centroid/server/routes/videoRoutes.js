@@ -1,9 +1,9 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const path = require('path');
 const { exec } = require('child_process');
 
 const VIDEO_DIR = path.resolve(__dirname, process.env.VIDEO_DIR);
