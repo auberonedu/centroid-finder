@@ -8,8 +8,8 @@
 
 ## getVideoThumbnail
 - Request = GET http://localhost:3000/thumbnail/Salamander5Seconds.mp4
-- Result = {
-    "error": "Error generating thumbnail"
-    }
+- Result = 
+
+![Thumbnail Screenshot](./screenshots/thumbnail-response.jpg)
 
 # Process Controller

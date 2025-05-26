@@ -51,6 +51,11 @@ const getVideoThumbnail = async (req, res) => {
         console.error('FFmpeg error:', err);
         return res.status(500).json({ error: 'Error generating thumbnail' });
       })
+      // Error catching for development with a more detailed error message
+      // .on('error', (err) => {
+      //   console.error('FFmpeg thumbnail generation error:', err.message);
+      //   res.status(500).json({ error: 'Error generating thumbnail' });
+      // })
       .screenshots({
         count: 1, // Only take 1 screenshot
         timestamps: ['0'], // Take the screenshot at 0 seconds
