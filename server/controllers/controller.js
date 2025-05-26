@@ -71,7 +71,7 @@ export const videos = (req, res) => {
             return res.status(500).json({error: "Cannot read from video directory"});
         }
 
-        const files = files.filter(file => file.endsWith(".mp4"));
-        res.status(200).json(files);
+        const videoFiles = files.filter(file => file.endsWith(".mp4"));
+        res.status(200).json(videoFiles);
     });
 };
