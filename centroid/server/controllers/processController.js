@@ -5,18 +5,18 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const { spawn } = require('child_process');
 
-// resolve environment variables
+// sets up environment variables
 const VIDEO_DIR = path.resolve(__dirname, '../../../', process.env.VIDEO_DIR);
 const RESULTS_DIR = path.resolve(__dirname, '../../../', process.env.RESULTS_DIR);
 const JAR_PATH = path.resolve(__dirname, '../../../', process.env.JAR_PATH);
 const JOBS_DIR = path.resolve(__dirname, '../utils/jobs');
 
-// creats directories if they do not exist
+// makes sure the folder for storing job status exists
 if (!fs.existsSync(JOBS_DIR)) {
   fs.mkdirSync(JOBS_DIR, { recursive: true });
 }
 
-// starts a new video processing job
+// starts a new job to process a video file
 exports.startJob = (req, res) => {
   const { filename } = req.params;
   const { targetColor, threshold } = req.query;
@@ -25,7 +25,7 @@ exports.startJob = (req, res) => {
     return res.status(400).json({ error: 'Missing targetColor or threshold query parameter.' });
   }
 
-  // defines input and output paths
+  // creates paths for the video file, where the output CSV will be stored, and the status file
   const inputPath = path.join(VIDEO_DIR, filename);
   const jobId = uuidv4();
   const outputCsv = path.join(RESULTS_DIR, `${jobId}.csv`);
@@ -49,7 +49,7 @@ exports.startJob = (req, res) => {
   res.status(202).json({ jobId });
 };
 
-// gets the status of prev started job
+// function checks the status of a job by its ID
 exports.getJobStatus = (req, res) => {
   const { jobId } = req.params;
   const statusPath = path.join(JOBS_DIR, `${jobId}.status`);
@@ -60,6 +60,7 @@ exports.getJobStatus = (req, res) => {
 
   const status = fs.readFileSync(statusPath, 'utf-8');
 
+  // if the job is finished, send back the result
   if (status.startsWith('done:')) {
     return res.status(200).json({
       status: 'done',
