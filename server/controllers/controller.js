@@ -60,3 +60,18 @@ export const getJobs = (req, res) => {
     }
     res.json(jobs);
 };
+
+export const videos = (req, res) => {
+    const videoDir = process.env.VIDEO_DIR;
+
+    fs.readdir(videoDir, (err, files) => {
+        // Checking if the videos files can be read through
+        if (err) {
+            console.error("Cannot read from video directory: ", err);
+            return res.status(500).json({error: "Cannot read from video directory"});
+        }
+
+        const files = files.filter(file => file.endsWith(".mp4"));
+        res.status(200).json(files);
+    });
+};
