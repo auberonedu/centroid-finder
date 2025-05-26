@@ -45,10 +45,10 @@ Client (Postman)
 ### Current Progress
 
 - 1. Post /process-video - This is working and returns "jobId": "7b27986d-e459-44d9-93c2-a494832731b5"
-- 2. Get /jobs/:jobId - This is working and returns 
+- 2. Get /process/{jobId}/status - This is working and returns 
 
         {
                 "status": "processing",
                 "output": "7b27986d-e459-44d9-93c2-a494832731b5.csv"
         }
-
+- 3 Get /api/videos - This is working and returns the ensantina.mp4 video that we have in our /videos file
