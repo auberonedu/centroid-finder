@@ -44,6 +44,7 @@ export const processVid = (req, res) => {
 
 export const getJobStatus = (req, res) => {
     const job = jobStatus.get(req.params.jobId);
+    
     if (!job) {
         return res.status(404).json({ error: "Job not found" });
     }
