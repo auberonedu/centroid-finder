@@ -32,3 +32,6 @@ replay_pid*
 
 # files
 *.mp4
+
+# node
+node_modules
