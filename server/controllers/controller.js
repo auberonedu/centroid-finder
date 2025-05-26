@@ -44,7 +44,7 @@ export const processVid = (req, res) => {
 
 export const getJobStatus = (req, res) => {
     const job = jobStatus.get(req.params.jobId);
-    
+
     if (!job) {
         return res.status(404).json({ error: "Job not found" });
     }
@@ -55,6 +55,7 @@ export const getJobs = (req, res) => {
     const jobs = [];
 
     for (const [jobId, data] of jobStatus.entries()) {
+        // Using ... spread operator to unpack all the key-value pairs inside the data object
         jobs.push({ jobId, ...data});
     }
     res.json(jobs);
