@@ -5,7 +5,7 @@ const router = Router();
 
 router.post("/process-video", processVid);
 router.get("/jobs/:jobId", getJobStatus);
-router.get("/jobs/:jobId", getJobs);
+router.get("/jobs", getJobs);
 
 
 export default router;
