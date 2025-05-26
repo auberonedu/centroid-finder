@@ -49,3 +49,12 @@ export const getJobStatus = (req, res) => {
     }
     res.json(job);
 };
+
+export const getJobs = (req, res) => {
+    const jobs = [];
+
+    for (const [jobId, data] of jobStatus.entries()) {
+        jobs.push({ jobId, ...data});
+    }
+    res.json(jobs);
+};
