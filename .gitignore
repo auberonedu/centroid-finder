@@ -26,12 +26,19 @@ replay_pid*
 
 /target/
 
-mander.csv
+# # === Node.js ===
+# /server/node_modules/
+# /server/.env
 
- === Node.js ===
- server/node_modules/
- server/.env
-
+# # === Output & Generated Files ===
+# /sampleOutput/
+# groups.csv
+# test.csv
+# output.csv
+# binarized.png
+# frame_*.png
+# mander.csv
+# server/utils/jobs/
 
 # === IDEs and Editors ===
 .idea/
