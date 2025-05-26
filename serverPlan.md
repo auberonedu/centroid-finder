@@ -8,6 +8,7 @@ Build an express server that implements the Salamander API. Server will:
 - Report status of processing jobs
 
 ## Architecture (high level)
+```text
 [ React Frontend ]
         |
         v
@@ -22,12 +23,13 @@ Files   Frame     (spawn Java)
                 |
                 v
         CSV Result File in /results
+```
 
 ## Environment variables
-JAR_PATH=../target/videoProcessor.jar
-VIDEO_DIR=server/videos
-RESULTS_DIR=server/results
-THUMBNAIL_DIR=server/thumbnails
+    JAR_PATH=../target/videoProcessor.jar
+    VIDEO_DIR=server/videos
+    RESULTS_DIR=server/results
+    THUMBNAIL_DIR=server/thumbnails
 
 ## Hints:
 
