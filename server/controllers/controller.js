@@ -2,12 +2,11 @@ import { spawn } from "child_process";
 import { v4 as uuid } from "uuid";
 import path from "path";
 import fs from "fs";
-import ffmpeg from "fluent-ffmpeg";
+import ffmpegPath from "ffmpeg-static"; // ✅ Static ffmpeg binary
 
 const jobStatus = new Map();
 
 export const processVid = (req, res) => {
-    // Destructuring variables into the body
     const { file, color = "255,0,0", threshold = 95 } = req.body;
 
     const inputPath = path.join(process.env.VIDEO_DIR, file);
@@ -56,7 +55,6 @@ export const getJobs = (req, res) => {
     const jobs = [];
 
     for (const [jobId, data] of jobStatus.entries()) {
-        // Using ... spread operator to unpack all the key-value pairs inside the data object
         jobs.push({ jobId, ...data });
     }
     res.json(jobs);
@@ -66,7 +64,6 @@ export const videos = (req, res) => {
     const videoDir = process.env.VIDEO_DIR;
 
     fs.readdir(videoDir, (err, files) => {
-        // Checking if the videos files can be read through
         if (err) {
             console.error("Cannot read from video directory: ", err);
             return res.status(500).json({ error: "Cannot read from video directory" });
@@ -78,40 +75,58 @@ export const videos = (req, res) => {
 };
 
 export const thumbnail = (req, res) => {
+    // Extract the video file name from the request URL
     const fileName = req.params.filename;
+
+    // Resolve the full path to the video file
     const videoPath = path.join(process.env.VIDEO_DIR, fileName);
 
-    // Checking if the file exists
-    if (!fs.existsSync(videoPath)) return res.status(404).json({ error: "File not found" });
+    // If the video doesn't exist, return a 404 error
+    if (!fs.existsSync(videoPath)) {
+        return res.status(404).json({ error: "Video not found" });
+    }
 
-    // Creating an in memory stream of the first frame as a jpeg
-    ffmpeg(videoPath)
-        .on("error", (err) => {
-            console.error("Error with ffmpeg: ", err);
-            return res.status(500).json({ error: "Error with creating thumbnail" });
-        })
-        .on("end", () => {
+    // Define the output directory for storing generated thumbnails
+    const thumbnailDir = path.join(process.cwd(), "thumbnails");
+
+    // Define the output file path for the thumbnail image
+    // e.g., thumbnails/sample.mp4.jpg
+    const thumbnailFile = `${fileName}.jpg`;
+    const thumbnailPath = path.join(thumbnailDir, thumbnailFile);
+
+    // Ensure the thumbnail directory exists — create it if not
+    if (!fs.existsSync(thumbnailDir)) {
+        fs.mkdirSync(thumbnailDir, { recursive: true });
+    }
+
+    // Use Node.js `child_process.spawn()` to call ffmpeg via ffmpeg-static
+    const ffmpeg = spawn(ffmpegPath, [
+        "-y",               // Overwrite output file if it exists
+        "-i", videoPath,    // Input video file path
+        "-ss", "00:00:01",  // Seek to 1 second into the video
+        "-vframes", "1",    // Extract exactly one video frame
+        thumbnailPath       // Output path for the image
+    ]);
+
+    // When ffmpeg finishes
+    ffmpeg.on("close", (code) => {
+        // If ffmpeg succeeded and the file was created
+        if (code === 0 && fs.existsSync(thumbnailPath)) {
+            // Set the response type to JPEG
             res.set("Content-Type", "image/jpeg");
-            const stream = fs.createReadStream(videoPath);
-            stream.pipe(res);
-            stream.on("close", () => fs.unlink(videoPath, () => { }));
-        })
-        .screenshot({
-            count: 1,
-            folder: "/thumbnails",
-            filename: fileName
-        });
+
+            // Pipe the JPEG file directly to the response stream
+            fs.createReadStream(thumbnailPath).pipe(res);
+        } else {
+            // If ffmpeg failed, log and return 500
+            console.error("FFmpeg failed or thumbnail not created");
+            res.status(500).json({ error: "Failed to generate thumbnail" });
+        }
+    });
+
+    // If ffmpeg fails to start at all (e.g., wrong binary path)
+    ffmpeg.on("error", (err) => {
+        console.error("FFmpeg spawn error:", err);
+        res.status(500).json({ error: "Failed to spawn ffmpeg" });
+    });
 };
-
-export const thumbnailTwo = (req, res) => {
-    ffmpeg(videoPath)
-        .format("image2")
-        .outputOptions("-vframes", "1") // Only 1 frame
-        .on("error", (err) => {
-            console.error("FFmpeg error:", err);
-            res.status(500).json({ error: "Error generating thumbnail" });
-        })
-        .pipe(res, { end: true });
-
-    res.set("Content-Type", "image/jpeg");
-}
