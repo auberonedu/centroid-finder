@@ -2,6 +2,7 @@ import { spawn } from "child_process";
 import { v4 as uuid } from "uuid";
 import path from "path";
 import fs from "fs";
+import ffmpeg from "fluent-ffmpeg";
 
 const jobStatus = new Map();
 
@@ -74,4 +75,32 @@ export const videos = (req, res) => {
         const videoFiles = files.filter(file => file.endsWith(".mp4"));
         res.status(200).json(videoFiles);
     });
+};
+
+export const thumbnail = (req, res) => {
+    const fileName = req.params.filename;
+    const videoPath = path.join(process.env.VIDEO_DIR, fileName);
+
+    // Checking if the file exists
+    if (!fs.existsSync(videoPath)) return resizeTo.status(404).json({error: "File not found"});
+
+    // Creating an in memory stream of the first frame as a jpeg
+    ffmpeg(videoPath)
+        .on("error", (err) => {
+           console.error("Error with ffmpeg: ", err);
+           return res.status(500).json({error: "Error with creating thumbnail"}); 
+        })
+        .on("end", () => {
+            //This is used for .save()
+        })
+        .screenshot({
+            count: 1,
+            folder: "/thumbnails",
+            filename: "thumbnail.jpg"
+        })
+        .on("end", () => {
+            const thumbnailPath = "/thumbnails/thumbnail.jpg";
+            res.set("Content-Type", "image/jpeg");
+            fs.createReadStream(thumbnailPath).pipe(res);
+        });
 };
