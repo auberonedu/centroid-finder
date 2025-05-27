@@ -52,3 +52,6 @@ Client (Postman)
                 "output": "7b27986d-e459-44d9-93c2-a494832731b5.csv"
         }
 - 3 Get /api/videos - This is working and returns the ensantina.mp4 video that we have in our /videos file
+
+## Using Jest
+- We will be using Jest for our unit testing.
