@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { processVid, getJobStatus, getJobs, videos, thumbnail } from "../controllers/controller.js";
+import { processVid, getJobStatus, getJobs, videos, thumbnail, thumbnailTwo } from "../controllers/controller.js";
 
 const router = Router();
 
@@ -8,6 +8,6 @@ router.get("/process/:jobId/status", getJobStatus);
 router.get("/jobs", getJobs);
 router.get("/api/videos", videos);
 router.get("/thumbnail/:filename", thumbnail)
-
+router.get("/thumbnailTwo/:filename", thumbnailTwo)
 
 export default router;

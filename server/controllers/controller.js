@@ -57,7 +57,7 @@ export const getJobs = (req, res) => {
 
     for (const [jobId, data] of jobStatus.entries()) {
         // Using ... spread operator to unpack all the key-value pairs inside the data object
-        jobs.push({ jobId, ...data});
+        jobs.push({ jobId, ...data });
     }
     res.json(jobs);
 };
@@ -69,7 +69,7 @@ export const videos = (req, res) => {
         // Checking if the videos files can be read through
         if (err) {
             console.error("Cannot read from video directory: ", err);
-            return res.status(500).json({error: "Cannot read from video directory"});
+            return res.status(500).json({ error: "Cannot read from video directory" });
         }
 
         const videoFiles = files.filter(file => file.endsWith(".mp4"));
@@ -82,19 +82,19 @@ export const thumbnail = (req, res) => {
     const videoPath = path.join(process.env.VIDEO_DIR, fileName);
 
     // Checking if the file exists
-    if (!fs.existsSync(videoPath)) return res.status(404).json({error: "File not found"});
+    if (!fs.existsSync(videoPath)) return res.status(404).json({ error: "File not found" });
 
     // Creating an in memory stream of the first frame as a jpeg
     ffmpeg(videoPath)
         .on("error", (err) => {
-           console.error("Error with ffmpeg: ", err);
-           return res.status(500).json({error: "Error with creating thumbnail"}); 
+            console.error("Error with ffmpeg: ", err);
+            return res.status(500).json({ error: "Error with creating thumbnail" });
         })
         .on("end", () => {
             res.set("Content-Type", "image/jpeg");
             const stream = fs.createReadStream(videoPath);
             stream.pipe(res);
-            stream.on("close", () => fs.unlink(videoPath, () => {}));
+            stream.on("close", () => fs.unlink(videoPath, () => { }));
         })
         .screenshot({
             count: 1,
@@ -102,3 +102,16 @@ export const thumbnail = (req, res) => {
             filename: fileName
         });
 };
+
+export const thumbnailTwo = (req, res) => {
+    ffmpeg(videoPath)
+        .format("image2")
+        .outputOptions("-vframes", "1") // Only 1 frame
+        .on("error", (err) => {
+            console.error("FFmpeg error:", err);
+            res.status(500).json({ error: "Error generating thumbnail" });
+        })
+        .pipe(res, { end: true });
+
+    res.set("Content-Type", "image/jpeg");
+}
