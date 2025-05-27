@@ -92,6 +92,7 @@ export const thumbnail = (req, res) => {
         })
         .on("end", () => {
             //This is used for .save()
+            //This is a listener for the end event for fluent-ffmpeg
         })
         .screenshot({
             count: 1,
