@@ -35,3 +35,6 @@ replay_pid*
 
 # node
 node_modules
+
+# env
+*.env
