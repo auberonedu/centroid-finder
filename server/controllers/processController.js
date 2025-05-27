@@ -18,7 +18,8 @@ const startVideoProcessingJob = (req, res) => {
         return res.status(400).json({ error: "Missing targetColor or threshold query parameter"});
     }
 
-
+    const inputPath = path.join(VIDEO_DIR, fileName);
+    const outputPath = path.join(OUTPUT_DIR);
 };
 
 const getProcessingJobStatus = (req, res) => {
