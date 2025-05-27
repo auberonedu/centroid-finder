@@ -132,17 +132,23 @@ router.post('/process/:filename', (req, res) => {
     // Build args for the JAR (customize as needed for your JAR's CLI)
     const resultFile = path.resolve(resultsDir, `${jobId}.csv`);
     const args = [
-        '-jar', jarPath,
+        '-jar',
+        jarPath,
         videoPath,
+        resultFile,
         targetColor,
-        threshold,
-        resultFile
+        threshold
     ];
+    console.log('Spawning:', 'java', ...args);
     const javaProcess = spawn('java', args, {
-        detached: true,
-        stdio: 'ignore'
+        stdio: 'inherit'
     });
-    javaProcess.unref();
+    javaProcess.on('error', (err) => {
+        console.error('Failed to start Java process:', err);
+    });
+    javaProcess.on('close', (code) => {
+        console.log(`Java process exited with code ${code}`);
+    });
 
     // Poll for result file (simple approach)
     const checkInterval = setInterval(() => {
