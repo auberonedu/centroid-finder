@@ -139,16 +139,11 @@ router.post('/process/:filename', (req, res) => {
         targetColor,
         threshold
     ];
-    console.log('Spawning:', 'java', ...args);
     const javaProcess = spawn('java', args, {
-        stdio: 'inherit'
+        detached: true,
+        stdio: 'ignore'
     });
-    javaProcess.on('error', (err) => {
-        console.error('Failed to start Java process:', err);
-    });
-    javaProcess.on('close', (code) => {
-        console.log(`Java process exited with code ${code}`);
-    });
+    javaProcess.unref();
 
     // Poll for result file (simple approach)
     const checkInterval = setInterval(() => {
