@@ -85,4 +85,8 @@ http://localhost:3000/api/videos
 
 http://localhost:3000/api/videos/thumbnail/sample.mp4
 
+POST Route
+http://localhost:3000/api/process/fileName.mp4?targetColor=00FF00&threshold=20
 
+GET Route
+http://localhost:3000/api/process/whateveristhejobID/status
