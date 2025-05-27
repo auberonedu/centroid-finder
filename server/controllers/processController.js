@@ -1,5 +1,12 @@
 import path from 'path';
 import fs from 'fs';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const VIDEO_DIR = process.env.VIDEO_DIR;
+const JAR_PATH = process.env.JAR_PATH;
+const OUTPUT_DIR = process.env.OUTPUT_DIR;
 
 const startVideoProcessingJob = (req, res) => {
     // /process/:filename
