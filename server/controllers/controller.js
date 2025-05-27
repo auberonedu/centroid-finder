@@ -82,7 +82,7 @@ export const thumbnail = (req, res) => {
     const videoPath = path.join(process.env.VIDEO_DIR, fileName);
 
     // Checking if the file exists
-    if (!fs.existsSync(videoPath)) return resizeTo.status(404).json({error: "File not found"});
+    if (!fs.existsSync(videoPath)) return res.status(404).json({error: "File not found"});
 
     // Creating an in memory stream of the first frame as a jpeg
     ffmpeg(videoPath)
@@ -91,17 +91,14 @@ export const thumbnail = (req, res) => {
            return res.status(500).json({error: "Error with creating thumbnail"}); 
         })
         .on("end", () => {
-            //This is used for .save()
-            //This is a listener for the end event for fluent-ffmpeg
+            res.set("Content-Type", "image/jpeg");
+            const stream = fs.createReadStream(videoPath);
+            stream.pipe(res);
+            stream.on("close", () => fs.unlink(videoPath, () => {}));
         })
         .screenshot({
             count: 1,
             folder: "/thumbnails",
-            filename: "thumbnail.jpg"
-        })
-        .on("end", () => {
-            const thumbnailPath = "/thumbnails/thumbnail.jpg";
-            res.set("Content-Type", "image/jpeg");
-            fs.createReadStream(thumbnailPath).pipe(res);
+            filename: fileName
         });
 };
