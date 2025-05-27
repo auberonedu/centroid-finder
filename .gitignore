@@ -30,4 +30,4 @@ processor/target/
 processor/sampleOutput/
 
 # Node modules
-server/node_modules
+server/node_modules/

@@ -1,5 +1,8 @@
 import { readFileSync, readdirSync } from 'fs';
+import { spawn } from 'child_process'; // start a new background process
 import dotenv from 'dotenv';
+import path from 'path'; // join file paths
+import { v4 as uuidv4 } from 'uuid'; // Generate a unique job ID
 
 // read in env congif environment variables
 dotenv.config({
@@ -49,12 +52,35 @@ const getThumbnail = (req, res) => {
 };
 
 const postVideo = (req, res) => {
-    // TODO: use queries and filename to create Java jar, return job id
-    // Tyler
-    // get query info
-    // call processor with data
-    // figure out how to run this ... separately? child_process to run in the background, use detached mode ... (see hint)
-    const { filename } = req.params;
+    const { filename } = req.params; // Extracts the video filename from the URL
+    const { targetColor, threshold } = req.query; // Extracts query parameters from the request URL
+
+    const jobId = uuidv4(); // Unique job ID for tracking the processing
+
+    const jarPath = process.env.video_processor_jar_path; // Path to the JAR file
+    const inputPath = path.join(process.env.video_directory_path, filename); // The full path to the input video file
+    const outputPath = path.join(process.env.output_directory_path, `${jobId}.csv`); // Path to where the DSV output will be saved
+
+    // Arguments to the pass to the backend
+    const javaArgs = [
+        '-jar',
+        jarPath,
+        inputPath,
+        outputPath,
+        targetColor,
+        threshold
+    ];
+
+    // Spawns the Java process in detached mode
+    const javaSpawn = spawn('java', javaArgs, {
+        detached: true, // this ensures that the process is independent from the Node.js process
+        stdio: 'ignore' // this ignores stdio, which there is no console output to Node
+    });
+
+    javaSpawn.unref(); // this allows the parent Node to exit independently of the javaSpawn
+
+    // Response to the client with the job id
+    res.status(statusOK).json({ jobId });
     console.log("postVideo successfully called!")
 };
 
