@@ -27,6 +27,7 @@ public class VideoProcessorApp {
         while ((frame = reader.getNextFrame()) != null) {
             if (frameIndex % frameRate == 0) { // one frame per second
                 Coordinate c = processor.getLargestCentroid(frame);
+                System.out.printf("Frame %d: centroid = (%d, %d)\n", frameIndex, c.x(), c.y());
                 csvWriter.writeCentroid(frameIndex / (double) frameRate, c);
             }
             frameIndex++;
