@@ -53,9 +53,32 @@ const getThumbnail = (req, res) => {
     // TODO: Return thumbnail
     // Augy
     // ffmpeg package
-    const { filename } = req.params;
+
     console.log("getThumbnail successfully called!")
-};
+
+    // get the video frame
+
+    const ffmpeg = require('fluent-ffmpeg');
+    const { filename } = req.params;
+    const outputImagePath = '../output/frame1.jpg'; // could be wrong
+
+    ffmpeg(filename).on('end', function(){
+        console.log('First frame has been extracted successfull!');
+    })
+    .on('error', function(err) {
+        console.error('Error: ' + err.message);
+    })
+    .screenshots({
+        count: 1,
+        folder: 'output', // could be wrong
+        filename: 'frame1.jpg',
+        timemarks: ['00:00:00.000']
+    })
+    
+        
+    
+}
+        
 
 const postVideo = (req, res) => {
     // console.log("postVideo successfully called!")
