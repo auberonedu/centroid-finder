@@ -31,3 +31,6 @@ target/
 
 # Node Modules
 node_modules/
+
+# Env
+.env
