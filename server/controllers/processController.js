@@ -3,8 +3,14 @@ import fs from 'fs'; // built in module for working with file system
 import dotenv from 'dotenv';
 import { spawn } from 'child_process'; // built in Node.js module to run other programs/commands
 import { v4 as uuidv4 } from 'uuid'; // generates universally unique ids
+import { fileURLToPath } from 'url'; // for resolving ES module paths
 
-dotenv.config(); // load env variables
+// Get __dirname from ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load environment variables from the .env file in the project root
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 // env variables for location of videos, java jar, and output
 const VIDEO_DIR = process.env.VIDEO_DIR;
@@ -13,7 +19,7 @@ const OUTPUT_DIR = process.env.OUTPUT_DIR || './jobs';
 
 const startVideoProcessingJob = (req, res) => {
     // /process/:filename
-    const { fileName } = req.params;
+    const { filename } = req.params;
     // ?targetColor=<hex>&threshold=<int>
     const { targetColor, threshold } = req.query;
 
@@ -21,7 +27,7 @@ const startVideoProcessingJob = (req, res) => {
         return res.status(400).json({ error: "Missing targetColor or threshold query parameter"});
     }
 
-    const inputPath = path.join(VIDEO_DIR, fileName);
+    const inputPath = path.join(VIDEO_DIR, filename);
     const outputPath = path.join(OUTPUT_DIR);
     // generate unique ID
     const jobId = uuidv4();
