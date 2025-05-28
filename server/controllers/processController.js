@@ -48,13 +48,22 @@ const startVideoProcessingJob = (req, res) => {
         return res.status(202).json({ jobId });
     } catch (err) {
         console.error("Failed to start processing job: ", err);
-        
+
         return res.status(500).json({ error: "Error starting job"});
     }
 };
 
 const getProcessingJobStatus = (req, res) => {
+    const { jobId } = req.params;
+    const fileOutputPath = path.join(OUTPUT_DIR, jobId, 'result.csv');
 
+    fs.access(fileOutputPath, fs.constants.F_OK, (err) => {
+        if (err) {
+            return res.status(200).json({ status: 'processing'});
+        } else {
+            return res.status(200).json({ status: 'done'});
+        }
+    });
 };
 
 export default { startVideoProcessingJob, getProcessingJobStatus };
