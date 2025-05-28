@@ -48,6 +48,7 @@ const startVideoProcessingJob = (req, res) => {
         return res.status(202).json({ jobId });
     } catch (err) {
         console.error("Failed to start processing job: ", err);
+        
         return res.status(500).json({ error: "Error starting job"});
     }
 };
