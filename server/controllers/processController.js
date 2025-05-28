@@ -1,6 +1,6 @@
 import path from 'path'; // built in module to manipulate file paths
 import fs from 'fs'; // built in module for working with file system
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'; // module for accessing data in .env files
 import { spawn } from 'child_process'; // built in Node.js module to run other programs/commands
 import { v4 as uuidv4 } from 'uuid'; // generates universally unique ids
 import { fileURLToPath } from 'url'; // for resolving ES module paths
@@ -16,6 +16,17 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 const VIDEO_DIR = process.env.VIDEO_DIR;
 const JAR_PATH = process.env.JAR_PATH;
 const OUTPUT_DIR = process.env.OUTPUT_DIR || './jobs';
+
+// dotenv.config();
+
+// // Resolve __dirname in ES module context
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+
+// // Resolve paths relative to the *project root*
+// const VIDEO_DIR = path.resolve(__dirname, '..', process.env.VIDEO_DIR);
+// const JAR_PATH = path.resolve(__dirname, '..', process.env.JAR_PATH);
+// const OUTPUT_DIR = path.resolve(__dirname, '..', process.env.OUTPUT_DIR || 'jobs');
 
 const startVideoProcessingJob = (req, res) => {
     // /process/:filename
