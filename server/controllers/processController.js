@@ -24,22 +24,25 @@ const startVideoProcessingJob = (req, res) => {
     const { targetColor, threshold } = req.query;
 
     if (!targetColor || !threshold) {
-        return res.status(400).json({ error: "Missing targetColor or threshold query parameter"});
+        return res.status(400).json({ error: "Missing targetColor or threshold query parameter" });
     }
 
-    const inputPath = path.join(VIDEO_DIR, filename);
-    const outputPath = path.join(OUTPUT_DIR);
-    // generate unique ID
     const jobId = uuidv4();
+    const jobDir = path.join(OUTPUT_DIR, jobId);
+    fs.mkdirSync(jobDir, { recursive: true });
+
+    const inputPath = path.join(VIDEO_DIR, filename);
+    const outputCSV = path.join(jobDir, 'result.csv');
+
 
     // build java command line arguement
     const args = [
         '-jar',
         JAR_PATH,
         inputPath,
+        outputCSV,
         targetColor,
-        threshold,
-        outputPath
+        threshold
     ];
 
     // try catch block to run the jar command
@@ -55,7 +58,7 @@ const startVideoProcessingJob = (req, res) => {
     } catch (err) {
         console.error("Failed to start processing job: ", err);
 
-        return res.status(500).json({ error: "Error starting job"});
+        return res.status(500).json({ error: "Error starting job" });
     }
 };
 
@@ -69,9 +72,9 @@ const getProcessingJobStatus = (req, res) => {
     fs.access(fileOutputPath, fs.constants.F_OK, (err) => {
         // if it doesn't exist there is error so it is still being processed
         if (err) {
-            return res.status(200).json({ status: 'processing'});
+            return res.status(200).json({ status: 'processing' });
         } else {
-            return res.status(200).json({ status: 'done'});
+            return res.status(200).json({ status: 'done' });
         }
     });
 };
