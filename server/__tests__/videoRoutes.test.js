@@ -9,10 +9,10 @@ describe('Video Controller Routes', () => {
         it('should return an array of video filenames', async () => {
             const response = await request(app).get('/api/videos');
 
-            // Checking for a status code of 200 OK response
+            // Expecting a status code of 200 OK
             expect(response.status).toBe(200);
 
-            // Checking that the response body is an array
+            // Expecting that the response body is an array
             expect(Array.isArray(response.body)).toBe(true);
         });
     });
@@ -32,7 +32,7 @@ describe('Video Controller Routes', () => {
             // Requesting a thumbnail for a non-existent video
             const response = await request(app).get(`/thumbnail/${nonExistentFile}`);
 
-            // Checking that a status code of 404 with a proper error message is returned
+            // Expecting that a status code of 404 with a proper error message is returned
             expect(response.status).toBe(404);
             expect(response.body).toHaveProperty('error', 'Video file not found');
         });
@@ -41,7 +41,7 @@ describe('Video Controller Routes', () => {
             // Requesting a valid video thumbnail
             const response = await request(app).get(`/thumbnail/${existingFile}`);
 
-            // Checking that a status code of 200 with a JPEG is returned
+            // Expecting a status code of 200 Ok and a JPEG is returned
             expect(response.status).toBe(200);
             expect(response.headers['content-type']).toMatch(/jpeg/);
         });
