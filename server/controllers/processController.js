@@ -54,10 +54,14 @@ const startVideoProcessingJob = (req, res) => {
 };
 
 const getProcessingJobStatus = (req, res) => {
+    // gets jobId from params
     const { jobId } = req.params;
+    // makes path to output
     const fileOutputPath = path.join(OUTPUT_DIR, jobId, 'result.csv');
 
+    // access checks if file exists and can be read, constants.F_OK checks if it exists
     fs.access(fileOutputPath, fs.constants.F_OK, (err) => {
+        // if it doesn't exist there is error so it is still being processed
         if (err) {
             return res.status(200).json({ status: 'processing'});
         } else {
