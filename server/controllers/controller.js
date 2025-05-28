@@ -3,6 +3,7 @@ import { spawn } from 'child_process'; // start a new background process
 import dotenv from 'dotenv';
 import path from 'path'; // join file paths
 import { v4 as uuidv4 } from 'uuid'; // Generate a unique job ID
+import ffmpeg from 'ffmpeg';
 
 // read in env congif environment variables
 dotenv.config({
@@ -57,8 +58,6 @@ const getThumbnail = (req, res) => {
     console.log("getThumbnail successfully called!")
 
     // get the video frame
-
-    const ffmpeg = require('fluent-ffmpeg');
     const { filename } = req.params;
     const outputImagePath = '../output/frame1.jpg'; // could be wrong
 
