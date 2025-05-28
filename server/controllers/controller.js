@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from 'fs';
+import { readFileSync, readdirSync, existsSync, writeFileSync } from 'fs';
 import { spawn } from 'child_process'; // start a new background process
 import dotenv from 'dotenv';
 import path from 'path'; // join file paths
@@ -10,11 +10,17 @@ dotenv.config({
 })
 
 const statusOK = 200;
-const statusUserError = 404;
+const statusAccepted = 202;
+const statusBadRequest = 400;
+const statusNotFound = 404;
 const statusServerError = 500;
 
+const jobIDArray = [];
+// For testing purposes, include one fake job ID
+jobIDArray.push("123")
+
 const getVideos = (req, res) => {
-    // console.log("getVideos successfully called!")
+    console.log("getVideos successfully called!")
 
     try {
         const directory_name = process.env.video_directory_path; // stored in the config.env
@@ -52,44 +58,100 @@ const getThumbnail = (req, res) => {
 };
 
 const postVideo = (req, res) => {
-    const { filename } = req.params; // Extracts the video filename from the URL
-    const { targetColor, threshold } = req.query; // Extracts query parameters from the request URL
+    // console.log("postVideo successfully called!")
 
-    const jobId = uuidv4(); // Unique job ID for tracking the processing
+    // Try catch to check that parameters are correct
+    try {
+        const { filename } = req.params; // Extracts the video filename from the URL
+        const { targetColor, threshold } = req.query; // Extracts query parameters from the request URL
+    } catch {
+        res.status(statusBadRequest).json({ "error": "Missing targetColor or threshold query parameter." })
+    }
+    
 
-    const jarPath = process.env.video_processor_jar_path; // Path to the JAR file
-    const inputPath = path.join(process.env.video_directory_path, filename); // The full path to the input video file
-    const outputPath = path.join(process.env.output_directory_path, `${jobId}.csv`); // Path to where the DSV output will be saved
+    // Try catch to check that can job can start
+    try {
+        const jobId = uuidv4(); // Unique job ID for tracking the processing
+        jobIDArray.push(jobID);
 
-    // Arguments to the pass to the backend
-    const javaArgs = [
-        '-jar',
-        jarPath,
-        inputPath,
-        outputPath,
-        targetColor,
-        threshold
-    ];
+        // Create a started marker (AI helped write this)
+        const startMarker = path.join(process.env.output_directory_path, `${jobId}.started`);
+        writeFileSync(startMarker, '');
 
-    // Spawns the Java process in detached mode
-    const javaSpawn = spawn('java', javaArgs, {
-        detached: true, // this ensures that the process is independent from the Node.js process
-        stdio: 'ignore' // this ignores stdio, which there is no console output to Node
-    });
+        const jarPath = process.env.video_processor_jar_path; // Path to the JAR file
+        const inputPath = path.join(process.env.video_directory_path, filename); // The full path to the input video file
+        const outputPath = path.join(process.env.output_directory_path, `${jobId}.csv`); // Path to where the DSV output will be saved
 
-    javaSpawn.unref(); // this allows the parent Node to exit independently of the javaSpawn
+        // Arguments to the pass to the backend
+        const javaArgs = [
+            '-jar',
+            jarPath,
+            inputPath,
+            outputPath,
+            targetColor,
+            threshold
+        ];
 
-    // Response to the client with the job id
-    res.status(statusOK).json({ jobId });
-    console.log("postVideo successfully called!")
+        // Spawns the Java process in detached mode
+        const javaSpawn = spawn('java', javaArgs, {
+            detached: true, // this ensures that the process is independent from the Node.js process
+            stdio: 'ignore' // this ignores stdio, which there is no console output to Node
+        });
+
+        javaSpawn.unref(); // this allows the parent Node to exit independently of the javaSpawn
+
+        // Cleanup start marker (AI helped write this)
+        const checkInterval = 3000; // Check every 3 seconds
+        const maxChecks = 100; // Optional: stop after 100 checks (~5 minutes)
+        let checks = 0;
+
+        const interval = setInterval(() => {
+            checks++;
+            if (fs.existsSync(outputPath)) {
+                // Job is complete
+                fs.unlink(startMarker, err => {
+                    if (err) console.error(`Error deleting start marker: ${err}`);
+                });
+                clearInterval(interval);
+            } else if (checks >= maxChecks) {
+                // Optional: stop polling after some time
+                clearInterval(interval);
+            }
+        }, checkInterval);
+
+        // Response to the client with the job id
+        res.status(statusAccepted).json({ "jobId": jobId });
+
+    } catch {
+        res.status(statusServerError).json({ "error": "Error starting job" })
+    }
+    
 };
 
 const getStatus = (req, res) => {
-    // TODO: return status
+    // console.log("getStatus successfully called!")
     // Rebecca
-    // figure out how... (see hint)
     const { jobId } = req.params;
-    console.log("getStatus successfully called!")
+    if (!jobIDArray.includes(jobId)) {
+        res.status(statusNotFound).json({"error":"Job ID not found"})
+    }
+
+    const startMarker = path.join(process.env.output_directory_path, `${jobId}.started`);
+    const outputPath = path.join(process.env.output_directory_path, `${jobId}.csv`);
+
+
+    if (existsSync(outputPath)) {
+        res.status(statusOK).json({"status":"done", "result": outputPath})
+    }
+    if (existsSync(startMarker)) {
+        res.status(statusOK).json({"status":"processing"})
+    }
+
+    res.status(statusServerError).json({ "error":"Error fetching job status"})
+
+    // 200 OK error: error processing
+
+    // 500 error fetching job status
 };
 
 // Meeting: Wed 4:15pm
