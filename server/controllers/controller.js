@@ -37,22 +37,39 @@ const getThumbnail = (req, res) => {
   }
 };
 
-const startVideoProcess = (req, res) => {
+const startVideoProcess = async (req, res) => {
   const { filename } = req.params;
   const { targetColor, threshold } = req.query;
 
+  // Check if params are missing
   if (!targetColor || !threshold) {
     return res
       .status(400)
       .json({ error: "Missing targetColor or threshold query parameter." });
   }
 
+  // Validate hex color
+  const hexColorRegex = /^[0-9A-Fa-f]{6}$/;
+  if (!hexColorRegex.test(targetColor)) {
+    return res
+      .status(400)
+      .json({ error: "targetColor must be a valid 6-digit hex code (e.g., FF0000)" });
+  }
+
+  // Validate threshold number
   const thresholdNum = Number(threshold);
-  if (Number.isNaN(thresholdNum)) {
-    return res.status(400).json({ error: "Threshold must be a valid number." });
+  if (Number.isNaN(thresholdNum) || thresholdNum < 0 || thresholdNum > 255) {
+    return res.status(400).json({ error: "Threshold must be a number between 0 and 255." });
   }
 
   try {
+    const videoDir = process.env.VIDEO_PATH;
+    const files = await fs.readdir(videoDir);
+
+    if (!files.includes(filename)) {
+      return res.status(404).json({ error: "Video file not found on the server." });
+    }
+
     const jobId = randomUUID();
     jobStatus[jobId] = { status: "processing" };
 
@@ -61,13 +78,13 @@ const startVideoProcess = (req, res) => {
       [
         "-jar",
         "../Processor/target/centroidFinderVideo-jar-with-dependencies.jar",
-        `videos/${filename}`,
+        path.join("videos", filename),
         targetColor,
         thresholdNum.toString(),
         jobId,
       ],
       {
-        stdio: ["ignore", "pipe", "ignore"], // Ignore stdin and stderr, pipe stdout
+        stdio: ["ignore", "pipe", "ignore"],
       }
     );
 
@@ -80,15 +97,7 @@ const startVideoProcess = (req, res) => {
     });
 
     child.on("exit", (code) => {
-      if (code === 0) {
-        jobStatus[jobId] = {
-          status: "done",
-        };
-      } else {
-        jobStatus[jobId] = {
-          status: "error",
-        };
-      }
+      jobStatus[jobId] = { status: code === 0 ? "done" : "error" };
     });
 
     child.on("error", (err) => {
@@ -104,6 +113,7 @@ const startVideoProcess = (req, res) => {
     res.status(500).json({ error: "Error starting job" });
   }
 };
+
 
 const getJobStatus = (req, res) => {
   const { jobId } = req.params;
