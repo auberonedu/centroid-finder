@@ -65,7 +65,7 @@ export default function VideoChooserPage() {
                 key={video.name}
                 button
                 component={Link}
-                href={`/preview/${encodeURIComponent(video.name)}`}
+                href={`/preview?filename=${encodeURIComponent(video.name)}`}
                 sx={{
                   justifyContent: "center",
                   textAlign: "center",
