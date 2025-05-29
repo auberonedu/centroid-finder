@@ -45,14 +45,15 @@ export function generateThumbnail(req, res) {
   }
 
   const args = [
-    '-i', inputPath,
-    '-ss', '00:00:01.000',
-    '-vframes', '1',
-    '-f', 'image2pipe',
-    '-vcodec', 'mjpeg',
-    'pipe:1'
+    '-i', inputPath, //video from which to take the frame from 
+    '-ss', '00:00:01.000', //timestamp that frame is captured
+    '-vframes', '1', //extract only 1 frame
+    '-f', 'image2pipe', //output format
+    '-vcodec', 'mjpeg', //mjpeg ensures its in jpeg format
+    'pipe:1' 
   ];
 
+  //ensure content is jpeg
   const ffmpeg = spawn(ffmpegPath, args);
   res.setHeader('Content-Type', 'image/jpeg');
   ffmpeg.stdout.pipe(res);
@@ -103,16 +104,20 @@ export function startProcessingJob(req, res) {
   }
 
   try {
+    //generate unique jobID using UUID
     const jobId = uuidv4();
     const jobFile = path.join(JOBS_DIR, `${jobId}.json`);
 
+    //store the job status as JSON
     const initialStatus = {
       status: 'processing',
       resultFile: `${filename}.csv`
     };
 
+    //write job status to job file
     fs.writeFileSync(jobFile, JSON.stringify(initialStatus));
 
+    //CSV file results
     const outputPath = path.join(RESULTS_DIR, `${filename}.csv`);
     const javaArgs = [
       '-jar',
@@ -123,11 +128,13 @@ export function startProcessingJob(req, res) {
       threshold
     ];
 
+    //spawn java process
     const child = spawn('java', javaArgs, {
       stdio: 'ignore',
       detached: true
     });
 
+    //handle errors that occur when attempting to start process
     child.on('error', (err) => {
       console.error('Failed to start Java process:', err);
       // Update job status file to error
