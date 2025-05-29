@@ -1,17 +1,18 @@
 import express from 'express';
+import cors from 'cors';                 
 import router from './Router/Router.js';
 import dotenv from 'dotenv';
 
-const app = express();
-const PORT = 3000;
+dotenv.config();
 
-//test that server is listening before controllers
-// app.get('/', (req, res) => {
-//   res.send('✅ Express server is running!');
-// });
+const app = express();                   
 
+app.use(cors());                         
 app.use('/', router);
 
+const PORT = 3001;
+console.log("Resolved videosDir:", process.env.VIDEO_DIR); 
+
 app.listen(PORT, () => {
-  console.log(`🚀 Server listening at http://localhost:${PORT}`);
+  console.log(`Server listening at http://localhost:${PORT}`);
 });

@@ -5,9 +5,10 @@ import {
   List,
   ListItem,
   ListItemText,
-  Paper,
   CircularProgress,
+  Paper,
   Box,
+  Stack,
 } from "@mui/material";
 
 export default function VideoChooserPage() {
@@ -28,41 +29,57 @@ export default function VideoChooserPage() {
   }, []);
 
   return (
-    <Paper sx={{ padding: 4 }}>
-      <Typography variant="h4" gutterBottom>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        mt: 6,
+      }}
+    >
+      <Typography variant="h3" gutterBottom>
         Video Chooser Page
       </Typography>
-      <Typography variant="body1" gutterBottom>
+
+      <Typography variant="body1" sx={{ mb: 4 }}>
         Please select the video you want to process from the list below:
       </Typography>
 
       {!videos ? (
         <CircularProgress />
       ) : (
-        <Box sx={{ maxHeight: 400, overflowY: "auto", mt: 2 }}>
+        <Paper
+          elevation={3}
+          sx={{
+            maxHeight: 400,
+            overflowY: "auto",
+            width: "100%",
+            maxWidth: 600,
+            padding: 2,
+          }}
+        >
           <List>
             {videos.map((video) => (
               <ListItem
-                button
                 key={video.name}
+                button
                 component={Link}
                 href={`/preview/${encodeURIComponent(video.name)}`}
+                sx={{
+                  justifyContent: "center",
+                  textAlign: "center",
+                }}
               >
                 <ListItemText
                   primary={video.name}
-                  secondary={`Duration: ${Math.round(
-                    video.duration
-                  )}s • Created: ${new Date(
-                    video.createdAt
-                  ).toLocaleString()} • Modified: ${new Date(
-                    video.modifiedAt
-                  ).toLocaleString()}`}
+                  secondary={`Duration: ${Math.round(video.duration)}s`}
                 />
               </ListItem>
             ))}
           </List>
-        </Box>
+        </Paper>
       )}
-    </Paper>
+    </Box>
   );
 }

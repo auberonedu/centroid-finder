@@ -18,6 +18,9 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') })
 
 const videosDir = path.resolve(__dirname, process.env.VIDEO_DIR);
 
+console.log("Resolved videosDir:", videosDir);
+
+
 const getVideoDuration = (filePath) => {
     return new Promise((resolve, reject) => {
         ffmpeg.ffprobe(filePath, (err, metadata) => {
