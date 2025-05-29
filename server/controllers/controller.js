@@ -55,13 +55,16 @@ const getThumbnail = (req, res) => {
 
     // get the video frame
     const { filename } = req.params;
-    const outputImagePath = '../output/frame1.jpg'; // could be wrong
+    const outputImagePath = '/output/frame1.jpg'; // could be wrong
 
     ffmpeg(filename).on('end', function(){
         console.log('First frame has been extracted successfull!');
+        res.status(statusOK);
+        res.json({frameName: {outputImagePath}});
     })
     .on('error', function(err) {
         console.error('Error: ' + err.message);
+        res.status(statusServerError);
     })
     .screenshots({
         count: 1,

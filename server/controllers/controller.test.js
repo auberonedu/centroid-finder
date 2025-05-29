@@ -19,6 +19,21 @@ describe('GET requests', () => {
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual(expected); // Should return an array
     });
+
+    it('GET /thumbnail/:filename creates first frame of video file and returns the path to that file', async () => {
+        // Arrange
+        const filename = '../sampleInput/sample_video_1.mp4';
+        const expected = {
+            frameName: '/output/frame1.jpg'
+        }
+
+        const res = await request(app)
+            .get(`/thumbnail/${filename}`)
+            
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toBe(expected)// not sure what to put here
+        
+    })
 });
 
 describe('POST request', () => {
