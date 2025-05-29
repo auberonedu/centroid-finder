@@ -25,26 +25,20 @@ jobIDArray.push("123")
 
 const getVideos = (req, res) => {
     // console.log("getVideos successfully called!")
-    // console.log(process.env.video_directory_path)
 
     try {
-        // const directory_name = process.env.video_directory_path; // stored in the config.env
-
         const videoDir = path.resolve(process.cwd(), process.env.video_directory_path);
         let filenames = readdirSync(videoDir);
 
         // Create empty videos array
         let videos = []
-        // Add filenames to videos array
+
         filenames.forEach((file) => {
-            // console.log("File:", file);
+
             if (file.endsWith(".mp4")) {
                 videos.push({ video: file });
-                // console.log("Videos:", videos);
             }
         });
-        // console.log("All videos:", videos)
-
         res.status(statusOK).json(videos)
 
     } catch {
@@ -74,10 +68,7 @@ const getThumbnail = (req, res) => {
         folder: 'output', // could be wrong
         filename: 'frame1.jpg',
         timemarks: ['00:00:00.000']
-    })
-    
-        
-    
+    })  
 }
         
 
@@ -176,12 +167,7 @@ const getStatus = (req, res) => {
 
     res.status(statusServerError).json({ "error":"Error fetching job status"})
 
-    // 200 OK error: error processing
-
-    // 500 error fetching job status
+    // TODO: Figure out how to add 200 OK error: error processing
 };
-
-// Meeting: Wed 4:15pm
-
 
 export default { getVideos, getThumbnail, postVideo, getStatus };

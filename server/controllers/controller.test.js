@@ -22,6 +22,7 @@ describe('GET requests', () => {
 });
 
 describe('POST request', () => {
+    // TODO: Figure out why this test is not working
     it('POST /process/:filename triggers the video processor', async () => {
         const filename = 'sample_video_1.mp4';
         const targetColor = 'ff0000';
