@@ -22,7 +22,13 @@ app.use(express.json());
 
 // serve static files from /videos
 app.use('/videos', express.static(path.resolve('public/videos')));
-
 app.use("/", router);
 
-app.listen(PORT, console.log(`Listening on http://localhost:${PORT}`));
+// Only listen if not in test mode
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+        console.log(`Listening on http://localhost:${PORT}`);
+    });
+}
+
+export default app; // Export the app for testing

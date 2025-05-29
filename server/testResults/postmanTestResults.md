@@ -17,12 +17,14 @@
 ## startVideoProcessingJob
 - Request = POST http://localhost:3000/process/Salamander5Seconds.mp4?targetColor=2D0508&threshold=180
 - Result = {
-    "jobId": "30b53632-0322-4af7-a872-10bb413539ad"
-    } 
+    "jobId": "1661e2b8-2f0b-47be-8317-bc17c1e9a270"
+    }
 
 ## getProcessingJobStatus
-- Request = GET http://localhost:3000/process/30b53632-0322-4af7-a872-10bb413539ad/status
+- Request = GET http://localhost:3000/process/1661e2b8-2f0b-47be-8317-bc17c1e9a270/status
 - Result 1 = {
     "status": "processing"
     }   
-- Result 2 = 
+- Result 2 = {
+    "status": "done"
+    } 
