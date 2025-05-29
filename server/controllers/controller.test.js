@@ -3,19 +3,21 @@ import express from 'express';
 import dotenv from 'dotenv';
 import router from '../routers/router.js'; // Import the full router, not the controller directly
 
-dotenv.config({ path: '../config.env' }); // Load environment variables
+dotenv.config({ path: "../.env" }); // Load environment variables
 
 const app = express(); // Create a new Express app instance
 app.use('/', router); // Mount the router under root
 
 describe('GET requests', () => {
     it('GET /api/videos fetches list of videos successfully', async () => {
+        // Arrange
+        const expected = []
         // Act: make a GET request to /api/videos
         const res = await request(app).get('/api/videos');
 
         // Assert: check if response is 200 and data is returned
         expect(res.statusCode).toBe(200);
-        expect(Array.isArray(res.body)).toBe(true); // Should return an array
+        expect(res.body).toEqual(expected); // Should return an array
     });
 });
 

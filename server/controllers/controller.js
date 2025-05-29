@@ -1,14 +1,17 @@
-import { readFileSync, readdirSync, existsSync, writeFileSync } from 'fs';
+import { readFileSync, readdirSync, existsSync, writeFileSync, unlink } from 'fs';
 import { spawn } from 'child_process'; // start a new background process
 import dotenv from 'dotenv';
 import path from 'path'; // join file paths
+import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid'; // Generate a unique job ID
 import ffmpeg from 'fluent-ffmpeg';
 
-// read in env congif environment variables
-dotenv.config({
-    path: "./.env"
-})
+// Get __dirname equivalent in ES module scope
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Use absolute path to .env
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const statusOK = 200;
 const statusAccepted = 202;
@@ -21,13 +24,14 @@ const jobIDArray = [];
 jobIDArray.push("123")
 
 const getVideos = (req, res) => {
-    console.log("getVideos successfully called!")
+    // console.log("getVideos successfully called!")
+    // console.log(process.env.video_directory_path)
 
     try {
-        const directory_name = process.env.video_directory_path; // stored in the config.env
+        // const directory_name = process.env.video_directory_path; // stored in the config.env
 
-        //  get current filenames in directory
-        let filenames = readdirSync(directory_name);
+        const videoDir = path.resolve(process.cwd(), process.env.video_directory_path);
+        let filenames = readdirSync(videoDir);
 
         // Create empty videos array
         let videos = []
@@ -41,12 +45,10 @@ const getVideos = (req, res) => {
         });
         // console.log("All videos:", videos)
 
-        res.json([videos])
-        res.status(statusOK);
+        res.status(statusOK).json(videos)
 
     } catch {
-        res.status(statusServerError);
-        // TODO: Add error json
+        res.status(statusServerError).json({"error": "Error reading video directory"});
     }
 };
 
@@ -86,15 +88,18 @@ const postVideo = (req, res) => {
     try {
         const { filename } = req.params; // Extracts the video filename from the URL
         const { targetColor, threshold } = req.query; // Extracts query parameters from the request URL
+        if (!targetColor || !threshold) {
+            return res.status(statusBadRequest).json({ error: "Missing targetColor or threshold query parameter" });
+        }
     } catch {
-        res.status(statusBadRequest).json({ "error": "Missing targetColor or threshold query parameter." })
+        return res.status(statusBadRequest).json({ error: "Missing targetColor or threshold query parameter" })
     }
     
 
     // Try catch to check that can job can start
     try {
         const jobId = uuidv4(); // Unique job ID for tracking the processing
-        jobIDArray.push(jobID);
+        jobIDArray.push(jobId);
 
         // Create a started marker (AI helped write this)
         const startMarker = path.join(process.env.output_directory_path, `${jobId}.started`);
@@ -129,9 +134,9 @@ const postVideo = (req, res) => {
 
         const interval = setInterval(() => {
             checks++;
-            if (fs.existsSync(outputPath)) {
+            if (existsSync(outputPath)) {
                 // Job is complete
-                fs.unlink(startMarker, err => {
+                unlink(startMarker, err => {
                     if (err) console.error(`Error deleting start marker: ${err}`);
                 });
                 clearInterval(interval);
