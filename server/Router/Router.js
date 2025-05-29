@@ -4,7 +4,7 @@ import controller from "../Controller/Controller.js";
 const router = Router();
 
 router.get('/videos', controller.getVideos);
-// router.get('/preview/:videoID', controller.getPreview)
+ router.get('/videos/:videoID', controller.getVideoById)
 // router.post('/videos/:jobID', controller.start)
 // router.get('/videos/process/:jobId/status', controller.getJobStatus);   
 
