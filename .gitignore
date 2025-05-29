@@ -34,3 +34,5 @@ node_modules
 .vscode/
 server/frame_centroids.csv
 *.csv
+
+*.env
