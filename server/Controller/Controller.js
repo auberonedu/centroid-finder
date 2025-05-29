@@ -33,6 +33,9 @@ const saveIndex = async (index) => {
     await fs.writeFile(indexFilePath, JSON.stringify(index, null, 2));
 };
 
+console.log("Resolved videosDir:", videosDir);
+
+
 const getVideoDuration = (filePath) => {
     return new Promise((resolve, reject) => {
         ffmpeg.ffprobe(filePath, (err, metadata) => {
