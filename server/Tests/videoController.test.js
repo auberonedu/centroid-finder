@@ -33,5 +33,6 @@ describe('getVideos', () => {
     expect(mockRes.json).toHaveBeenCalledWith({
       error: 'Failed to read video directory',
     });
+    
   });
 });
