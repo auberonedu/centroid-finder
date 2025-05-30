@@ -47,7 +47,9 @@ const getThumbnail = (req, res) => {
             '-frames:v', '1',  // only 1 frame
             '-f', 'image2',    // force image format
             '-q:v', '2',       // set image quality
-            'pipe:1'           // output to stdout
+            '-update', '1',    // update the output pipe with 1 frame
+            'pipe:1',          // output to stdout
+            '-loglevel', 'quiet' // suppress all output except errors
         ]);
 
         // pipe ffmpeg output to response (pipe streams image directly to response)
