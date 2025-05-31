@@ -68,3 +68,5 @@ Once you have confirmed it is working, clean up your code, make sure it's commit
 ## Optional Wave 7: Enhancements?
 If you want to, you can make a new branch to start experimenting. See if you can come up with a better color distance method (hint: look up perceptual color spaces). See if you can make your code more efficient or mor suited to spotting salamanders! Experiment with other test files. PLEASE MAKE SURE THIS IS IN A SEPARATE BRANCH FROM YOUR SUBMISSION.
 
+## Test command for JAR
+- java -jar videoprocessor.jar ensantina.mp4 output.csv 2D0508 180
