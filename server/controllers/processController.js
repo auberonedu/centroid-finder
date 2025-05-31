@@ -16,7 +16,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 const VIDEO_DIR = process.env.VIDEO_DIR;
 const JAR_PATH = process.env.JAR_PATH;
 const OUTPUT_DIR = process.env.OUTPUT_DIR || './jobs';
-const JOBS_FILE = path.join(OUTPUT_DIR, 'jobs.json'); // Centralized jobs metadata file
+const JOBS_FILE = path.join(OUTPUT_DIR, 'jobs.json'); // Centralized jobs metadata file with jobIDs, status, and output file location
 
 // Helper to load all job metadata from the central jobs.json file
 const loadJobsData = () => {
@@ -98,12 +98,12 @@ const getProcessingJobStatus = (req, res) => {
     const { jobId } = req.params;
     const jobsData = loadJobsData();
 
-    // Check if the job exists in the jobs file
+    // Check if the job exists in the jobs.json file
     if (!jobsData[jobId]) {
         return res.status(404).json({ error: "Job not found" });
     }
 
-    // Return only the status (as requested)
+    // Return the current job status
     return res.status(200).json({ status: jobsData[jobId].status });
 };
 
