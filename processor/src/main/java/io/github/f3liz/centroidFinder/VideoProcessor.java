@@ -57,6 +57,9 @@ public class VideoProcessor {
             int frameNum = 0;
             Frame frame;
 
+            // Gets rid of pixel warning in terminal
+            org.bytedeco.ffmpeg.global.avutil.av_log_set_level(org.bytedeco.ffmpeg.global.avutil.AV_LOG_ERROR);
+
             // Loops through each frame and records the x and y coordinates
             while ((frame = grabber.grabImage()) != null) {
                 BufferedImage image = converter.convert(frame);
