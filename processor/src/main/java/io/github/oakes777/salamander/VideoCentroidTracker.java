@@ -110,7 +110,8 @@ public class VideoCentroidTracker {
                 double timestamp = frame.timestampSeconds();
 
                 Group largestGroup = analyzer.findLargestGroup(image);
-
+                
+                //for debugging
                 if (largestGroup == null) {
                     System.out.println("Frame " + frameIndex + ": No groups found");
                 } else {

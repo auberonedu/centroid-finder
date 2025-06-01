@@ -179,62 +179,88 @@ const getVideoById = async (req, res) => {
   }
 };
 
-const videoProcessing = async(req,res) => {
+const videoProcessing = async (req, res) => {
 
-  const jobId = uuidv4(); // Generate a unique job ID
-    const { videoPath, 
-            targetColorHex, 
-            threshold, 
-            outputCsvPath, 
-            frameInterval } = req.body;
+  const jobId = uuidv4();
+  const { videoPath, targetColorHex, threshold, outputCsvPath, frameInterval } = req.body;
 
-    // Validate inputs
-    if (!videoPath || !targetColorHex || !threshold || !outputCsvPath) {
-        return res.status(400).json({ error: 'Missing required fields' });
-    }
+  if (!videoPath || !targetColorHex || !threshold || !outputCsvPath) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
 
-    const args = [
-        '-jar',
-        path.resolve(__dirname, '../videoprocessor.jar'),
-        videoPath,
-        targetColorHex,
-        threshold.toString(),
-        outputCsvPath,
-        frameInterval ? frameInterval.toString() : '1'
-    ];
+  jobStatusMap.set(jobId, { status: 'processing', output: '', error: '' });
 
-    const java = spawn('java', args);
+  const args = [
+    '-jar',
+    path.resolve(__dirname, '../videoprocessor.jar'),
+    videoPath,
+    targetColorHex,
+    threshold.toString(),
+    outputCsvPath,
+    frameInterval ? frameInterval.toString() : '1'
+  ];
 
-    let output = '';
-    let error = '';
+  const java = spawn('java', args);
 
-    java.stdout.on('data', (data) => {
-        output += data.toString();
-    });
+  let output = '';
+  let error = '';
 
-    java.stderr.on('data', (data) => {
-        error += data.toString();
-    });
+  java.stdout.on('data', (data) => {
+    output += data.toString();
+  });
 
-java.on('close', (code) => {
+  java.stderr.on('data', (data) => {
+    error += data.toString();
+  });
+
+  java.on('close', (code) => {
     if (code === 0) {
-        res.json({ 
-            jobId,
-            message: 'Video processed successfully.', 
-            output 
-        });
+      jobStatusMap.set(jobId, {
+        status: 'completed',
+        output,
+        error: ''
+      });
     } else {
-        res.status(500).json({ 
-            jobId,
-            error: 'Java process failed.', 
-            details: error 
-        });
+      jobStatusMap.set(jobId, {
+        status: 'failed',
+        output,
+        error
+      });
     }
-});
+  });
+
+  // Respond immediately
+  res.json({
+    jobId,
+    message: 'Video processing started.'
+  });
+};
+
+const getStatus = (req, res) => {
+  const { jobId } = req.params;
+
+  if (!jobId) {
+    return res.status(400).json({ error: 'Missing jobId in request' });
+  }
+
+  const jobInfo = jobStatusMap.get(jobId);
+
+  if (!jobInfo) {
+    return res.status(404).json({ error: 'Job ID not found' });
+  }
+
+  res.json({
+    jobId,
+    status: jobInfo.status,
+    output: jobInfo.output,
+    error: jobInfo.error
+  });
+};
 
 
 export default {
     getVideos,
     getVideoById,
-    videoProcessing
+    videoProcessing,
+    getStatus
 }

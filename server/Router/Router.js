@@ -6,6 +6,6 @@ const router = Router();
 router.get('/videos', controller.getVideos);
  router.get('/videos/:videoID', controller.getVideoById)
  router.post('/videos/videoID', controller.videoProcessing)
- router.get('/videos/process/:jobId/status', controller.getJobStatus);   
+ router.get('/videos/status/:jobId', controller.getJobStatus);   
 
 export default router;
