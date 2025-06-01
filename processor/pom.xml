@@ -40,6 +40,7 @@
 
 
     <build>
+        <finalName>salamander</finalName>
         <plugins>
             <!-- Other plugins here -->
 

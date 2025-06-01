@@ -68,6 +68,8 @@ public class VideoCentroidTracker {
 
                 Group largestGroup = analyzer.findLargestGroup(image);
 
+
+
                 int x = -1;
                 int y = -1;
 
@@ -75,6 +77,8 @@ public class VideoCentroidTracker {
                     x = largestGroup.centroid().x();
                     y = largestGroup.centroid().y();
                 }
+
+
 
                 // Write row: timestamp,x,y
                 writer.printf("%.3f,%d,%d%n", timestamp, x, y);
@@ -95,28 +99,34 @@ public class VideoCentroidTracker {
     public void trackCentroids(String videoPath, String outputCsv, int frameInterval)
             throws IOException, JCodecException {
         try (
-                VideoFrameExtractor extractor = new VideoFrameExtractor(videoPath);
-                PrintWriter writer = new PrintWriter(new FileWriter(outputCsv))) {
-            int frameIndex = 0;
-            for (VideoFrame frame : extractor) {
-                if (frameIndex % frameInterval == 0) {
-                    BufferedImage image = frame.image();
-                    double timestamp = frame.timestampSeconds();
+            VideoFrameExtractor extractor = new VideoFrameExtractor(videoPath);
+            PrintWriter writer = new PrintWriter(new FileWriter(outputCsv))) {
+       
+       
+                int frameIndex = 0;
+        for (VideoFrame frame : extractor) {
+            if (frameIndex % frameInterval == 0) {
+                BufferedImage image = frame.image();
+                double timestamp = frame.timestampSeconds();
 
-                    Group largestGroup = analyzer.findLargestGroup(image);
+                Group largestGroup = analyzer.findLargestGroup(image);
 
-                    int x = -1;
-                    int y = -1;
-
-                    if (largestGroup != null) {
-                        x = largestGroup.centroid().x();
-                        y = largestGroup.centroid().y();
-                    }
-
-                    writer.printf("%.3f,%d,%d%n", timestamp, x, y);
+                if (largestGroup == null) {
+                    System.out.println("Frame " + frameIndex + ": No groups found");
+                } else {
+                    System.out.println("Frame " + frameIndex + ": Group found with centroid at (" +
+                        largestGroup.centroid().x() + ", " + largestGroup.centroid().y() + ")");
                 }
-                frameIndex++;
+
+                int x = -1, y = -1;
+                if (largestGroup != null) {
+                    x = largestGroup.centroid().x();
+                    y = largestGroup.centroid().y();
+                }
+                writer.printf("%.3f,%d,%d%n", timestamp, x, y);
             }
+            frameIndex++;
+        }
 
             System.out.println("Centroid CSV written to " + outputCsv);
         }

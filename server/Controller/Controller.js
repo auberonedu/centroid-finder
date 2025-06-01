@@ -179,15 +179,62 @@ const getVideoById = async (req, res) => {
   }
 };
 
-// const startVideoProcessing = async(req,res) => {
-// this will call the jar from maven 
-// }
+const videoProcessing = async(req,res) => {
 
-// const getJobStatus = async(req, res) => {
+  const jobId = uuidv4(); // Generate a unique job ID
+    const { videoPath, 
+            targetColorHex, 
+            threshold, 
+            outputCsvPath, 
+            frameInterval } = req.body;
 
-// }
+    // Validate inputs
+    if (!videoPath || !targetColorHex || !threshold || !outputCsvPath) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const args = [
+        '-jar',
+        path.resolve(__dirname, '../videoprocessor.jar'),
+        videoPath,
+        targetColorHex,
+        threshold.toString(),
+        outputCsvPath,
+        frameInterval ? frameInterval.toString() : '1'
+    ];
+
+    const java = spawn('java', args);
+
+    let output = '';
+    let error = '';
+
+    java.stdout.on('data', (data) => {
+        output += data.toString();
+    });
+
+    java.stderr.on('data', (data) => {
+        error += data.toString();
+    });
+
+java.on('close', (code) => {
+    if (code === 0) {
+        res.json({ 
+            jobId,
+            message: 'Video processed successfully.', 
+            output 
+        });
+    } else {
+        res.status(500).json({ 
+            jobId,
+            error: 'Java process failed.', 
+            details: error 
+        });
+    }
+});
+
 
 export default {
     getVideos,
-    getVideoById
+    getVideoById,
+    videoProcessing
 }
