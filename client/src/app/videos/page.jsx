@@ -1,3 +1,5 @@
+//make lower level comp for video cards
+
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
