@@ -9,7 +9,7 @@ dotenv.config({
 
 // create server
 const app = express();
-const port = 3003;
+const port = 3000;
 
 // mount routers
 app.use("/", router)
