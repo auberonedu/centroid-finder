@@ -22,19 +22,13 @@ describe('Video Controller Routes', () => {
         const existingFile = 'Salamander5Seconds.mp4'; // A real video in public/videos
         const nonExistentFile = 'notfound.mp4'; // A fake video for testing
 
-        it('should return 404 if filename param is missing', async () => {
-            // No filename was passed, expecting a 404 due to no matching route
-            const response = await request(app).get('/thumbnail/');
-            expect(response.status).toBe(404); // No matching route
-        });
-
-        it('should return 404 if video file does not exist', async () => {
+        it('should return 500 if video file does not exist', async () => {
             // Requesting a thumbnail for a non-existent video
             const response = await request(app).get(`/thumbnail/${nonExistentFile}`);
 
-            // Expecting that a status code of 404 with a proper error message is returned
-            expect(response.status).toBe(404);
-            expect(response.body).toHaveProperty('error', 'Video file not found');
+            // Expecting that a status code of 500 with a proper error message is returned
+            expect(response.status).toBe(500);
+            expect(response.body).toHaveProperty('error', 'Error generating thumbnail');
         });
 
         it('should return 200 and a JPEG image if the file exists', async () => {

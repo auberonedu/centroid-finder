@@ -55,7 +55,6 @@ const getVideoThumbnail = async (req, res) => {
 
   } catch (err) {
     // for other errors such as file not found
-    console.error("Error generating thumbnail", err);
     res.status(500).json({ error: "Error generating thumbnail" });
   }
 };
