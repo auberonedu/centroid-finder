@@ -1,3 +1,5 @@
+package io.github.f3liz.centroidFinder;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -45,7 +47,31 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public int[][] toBinaryArray(BufferedImage image) {
-        return null;
+        // Get the height and width of the image
+        int height = image.getHeight();
+        int width = image.getWidth();
+
+        // Create a 2D array to store the binary values of the image (0 for black, 1 for white)
+        int[][] binaryImage = new int[height][width]; 
+
+        // Iterating through each pixel in the image
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                // Get the RGB value of the current pixel and masking out alpha
+                int currentRGB = image.getRGB(x, y) & 0xFFFFFF;
+
+                // Calculate the Euclidean distance between the current pixel'sc color and the target color
+                double currentDistance = distanceFinder.distance(currentRGB, targetColor);
+
+                // Checks if the pixel's color is within the threshold, setting it to white (1), otherwise black (0)
+                if (threshold >= currentDistance) {
+                    binaryImage[y][x] = 1;
+                } else {
+                    binaryImage[y][x] = 0;
+                }
+            }
+        }
+        return binaryImage;
     }
 
     /**
@@ -58,6 +84,24 @@ public class DistanceImageBinarizer implements ImageBinarizer {
      */
     @Override
     public BufferedImage toBufferedImage(int[][] image) {
-        return null;
+        // Get the height and width of the binary image array
+        int height = image.length;
+        int width = image[0].length;
+
+        // Create a new BufferedImage of the same size as the binary image array
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        // Iterating through the binary image array
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                // Setting the pixel to white if the binary value is 1, otherwise black for each corresponding pixel in the BufferedImage
+                if (image[y][x] == 1) {
+                    bufferedImage.setRGB(x, y, 0xFFFFFF);
+                } else {
+                    bufferedImage.setRGB(x, y, 0x000000);
+                }
+            }
+        }
+        return bufferedImage;
     }
 }

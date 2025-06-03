@@ -1,3 +1,5 @@
+package io.github.f3liz.centroidFinder;
+
 /**
  * Represents a location in an image or array
  * 
