@@ -30,58 +30,33 @@ const getAllVideos = async (req, res) => {
 
 const getVideoThumbnail = async (req, res) => {
   try {
-    // Retrieving the filename from the url using req.params
+    // get filename from the params in the url
     const { filename } = req.params;
 
-    // Validating that a filename was provided
-    if (!filename) {
-      return res.status(400).json({ error: "Filename is required" })
-    }
-
-    // Creating the full path to the video
     const videoPath = path.join(VIDEO_DIR, filename);
 
-    // Checking that the video file exists
-    try {
-      await fs.access(videoPath);
-    } catch {
-      return res.status(404).json({ error: "Video file not found" });
-    }
+    // access the file
+    await fs.access(videoPath);
 
-    // Using ffmpeg to extract the first frame at timestamp 0
+    // set content-type
+    res.setHeader('Content-Type', 'image/jpeg');
+
+    // use ffmpeg to get first frame and set back as .jpg
     ffmpeg(videoPath)
       .on('error', (err) => {
-        // Logging and returning an error if ffmpeg fails
         console.error('FFmpeg error:', err);
-        return res.status(500).json({ error: 'Error generating thumbnail' });
+        // send 500 if it fails
+        res.status(500).json({ error: 'Error generating thumbnail' });
       })
-      // Error catching for development with a more detailed error message
-      // .on('error', (err) => {
-      //   console.error('FFmpeg thumbnail generation error:', err.message);
-      //   res.status(500).json({ error: 'Error generating thumbnail' });
-      // })
-      .screenshots({
-        count: 1, // Only take 1 screenshot
-        timestamps: ['0'], // Take the screenshot at 0 seconds
-        filename: 'thumbnail.jpg', // Name of the temporary jpeg
-        folder: '/tmp', // Name of the temporary directory to store the image. Move this later to the .env file using dotenv
-        size: '320x240', // Resizing the output image
-      })
-      .on('end', () => {
-        // When the screenshot/thumbnail is finished, send it back to the client
-        const thumbPath = path.join('/tmp', 'thumbnail.jpg');
-        res.setHeader('Content-Type', 'image/jpeg');
-        res.sendFile(thumbPath, (err) => {
-          if (err) {
-            console.error('Error sending thumbnail:', err);
-            res.status(500).json({ error: 'Error sending thumbnail' });
-          }
-        });
-      });
+      .frames(1) // first frame
+      .format('image2') // needed to output a single image
+      .output(res) // send to response
+      .run();
+
   } catch (err) {
-    // Catch any unexpected errors and respond with a status code of 500 and a message
+    // for other errors such as file not found
     console.error("Error generating thumbnail", err);
-    res.status(500).json({ error: "Error generating thumbnail" })
+    res.status(500).json({ error: "Error generating thumbnail" });
   }
 };
 
