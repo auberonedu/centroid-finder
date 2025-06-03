@@ -29,6 +29,8 @@ describe('GET requests', () => {
             expect(res.headers['content-type']).toContain('image');
         }
     });
+
+    // TODO: Write test for GET /process/{jobId}/status
 });
 
 describe('POST request', () => {
