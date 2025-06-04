@@ -1,9 +1,3 @@
-# dockerPlan.md
-
-## Overview
-
-We want to containerize our fullstack application which includes a Node/Express backend and a Java video processing job so it runs reliably across different environments. The Docker image will need to support both Node.js and Java, expose the API on port 3000 inside the container (mapped to port 3001 on the host), and allow access to video input and output files using environment variables and mounted volumes.
-
 ## 1. Base Docker Image
 
 We'll use a multi-stage build to keep the image small and efficient:
@@ -36,7 +30,7 @@ docker run -p 3001:3000 my-app
 
 ## 4. Accessing Files (Video Input & Results)
 
-* Use environment variables to specify the paths to the input videos and result files (e.g., `VIDEOS_DIR`, `RESULTS_DIR`).
+* Use environment variables to specify the paths to the input videos and result files (ex, `VIDEOS_DIR`, `RESULTS_DIR`).
 * Mount host directories into the container with `-v`:
 
 ```bash
