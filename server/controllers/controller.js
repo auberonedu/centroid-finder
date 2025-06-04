@@ -91,6 +91,9 @@ const postVideo = (req, res) => {
         const inputPath = path.resolve(process.env.video_directory_path, filename); // The full path to the input video file
         const outputPath = path.resolve(process.env.output_directory_path, `${jobId}.csv`); // Path to where the DSV output will be saved
 
+        // TODO: Check whether recursive should be set to true
+        // Consider a try catch to see if directory exist?
+        // Only run this line if file directory doesn't exist 
         mkdirSync(path.dirname(startMarker), {recursive: true });
         
         // Arguments to the pass to the backend
