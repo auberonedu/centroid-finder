@@ -2,7 +2,7 @@
 
 We'll use a multi-stage build to keep the image small and efficient:
 
-* Start from an `openjdk` base image (e.g., `openjdk:21-jdk-slim`) for Java processing.
+* Start from an `openjdk` base image (ex, `openjdk:21-jdk-slim`) for Java processing.
 * Install Node.js manually using NodeSource or use a base image like `node:20-slim` and install Java into it.
 
 This will allow both Java and Node.js to run in the same container. The slim variants help reduce image size.
