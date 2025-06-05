@@ -11,39 +11,37 @@ import org.bytedeco.javacv.Java2DFrameConverter;
 
 public class VideoProcessor {
     private String videoPath; 
+    private String outputPath;
     private int targetColor;
     private int threshold;
     private int secondIncrement = 1; // TODO: Possible customizable feature later
 
     // Constructor
-    public VideoProcessor(String videoPath, int targetColor, int threshhold) {
+    public VideoProcessor(String videoPath, String outputPath, int targetColor, int threshhold) {
         this.videoPath = videoPath;
+        this.outputPath = outputPath;
         this.targetColor = targetColor;
         this.threshold = threshhold;
     }
 
     public void extractFrames() {
         try {
-            // Create output directory if it doesn't exist
-            String outputDir = "sampleOutput"; 
-            new File(outputDir).mkdirs();
+            // Ensure output directory exists
+            File outputFile = new File(outputPath);
+            outputFile.getParentFile().mkdirs();
 
-            // Path to the CSV output file
-            String csvFilePath = outputDir + "/largestCentroids.csv";
-            
-            // Create the file and initialize writer (false = overwrite if file exists)
-            File csvFile = new File(csvFilePath);
-            PrintWriter writer = new PrintWriter(new FileWriter(csvFile, false));
+            // Create writer for CSV output
+            PrintWriter writer = new PrintWriter(new FileWriter(outputFile, false));
             
             // Write the CSV header: column names
-            writer.println();
+            writer.println("time,x,y");
 
             // Process the video frames and write centroid data to CSV
             extractFrames(videoPath, writer);
             
             // Close the writer after all data is written
             writer.close();
-            System.out.println("Finished writing CSV to: " + csvFilePath);
+            System.out.println("Finished writing CSV to: " + outputPath);
         } catch (Exception e) {
             e.printStackTrace(); // Print any exceptions encountered
         }

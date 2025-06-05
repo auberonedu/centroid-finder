@@ -30,13 +30,14 @@ import java.io.File;
  */
 public class Main {
     public static void main(String[] args) {
-        if (args.length < 3) {
-            System.out.println("Usage: java Main <input_video> <hex_target_color> <threshold>");
+        if (args.length < 4) {
+            System.out.println("Usage: java Main <input_video> <output_path> <hex_target_color> <threshold>");
             return;
         }
         
         String videoPath = args[0];
-        String hexTargetColor = args[1];
+        String outputPath = args[1];
+        String hexTargetColor = args[2];
         int threshold = 0;
 
         // TEST
@@ -47,7 +48,7 @@ public class Main {
 
         // Handling that threshold is a valid number.
         try {
-            threshold = Integer.parseInt(args[2]);
+            threshold = Integer.parseInt(args[3]);
         } catch (NumberFormatException e) {
             System.err.println("Threshold must be an integer.");
             return;
@@ -70,7 +71,7 @@ public class Main {
         }
         // Optionally: try opening a stream to test access
         try (var fis = new java.io.FileInputStream(file)) {
-                // Just opening and closing to verify we can read it
+                // Just verifying that we can open the file
         } catch (Exception e) {
             System.out.println("An error occurred while checking the file: " + e.getMessage());
             return;
@@ -91,7 +92,7 @@ public class Main {
         }
 
         // Instantiate VideoProcessor
-        VideoProcessor processor = new VideoProcessor(videoPath, targetColor, threshold); 
+        VideoProcessor processor = new VideoProcessor(videoPath, outputPath, targetColor, threshold); 
         // tell processor to process data
         processor.extractFrames();
 

@@ -12,8 +12,8 @@ public class VideoProcessorTest {
     public class TestVideoProcessor extends VideoProcessor {
         public int callCounter = 0;
 
-        public TestVideoProcessor(String path, int targetColor, int threshold) {
-            super(path, targetColor, threshold);
+        public TestVideoProcessor(String inputPath, String outputPath, int targetColor, int threshold) {
+            super(inputPath, outputPath, targetColor, threshold);
         }
 
         @Override
@@ -25,7 +25,8 @@ public class VideoProcessorTest {
     @Test
     public void testExtractFramesCallsFrameToDataAtOneSecondIntervals() {
         String videoPath = "sampleInput/sample_video_1.mp4";
-        TestVideoProcessor vp = new TestVideoProcessor(videoPath, 0xFF0000, 30); 
+        String outputPath = "sampleOutput/test1.csv";
+        TestVideoProcessor vp = new TestVideoProcessor(videoPath, outputPath, 0xFF0000, 30); 
 
         vp.extractFrames();
 
@@ -39,7 +40,9 @@ public class VideoProcessorTest {
     // Test for writing a valid CSV file and seeing if no centroid was found
     @Test
     public void testFrameToData_writesInvalidCentroid() {
-        VideoProcessor vp = new VideoProcessor("sampleInput/sample_video_1.mp4",  0xFF9900, 150);
+        String videoPath = "sampleInput/sample_video_1.mp4";
+        String outputPath = "sampleOutput/test2.csv";
+        VideoProcessor vp = new VideoProcessor(videoPath, outputPath, 0xFF9900, 150);
 
         // Create a dummy image with no matching pixels
         BufferedImage img = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB); // The 10s represent the pixels
@@ -64,7 +67,9 @@ public class VideoProcessorTest {
     // Test for a valid centroid in a 10x10 pixel image.
     @Test
     public void testFrameToData_writesValidCentroid() {
-        VideoProcessor vp = new VideoProcessor("sampleInput/sample_video_1.mp4",  0xFF9900, 150);
+        String videoPath = "sampleInput/sample_video_1.mp4";
+        String outputPath = "sampleOutput/test3.csv";
+        VideoProcessor vp = new VideoProcessor(videoPath, outputPath, 0xFF9900, 150);
 
         BufferedImage img = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
         for(int i = 2; i <= 4; i++) {

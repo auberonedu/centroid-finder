@@ -27,7 +27,7 @@ replay_pid*
 processor/target/
 
 # Sample Outputs
-processor/sampleOutput/
+# processor/sampleOutput/
 
 # Node modules
 server/node_modules/

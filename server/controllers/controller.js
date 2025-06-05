@@ -28,7 +28,7 @@ jobIDArray.push("123")
 const getVideos = (req, res) => {
     // console.log("getVideos successfully called!")
     try {
-        const videoDir = path.resolve(process.cwd(), process.env.video_directory_path);
+        const videoDir = process.env.video_directory_path;
         const filenames = readdirSync(videoDir);
 
         const videos = filenames
@@ -106,10 +106,13 @@ const postVideo = (req, res) => {
             threshold
         ];
 
+        console.log("Running Java with:")
+        console.log("java", javaArgs.join(" "));
+
         // Spawns the Java process in detached mode
         const javaSpawn = spawn('java', javaArgs, {
-            detached: true, // this ensures that the process is independent from the Node.js process
-            stdio: 'ignore' // this ignores stdio, which there is no console output to Node
+            // detached: true, // this ensures that the process is independent from the Node.js process
+            stdio: 'inherit' // changed from 'ignore' to 'inherit'
         });
 
         javaSpawn.unref(); // this allows the parent Node to exit independently of the javaSpawn
