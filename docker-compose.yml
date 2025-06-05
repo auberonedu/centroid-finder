@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  # This is the frontend container. It builds the front-end Next.js app from the front-end GitHub repo.
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile  # We keep this in the root to keep the frontend out of the server folder
+    ports:
+      - "3000:3000"  # Makes the app available at localhost:3000
+    depends_on:
+      - backend  # Wait until the backend is up before trying to talk to it
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:3001  # Tells the frontend how to reach the backend inside Docker
+
+  # This is the Express backend that handles API requests and starts the processing jobs
+  backend:
+    build: ./server  # Builds from the Dockerfile inside the server folder
+    ports:
+      - "3001:3001"  # Makes the backend available at localhost:3001 for testing
+    env_file:
+      - .env  # Loads environment variables from the root .env file
+    volumes:
+      - ./shared:/app/shared  # Shares a folder for passing input/output files to the processor container
+    environment:
+      - RESULTS_DIR=/app/shared/results  # Optional env var for where to put results
+
+  # This is the Java processor that runs the .jar file we built earlier
+  batch:
+    build: ./processor  # Builds from the Dockerfile inside the processor folder
+    volumes:
+      - ./shared:/app/shared  # Shared folder to read videos and write output from the processor job
+    environment:
+      - INPUT_DIR=/app/shared/videos
+      - OUTPUT_DIR=/app/shared/results  # These are passed in case the .jar file uses them

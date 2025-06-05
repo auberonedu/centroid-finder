@@ -5,7 +5,7 @@ FROM openjdk:25-slim
 WORKDIR /app
 
 # Copying the compiled JAR into the container
-COPY processor.jar .
+COPY videoprocessor.jar .
 
 # Command to run the JAR file
-CMD ["java", "-jar", "processor.jar"]
+CMD ["java", "-jar", "videoprocessor.jar"]
