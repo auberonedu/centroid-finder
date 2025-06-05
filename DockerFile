@@ -1,0 +1,29 @@
+FROM node:20-bullseye
+
+# Install Java and ffmpeg
+RUN apt-get update && apt-get install -y \
+    openjdk-17-jdk \
+    ffmpeg \
+    && apt-get clean
+
+# setting the working directory
+WORKDIR /app
+
+# copy package.json and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# copying the rest of the server files
+COPY . .
+
+# set ENV variables 
+ENV VIDEO_DIR=/videos \
+    RESULTS_DIR=/results \
+    JAR_PATH=/app/centroid/processor/target/centroid-1.0-SNAPSHOT-jar-with-dependencies.jar \
+    PORT=3000
+
+# expose the server port
+EXPOSE 3000
+
+# start the server
+CMD ["node", "index.js"]
