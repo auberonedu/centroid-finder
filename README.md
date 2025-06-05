@@ -3,7 +3,7 @@
 ## *DO THIS FIRST* Wave 0: AI Rules 
 AI is *NOT ALLOWED* for generating implementations of the classes.
 AI is allowed for helping you make test cases.
-
+  
 Don't have it just create the tests mindlessly for you though! Make sure you're actively involved in making the tests.
 
 DO NOT MIX HUMAN AND AI COMMITS.
@@ -64,3 +64,4 @@ Once you have confirmed it is working, clean up your code, make sure it's commit
 ## Optional Wave 7: Enhancements?
 If you want to, you can make a new branch to start experimenting. See if you can come up with a better color distance method (hint: look up perceptual color spaces). See if you can make your code more efficient or mor suited to spotting salamanders! Experiment with other test files. PLEASE MAKE SURE THIS IS IN A SEPARATE BRANCH FROM YOUR SUBMISSION.
 
+On Branch Video!
