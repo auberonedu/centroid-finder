@@ -1,0 +1,8 @@
+node_modules
+.git
+sampleOutput
+*.log
+*.md
+*.csv
+.DS_Store
+.env
