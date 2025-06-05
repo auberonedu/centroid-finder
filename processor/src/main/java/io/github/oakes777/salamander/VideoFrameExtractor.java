@@ -121,4 +121,9 @@ public class VideoFrameExtractor implements Iterable<VideoFrame>, AutoCloseable 
     public void close() throws IOException {
         channel.close(); // Close the video file properly
     }
+
+    public double getFrameRate() {
+        return this.frameRate;
+    }
+
 }

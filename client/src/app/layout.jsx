@@ -1,20 +1,19 @@
-import Link from  "next/link";
-//import styles from './Layout.module.css';
+"use client";
+
+import NavBar from "./components/NavBar"; // adjust if path is different
+import { Container, Box } from "@mui/material";
+import "./globals.css"; // keep this if it exists
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <div>
-          <nav className="navbar">
-            <ul>
-              <li><Link href="/">Home</Link></li>
-              <li><Link href="/videos">Videos</Link></li>
-              <li><Link href="/videos/status">Completed</Link></li>
-            </ul>
-          </nav>
-          <main>{children}</main>
-        </div>
+        <NavBar />
+        <Container maxWidth="md">
+          <Box sx={{ paddingTop: 4 }}>
+            {children}
+          </Box>
+        </Container>
       </body>
     </html>
   );

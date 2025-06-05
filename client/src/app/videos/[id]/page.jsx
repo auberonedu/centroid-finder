@@ -1,7 +1,7 @@
-// pages/preview.js
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   Typography,
   Box,
@@ -15,7 +15,8 @@ import {
 
 export default function VideoPreviewPage() {
   const router = useRouter();
-  const { filename } = router.query;
+  const searchParams = useSearchParams();
+  const filename = searchParams.get("filename");
 
   const [selectedColor, setSelectedColor] = useState(null);
   const [threshold, setThreshold] = useState(50);
@@ -151,14 +152,14 @@ export default function VideoPreviewPage() {
         <canvas
           ref={canvasRef}
           width={600}
-          height={400} // Can be any default, will update after load
+          height={400}
           onClick={handleCanvasClick}
           style={{
             width: "100%",
             maxWidth: 600,
             borderRadius: 8,
             cursor: selectingColor ? "crosshair" : "default",
-            border: "1px solid #ccc", // Optional: add border to visualize canvas bounds
+            border: "1px solid #ccc",
           }}
         />
       </Paper>
