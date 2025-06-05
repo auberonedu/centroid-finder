@@ -53,3 +53,13 @@ We will use:
 ```dockerfile
 CMD ["node", "index.js"]
 ```
+
+## Command Line
+
+docker build -t salamander-backend .
+
+docker run -it \
+  -p 3001:3001 \
+  -v "$(pwd)/centroid/processor/sampleInput:/videos" \
+  -v "$(pwd)/sampleOutput:/results" \
+  salamander-backend
