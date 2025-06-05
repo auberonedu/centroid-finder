@@ -22,6 +22,7 @@ app.use('/videos', express.static(path.resolve(process.env.VIDEO_DIR)));
 // routes
 app.use('/api/videos', videoRoutes);
 app.use('/api/process', processRoutes);
+app.use('/results', express.static(path.resolve(process.env.RESULTS_DIR)));
 
 console.log("Loaded ENV:", {
   VIDEO_DIR: process.env.VIDEO_DIR,
