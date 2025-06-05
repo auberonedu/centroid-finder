@@ -50,6 +50,8 @@ export const processVid = (req, res) => {
          output: outputFile,
       });
 
+      monitorJob(jobId, outputPath);
+
       return res.status(202).json({ jobId });
    } catch (err) {
       console.error("Error starting job:", err);
