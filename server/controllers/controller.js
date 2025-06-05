@@ -88,6 +88,32 @@ export const getJobStatus = (req, res) => {
    }
 };
 
+function monitorJob(jobId, outputPath, timeout = 30000) {
+   const start = Date.now();
+
+   const interval = setInterval(() => {
+      // Timeout check
+      if (Date.now() - start > timeout) {
+         jobStatus.set(jobId, {
+            status: "error",
+            error: "Job timed out or did not produce output",
+         });
+         clearInterval(interval);
+         return;
+      }
+
+      // Check if file exists
+      if (fs.existsSync(outputPath)) {
+         jobStatus.set(jobId, {
+            status: "done",
+            output: path.basename(outputPath),
+         });
+         clearInterval(interval);
+      }
+   }, 1000); // check every 1 second
+}
+
+
 
 export const getJobs = (req, res) => {
    const jobs = [];
