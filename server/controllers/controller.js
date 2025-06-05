@@ -11,76 +11,83 @@ const __dirname = dirname(__filename);
 export const jobStatus = new Map();
 
 export const processVid = (req, res) => {
-   const { file, color = "255,0,0", threshold = 95 } = req.body;
+   const { file } = req.params;
+   const { targetColor, threshold } = req.query;
+
+   if (!targetColor || !threshold) {
+      return res.status(400).json({
+         error: "Missing targetColor or threshold query parameter.",
+      });
+   }
 
    const inputPath = path.join(process.env.VIDEO_DIR || "videos", file);
    const jobId = uuid();
-   const outputFile = `${jobId}.csv`;
-
    const outputDir = process.env.OUTPUT_DIR || path.join(__dirname, "output");
+   const outputFile = `${jobId}.csv`;
    const outputPath = path.join(outputDir, outputFile);
+
    if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir, { recursive: true });
    }
 
-   // Prepare thumbnail directory and path
-   const thumbnailDir = path.join(__dirname, "thumbnails");
-   const thumbnailFile = `${file}.jpg`;
-   const thumbnailPath = path.join(thumbnailDir, thumbnailFile);
-   if (!fs.existsSync(thumbnailDir)) {
-      fs.mkdirSync(thumbnailDir, { recursive: true });
+   try {
+      const jar = spawn("java", [
+         "-jar",
+         process.env.JAR_PATH,
+         inputPath,
+         outputPath,
+         color,
+         threshold.toString(),
+      ], {
+         detached: true,
+         stdio: "ignore",
+      });
+
+      if (jar && typeof jar.unref === "function") jar.unref();
+
+      jobStatus.set(jobId, {
+         status: "processing",
+         output: outputFile,
+      });
+
+      return res.status(202).json({ jobId });
+   } catch (err) {
+      console.error("Error starting job:", err);
+      return res.status(500).json({ error: "Error starting job" });
    }
-
-   // Spawn JAR processing in detached mode
-   const jarInput = [
-      "-jar",
-      process.env.JAR_PATH,
-      inputPath,
-      outputPath,
-      color,
-      threshold.toString(),
-   ];
-
-   const jar = spawn("java", jarInput, {
-      detached: true,
-      stdio: "ignore",
-   });
-
-   if (jar && typeof jar.unref === "function") {
-      jar.unref();
-   }
-
-   // Spawn FFmpeg for thumbnail in detached mode
-   const ffmpeg = spawn(ffmpegPath, [
-      "-y",
-      "-i", inputPath,
-      "-ss", "00:00:01",
-      "-vframes", "1",
-      thumbnailPath,
-   ], {
-      detached: true,
-      stdio: "ignore",
-   });
-
-   if (ffmpeg && typeof ffmpeg.unref === "function") {
-      ffmpeg.unref();
-   }
-
-   jobStatus.set(jobId, {
-      status: "processing",
-      output: outputFile,
-   });
-
-   res.json({ jobId });
 };
 
 export const getJobStatus = (req, res) => {
-   const job = jobStatus.get(req.params.jobId);
-   if (!job) {
-      return res.status(404).json({ error: "Job not found" });
+   try {
+      const job = jobStatus.get(req.params.jobId);
+
+      if (!job) {
+         return res.status(404).json({ error: "Job ID not found" });
+      }
+
+      const { status, output, error } = job;
+
+      if (status === "processing") {
+         return res.status(200).json({ status: "processing" });
+      }
+
+      if (status === "done") {
+         return res.status(200).json({ status: "done", result: `/results/${output}` });
+      }
+
+      if (status === "error") {
+         return res.status(200).json({ status: "error", error });
+      }
+
+      // Fallback — unrecognized status
+      return res.status(500).json({ error: "Unknown job status" });
+
+   } catch (err) {
+      console.error("Job status error:", err);
+      return res.status(500).json({ error: "Error fetching job status" });
    }
-   res.json(job);
 };
+
 
 export const getJobs = (req, res) => {
    const jobs = [];
@@ -99,7 +106,7 @@ export const videos = (req, res) => {
          return res.status(500).json({ error: "Cannot read from video directory" });
       }
 
-      const videoFiles = files.filter((file) => file.endsWith(".mp4"));
+      const videoFiles = files.filter((file) => file.endsWith(".mp4") || file.endsWith(".mov") || file.endsWith(".mkv"));
       res.status(200).json(videoFiles);
    });
 };

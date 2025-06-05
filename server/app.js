@@ -11,6 +11,6 @@ const app = express();
 app.use(express.json());
 app.use("/", route);
 app.use("/results", express.static(path.resolve(process.env.OUTPUT_DIR)));
-app.use("/videos", express.static(path.resolve(process.env.VIDEO_DIR)));
+app.use("/videos", express.static(path.resolve(process.env.VIDEO_DIR) || "videos"));
 
 export default app;
