@@ -1,10 +1,12 @@
 import express from 'express';
 import router from './router/routes.js';
+import cors from 'cors';
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.static('./public'));
+app.use(cors()); // enables cross-origin requests (allow frontend to fetch from here)
 
 app.use("/", router);
 
