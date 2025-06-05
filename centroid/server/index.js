@@ -3,10 +3,15 @@ require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
 
 // import express framework and create an instance of it
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 const videoRoutes = require('./routes/videoRoutes');
 const processRoutes = require('./routes/processRoutes');
+
+app.use(cors({
+  origin: 'http://localhost:3000' // Adjust if frontend runs on another origin in production
+}));
 
 // middleware to parse JSON bodies
 app.use(express.json());
@@ -25,5 +30,5 @@ console.log("Loaded ENV:", {
 });
 
 // start the server on specified port
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
