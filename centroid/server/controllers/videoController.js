@@ -3,6 +3,7 @@ require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
 
 const fs = require("fs");
 const { exec } = require("child_process");
+const { spawn } = require("child_process");
 
 // resolve environment variables
 const VIDEO_DIR = path.resolve(__dirname, '../../../', process.env.VIDEO_DIR);
@@ -41,5 +42,40 @@ exports.generateThumbnail = (req, res) => {
       return res.status(500).json({ error: "Error generating thumbnail" });
     }
     res.sendFile(path.resolve(outputPath));
+  });
+};
+
+exports.generatePreview = (req, res) => {
+  const { filename } = req.params;
+  const { targetColor, threshold } = req.query;
+
+  const VIDEO_DIR = path.resolve(process.env.VIDEO_DIR);
+  const videoPath = path.join(VIDEO_DIR, filename);
+  const JAR_PATH = process.env.JAR_PATH;
+
+  const jobId = `preview-${Date.now()}`;
+  const outputImagePath = path.resolve("/tmp", `${jobId}.jpg`);
+
+  const args = [
+    videoPath,
+    outputImagePath,
+    targetColor || "00FF00",
+    threshold || "50",
+  ];
+
+  const java = spawn("java", ["-jar", JAR_PATH, ...args]);
+
+  java.stderr.on("data", (data) => console.error("stderr:", data.toString()));
+
+  java.on("exit", (code) => {
+    if (code !== 0) {
+      return res.status(500).send("Failed to generate preview");
+    }
+
+    fs.readFile(outputImagePath, (err, data) => {
+      if (err) return res.status(500).send("Error reading image");
+      res.setHeader("Content-Type", "image/jpeg");
+      res.send(data);
+    });
   });
 };
