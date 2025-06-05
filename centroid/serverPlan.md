@@ -81,12 +81,12 @@ ffmpeg → Create thumbnails
 ## Command's used
 node index.js - to run the server
 
-http://localhost:3000/api/videos
+http://localhost:3001/api/videos
 
-http://localhost:3000/api/videos/thumbnail/sample.mp4
+http://localhost:3001/api/videos/thumbnail/sample.mp4
 
 POST Route
-http://localhost:3000/api/process/fileName.mp4?targetColor=00FF00&threshold=20
+http://localhost:3001/api/process/fileName.mp4?targetColor=00FF00&threshold=20
 
 GET Route
-http://localhost:3000/api/process/whateveristhejobID/status
+http://localhost:3001/api/process/whateveristhejobID/status
