@@ -10,7 +10,7 @@ const videoRoutes = require('./routes/videoRoutes');
 const processRoutes = require('./routes/processRoutes');
 
 app.use(cors({
-  origin: 'http://localhost:3000' // Adjust if frontend runs on another origin in production
+  origin: 'http://localhost:3000' 
 }));
 
 // middleware to parse JSON bodies
