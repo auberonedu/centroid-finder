@@ -78,7 +78,7 @@ const startVideoProcess = async (req, res) => {
       [
         "-jar",
         "../Processor/target/centroidFinderVideo-jar-with-dependencies.jar",
-        path.join("videos", filename),
+        path.join("../videos", filename),
         targetColor,
         thresholdNum.toString(),
         jobId,

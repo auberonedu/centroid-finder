@@ -59,7 +59,7 @@ public class ImageSummaryApp {
         }
 
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath);
-             PrintWriter writer = new PrintWriter(new File(taskId + ".csv"))) {
+             PrintWriter writer = new PrintWriter(new File("../results/" + taskId + ".csv"))) {
 
             grabber.start();
             Java2DFrameConverter converter = new Java2DFrameConverter();
