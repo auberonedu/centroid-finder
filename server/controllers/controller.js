@@ -18,11 +18,17 @@ const getVideos = async (req, res) => {
   }
 };
 
-const getThumbnail = (req, res) => {
+const getThumbnail = async (req, res) => {
   try {
     const videoDir = process.env.VIDEO_PATH;
     const thumbnailId = req.params.filename;
     const videoPath = path.join(videoDir, thumbnailId);
+
+    try {
+      await fs.access(videoPath);
+    } catch {
+      return res.status(404).json({ error: "Video not found." });
+    }
 
     res.setHeader("Content-Type", "image/jpeg");
 
@@ -30,6 +36,9 @@ const getThumbnail = (req, res) => {
       .inputOptions(["-ss 0"])
       .outputOptions(["-frames:v 1"])
       .format("mjpeg")
+      .on("error", (err) => {
+        console.error("FFmpeg error:", err.message);
+      })
       .pipe(res, { end: true });
   } catch (err) {
     console.error("Error generating thumbnail:", err);
@@ -77,8 +86,8 @@ const startVideoProcess = async (req, res) => {
       "java",
       [
         "-jar",
-        "../Processor/target/centroidFinderVideo-jar-with-dependencies.jar",
-        path.join("../videos", filename),
+        "/app/Processor/target/centroidFinderVideo-jar-with-dependencies.jar",
+        path.join("/videos", filename),
         targetColor,
         thresholdNum.toString(),
         jobId,

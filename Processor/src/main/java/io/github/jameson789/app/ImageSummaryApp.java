@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
+
 /**
  * The Image Summary Application.
  * 
@@ -41,7 +42,8 @@ import org.bytedeco.javacv.Java2DFrameConverter;
 public class ImageSummaryApp {
     public static void main(String[] args) {
         if (args.length < 4) {
-            throw new IllegalArgumentException("Usage: java ImageSummaryApp <input_video> <hex_target_color> <threshold> <task_id>");
+            throw new IllegalArgumentException(
+                    "Usage: java ImageSummaryApp <input_video> <hex_target_color> <threshold> <task_id>");
         }
 
         String videoPath = args[0];
@@ -58,8 +60,15 @@ public class ImageSummaryApp {
             return;
         }
 
+        String resultDir = System.getenv("RESULT_PATH");
+        if (resultDir == null || resultDir.isBlank()) {
+            resultDir = "../results"; // fallback for local dev
+        }
+
+        File outputFile = new File(resultDir, taskId + ".csv");
+
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath);
-             PrintWriter writer = new PrintWriter(new File("../results/" + taskId + ".csv"))) {
+                PrintWriter writer = new PrintWriter(outputFile)) {
 
             grabber.start();
             Java2DFrameConverter converter = new Java2DFrameConverter();
@@ -71,7 +80,8 @@ public class ImageSummaryApp {
 
             for (int i = 0; i < frameCount; i++) {
                 var frame = grabber.grabImage();
-                if (frame == null) continue;
+                if (frame == null)
+                    continue;
 
                 BufferedImage image = converter.getBufferedImage(frame);
                 CentroidResult result = processor.processImage(image);
