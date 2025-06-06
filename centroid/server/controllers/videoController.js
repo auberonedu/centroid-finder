@@ -44,21 +44,22 @@ exports.generateThumbnail = (req, res) => {
     res.sendFile(path.resolve(outputPath));
   });
 };
-
 exports.generatePreview = (req, res) => {
   const { filename } = req.params;
   const { targetColor, threshold } = req.query;
 
-  const VIDEO_DIR = path.resolve(process.env.VIDEO_DIR);
+  const VIDEO_DIR = path.resolve(__dirname, "../../../", process.env.VIDEO_DIR);
   const videoPath = path.join(VIDEO_DIR, filename);
-  const JAR_PATH = process.env.JAR_PATH;
+  const JAR_PATH = path.resolve(__dirname, "../../../", process.env.JAR_PATH);
 
   const jobId = `preview-${Date.now()}`;
   const outputImagePath = path.resolve("/tmp", `${jobId}.jpg`);
+  const centroidPath = path.resolve("/tmp", `${jobId}.txt`);
 
   const args = [
     videoPath,
     outputImagePath,
+    centroidPath,
     targetColor || "00FF00",
     threshold || "50",
   ];
@@ -69,13 +70,22 @@ exports.generatePreview = (req, res) => {
 
   java.on("exit", (code) => {
     if (code !== 0) {
-      return res.status(500).send("Failed to generate preview");
+      return res.status(500).json({ error: "Preview generation failed." });
     }
 
-    fs.readFile(outputImagePath, (err, data) => {
-      if (err) return res.status(500).send("Error reading image");
-      res.setHeader("Content-Type", "image/jpeg");
-      res.send(data);
+    // read image + centroid
+    fs.readFile(outputImagePath, (err, imageData) => {
+      if (err) return res.status(500).send("Error reading preview image");
+
+      const centroid = fs.existsSync(centroidPath)
+        ? fs.readFileSync(centroidPath, "utf-8").trim().split(",").map(Number)
+        : [-1, -1];
+
+      res.setHeader("Content-Type", "application/json");
+      res.send({
+        centroid: { x: centroid[0], y: centroid[1] },
+        image: `data:image/jpeg;base64,${imageData.toString("base64")}`,
+      });
     });
   });
 };

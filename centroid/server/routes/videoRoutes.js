@@ -10,6 +10,6 @@ const videoController = require('../controllers/videoController');
 
 router.get('/', videoController.listVideos);
 router.get('/thumbnail/:filename', videoController.generateThumbnail);
-router.get("/preview/:filename", generatePreview);
+router.get("/preview/:filename", videoController.generatePreview);
 
 module.exports = router;

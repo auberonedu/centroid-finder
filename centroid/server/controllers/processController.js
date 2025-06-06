@@ -5,40 +5,61 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const { spawn } = require('child_process');
 
-// sets up environment variables
+// Resolve and verify environment variables
 const VIDEO_DIR = path.resolve(__dirname, '../../../', process.env.VIDEO_DIR);
 const RESULTS_DIR = path.resolve(__dirname, '../../../', process.env.RESULTS_DIR);
 const JAR_PATH = path.resolve(__dirname, '../../../', process.env.JAR_PATH);
 const JOBS_DIR = path.resolve(__dirname, '../utils/jobs');
 
-// makes sure the folder for storing job status exists
+// Ensure the jobs directory exists
 if (!fs.existsSync(JOBS_DIR)) {
   fs.mkdirSync(JOBS_DIR, { recursive: true });
 }
 
-// starts a new job to process a video file
+// start a new video processing job
 exports.startJob = (req, res) => {
   const { filename } = req.params;
   const { targetColor, threshold } = req.query;
 
+  // Validate query parameters
   if (!targetColor || !threshold) {
     return res.status(400).json({ error: 'Missing targetColor or threshold query parameter.' });
   }
 
-  // creates paths for the video file, where the output CSV will be stored, and the status file
+  // resolve paths
   const inputPath = path.join(VIDEO_DIR, filename);
   const jobId = uuidv4();
   const outputCsv = path.join(RESULTS_DIR, `${jobId}.csv`);
   const statusFile = path.join(JOBS_DIR, `${jobId}.status`);
 
+  // validate paths
+  if (!fs.existsSync(inputPath)) {
+    return res.status(404).json({ error: `Input video not found: ${inputPath}` });
+  }
+
+  if (!JAR_PATH || !fs.existsSync(JAR_PATH)) {
+    return res.status(500).json({ error: `JAR file not found: ${JAR_PATH}` });
+  }
+
+  // Write "processing" status
   fs.writeFileSync(statusFile, 'processing');
 
   const args = ['-jar', JAR_PATH, inputPath, outputCsv, targetColor, threshold];
-  const child = spawn('java', args, { detached: true, stdio: 'ignore' });
+  console.log("Starting Java process with command: java", args.join(' '));
 
-  child.unref();
+  const child = spawn('java', args);
+
+  // log output for debugging
+  child.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+  });
+
+  child.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
 
   child.on('exit', (code) => {
+    console.log(`Java process exited with code ${code}`);
     if (code === 0) {
       fs.writeFileSync(statusFile, `done:${path.relative(process.cwd(), outputCsv)}`);
     } else {
@@ -49,7 +70,7 @@ exports.startJob = (req, res) => {
   res.status(202).json({ jobId });
 };
 
-// function checks the status of a job by its ID
+// get job status
 exports.getJobStatus = (req, res) => {
   const { jobId } = req.params;
   const statusPath = path.join(JOBS_DIR, `${jobId}.status`);
@@ -60,7 +81,6 @@ exports.getJobStatus = (req, res) => {
 
   const status = fs.readFileSync(statusPath, 'utf-8');
 
-  // if the job is finished, send back the result
   if (status.startsWith('done:')) {
     return res.status(200).json({
       status: 'done',
@@ -68,7 +88,6 @@ exports.getJobStatus = (req, res) => {
     });
   }
 
-  // if failed, return error
   if (status.startsWith('error:')) {
     return res.status(200).json({
       status: 'error',
