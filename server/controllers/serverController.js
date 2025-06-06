@@ -130,15 +130,8 @@ export function startProcessingJob(req, res) {
 
     //spawn java process
     const child = spawn('java', javaArgs, {
-      stdio: ['ignore', 'pipe', 'pipe'],
+      stdio: 'ignore',
       detached: true
-    });
-    
-    child.stdout.on('data', (data) => {
-      console.log(`Java output: ${data}`);
-    });
-    child.stderr.on('data', (data) => {
-      console.error(`Java error: ${data}`);
     });
     
     //handle errors that occur when attempting to start process
