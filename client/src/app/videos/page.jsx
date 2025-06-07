@@ -74,18 +74,14 @@ export default function VideoChooserPage() {
               <ListItem key={video.name} disablePadding>
                 <Link
                   href={`/preview?filename=${encodeURIComponent(video.name)}`}
-                  passHref
-                  legacyBehavior
+                  style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <Box
-                    component="a"
                     sx={{
                       display: "block",
                       width: "100%",
                       padding: 2,
                       textAlign: "center",
-                      textDecoration: "none",
-                      color: "inherit",
                       "&:hover": {
                         backgroundColor: "#f0f0f0",
                       },
