@@ -1,65 +1,146 @@
-# centroid-finder
+# Salamander Centroid Tracker
 
-## *DO THIS FIRST* Wave 0: AI Rules 
-AI is *NOT ALLOWED* for generating implementations of the classes.
-AI is allowed for helping you make test cases.
+Welcome to the Salamander Centroid Finder, a full-stack video processing application built for scientists studying salamander chemical communication behavior. This tool allows you to:
 
-Don't have it just create the tests mindlessly for you though! Make sure you're actively involved in making the tests.
+- Upload and select salamander videos
+- Click to choose the animal's color
+- Preview and process video frames to identify centroids
+- Download the resulting CSV data for further analysis
 
-DO NOT MIX HUMAN AND AI COMMITS.
-EVERY COMMIT THAT USES AI MUST START WITH THE COMMIT MESSAGE "AI Used" AND IT MUST ONLY CREATE/ALTER TEST FILES
+---
 
-For this wave, please have each partner make a commit below with their username acknowledging that they understand the rules, according to the following format:
+## Project Structure
 
-"I, YOUR_GITHUB_USERNAME, understand that AI is ONLY to be used for tests, and that every commit that I use AI for must start with 'AI Used'"
+- **client/** — React + Next.js front end
+- **server/** — Express.js backend API
+- **processor/** — Java JAR for image processing
+- **output/** — Where final CSVs are stored
+- **thumbnails/** — For video list previews
 
-## Wave 1: Understand
-Read through ImageSummaryApp in detail with your partner. Understand what each part does. This will involve looking through and reading ALL of the other classes records and interfaces. This will take a long time, but it is worth it! Do not skimp on this part, you will regret it! Also look at the sampleInput and sampleOutput folders to understand what comes in and what goes out.
+---
 
-As you read through the files, take notes in notes.md to help you and your partner understand. Make frequent commits to your notes.
+## Requirements
 
-## Wave 2: Implement DfsBinaryGroupFinder
-This class takes in a binary image array and finds the connected groups. It will look very similar in many ways to the explorer problem you did for DFS! You'll need to understand the Group record to do this well.
+- [Docker](https://www.docker.com/products/docker-desktop/) installed
+- Git clone of this repository
 
-Consider STARTING with the unit tests. Remember, you can use AI to help with the unit tests but NOT the implementation. Any AI commit must start with the message "AI Used"
+---
 
-MAKE SURE YOU MAKE THOROUGH UNIT TESTS.
+## Getting Started
 
-## Wave 3: Implement EuclideanColorDistance
-Implement EuclideanColorDistance. You may consider adding a helper method for converting a hex int into R, G, and B components.
+1. **Clone the repo**
 
-Again, consider starting with unit tests. You may consider using WolframAlpha to help you get correct expected values.
-
-MAKE SURE YOU MAKE THOROUGH UNIT TESTS.
-
-## Wave 4: Implement DistanceImageBinarizer
-To do this you will need to research `java.awt.image.BufferedImage`. In particular, make sure to understand `getRGB` and `setRGB`. When creating a new image, you can use the below to start the instance:
-
-```
-new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+```bash
+git clone https://github.com/oakes777/centroid-finder.git
+cd centroid-finder
 ```
 
-Note that a lot of this class will be calling methods in BinaryGroupFinder and ColorDistanceFinder!
+2. **Place your videos** inside a folder on your laptop. For example:
 
-MAKE SURE YOU MAKE THOROUGH UNIT TESTS. Consider asking the AI to teach you about mocks and fakes in unit testing and how they may be helpful here.
-
-## Wave 5: Implement BinarizingImageGroupFinder
-This implementation will be relatively short! It will mostly be calling methods in ImageBinarizer and BinaryGroupFinder.
-
-MAKE SURE YOU MAKE THOROUGH UNIT TESTS. Consider asking the AI to teach you about mocks and fakes in unit testing and how they may be helpful here.
-
-## Wave 6: Validation
-To validate your code is working, make sure you're in the centroid-finder directory and run the below command:
-
-```
-javac src/* && java -cp src ImageSummaryApp sampleInput/squares.jpg FFA200 164
+```bash
+/path/to/my_salamander_videos/
 ```
 
-This will compile your files and run the main method in ImageSummaryApp against the sample image with a target color of orange and a threshold of 164. It should binarized.png and groups.csv which should match the corresponding files in the sampleOutput directory.
+3. **Update Docker Compose to point to your local video directory**:
 
-Once you have confirmed it is working, clean up your code, make sure it's committed and pushed, and make a PR to submit. Great job!
+Open `docker-compose.yml` and update this section:
 
-## Optional Wave 7: Enhancements?
-If you want to, you can make a new branch to start experimenting. See if you can come up with a better color distance method (hint: look up perceptual color spaces). See if you can make your code more efficient or mor suited to spotting salamanders! Experiment with other test files. PLEASE MAKE SURE THIS IS IN A SEPARATE BRANCH FROM YOUR SUBMISSION.
+```yaml
+    volumes:
+      - /absolute/path/to/my_salamander_videos:/app/../processor/sampleInput
+```
 
-JS added new branch 'video' and switched to this new branch.
+4. **Start the app**
+
+```bash
+docker compose up --build
+```
+
+Once running, visit [http://localhost:3000/videos](http://localhost:3000/videos)
+
+---
+
+## How to Use the App
+
+### Page 1: **Video Chooser**
+- Route: `/videos`
+- Lists available videos (MP4, MOV, AVI) from your local folder
+- Each video shows:
+  - Duration
+  - Thumbnail preview
+- Click on a video to begin processing
+
+### Page 2: **Preview & Parameter Selection**
+- Route: `/preview?filename=...`
+- Features:
+  - Static first frame of video
+  - Click the frame to select target salamander color
+  - Slider to adjust threshold sensitivity
+  - Interval buttons (e.g., process every 10s)
+  - Real-time binarized preview updates below
+- Click **"Process Video With These Settings"** to begin
+
+### Page 3: **Results & Download**
+- Route: `/results/[jobId]`
+- Monitors background job progress
+- Displays:
+  - Progress bar
+  - Output logs
+  - Error logs (if any)
+  - Final CSV download link once complete
+
+---
+
+## Where are my results?
+
+Once finished, your CSV is saved to:
+```bash
+/output/[jobId].csv
+```
+Which is mounted on your host machine based on this Docker volume:
+```yaml
+  - ./server/output:/app/output
+```
+You can modify this to point to a different local folder.
+
+---
+
+## Troubleshooting
+
+- **Video not showing up?**
+  - Ensure it’s `.mp4`, `.mov`, or `.avi`
+  - Check the volume path is correct and absolute
+
+- **JAR not found?**
+  - Confirm `JAR_PATH` is set correctly in `.env`
+  - Confirm the path is mounted in Docker
+
+- **Live preview not updating?**
+  - Make sure color was selected from the image
+  - Try adjusting the threshold slider
+
+- **Docker restart advice**
+  - Always use `docker compose down` before re-running
+
+---
+
+## Credits
+Built by Zachary Springer, Stephen Franada, and Jonathan Sule for salamander scientists, enthusiasts, and behavioral researchers.
+
+---
+
+## License
+See License file in code main folder
+
+---
+
+## Cleanup & Future Features
+- Better error handling in UI
+- Heatmap visualizations
+- Metadata tagging by experiment/session
+
+---
+
+> "Sometimes the smallest creatures lead to the biggest discoveries."
+
+---
