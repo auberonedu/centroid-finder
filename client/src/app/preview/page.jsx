@@ -30,7 +30,7 @@ export default function VideoPreviewPage() {
   const binaryCanvasRef = useRef(null);
 
   const staticFrameSrc = filename
-    ? `http://localhost:3001/frames/${encodeURIComponent(filename)}.jpg`
+    ? `http://localhost:3001/thumbnails/${encodeURIComponent(filename)}.jpg`
     : "";
 
   // Draw static frame and sync both canvases

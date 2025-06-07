@@ -58,9 +58,9 @@ public class VideoProcessorMain {
 
             frameInterval = switch (intervalLabel.toLowerCase()) {
                 case "all" -> 1;
-                case "0.5s" -> Math.max((int) Math.round(fps * 0.5), 1);
-                case "1.0s" -> Math.max((int) Math.round(fps * 1.0), 1);
-                case "10s" -> Math.max((int) Math.round(fps * 10.0), 1);
+                case "0.5" -> Math.max((int) Math.round(fps * 0.5), 1);
+                case "1.0" -> Math.max((int) Math.round(fps * 1.0), 1);
+                case "10" -> Math.max((int) Math.round(fps * 10.0), 1);
                 default -> {
                     System.err.println("Invalid interval label: " + intervalLabel + ". Defaulting to all frames.");
                     yield 1;

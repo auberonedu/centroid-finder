@@ -1,3 +1,5 @@
+let isScanning = false;
+
 import fs from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
@@ -67,8 +69,17 @@ const generateThumbnail = async (inputPath, outputPath) => {
 };
 
 const getVideos = async (req, res) => {
+  if (isScanning) {
+    console.log("⚠️ getVideos is already running — skipping this call.");
+    return res.status(429).json({ error: "Server busy. Try again shortly." });
+  }
+
+  isScanning = true;
+  console.log("🟢 getVideos started");
+
   try {
     const index = await loadIndex();
+    console.log("📁 Resolved videosDir:", videosDir);
     const files = await fs.readdir(videosDir);
     const videoFiles = files.filter((file) =>
       [".mp4", ".mov", ".avi"].includes(path.extname(file).toLowerCase())
@@ -122,10 +133,13 @@ const getVideos = async (req, res) => {
       })
     );
 
+    console.log(`✅ getVideos finished. Found ${metadataList.length} videos.`);
     res.json({ videos: metadataList });
   } catch (err) {
-    console.error("Error in getVideos:", err);
+    console.error("❌ Error in getVideos:", err);
     res.status(500).json({ error: "Failed to load video metadata" });
+  } finally {
+    isScanning = false;
   }
 };
 
@@ -170,28 +184,40 @@ const videoProcessing = async (req, res) => {
   const jobId = uuidv4();
   const { filename, color, threshold, interval } = req.body;
 
+  const cleanInterval = interval.replace("s", "");
+
   if (!filename || !color || !threshold || !interval) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  // Convert color object to "R,G,B"
   const colorString = `${color.r},${color.g},${color.b}`;
-
   const videoPath = path.join(videosDir, filename);
   await fs.mkdir(outputDir, { recursive: true });
   const outputCsvPath = path.join(outputDir, `${jobId}.csv`);
+
+  const jarPath = req.app.locals.JAR_PATH;
+  console.log("🐾 Using JAR file at:", jarPath);
 
   jobStatusMap.set(jobId, { status: "processing", output: "", error: "" });
 
   const args = [
     "-jar",
-    path.resolve(__dirname, "../videoprocessor.jar"),
+    jarPath,
     videoPath,
-    colorString, // now "255,0,0"
+    colorString,
     threshold.toString(),
     outputCsvPath,
-    interval,
+    cleanInterval,
   ];
+
+  console.log("🧪 DEBUG — Arguments passed to JAR:");
+  console.log("java", ...args);
+  console.log("📹 Confirmed videoPath:", videoPath);
+  console.log("🎯 Color string:", colorString);
+  console.log("📊 Threshold:", threshold);
+  console.log("📁 Output CSV path:", outputCsvPath);
+  console.log("⏱️ Frame interval (raw):", interval);
+  console.log("🔧 Frame interval (cleaned):", cleanInterval);
 
   const java = spawn("java", args);
 

@@ -1,4 +1,4 @@
-//make lower level comp for video cards
+// VideoChooserPage.jsx
 
 "use client";
 import { useEffect, useState } from "react";
@@ -11,25 +11,29 @@ import {
   CircularProgress,
   Paper,
   Box,
-  Stack,
 } from "@mui/material";
 
 export default function VideoChooserPage() {
-  const [videos, setVideos] = useState(null);
+  const [videos, setVideos] = useState([]);
 
   useEffect(() => {
     const fetchVideos = async () => {
       try {
         const res = await fetch("http://localhost:3001/videos");
+        if (!res.ok) throw new Error("Server response not OK");
         const data = await res.json();
         setVideos(data.videos);
       } catch (err) {
-        console.error("Error fetching videos:", err);
+        console.error("Error fetching videos:", err.message);
+        setTimeout(fetchVideos, 1000); // retry after 1 second
       }
     };
 
     fetchVideos();
   }, []);
+
+  console.log("👀 videos array in render:", videos);
+  console.log("🎬 video count:", videos?.length);
 
   return (
     <Box
@@ -45,11 +49,14 @@ export default function VideoChooserPage() {
         Video Chooser Page
       </Typography>
 
+      {/* Optional debug output */}
+      {/* <pre>{JSON.stringify(videos, null, 2)}</pre> */}
+
       <Typography variant="body1" sx={{ mb: 4 }}>
         Please select the video you want to process from the list below:
       </Typography>
 
-      {!videos ? (
+      {videos.length === 0 ? (
         <CircularProgress />
       ) : (
         <Paper
@@ -64,20 +71,32 @@ export default function VideoChooserPage() {
         >
           <List>
             {videos.map((video) => (
-              <ListItem
-                key={video.name}
-                button
-                component={Link}
-                href={`/preview?filename=${encodeURIComponent(video.name)}`}
-                sx={{
-                  justifyContent: "center",
-                  textAlign: "center",
-                }}
-              >
-                <ListItemText
-                  primary={video.name}
-                  secondary={`Duration: ${Math.round(video.duration)}s`}
-                />
+              <ListItem key={video.name} disablePadding>
+                <Link
+                  href={`/preview?filename=${encodeURIComponent(video.name)}`}
+                  passHref
+                  legacyBehavior
+                >
+                  <Box
+                    component="a"
+                    sx={{
+                      display: "block",
+                      width: "100%",
+                      padding: 2,
+                      textAlign: "center",
+                      textDecoration: "none",
+                      color: "inherit",
+                      "&:hover": {
+                        backgroundColor: "#f0f0f0",
+                      },
+                    }}
+                  >
+                    <ListItemText
+                      primary={video.name}
+                      secondary={`Duration: ${Math.round(video.duration)}s`}
+                    />
+                  </Box>
+                </Link>
               </ListItem>
             ))}
           </List>

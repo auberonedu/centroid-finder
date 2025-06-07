@@ -40,34 +40,48 @@
 
 
     <build>
-        <finalName>salamander</finalName>
-        <plugins>
-            <!-- Other plugins here -->
+    <finalName>salamander</finalName>
+    <plugins>
+        <!-- Ensures manifest includes the correct Main-Class -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.2.2</version>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>io.github.oakes777.salamander.VideoProcessorMain</mainClass>
+                    </manifest>
+                </archive>
+            </configuration>
+        </plugin>
 
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.3.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>io.github.oakes777.salamander.VideoProcessorMain</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id> <!-- unique ID -->
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+        <!-- Builds a jar-with-dependencies using assembly plugin -->
+        <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.3.0</version>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>io.github.oakes777.salamander.VideoProcessorMain</mainClass>
+                    </manifest>
+                </archive>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>make-assembly</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+
 
 </project>
