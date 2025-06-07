@@ -37,3 +37,7 @@ node_modules/
 
 # Jobs
 jobs/
+
+# Local Test Folders
+test_results/
+test_videos/
