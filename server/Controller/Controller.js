@@ -182,7 +182,9 @@ const getVideoById = async (req, res) => {
 const videoProcessing = async (req, res) => {
 
   const jobId = uuidv4();
-  const { videoPath, targetColorHex, threshold, outputCsvPath, frameInterval } = req.body;
+  const outputCsvPath = path.join('/results', `${jobId}.csv`);
+  
+  const { videoPath, targetColorHex, threshold, frameInterval } = req.body;
 
   if (!videoPath || !targetColorHex || !threshold || !outputCsvPath) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -236,6 +238,21 @@ const videoProcessing = async (req, res) => {
   });
 };
 
+const getCompletedCSVs = async (req, res) => {
+  try {
+    const files = await fs.promises.readdir(RESULTS_DIR);
+
+    const csvFiles = files.filter((file) => file.endsWith('.csv'));
+
+    res.json({
+      csvFiles
+    });
+  } catch (err) {
+    console.error('Error reading results directory:', err);
+    res.status(500).json({ error: 'Unable to list CSV files' });
+  }
+};
+
 const getStatus = (req, res) => {
   const { jobId } = req.params;
 
@@ -262,5 +279,6 @@ export default {
     getVideos,
     getVideoById,
     videoProcessing,
+    getCompletedCSVs,
     getStatus
 }
