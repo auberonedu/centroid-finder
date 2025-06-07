@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url'; // for resolving ES module paths
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegInstaller from '@ffmpeg-installer/ffmpeg'; // need to run through npm and not install locally
+import dotenv from 'dotenv'; // Module for loading in environment variables from an .env file
 
 // for ffmpegInstaller
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
@@ -10,9 +11,11 @@ ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Absolute path to the public/videos directory
-// Move this later to the .env file using dotenv
-const VIDEO_DIR = path.resolve(__dirname, '../public/videos');
+// Load environment variables from the .env file in the project root
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+
+// Access video directory from the .env file
+const VIDEO_DIR = process.env.VIDEO_DIR;
 
 const getAllVideos = async (req, res) => {
   try {
