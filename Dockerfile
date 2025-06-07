@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install -y curl gnupg && \
 # Set working directory in container to a new directory called app
 WORKDIR /app
 
+# Copy the .env file into the container
+COPY .env .env
+
 # Copy backend's package.json and package-lock.json
 COPY server/package*.json ./server/
 
