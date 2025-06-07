@@ -1,0 +1,12 @@
+node_modules
+output
+frames
+thumbnails
+.env
+*.log
+*.csv
+.vscode
+.git
+client/.next
+client/node_modules
+server/node_modules

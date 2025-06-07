@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: ./server
+    ports:
+      - "3001:3001"
+    environment:
+      - VIDEO_DIR=../../processor/sampleInput
+      - JAR_PATH=../processor/target/salamander-jar-with-dependencies.jar
+    volumes:
+      - ./server/output:/app/output
+      - ./server/frames:/app/frames
+      - ./server/thumbnails:/app/thumbnails
+      - ./processor/sampleInput:/app/../processor/sampleInput  
+      - ./processor/target:/app/../processor/target            
+    working_dir: /app
+    command: node index.js
+
+
+  client:
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    command: npm run dev
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - NEXT_PUBLIC_API_BASE=http://localhost:3001
