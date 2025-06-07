@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/videos", controller.getVideos);
 router.get("/videos/:videoID", controller.getVideoById);
-router.post("/process", controller.videoProcessing); // ✅ fixed route
-router.get("/videos/status/:jobId", controller.getStatus); // ✅ fixed method name
+router.post("/process", controller.videoProcessing); 
+router.get("/videos/status/:jobId", controller.getStatus); 
 
 export default router;

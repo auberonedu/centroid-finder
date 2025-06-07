@@ -146,6 +146,9 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     }
 }
 
+// commented out STACK based function as we were all getting stack overflow
+// now the dfs function is based on iterative method
+
 // private void dfs(int[][] image, boolean[][] visited, int row, int col,
 // List<Coordinate> pixelsInGroup) {
 // //define again our height and width

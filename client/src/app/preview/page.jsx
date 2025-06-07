@@ -49,7 +49,7 @@ export default function VideoPreviewPage() {
     img.src = staticFrameSrc;
 
     img.onload = () => {
-      console.log("✅ Image loaded for canvas");
+      console.log("Image loaded for canvas");
       const { width, height } = img;
 
       canvas.width = width;
@@ -61,7 +61,7 @@ export default function VideoPreviewPage() {
     };
 
     img.onerror = (err) => {
-      console.error("❌ Failed to load image:", staticFrameSrc, err);
+      console.error("Failed to load image:", staticFrameSrc, err);
     };
   }, [staticFrameSrc]);
 

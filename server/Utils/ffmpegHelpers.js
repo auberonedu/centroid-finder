@@ -15,7 +15,7 @@ export function generateThumbnail(videoPath, outputDir) {
 
     // If it already exists, don't regenerate
     if (fs.existsSync(thumbnailPath)) {
-      console.log(`🖼️ Thumbnail already exists for ${filename}`);
+      console.log(`Thumbnail already exists for ${filename}`);
       return resolve(`${filename}.jpg`);
     }
 
@@ -23,10 +23,10 @@ export function generateThumbnail(videoPath, outputDir) {
 
     exec(command, (error, stdout, stderr) => {
       if (error) {
-        console.error(`❌ FFmpeg thumbnail error for ${filename}:`, stderr);
+        console.error(`FFmpeg thumbnail error for ${filename}:`, stderr);
         return reject(error);
       }
-      console.log(`✅ Generated thumbnail for ${filename}`);
+      console.log(`Generated thumbnail for ${filename}`);
       resolve(`${filename}.jpg`);
     });
   });

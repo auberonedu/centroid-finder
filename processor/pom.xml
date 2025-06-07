@@ -26,14 +26,14 @@
         <dependency>
             <groupId>org.jcodec</groupId>
             <artifactId>jcodec</artifactId>
-            <version>0.2.5</version> <!-- 🔼 updated from 0.2.3 -->
+            <version>0.2.5</version> 
         </dependency>
 
         <!-- JCodec JavaSE utilities (AWTUtil, BufferedImage support) -->
         <dependency>
             <groupId>org.jcodec</groupId>
             <artifactId>jcodec-javase</artifactId>
-            <version>0.2.5</version> <!-- ✅ required for AWTUtil -->
+            <version>0.2.5</version> 
         </dependency>
     </dependencies>
 
