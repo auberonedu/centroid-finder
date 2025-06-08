@@ -70,3 +70,6 @@ If you want to, you can make a new branch to start experimenting. See if you can
 
 ## Test command for JAR
 - java -jar videoprocessor.jar ensantina.mp4 output.csv 2D0508 180
+
+## Command for running tests via Jest
+- npm run test:env
