@@ -8,12 +8,12 @@ dotenv.config({
     path: "./config.env"
 })
 
-// Allow requests from any origin
-app.use(cors());
-
 // create server
 const app = express();
 const port = 3000;
+
+// Allow requests from any origin
+app.use(cors());
 
 // mount routers
 app.use("/", router)
