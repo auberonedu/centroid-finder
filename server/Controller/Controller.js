@@ -19,6 +19,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') })
 const indexFilePath = path.resolve(__dirname, '../videoIndex.json')
 const videosDir = path.resolve(__dirname, process.env.VIDEO_DIR);
 const thumbnailsDir = path.resolve(__dirname, '../thumbnails');
+const resultsDir = path.resolve(__dirname, '../results');
 
 const loadIndex = async () => {
     try {
@@ -182,7 +183,7 @@ const getVideoById = async (req, res) => {
 const videoProcessing = async (req, res) => {
 
   const jobId = uuidv4();
-  const outputCsvPath = path.join('/results', `${jobId}.csv`);
+  const outputCsvPath = path.join(resultsDir, `${jobId}.csv`);
   
   const { videoPath, targetColorHex, threshold, frameInterval } = req.body;
 
@@ -240,7 +241,7 @@ const videoProcessing = async (req, res) => {
 
 const getCompletedCSVs = async (req, res) => {
   try {
-    const files = await fs.promises.readdir(RESULTS_DIR);
+    const files = await fs.promises.readdir(resultsDir);
 
     const csvFiles = files.filter((file) => file.endsWith('.csv'));
 
