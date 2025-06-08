@@ -1,11 +1,15 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import router from './routers/router.js';
+import cors from 'cors';
 
 // read in env congif environment variables
 dotenv.config({
     path: "./config.env"
 })
+
+// Allow requests from any origin
+app.use(cors());
 
 // create server
 const app = express();
