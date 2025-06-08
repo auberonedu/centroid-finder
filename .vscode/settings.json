@@ -1,0 +1,7 @@
+{
+    "java.debug.settings.onBuildFailureProceed": true,
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "main"
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
+}
