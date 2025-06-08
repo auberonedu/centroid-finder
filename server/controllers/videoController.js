@@ -15,7 +15,8 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 // Access video directory from the .env file
-const VIDEO_DIR = process.env.VIDEO_DIR;
+// Default internal path is used if there is no .env variable
+const VIDEO_DIR = process.env.VIDEO_DIR || '/videos';
 
 const getAllVideos = async (req, res) => {
   try {

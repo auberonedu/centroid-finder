@@ -13,6 +13,8 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
+
+// Default port is used if there is no .env variable
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
