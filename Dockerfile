@@ -1,19 +1,29 @@
+FROM eclipse-temurin:21
 
-
-# Install runtime
-RUN apt update && apt install -y openjdk-17-jre && apt clean
-
-
-# Set working directory
+# Setting up working directory
 WORKDIR /app
 
-# Copy server files from builder stage
-COPY --from=builder /app /app
+# Default ENV
+ENV VIDEO_DIR=/app/videos
+ENV RESULTS_DIR=/app/results
+ENV JOBS_DIR=/app/jobs
+ENV JAR_PATH=/app/target/videoprocessor.jar
 
-# Set environment variables (can be overridden by user)
-ENV VIDEO_DIR=/videos
-ENV OUTPUT_DIR=/results
-ENV JAR_PATH=java/target/centroid-finder-1.0-SNAPSHOT-jar-with-dependencies.jar
+# Installing Curl and Node.js
+RUN apt-get update && \
+    apt-get install -y curl gnupg && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy the Node.js package files and installing dependencies
+COPY server/package*.json ./server/
+RUN cd server && npm install
+
+# Copying remaining code from the server and JAR
+COPY server ./server
+COPY target/videoprocessor.jar ./processor/videoprocessor.jar
 
 # Expose backend port
 EXPOSE 3000
