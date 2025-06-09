@@ -1,3 +1,4 @@
+package io.github.qopci.centroidFinder;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.PrintWriter;

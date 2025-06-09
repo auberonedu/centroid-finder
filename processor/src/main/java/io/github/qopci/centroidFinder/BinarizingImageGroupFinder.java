@@ -1,3 +1,4 @@
+package io.github.qopci.centroidFinder;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -37,6 +38,9 @@ public class BinarizingImageGroupFinder implements ImageGroupFinder {
      */
     @Override
     public List<Group> findConnectedGroups(BufferedImage image) {
-        return null;
+        int[][] binaryImg = binarizer.toBinaryArray(image); // converting the input image into a binary 2D array
+        List<Group> groupsList = groupFinder.findConnectedGroups(binaryImg); // finding connected groups in the binary image
+
+        return groupsList;
     }
 }

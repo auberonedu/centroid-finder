@@ -1,3 +1,4 @@
+package io.github.qopci.centroidFinder;
 import java.util.List;
 import java.awt.image.BufferedImage;
 
