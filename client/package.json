@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "cypress": "^14.4.0",
+    "cypress": "^14.4.1",
     "eslint": "^9",
     "eslint-config-next": "15.3.2"
   }
