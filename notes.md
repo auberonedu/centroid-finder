@@ -133,10 +133,10 @@ java -jar target/videoprocessor.jar chiikawa.mp4 results/chiikawa.mp4.csv ff0000
 --------------------------------------------------------------------------------------------------------------------------
 
 ## Post route command:
-- curl -X POST "http://localhost:3001/process/ensantina.mp4?targetColor=ff0000&threshold=100"
+- curl -X POST "http://localhost:3000/process/ensantina.mp4?targetColor=ff0000&threshold=100"
 --------------------------------------------------------------------------------------------------------------------------
 
 ## EXAMPLE download paths:
-- `http://localhost:3001/videos/chiikawa.mp4`
-- `http://localhost:3001/results/chiikawa.mp4.csv`
+- `http://localhost:3000/videos/chiikawa.mp4`
+- `http://localhost:3000/results/chiikawa.mp4.csv`
 --------------------------------------------------------------------------------------------------------------------------
