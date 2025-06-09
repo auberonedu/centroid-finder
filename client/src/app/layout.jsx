@@ -1,8 +1,11 @@
-"use client";
-
-import NavBar from "./components/NavBar"; // adjust if path is different
+import NavBar from "./components/NavBar";
 import { Container, Box } from "@mui/material";
-import "./globals.css"; // keep this if it exists
+import "./globals.css";
+
+export const metadata = {
+  title: "Salamander Tracker",
+  description: "Track centroid positions in real time",
+};
 
 export default function RootLayout({ children }) {
   return (
