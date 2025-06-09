@@ -48,7 +48,8 @@ const getThumbnail = (req, res) => {
     const inputPath = path.resolve(process.env.video_directory_path, filename);
     const outputFolder = path.resolve('./output');
     const outputImagePath = path.join(outputFolder, `${filename}-thumb.jpg`);
-  
+    console.log("Paths worked", inputPath)
+
     ffmpeg(inputPath)
         .on('end', () => {
             console.log('Thumbnail created at:', outputImagePath);
