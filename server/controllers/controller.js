@@ -79,7 +79,9 @@ export const getJobStatus = (req, res) => {
       }
 
       if (status === "done") {
-         return res.status(200).json({ status: "done", result: `/results/${output}` });
+         return res
+            .status(200)
+            .json({ status: "done", result: `/results/${output}` });
       }
 
       if (status === "error") {
@@ -107,11 +109,18 @@ function monitorJob(jobId, outputPath, timeout = 30000) {
       }
 
       if (fs.existsSync(outputPath)) {
-         jobStatus.set(jobId, {
-            status: "done",
-            output: path.basename(outputPath),
-         });
-         clearInterval(interval);
+         const stats = fs.statSync(outputPath);
+         const now = Date.now();
+         const ageMs = now - stats.mtimeMs;
+
+         // File hasn't been modified in 1 second → assume fully written
+         if (ageMs > 10000) {
+            jobStatus.set(jobId, {
+               status: "done",
+               output: path.basename(outputPath),
+            });
+            clearInterval(interval);
+         }
       }
    }, 1000);
 }
@@ -130,7 +139,9 @@ export const videos = (req, res) => {
    fs.readdir(videoDir, (err, files) => {
       if (err) {
          console.error("Cannot read from video directory: ", err);
-         return res.status(500).json({ error: "Cannot read from video directory" });
+         return res
+            .status(500)
+            .json({ error: "Cannot read from video directory" });
       }
 
       const videoFiles = files.filter(
