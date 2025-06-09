@@ -14,6 +14,9 @@ WORKDIR /app
 # Copy the .env file into the container
 COPY .env .env
 
+# Remove a previously cloned frontend if it was already cloned
+RUN rm -rf frontend
+
 # Clone the React frontend repo (built with Next.js)
 RUN git clone https://github.com/f3liz/centroid-finder-frontend.git frontend
 

@@ -15,7 +15,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 // Access configurations from the .env file
 // Default internal paths are used if there are no .env variables 
 const VIDEO_DIR = process.env.VIDEO_DIR || '/videos';
-const JAR_PATH = process.env.JAR_PATH || './processor/videoprocessor.jar';
+const JAR_PATH = process.env.JAR_PATH || path.resolve(__dirname, '../../processor/videoprocessor.jar');
 const OUTPUT_DIR = process.env.OUTPUT_DIR || '/results';
 const JOBS_FILE = path.join(OUTPUT_DIR, 'jobs.json'); // Centralized jobs metadata file with jobIDs, status, and output file location
 
