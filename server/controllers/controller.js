@@ -79,22 +79,12 @@ const postVideo = (req, res) => {
         }
     
         const jobId = uuidv4(); // Unique job ID for tracking the processing
-        // jobIDArray.push(jobId);
         // Add job ID to map with job status of "started"
         jobStatus.set(jobId, { status: "started" })
-
-        // Create a started marker (AI helped write this)
-        // const startMarker = path.resolve(process.env.output_directory_path, `${jobId}.started`);
-        // writeFileSync(startMarker, '');
         
         const jarPath = path.resolve(process.env.video_processor_jar_path); // Path to the JAR file
         const inputPath = path.resolve(process.env.video_directory_path, filename); // The full path to the input video file
         const outputPath = path.resolve(process.env.output_directory_path, `${jobId}.csv`); // Path to where the DSV output will be saved
-
-        // TODO: Check whether recursive should be set to true
-        // Consider a try catch to see if directory exist?
-        // Only run this line if file directory doesn't exist 
-        // mkdirSync(path.dirname(startMarker), {recursive: true });
         
         // Arguments to the pass to the backend
         const javaArgs = [
@@ -105,9 +95,6 @@ const postVideo = (req, res) => {
             targetColor,
             threshold
         ];
-
-        // console.log("Running Java with:")
-        // console.log("java", javaArgs.join(" "));
 
         // Spawns the Java process in detached mode
         const javaSpawn = spawn('java', javaArgs, {
