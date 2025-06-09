@@ -12,4 +12,6 @@ app.use(cors());
 
 app.use('/', router);
 
+app.use('/process', express.static('/results'));
+
 app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
