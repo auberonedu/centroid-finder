@@ -19,17 +19,11 @@ const statusBadRequest = 400;
 const statusNotFound = 404;
 const statusServerError = 500;
 
-const jobIDArray = [];
-
-// For testing purposes, include one fake job ID
-jobIDArray.push("123")
-
 // Create a job status map that contains fake job ID 123 with a status of "done"
 const jobStatus = new Map([
-    ["123", "done"]
+    ["123", {status: "done"}]
 ]);
 
-// GET /api/videos
 const getVideos = (req, res) => {
     // console.log("getVideos successfully called!")
     try {
@@ -53,7 +47,7 @@ const getThumbnail = (req, res) => {
     
     const inputPath = path.resolve(process.env.video_directory_path, filename);
     const outputFolder = path.resolve('./output');
-    const outputImagePath = path.join(outputFolder, `${filename}-thumbnail.jpg`);
+    const outputImagePath = path.join(outputFolder, `${filename}-thumb.jpg`);
   
     ffmpeg(inputPath)
         .on('end', () => {
@@ -86,7 +80,7 @@ const postVideo = (req, res) => {
         const jobId = uuidv4(); // Unique job ID for tracking the processing
         // jobIDArray.push(jobId);
         // Add job ID to map with job status of "started"
-        jobStatus.set(jobId, "started")
+        jobStatus.set(jobId, { status: "started" })
 
         // Create a started marker (AI helped write this)
         // const startMarker = path.resolve(process.env.output_directory_path, `${jobId}.started`);
@@ -99,7 +93,7 @@ const postVideo = (req, res) => {
         // TODO: Check whether recursive should be set to true
         // Consider a try catch to see if directory exist?
         // Only run this line if file directory doesn't exist 
-        mkdirSync(path.dirname(startMarker), {recursive: true });
+        // mkdirSync(path.dirname(startMarker), {recursive: true });
         
         // Arguments to the pass to the backend
         const javaArgs = [
@@ -117,12 +111,12 @@ const postVideo = (req, res) => {
         // Spawns the Java process in detached mode
         const javaSpawn = spawn('java', javaArgs, {
             detached: true, // this ensures that the process is independent from the Node.js process
-            stdio: 'ignore' // changed from 'inherit' to 'ignore'
+            stdio: 'inherit' // changed from 'inherit' to 'ignore'
         });
 
         javaSpawn.unref(); // this allows the parent Node to exit independently of the javaSpawn
 
-        jobStatus.set(jobId, "processing")
+        jobStatus.set(jobId, { status: "processing" })
 
         // Check to see if job is done
         const checkInterval = 3000; // Check every 3 seconds
@@ -162,19 +156,6 @@ const getStatus = (req, res) => {
             return res.status(statusServerError).json({ "error":"Error fetching job status"})
         }
     }
-
-    // const outputPath = path.resolve(process.env.output_directory_path, `${jobId}.csv`);
-    // const startMarker = path.resolve(process.env.output_directory_path, `${jobId}.started`);
-
-    // if (existsSync(outputPath)) {
-    //     res.status(statusOK).json({"status":"done", "result": outputPath})
-    // }
-
-    // if (existsSync(startMarker)) {
-    //     res.status(statusOK).json({"status":"processing"})
-    // }
-
-    // return res.status(statusServerError).json({ "error":"Error fetching job status"})
 };
 
 // TODO: Create a getCSV function that retrieves the coordinates
