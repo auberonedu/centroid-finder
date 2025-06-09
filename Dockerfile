@@ -1,8 +1,7 @@
 # Create the base image for Java with OpenJDK 25
 FROM openjdk:25-slim
 
-# Install curl so we can fetch the Node.js setup script
-# Also install git so we can clone the frontend repo
+# Install Curl to fetch Node.js, Git, and other necessary tools
 RUN apt-get update && \
     apt-get install -y curl gnupg git && \
     curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
@@ -18,16 +17,17 @@ COPY .env .env
 # Clone the React frontend repo (built with Next.js)
 RUN git clone https://github.com/f3liz/centroid-finder-frontend.git frontend
 
-# Install frontend dependencies and build it
-RUN cd frontend && \
-    npm install && \
-    npm run build && \
-    npm run export
+# Set the working directory to frontend and install and build the Next.js app
+WORKDIR /app/frontend
+RUN npm install && npm run build
+
+# Go back to the working directory of the app
+WORKDIR /app
 
 # Copy backend's package.json and package-lock.json
 COPY server/package*.json ./server/
 
-# Install all dependencies for the backend server
+# Install all the backend dependencies
 RUN cd server && npm install
 
 # Use later when finished:
@@ -37,15 +37,17 @@ RUN cd server && npm install
 # Copy the backend source code
 COPY server ./server
 
-# Copy the static frontend files into the backend's public directory to display at localhost:3000
-RUN mkdir -p server/public && \
-    cp -r frontend/out/* server/public/
-
 # Copy the Java processor JAR file
 COPY processor/videoprocessor.jar ./processor/videoprocessor.jar
 
-# Expose port 3000 for the Express backend server
-EXPOSE 3000
+# Expose port 3000 for the Express backend server and 3001 for the frontend
+EXPOSE 3000 3001
 
-# Start the backend server
-CMD ["node", "server/index.js"]
+# Install concurrently to run both the frontend and backend concurrently
+RUN npm install -g concurrently
+
+# Switch to the final working directory
+WORKDIR /app
+
+# Start both the backend and frontend server together
+CMD ["concurrently", "node server/index.js", "npm --prefix frontend start"]
