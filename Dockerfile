@@ -5,8 +5,8 @@ FROM eclipse-temurin:21
 WORKDIR /app
 
 # Set default environment variables
-ENV VIDEO_DIR=/app/videos
-ENV RESULTS_DIR=/app/results
+ENV VIDEO_DIR=/videos
+ENV RESULTS_DIR=/results
 ENV JOBS_DIR=/app/jobs
 ENV JAR_PATH=/app/processor/videoprocessor.jar
 
