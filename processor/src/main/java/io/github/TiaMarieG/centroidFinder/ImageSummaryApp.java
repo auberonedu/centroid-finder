@@ -1,11 +1,11 @@
+// ImageSummaryApp.java
 package io.github.TiaMarieG.centroidFinder;
 
-import java.awt.image.BufferedImage;
-import java.awt.Color;
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.List;
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 public class ImageSummaryApp {
     public static void main(String[] args) {
@@ -13,8 +13,7 @@ public class ImageSummaryApp {
             System.out.println("Usage:");
             System.out.println("  java ImageSummaryApp <input_image> <hex_target_color> <threshold>");
             System.out.println("  OR");
-            System.out.println(
-                    "  java ImageSummaryApp binarize-thumbnail <input_image> <output_image> <r> <g> <b> <threshold>");
+            System.out.println("  java ImageSummaryApp binarize-thumbnail <input_image> <output_image> <r> <g> <b> <threshold>");
             return;
         }
 
@@ -93,8 +92,11 @@ public class ImageSummaryApp {
         BufferedImage binaryImage = binarizer.toBufferedImage(binaryArray);
 
         try {
-            ImageIO.write(binaryImage, "png", new File("binarized.png"));
-            System.out.println("Binarized image saved as binarized.png");
+            File inputFile = new File(inputImagePath);
+            String baseName = inputFile.getName().replaceAll("\\.[^.]+$", "");
+            File output = new File("thumbnails/" + baseName + "-binarized.png");
+            ImageIO.write(binaryImage, "png", output);
+            System.out.println("Binarized image saved as " + output.getPath());
         } catch (Exception e) {
             System.err.println("Error saving binarized image.");
             e.printStackTrace();
@@ -103,7 +105,7 @@ public class ImageSummaryApp {
         ImageGroupFinder groupFinder = new BinarizingImageGroupFinder(binarizer, new DfsBinaryGroupFinder());
         List<Group> groups = groupFinder.findConnectedGroups(inputImage);
 
-        try (PrintWriter writer = new PrintWriter("groups.csv")) {
+        try (java.io.PrintWriter writer = new java.io.PrintWriter("groups.csv")) {
             for (Group group : groups) {
                 writer.println(group.toCsvRow());
             }

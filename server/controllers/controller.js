@@ -195,50 +195,41 @@ export const thumbnail = (req, res) => {
    });
 };
 
-export const binarize = (req, res) => {
+export const binarizeThumbnail = (req, res) => {
    const { filename, r, g, b, threshold } = req.query;
 
    if (!filename || !r || !g || !b || !threshold) {
       return res.status(400).json({ error: "Missing query parameters" });
    }
 
-   const baseFilename = path.parse(filename).name;
-   const imagePath = path.join("thumbnails", `${baseFilename}.jpg`);
-   const outputPath = path.join("thumbnails", `${baseFilename}-binarized.png`);
-
-   const red = parseInt(r);
-   const green = parseInt(g);
-   const blue = parseInt(b);
-
-   if ([red, green, blue].some((v) => isNaN(v))) {
-      return res.status(400).json({ error: "Invalid RGB values" });
-   }
-
-   const colorHex = ((red << 16) | (green << 8) | blue)
-      .toString(16)
-      .padStart(6, "0");
+   const base = path.parse(filename).name;
+   const inputImage = path.resolve("thumbnails", `${base}.jpg`);
+   const outputImage = path.resolve("thumbnails", `${base}-binarized.jpg`);
 
    const jar = spawn("java", [
-      "-cp",
+      "-jar",
       process.env.JAR_PATH,
-      "io.github.TiaMarieG.centroidFinder.ImageSummaryApp",
-      imagePath,
-      colorHex,
+      "binarize-thumbnail",
+      inputImage,
+      outputImage,
+      r,
+      g,
+      b,
       threshold,
    ]);
 
    jar.on("close", (code) => {
-      if (code === 0 && fs.existsSync("binarized.png")) {
-         fs.copyFileSync("binarized.png", outputPath);
-         res.sendFile(path.resolve(outputPath));
+      if (code === 0 && fs.existsSync(outputImage)) {
+         res.set("Content-Type", "image/jpeg");
+         res.sendFile(outputImage);
       } else {
-         console.error("Binarization failed with code", code);
-         res.status(500).json({ error: "Failed to generate binarized image" });
+         console.error("Binarize-thumbnail failed with code", code);
+         res.status(500).json({ error: "Failed to binarize image" });
       }
    });
 
    jar.on("error", (err) => {
-      console.error("Java spawn error:", err);
-      res.status(500).json({ error: "Failed to spawn Java process" });
+      console.error("Binarize-thumbnail Java spawn error:", err);
+      res.status(500).json({ error: "Failed to run Java" });
    });
 };

@@ -1,8 +1,8 @@
 import express from "express";
-import { binarize } from "../controllers/controller.js";
+import { binarizeThumbnail } from "../controllers/controller.js";
 
 const router = express.Router();
 
-router.get("/binarize", binarize);  // only "/binarize", not full path
+router.get("/binarize-thumbnail", binarizeThumbnail);
 
 export default router;

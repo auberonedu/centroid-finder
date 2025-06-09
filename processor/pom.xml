@@ -11,7 +11,7 @@
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <mainClass>io.github.TiaMarieG.centroidFinder.VideoProcessor</mainClass>
+        <mainClass>io.github.TiaMarieG.centroidFinder.ImageSummaryApp</mainClass>
     </properties>
 
     <build>
@@ -33,6 +33,32 @@
                 <version>3.5.3</version>
             </plugin>
 
+            <!-- ✅ Assembly Plugin for full runnable JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>io.github.TiaMarieG.centroidFinder.ImageSummaryApp</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-fat-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- ✅ Supplemental JAR for ImageSummaryApp -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -46,7 +72,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <classifier>image-summary</classifier> <!-- ⬅ Prevents collision with main jar -->
+                            <classifier>image-summary</classifier>
                             <archive>
                                 <manifest>
                                     <mainClass>io.github.TiaMarieG.centroidFinder.ImageSummaryApp</mainClass>
