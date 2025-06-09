@@ -1,3 +1,4 @@
+// controller.js
 import { spawn } from "child_process";
 import { v4 as uuid } from "uuid";
 import * as fs from "fs";
@@ -78,9 +79,7 @@ export const getJobStatus = (req, res) => {
       }
 
       if (status === "done") {
-         return res
-            .status(200)
-            .json({ status: "done", result: `/results/${output}` });
+         return res.status(200).json({ status: "done", result: `/results/${output}` });
       }
 
       if (status === "error") {
@@ -131,9 +130,7 @@ export const videos = (req, res) => {
    fs.readdir(videoDir, (err, files) => {
       if (err) {
          console.error("Cannot read from video directory: ", err);
-         return res
-            .status(500)
-            .json({ error: "Cannot read from video directory" });
+         return res.status(500).json({ error: "Cannot read from video directory" });
       }
 
       const videoFiles = files.filter(
@@ -196,6 +193,9 @@ export const thumbnail = (req, res) => {
 };
 
 export const binarizeThumbnail = (req, res) => {
+   console.log("✅ binarizeThumbnail route hit");
+   console.log("Query params:", req.query);
+
    const { filename, r, g, b, threshold } = req.query;
 
    if (!filename || !r || !g || !b || !threshold) {
@@ -206,7 +206,15 @@ export const binarizeThumbnail = (req, res) => {
    const inputImage = path.resolve("thumbnails", `${base}.jpg`);
    const outputImage = path.resolve("thumbnails", `${base}-binarized.jpg`);
 
-   const jar = spawn("java", [
+   console.log("Input image path:", inputImage);
+   console.log("Output image path:", outputImage);
+
+   if (!fs.existsSync(inputImage)) {
+      console.error("❌ Input image does not exist:", inputImage);
+      return res.status(404).json({ error: "Input image does not exist" });
+   }
+
+   const jarArgs = [
       "-jar",
       process.env.JAR_PATH,
       "binarize-thumbnail",
@@ -216,14 +224,24 @@ export const binarizeThumbnail = (req, res) => {
       g,
       b,
       threshold,
-   ]);
+   ];
+
+   console.log("Running Java JAR with:", jarArgs);
+   console.log("JAR being run:", path.resolve(process.env.JAR_PATH));
+
+   const jar = spawn("java", jarArgs);
+
+   jar.stderr.on("data", (data) => {
+      console.error("Java stderr:", data.toString());
+   });
 
    jar.on("close", (code) => {
-      if (code === 0 && fs.existsSync(outputImage)) {
+      if (fs.existsSync(outputImage)) {
+         console.log("✅ Binarized image created:", outputImage);
          res.set("Content-Type", "image/jpeg");
          res.sendFile(outputImage);
       } else {
-         console.error("Binarize-thumbnail failed with code", code);
+         console.error("❌ Binarized image NOT created");
          res.status(500).json({ error: "Failed to binarize image" });
       }
    });

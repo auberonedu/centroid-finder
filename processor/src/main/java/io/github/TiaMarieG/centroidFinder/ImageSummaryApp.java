@@ -11,16 +11,18 @@ public class ImageSummaryApp {
     public static void main(String[] args) {
         if (args.length == 0) {
             System.out.println("Usage:");
-            System.out.println("  java ImageSummaryApp <input_image> <hex_target_color> <threshold>");
+            System.out.println("  java -jar videoprocessor.jar <input_image> <hex_target_color> <threshold>");
             System.out.println("  OR");
-            System.out.println("  java ImageSummaryApp binarize-thumbnail <input_image> <output_image> <r> <g> <b> <threshold>");
+            System.out.println(
+                    "  java -jar videoprocessor.jar binarize-thumbnail <input_image> <output_image> <r> <g> <b> <threshold>");
             return;
         }
 
-        // --- New backend-friendly case ---
+        // Backend-triggered image binarization
         if ("binarize-thumbnail".equals(args[0])) {
-            if (args.length < 7) {
-                System.err.println("Usage: binarize-thumbnail <inputImage> <outputImage> <r> <g> <b> <threshold>");
+            if (args.length != 7) {
+                System.err.println(
+                        "Usage: java -jar videoprocessor.jar binarize-thumbnail <input_image> <output_image> <r> <g> <b> <threshold>");
                 System.exit(1);
             }
 
@@ -33,34 +35,31 @@ public class ImageSummaryApp {
 
             try {
                 BufferedImage inputImage = ImageIO.read(new File(inputImagePath));
-
                 ColorDistanceFinder colorFinder = new EuclideanColorDistance();
                 int targetColor = (r << 16) | (g << 8) | b;
                 ImageBinarizer binarizer = new DistanceImageBinarizer(colorFinder, targetColor, threshold);
-
                 int[][] binaryArray = binarizer.toBinaryArray(inputImage);
                 BufferedImage binaryImage = binarizer.toBufferedImage(binaryArray);
-
                 ImageIO.write(binaryImage, "jpg", new File(outputImagePath));
-                System.out.println("Binarized image saved to: " + outputImagePath);
+                System.out.println("✅ Binarized image saved to: " + outputImagePath);
             } catch (Exception e) {
-                System.err.println("Error during binarization:");
+                System.err.println("❌ Error during binarization:");
                 e.printStackTrace();
                 System.exit(1);
             }
-
             return;
         }
 
-        // --- Original CLI logic ---
+        // CLI logic for analysis and CSV
         if (args.length < 3) {
-            System.out.println("Usage: java ImageSummaryApp <input_image> <hex_target_color> <threshold>");
+            System.out.println("Usage: java -jar videoprocessor.jar <input_image> <hex_target_color> <threshold>");
             return;
         }
 
         String inputImagePath = args[0];
         String hexTargetColor = args[1];
-        int threshold = 0;
+        int threshold;
+
         try {
             threshold = Integer.parseInt(args[2]);
         } catch (NumberFormatException e) {
@@ -68,7 +67,7 @@ public class ImageSummaryApp {
             return;
         }
 
-        BufferedImage inputImage = null;
+        BufferedImage inputImage;
         try {
             inputImage = ImageIO.read(new File(inputImagePath));
         } catch (Exception e) {
@@ -77,7 +76,7 @@ public class ImageSummaryApp {
             return;
         }
 
-        int targetColor = 0;
+        int targetColor;
         try {
             targetColor = Integer.parseInt(hexTargetColor, 16);
         } catch (NumberFormatException e) {
