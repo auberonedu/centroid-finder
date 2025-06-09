@@ -1,13 +1,13 @@
-
+import NavBar from "./components/NavBar";
 import { Container, Box } from "@mui/material";
 import ClientLayout from "./components/ClientLayout";
 import "./globals.css";
 
 export const metadata = {
-  title: "Salamander",
-  description: "Tracks salamander across frames",
+  title: "Salamander Tracker",
+  description: "Track centroid positions in real time",
   icons: {
-    icon: "/favicon.ico", 
+    icon: "/favicon.ico",
   },
 };
 

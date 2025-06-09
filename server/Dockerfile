@@ -1,4 +1,5 @@
-# Use an image with OpenJDK 17 and install Node.js 20
+# server/Dockerfile
+
 FROM openjdk:17-slim
 
 # Install Node.js 20
@@ -9,21 +10,17 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
-COPY package*.json ./
+# Copy server files
+COPY server/package*.json ./
 RUN npm install
+COPY server/. .
 
-# Copy the JAR file BEFORE other files to prevent overwrite
-COPY ../processor/target/salamander-jar-with-dependencies.jar ./processor/target/salamander-jar-with-dependencies.jar
+# Copy the JAR to the expected location inside the container
+RUN mkdir -p /processor/target
+COPY processor/target/salamander-jar-with-dependencies.jar /processor/target/
 
-# Copy the rest of the server code
-COPY . .
-
-# Expose the backend port
 EXPOSE 3001
 
-# Start the server
 CMD ["node", "index.js"]
