@@ -37,17 +37,57 @@ describe('Process Controller Routes', () => {
 
     // Test suite for GET /process/:jobId/status route
     describe('GET /process/:jobId/status', () => {
-        // Simple test to check whether the job is either still processing or done
-        it('should return "processing" or "done" status', async () => {
-            // Skip if jobId was not set from previous test
+        // Test Case 1: Should return 404 if jobId does not exist
+        it('should return 404 for a non-existent jobId', async () => {
+            const response = await request(app).get('/process/nonexistentjobid/status');
+
+            // Expecting a 404 Not Found status and an error property in the response
+            expect(response.status).toBe(404);
+            expect(response.body).toHaveProperty('error');
+        });
+
+        // Test Case 2: Should return 200 with status: processing, done, or error
+        it('should return job status as processing, done, or error', async () => {
+            // Skip this test if jobId was not set from the POST test
             if (!jobId) return;
 
             const response = await request(app).get(`/process/${jobId}/status`);
 
-            // Expecting a status code of 200 Ok, a status property in the response, and a status of either 'processing' or 'done'
+            // Expecting a status code of 200 OK and a status property with one of the valid job states
             expect(response.status).toBe(200);
             expect(response.body).toHaveProperty('status');
-            expect(['processing', 'done']).toContain(response.body.status);
+            expect(['processing', 'done', 'error']).toContain(response.body.status);
+        });
+
+        // Test Case 3: Should return result path if job is done OR error message if job failed
+        it('should return result if done, or error message if job failed', async () => {
+            // Skip this test if jobId was not set from the POST test
+            if (!jobId) return;
+
+            let response;
+
+            // Keep polling until the job completes or errors out, up to a max number of tries
+            for (let i = 0; i < 10; i++) {
+                response = await request(app).get(`/process/${jobId}/status`);
+                if (response.body.status === 'done' || response.body.status === 'error') break;
+                await new Promise(res => setTimeout(res, 500)); // Wait 0.5 seconds between polls
+            }
+
+            // Expecting a final status of either 'done' or 'error'
+            expect(response.status).toBe(200);
+            expect(['done', 'error']).toContain(response.body.status);
+
+            // If job is done, expect a result property with a string ending in .csv
+            if (response.body.status === 'done') {
+                expect(response.body).toHaveProperty('result');
+                expect(typeof response.body.result).toBe('string');
+                expect(response.body.result.endsWith('.csv')).toBe(true);
+            }
+            // If job errored out, expect an error message string
+            else if (response.body.status === 'error') {
+                expect(response.body).toHaveProperty('error');
+                expect(typeof response.body.error).toBe('string');
+            }
         });
     });
 });
