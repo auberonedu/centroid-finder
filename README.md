@@ -73,3 +73,25 @@ If you want to, you can make a new branch to start experimenting. See if you can
 
 ## Command for running tests via Jest
 - npm run test:env
+
+## Build command for Docker to ensure the latest frontend commits are pulled:
+- docker build --no-cache -t ghcr.io/alexanderoruban/salamander .
+
+## Steps for running just the backend with Docker:
+1. Create directories for results and videos like `test_videos` and `test_results` in the root directory of the project.
+2. Place videos into the new `test_videos` directory for viewing and processing
+3. docker run \
+  -p 3000:3000 \
+  -v "$PWD/test_videos:/videos" \
+  -v "$PWD/test_results:/results" \
+  ghcr.io/alexanderoruban/salamander:latest
+
+## Steps for running both the backend and frontend with Docker:
+1. Create directories for results and videos like `test_videos` and `test_results` in the root directory of the project.
+2. Place videos into the new `test_videos` directory for viewing and processing
+3. docker run \
+  -p 3000:3000 \
+  -p 3001:3001 \
+  -v "$PWD/test_videos:/videos" \
+  -v "$PWD/test_results:/results" \
+  ghcr.io/alexanderoruban/salamander:latest
