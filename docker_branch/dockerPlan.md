@@ -16,19 +16,6 @@ docker run \
 
 # Docker Plan: Centroid Finder Backend
 
-## Goal
-
-The goal of this project is to create and publish a Docker image for the centroid-finder backend. This image should support both Node.js and Java, and work out-of-the-box with minimal configuration. The image will be hosted on GitHub Container Registry and must support video and result volume mounting.
-
-The image should work with this command:
-
-```bash
-docker run \
-  -p 3000:3000 \
-  -v "$VIDEO_DIRECTORY:/videos" \
-  -v "$RESULTS_DIRECTORY:/results" \
-  ghcr.io/$GITHUB_USER/salamander:latest
-```
 
 ---
 
@@ -45,7 +32,7 @@ We will use a **multi-stage Docker build**:
 2. **Runtime Stage**:
 
    * Base: `node:20-slim`
-   * Install: OpenJDK 17
+   * Install: OpenJDK
    * Copy built JAR and compiled Node files from builder
    * Keep image size minimal
 
@@ -55,10 +42,10 @@ This avoids shipping dev tools in production and helps with layer caching.
 
 ## Making Node and Java Available
 
-We'll manually install OpenJDK 17 in the Node image using `apt`, or vice versa depending on base image. The final image will have:
+* We'll copy the JAR from the backend and the Node project files.
 
-* Node.js to run the Express server
-* Java to execute the batch JAR file
+* Using `npm i` or `npm install` to get our node dependencies
+* Using Java to execute the batch JAR file from the API.
 
 ---
 
@@ -71,6 +58,8 @@ docker build -t salamander-dev .
 docker run -p 3000:3000 \
   -v "$(pwd)/videos:/videos" \
   -v "$(pwd)/results:/results" \
+  -e VIDEOS_DIR=/app/videos \
+  -e RESULTS_DIR=/app/results \
   salamander-dev
 ```
 
@@ -87,7 +76,7 @@ We'll validate:
 To allow access to the Express API from the host machine:
 
 * Use `EXPOSE 3000` in Dockerfile
-* Ensure the Express server listens on `0.0.0.0` (not `localhost`)
+* We'll expose port 3000 in the Dockerfile and bind it to 3000 or another port (like 3001) on the host.
 
 ---
 
