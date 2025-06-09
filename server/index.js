@@ -19,11 +19,13 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 
-// read in JSON payloads in request body
+// Read in JSON payloads in request body
 app.use(express.json());
 
-// serve static files from /videos
-app.use('/videos', express.static(path.resolve('public/videos')));
+// Serve frontend static files (built React app)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve routes through the router
 app.use("/", router);
 
 // Only listen if not in test mode
