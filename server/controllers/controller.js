@@ -31,17 +31,21 @@ export const processVid = (req, res) => {
    }
 
    try {
-      const jar = spawn("java", [
-         "-jar",
-         process.env.JAR_PATH,
-         inputPath,
-         outputPath,
-         color,
-         threshold.toString(),
-      ], {
-         detached: true,
-         stdio: "ignore",
-      });
+      const jar = spawn(
+         "java",
+         [
+            "-jar",
+            process.env.JAR_PATH,
+            inputPath,
+            outputPath,
+            targetColor,
+            threshold.toString(),
+         ],
+         {
+            detached: true,
+            stdio: "ignore",
+         }
+      );
 
       if (jar && typeof jar.unref === "function") jar.unref();
 
@@ -74,16 +78,16 @@ export const getJobStatus = (req, res) => {
       }
 
       if (status === "done") {
-         return res.status(200).json({ status: "done", result: `/results/${output}` });
+         return res
+            .status(200)
+            .json({ status: "done", result: `/results/${output}` });
       }
 
       if (status === "error") {
          return res.status(200).json({ status: "error", error });
       }
 
-      // Fallback — unrecognized status
       return res.status(500).json({ error: "Unknown job status" });
-
    } catch (err) {
       console.error("Job status error:", err);
       return res.status(500).json({ error: "Error fetching job status" });
@@ -94,7 +98,6 @@ function monitorJob(jobId, outputPath, timeout = 30000) {
    const start = Date.now();
 
    const interval = setInterval(() => {
-      // Timeout check
       if (Date.now() - start > timeout) {
          jobStatus.set(jobId, {
             status: "error",
@@ -104,7 +107,6 @@ function monitorJob(jobId, outputPath, timeout = 30000) {
          return;
       }
 
-      // Check if file exists
       if (fs.existsSync(outputPath)) {
          jobStatus.set(jobId, {
             status: "done",
@@ -112,10 +114,8 @@ function monitorJob(jobId, outputPath, timeout = 30000) {
          });
          clearInterval(interval);
       }
-   }, 1000); // check every 1 second
+   }, 1000);
 }
-
-
 
 export const getJobs = (req, res) => {
    const jobs = [];
@@ -131,20 +131,28 @@ export const videos = (req, res) => {
    fs.readdir(videoDir, (err, files) => {
       if (err) {
          console.error("Cannot read from video directory: ", err);
-         return res.status(500).json({ error: "Cannot read from video directory" });
+         return res
+            .status(500)
+            .json({ error: "Cannot read from video directory" });
       }
 
-      const videoFiles = files.filter((file) => file.endsWith(".mp4") || file.endsWith(".mov") || file.endsWith(".mkv"));
+      const videoFiles = files.filter(
+         (file) =>
+            file.endsWith(".mp4") ||
+            file.endsWith(".mov") ||
+            file.endsWith(".mkv")
+      );
       res.status(200).json(videoFiles);
    });
 };
 
 export const thumbnail = (req, res) => {
    const { filename } = req.params;
+   const baseFilename = path.parse(filename).name;
 
    const videoPath = path.join(process.env.VIDEO_DIR || "videos", filename);
    const thumbnailDir = path.join("thumbnails");
-   const thumbnailFile = `${filename}.jpg`;
+   const thumbnailFile = `${baseFilename}.jpg`;
    const thumbnailPath = path.join(thumbnailDir, thumbnailFile);
 
    if (!fs.existsSync(videoPath)) {
@@ -155,18 +163,19 @@ export const thumbnail = (req, res) => {
       fs.mkdirSync(thumbnailDir, { recursive: true });
    }
 
-   // Serve existing thumbnail if already generated
    if (fs.existsSync(thumbnailPath)) {
       res.set("Content-Type", "image/jpeg");
       return fs.createReadStream(thumbnailPath).pipe(res);
    }
 
-   // Spawn ffmpeg to create thumbnail (wait for it to finish)
    const ffmpeg = spawn(ffmpegPath, [
       "-y",
-      "-i", videoPath,
-      "-ss", "00:00:01",
-      "-vframes", "1",
+      "-i",
+      videoPath,
+      "-ss",
+      "00:00:01",
+      "-vframes",
+      "1",
       thumbnailPath,
    ]);
 
@@ -183,5 +192,53 @@ export const thumbnail = (req, res) => {
    ffmpeg.on("error", (err) => {
       console.error("FFmpeg spawn error:", err);
       res.status(500).json({ error: "Failed to spawn ffmpeg" });
+   });
+};
+
+export const binarize = (req, res) => {
+   const { filename, r, g, b, threshold } = req.query;
+
+   if (!filename || !r || !g || !b || !threshold) {
+      return res.status(400).json({ error: "Missing query parameters" });
+   }
+
+   const baseFilename = path.parse(filename).name;
+   const imagePath = path.join("thumbnails", `${baseFilename}.jpg`);
+   const outputPath = path.join("thumbnails", `${baseFilename}-binarized.png`);
+
+   const red = parseInt(r);
+   const green = parseInt(g);
+   const blue = parseInt(b);
+
+   if ([red, green, blue].some((v) => isNaN(v))) {
+      return res.status(400).json({ error: "Invalid RGB values" });
+   }
+
+   const colorHex = ((red << 16) | (green << 8) | blue)
+      .toString(16)
+      .padStart(6, "0");
+
+   const jar = spawn("java", [
+      "-cp",
+      process.env.JAR_PATH,
+      "io.github.TiaMarieG.centroidFinder.ImageSummaryApp",
+      imagePath,
+      colorHex,
+      threshold,
+   ]);
+
+   jar.on("close", (code) => {
+      if (code === 0 && fs.existsSync("binarized.png")) {
+         fs.copyFileSync("binarized.png", outputPath);
+         res.sendFile(path.resolve(outputPath));
+      } else {
+         console.error("Binarization failed with code", code);
+         res.status(500).json({ error: "Failed to generate binarized image" });
+      }
+   });
+
+   jar.on("error", (err) => {
+      console.error("Java spawn error:", err);
+      res.status(500).json({ error: "Failed to spawn Java process" });
    });
 };

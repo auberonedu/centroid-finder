@@ -16,46 +16,55 @@
 
     <build>
         <plugins>
-            <!-- Run single classes during development -->
+            <!-- 🧪 Dev Execution -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <!-- ✅ TEMP: change to CentroidPlotter for testing -->
                     <mainClass>io.github.TiaMarieG.centroidFinder.CentroidPlotter</mainClass>
                 </configuration>
             </plugin>
 
-            <!-- Enable running unit tests -->
+            <!-- ✅ Unit Testing -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.3</version>
             </plugin>
 
-            <!-- Build executable JAR with dependencies -->
+            <!-- ✅ Supplemental JAR for ImageSummaryApp -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.3.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>${mainClass}</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
+                        <id>image-summary-jar</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>jar</goal>
                         </goals>
+                        <configuration>
+                            <classifier>image-summary</classifier> <!-- ⬅ Prevents collision with main jar -->
+                            <archive>
+                                <manifest>
+                                    <mainClass>io.github.TiaMarieG.centroidFinder.ImageSummaryApp</mainClass>
+                                </manifest>
+                            </archive>
+                            <includes>
+                                <include>**/ImageSummaryApp.class</include>
+                                <include>**/DistanceImageBinarizer.class</include>
+                                <include>**/EuclideanColorDistance.class</include>
+                                <include>**/ImageBinarizer.class</include>
+                                <include>**/ColorDistanceFinder.class</include>
+                                <include>**/Coordinate.class</include>
+                                <include>**/Group.class</include>
+                                <include>**/DfsBinaryGroupFinder.class</include>
+                                <include>**/BinarizingImageGroupFinder.class</include>
+                                <include>**/ImageGroupFinder.class</include>
+                            </includes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -63,7 +72,7 @@
     </build>
 
     <dependencies>
-        <!-- Testing -->
+        <!-- ✅ Unit Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -71,14 +80,14 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Charting -->
+        <!-- ✅ Charting -->
         <dependency>
             <groupId>org.knowm.xchart</groupId>
             <artifactId>xchart</artifactId>
             <version>3.8.5</version>
         </dependency>
 
-        <!-- Video processing -->
+        <!-- ✅ Video Processing -->
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacv-platform</artifactId>
