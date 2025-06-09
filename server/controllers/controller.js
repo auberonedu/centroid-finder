@@ -24,6 +24,11 @@ const jobIDArray = [];
 // For testing purposes, include one fake job ID
 jobIDArray.push("123")
 
+// Create a job status map that contains fake job ID 123 with a status of "done"
+const jobStatus = new Map([
+    ["123", "done"]
+]);
+
 // GET /api/videos
 const getVideos = (req, res) => {
     // console.log("getVideos successfully called!")
@@ -69,9 +74,7 @@ const getThumbnail = (req, res) => {
         
 
 const postVideo = (req, res) => {
-    // console.log("postVideo successfully called!")
-
-    // Try catch to check that parameters are correct
+    // Try catch to check that parameters are valid
     try {
         const { filename } = req.params; // Extracts the video filename from the URL
         const { targetColor, threshold } = req.query; // Extracts query parameters from the request URL
@@ -81,11 +84,13 @@ const postVideo = (req, res) => {
         }
     
         const jobId = uuidv4(); // Unique job ID for tracking the processing
-        jobIDArray.push(jobId);
+        // jobIDArray.push(jobId);
+        // Add job ID to map with job status of "started"
+        jobStatus.set(jobId, "started")
 
         // Create a started marker (AI helped write this)
-        const startMarker = path.resolve(process.env.output_directory_path, `${jobId}.started`);
-        writeFileSync(startMarker, '');
+        // const startMarker = path.resolve(process.env.output_directory_path, `${jobId}.started`);
+        // writeFileSync(startMarker, '');
         
         const jarPath = path.resolve(process.env.video_processor_jar_path); // Path to the JAR file
         const inputPath = path.resolve(process.env.video_directory_path, filename); // The full path to the input video file
@@ -106,37 +111,35 @@ const postVideo = (req, res) => {
             threshold
         ];
 
-        console.log("Running Java with:")
-        console.log("java", javaArgs.join(" "));
+        // console.log("Running Java with:")
+        // console.log("java", javaArgs.join(" "));
 
         // Spawns the Java process in detached mode
         const javaSpawn = spawn('java', javaArgs, {
-            // detached: true, // this ensures that the process is independent from the Node.js process
-            stdio: 'inherit' // changed from 'ignore' to 'inherit'
+            detached: true, // this ensures that the process is independent from the Node.js process
+            stdio: 'ignore' // changed from 'inherit' to 'ignore'
         });
 
         javaSpawn.unref(); // this allows the parent Node to exit independently of the javaSpawn
 
-        // Cleanup start marker (AI helped write this)
-        if (process.env.NODE_ENV !== 'test'){
-            const checkInterval = 3000; // Check every 3 seconds
-            const maxChecks = 100; // Optional: stop after 100 checks (~5 minutes)
-            let checks = 0;
+        jobStatus.set(jobId, "processing")
 
-            const interval = setInterval(() => {
-                checks++;
-                if (existsSync(outputPath)) {
-                    // Job is complete
-                    unlink(startMarker, (err) => {
-                        if (err) console.error(`Error deleting start marker: ${err}`);
-                    });
-                    clearInterval(interval);
-                } else if (checks >= maxChecks) {
-                    // Optional: stop polling after some time
-                    clearInterval(interval);
-                }
-            }, checkInterval);
-        }
+        // Check to see if job is done
+        const checkInterval = 3000; // Check every 3 seconds
+        const maxChecks = 200; // Optional: stop after 200 checks (~10 minutes)
+        let checks = 0;
+
+        const interval = setInterval(() => {
+            checks++;
+            if (existsSync(outputPath)) {
+                // Job is complete
+                jobStatus.set(jobId, {status: "done", result: outputPath})
+                clearInterval(interval);
+            } else if (checks >= maxChecks) {
+                jobStatus.set(jobId, {status: "error", error: "Job timed out"})
+                clearInterval(interval);
+            }
+        }, checkInterval);
 
         // Response to the client with the job id
         res.status(statusAccepted).json({ jobId });
@@ -148,26 +151,30 @@ const postVideo = (req, res) => {
 };
 
 const getStatus = (req, res) => {
-    // console.log("getStatus successfully called!")
     const { jobId } = req.params;
 
-    if (!jobIDArray.includes(jobId)) {
-        res.status(statusNotFound).json({"error":"Job ID not found"})
+    if (!jobStatus.has(jobId)) {
+        return res.status(statusNotFound).json({"error":"Job ID not found"})
+    } else {
+        try {
+            return res.status(statusOK).json(jobStatus.get(jobId))
+        } catch {
+            return res.status(statusServerError).json({ "error":"Error fetching job status"})
+        }
     }
 
-    const outputPath = path.resolve(process.env.output_directory_path, `${jobId}.csv`);
-    const startMarker = path.resolve(process.env.output_directory_path, `${jobId}.started`);
+    // const outputPath = path.resolve(process.env.output_directory_path, `${jobId}.csv`);
+    // const startMarker = path.resolve(process.env.output_directory_path, `${jobId}.started`);
 
+    // if (existsSync(outputPath)) {
+    //     res.status(statusOK).json({"status":"done", "result": outputPath})
+    // }
 
-    if (existsSync(outputPath)) {
-        res.status(statusOK).json({"status":"done", "result": outputPath})
-    }
+    // if (existsSync(startMarker)) {
+    //     res.status(statusOK).json({"status":"processing"})
+    // }
 
-    if (existsSync(startMarker)) {
-        res.status(statusOK).json({"status":"processing"})
-    }
-
-    return res.status(statusServerError).json({ "error":"Error fetching job status"})
+    // return res.status(statusServerError).json({ "error":"Error fetching job status"})
 };
 
 // TODO: Create a getCSV function that retrieves the coordinates
