@@ -2,7 +2,6 @@ import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 import route from "./routers/router.js";
-import binarizeRoute from "./routers/binarize.js";
 import cors from "cors";
 
 dotenv.config();
@@ -12,9 +11,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Mount main API routes
 app.use("/", route);
-app.use("/api", binarizeRoute);
-app.use("/results", express.static(path.resolve(process.env.OUTPUT_DIR)));
-app.use("/videos", express.static(path.resolve(process.env.VIDEO_DIR) || "videos"));
+
+// Serve static results (CSV outputs)
+const outputDir = process.env.OUTPUT_DIR || path.resolve("output");
+app.use("/results", express.static(outputDir));
+
+// Serve static videos
+const videoDir = process.env.VIDEO_DIR || path.resolve("videos");
+app.use("/videos", express.static(videoDir));
+
+// Serve generated thumbnails
+const thumbnailDir = path.resolve("thumbnails");
+app.use("/thumbnails", express.static(thumbnailDir));
 
 export default app;
