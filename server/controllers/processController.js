@@ -97,15 +97,36 @@ const startVideoProcessingJob = (req, res) => {
 const getProcessingJobStatus = (req, res) => {
     // Get jobId from params
     const { jobId } = req.params;
-    const jobsData = loadJobsData();
 
-    // Check if the job exists in the jobs.json file
-    if (!jobsData[jobId]) {
-        return res.status(404).json({ error: "Job not found" });
+    try {
+        // Get data about the jobs
+        const jobsData = loadJobsData();
+
+        // Check if the job exists in the jobs.json file
+        if (!jobsData[jobId]) {
+            return res.status(404).json({ error: "Job ID not found" });
+        }
+
+        // Get job information and prepare the response 
+        const job = jobsData[jobId];
+        const response = { status: job.status };
+
+        // If the job has finished successfully, return the result.csv file path in the response
+        if (job.status === 'done') {
+            response.result = path.join('/results', job.outputFileName);
+        } 
+        // If the job failed, return an error message in the response
+        else if (job.status === 'error') {
+            response.error = job.error || "Unknown error occurred";
+        }
+
+        // Return the current job status with a status code of 200
+        return res.status(200).json(response);
+
+    } catch (err) {
+        console.error("Error fetching job status:", err);
+        return res.status(500).json({ error: "Error fetching job status" });
     }
-
-    // Return the current job status
-    return res.status(200).json({ status: jobsData[jobId].status });
 };
 
 export default { startVideoProcessingJob, getProcessingJobStatus };
