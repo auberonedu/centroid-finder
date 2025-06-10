@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // Access configuration from the .env file
-const outputDir = path.resolve(__dirname, process.env.OUTPUT_DIR || 'results');
+const outputDir = path.resolve(__dirname, process.env.OUTPUT_DIR || '/results');
 
 const app = express();
 
@@ -27,8 +27,6 @@ app.use(express.json());
 
 // No longer needed: Serve frontend static files (built React app)
 // app.use(express.static(path.join(__dirname, 'public')));
-
-console.log("Serving static results from:", outputDir);
 
 // Serve the output directory statically
 app.use('/results', express.static(outputDir));
