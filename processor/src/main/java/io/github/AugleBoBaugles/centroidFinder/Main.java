@@ -30,14 +30,14 @@ import java.io.File;
  */
 public class Main {
     public static void main(String[] args) {
-        if (args.length < 4) {
+        if (args.length < 3) {
             System.out.println("Usage: java Main <input_video> <output_path> <hex_target_color> <threshold>");
             return;
         }
         
         String videoPath = args[0];
-        String outputPath = args[1];
-        String hexTargetColor = args[2];
+        String outputPath = "./sampleOutput";
+        String hexTargetColor = args[1];
         int threshold = 0;
 
         // TEST
@@ -48,7 +48,7 @@ public class Main {
 
         // Handling that threshold is a valid number.
         try {
-            threshold = Integer.parseInt(args[3]);
+            threshold = Integer.parseInt(args[2]);
         } catch (NumberFormatException e) {
             System.err.println("Threshold must be an integer.");
             return;
