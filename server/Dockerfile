@@ -22,6 +22,10 @@ COPY . .
 # Copy the Java JAR to the correct location
 RUN mkdir -p /processor/target
 
+# 🔧 Copy the Java JAR explicitly into the image
+COPY processor/target/salamander-jar-with-dependencies.jar /processor/target/
+
+
 # Expose backend port
 EXPOSE 3001
 
