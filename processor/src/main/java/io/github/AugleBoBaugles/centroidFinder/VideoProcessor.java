@@ -26,22 +26,26 @@ public class VideoProcessor {
 
     public void extractFrames() {
         try {
-            // Ensure output directory exists
-            File outputFile = new File(outputPath);
-            outputFile.getParentFile().mkdirs();
+            // Create output directory if it doesn't exist
+            String outputDir = "sampleOutput"; 
+            new File(outputDir).mkdirs();
 
-            // Create writer for CSV output
-            PrintWriter writer = new PrintWriter(new FileWriter(outputFile, false));
-            
+            // Path to the CSV output file
+            String csvFilePath = outputDir + "/largestCentroids.csv";
+
+            // Create the file and initialize writer (false = overwrite if file exists)
+            File csvFile = new File(csvFilePath);
+            PrintWriter writer = new PrintWriter(new FileWriter(csvFile, false));
+
             // Write the CSV header: column names
-            writer.println("time,x,y");
+            writer.println();
 
             // Process the video frames and write centroid data to CSV
             extractFrames(videoPath, writer);
-            
+
             // Close the writer after all data is written
             writer.close();
-            System.out.println("Finished writing CSV to: " + outputPath);
+            System.out.println("Finished writing CSV to: " + csvFilePath);
         } catch (Exception e) {
             e.printStackTrace(); // Print any exceptions encountered
         }
