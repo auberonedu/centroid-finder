@@ -15,10 +15,15 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const indexFilePath = path.resolve(__dirname, "./videoIndex.json");
 const videosDir = path.resolve(__dirname, process.env.VIDEO_DIR);
+<<<<<<< HEAD
 const thumbnailsDir = path.resolve(__dirname, "../thumbnails");
 const outputDir = path.resolve(__dirname, "../output");
 
 const jobStatusMap = new Map(); // Needed for getStatus
+=======
+const thumbnailsDir = path.resolve(__dirname, '../thumbnails');
+const resultsDir = path.resolve(__dirname, '../results');
+>>>>>>> server
 
 const loadIndex = async () => {
   try {
@@ -159,7 +164,13 @@ const getVideoById = async (req, res) => {
 
 const videoProcessing = async (req, res) => {
   const jobId = uuidv4();
+<<<<<<< HEAD
   const { filename, color, threshold, interval } = req.body;
+=======
+  const outputCsvPath = path.join(resultsDir, `${jobId}.csv`);
+  
+  const { videoPath, targetColorHex, threshold, frameInterval } = req.body;
+>>>>>>> server
 
   const cleanInterval = interval.replace("s", "");
 
@@ -231,6 +242,21 @@ const videoProcessing = async (req, res) => {
   });
 };
 
+const getCompletedCSVs = async (req, res) => {
+  try {
+    const files = await fs.promises.readdir(resultsDir);
+
+    const csvFiles = files.filter((file) => file.endsWith('.csv'));
+
+    res.json({
+      csvFiles
+    });
+  } catch (err) {
+    console.error('Error reading results directory:', err);
+    res.status(500).json({ error: 'Unable to list CSV files' });
+  }
+};
+
 const getStatus = (req, res) => {
   const { jobId } = req.params;
 
@@ -253,8 +279,9 @@ const getStatus = (req, res) => {
 };
 
 export default {
-  getVideos,
-  getVideoById,
-  videoProcessing,
-  getStatus,
+    getVideos,
+    getVideoById,
+    videoProcessing,
+    getCompletedCSVs,
+    getStatus
 };
