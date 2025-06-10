@@ -15,6 +15,8 @@
     </properties>
 
     <build>
+        <finalName>videoprocessor</finalName>
+
         <plugins>
             <!-- 🧪 Dev Execution -->
             <plugin>
@@ -33,18 +35,20 @@
                 <version>3.5.3</version>
             </plugin>
 
-            <!-- ✅ Assembly Plugin for full runnable JAR -->
+            <!-- ✅ Build Fat JAR as videoprocessor.jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.6.0</version>
                 <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <finalName>videoprocessor</finalName>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>io.github.TiaMarieG.centroidFinder.ImageSummaryApp</mainClass>
+                            <mainClass>${mainClass}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -55,42 +59,6 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- ✅ Supplemental JAR for ImageSummaryApp -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>image-summary-jar</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>image-summary</classifier>
-                            <archive>
-                                <manifest>
-                                    <mainClass>io.github.TiaMarieG.centroidFinder.ImageSummaryApp</mainClass>
-                                </manifest>
-                            </archive>
-                            <includes>
-                                <include>**/ImageSummaryApp.class</include>
-                                <include>**/DistanceImageBinarizer.class</include>
-                                <include>**/EuclideanColorDistance.class</include>
-                                <include>**/ImageBinarizer.class</include>
-                                <include>**/ColorDistanceFinder.class</include>
-                                <include>**/Coordinate.class</include>
-                                <include>**/Group.class</include>
-                                <include>**/DfsBinaryGroupFinder.class</include>
-                                <include>**/BinarizingImageGroupFinder.class</include>
-                                <include>**/ImageGroupFinder.class</include>
-                            </includes>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

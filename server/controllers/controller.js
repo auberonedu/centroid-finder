@@ -1,3 +1,4 @@
+// controller.js
 import { spawn } from "child_process";
 import { v4 as uuid } from "uuid";
 import * as fs from "fs";
@@ -108,11 +109,18 @@ function monitorJob(jobId, outputPath, timeout = 30000) {
       }
 
       if (fs.existsSync(outputPath)) {
-         jobStatus.set(jobId, {
-            status: "done",
-            output: path.basename(outputPath),
-         });
-         clearInterval(interval);
+         const stats = fs.statSync(outputPath);
+         const now = Date.now();
+         const ageMs = now - stats.mtimeMs;
+
+         // File hasn't been modified in 1 second → assume fully written
+         if (ageMs > 10000) {
+            jobStatus.set(jobId, {
+               status: "done",
+               output: path.basename(outputPath),
+            });
+            clearInterval(interval);
+         }
       }
    }, 1000);
 }
@@ -195,41 +203,52 @@ export const thumbnail = (req, res) => {
    });
 };
 
-export const binarizeThumbnail = (req, res) => {
-   const { filename, r, g, b, threshold } = req.query;
+export const generateCsv = (req, res) => {
+   const { filename, color, threshold } = req.body;
 
-   if (!filename || !r || !g || !b || !threshold) {
-      return res.status(400).json({ error: "Missing query parameters" });
+   if (!filename || !color || isNaN(threshold)) {
+      return res.status(400).json({ error: "Missing input data" });
    }
 
-   const base = path.parse(filename).name;
-   const inputImage = path.resolve("thumbnails", `${base}.jpg`);
-   const outputImage = path.resolve("thumbnails", `${base}-binarized.jpg`);
+   const inputPath = path.join(process.env.VIDEO_DIR || "videos", filename);
+   const jobId = uuid();
+   const outputDir = process.env.OUTPUT_DIR || path.join(__dirname, "output");
+   const outputFile = `${jobId}.csv`;
+   const outputPath = path.join(outputDir, outputFile);
 
-   const jar = spawn("java", [
-      "-jar",
-      process.env.JAR_PATH,
-      "binarize-thumbnail",
-      inputImage,
-      outputImage,
-      r,
-      g,
-      b,
-      threshold,
-   ]);
+   if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+   }
 
-   jar.on("close", (code) => {
-      if (code === 0 && fs.existsSync(outputImage)) {
-         res.set("Content-Type", "image/jpeg");
-         res.sendFile(outputImage);
-      } else {
-         console.error("Binarize-thumbnail failed with code", code);
-         res.status(500).json({ error: "Failed to binarize image" });
-      }
-   });
+   try {
+      const jar = spawn(
+         "java",
+         [
+            "-jar",
+            process.env.JAR_PATH,
+            inputPath,
+            outputPath,
+            `${color.r},${color.g},${color.b}`,
+            threshold.toString(),
+         ],
+         {
+            detached: true,
+            stdio: "ignore",
+         }
+      );
 
-   jar.on("error", (err) => {
-      console.error("Binarize-thumbnail Java spawn error:", err);
-      res.status(500).json({ error: "Failed to run Java" });
-   });
+      if (jar && typeof jar.unref === "function") jar.unref();
+
+      jobStatus.set(jobId, {
+         status: "processing",
+         output: outputFile,
+      });
+
+      monitorJob(jobId, outputPath);
+
+      return res.status(202).json({ jobId });
+   } catch (err) {
+      console.error("Error starting CSV generation:", err);
+      return res.status(500).json({ error: "CSV generation failed" });
+   }
 };

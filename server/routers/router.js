@@ -5,6 +5,7 @@ import {
    getJobs,
    videos,
    thumbnail,
+   generateCsv,
 } from "../controllers/controller.js";
 
 const router = Router();
@@ -23,5 +24,8 @@ router.get("/api/videos", videos);
 
 // Generate or serve video thumbnail
 router.get("/thumbnail/:filename", thumbnail);
+
+// ✅ NEW: Generate CSV via Java backend
+router.post("/api/generate-csv", generateCsv);
 
 export default router;

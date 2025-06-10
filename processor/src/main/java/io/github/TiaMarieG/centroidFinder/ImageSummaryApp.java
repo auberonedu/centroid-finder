@@ -1,63 +1,41 @@
-// ImageSummaryApp.java
 package io.github.TiaMarieG.centroidFinder;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+import javax.imageio.ImageIO;
 
+/**
+ * The Image Summary Application.
+ * 
+ * This application takes three command-line arguments:
+ * 1. The path to an input image file (for example, "image.png").
+ * 2. A target hex color in the format RRGGBB (for example, "FF0000" for red).
+ * 3. An integer threshold for binarization.
+ * 
+ * The application performs the following steps:
+ * 
+ * 1. Loads the input image.
+ * 2. Parses the target color from the hex string into a 24-bit integer.
+ * 3. Binarizes the image by comparing each pixel's Euclidean color distance to the target color.
+ *    A pixel is marked white (1) if its distance is less than the threshold; otherwise, it is marked black (0).
+ * 4. Converts the binary array back to a BufferedImage and writes the binarized image to disk as "binarized.png".
+ * 5. Finds connected groups of white pixels in the binary image.
+ *    Pixels are connected vertically and horizontally (not diagonally).
+ *    For each group, the size (number of pixels) and the centroid (calculated using integer division) are computed.
+ * 6. Writes a CSV file named "groups.csv" containing one row per group in the format "size,x,y".
+ *    Coordinates follow the convention: (x:0, y:0) is the top-left, with x increasing to the right and y increasing downward.
+ * 
+ * Usage:
+ *   java ImageSummaryApp <input_image> <hex_target_color> <threshold>
+ */
 public class ImageSummaryApp {
     public static void main(String[] args) {
-        if (args.length == 0) {
-            System.out.println("Usage:");
-            System.out.println("  java ImageSummaryApp <input_image> <hex_target_color> <threshold>");
-            System.out.println("  OR");
-            System.out.println("  java ImageSummaryApp binarize-thumbnail <input_image> <output_image> <r> <g> <b> <threshold>");
-            return;
-        }
-
-        // --- New backend-friendly case ---
-        if ("binarize-thumbnail".equals(args[0])) {
-            if (args.length < 7) {
-                System.err.println("Usage: binarize-thumbnail <inputImage> <outputImage> <r> <g> <b> <threshold>");
-                System.exit(1);
-            }
-
-            String inputImagePath = args[1];
-            String outputImagePath = args[2];
-            int r = Integer.parseInt(args[3]);
-            int g = Integer.parseInt(args[4]);
-            int b = Integer.parseInt(args[5]);
-            int threshold = Integer.parseInt(args[6]);
-
-            try {
-                BufferedImage inputImage = ImageIO.read(new File(inputImagePath));
-
-                ColorDistanceFinder colorFinder = new EuclideanColorDistance();
-                int targetColor = (r << 16) | (g << 8) | b;
-                ImageBinarizer binarizer = new DistanceImageBinarizer(colorFinder, targetColor, threshold);
-
-                int[][] binaryArray = binarizer.toBinaryArray(inputImage);
-                BufferedImage binaryImage = binarizer.toBufferedImage(binaryArray);
-
-                ImageIO.write(binaryImage, "jpg", new File(outputImagePath));
-                System.out.println("Binarized image saved to: " + outputImagePath);
-            } catch (Exception e) {
-                System.err.println("Error during binarization:");
-                e.printStackTrace();
-                System.exit(1);
-            }
-
-            return;
-        }
-
-        // --- Original CLI logic ---
         if (args.length < 3) {
             System.out.println("Usage: java ImageSummaryApp <input_image> <hex_target_color> <threshold>");
             return;
         }
-
+        
         String inputImagePath = args[0];
         String hexTargetColor = args[1];
         int threshold = 0;
@@ -67,7 +45,7 @@ public class ImageSummaryApp {
             System.err.println("Threshold must be an integer.");
             return;
         }
-
+        
         BufferedImage inputImage = null;
         try {
             inputImage = ImageIO.read(new File(inputImagePath));
@@ -76,7 +54,8 @@ public class ImageSummaryApp {
             e.printStackTrace();
             return;
         }
-
+        
+        // Parse the target color from a hex string (format RRGGBB) into a 24-bit integer (0xRRGGBB)
         int targetColor = 0;
         try {
             targetColor = Integer.parseInt(hexTargetColor, 16);
@@ -84,28 +63,34 @@ public class ImageSummaryApp {
             System.err.println("Invalid hex target color. Please provide a color in RRGGBB format.");
             return;
         }
-
+        
+        // Create the DistanceImageBinarizer with a EuclideanColorDistance instance.
         ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
         ImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
-
+        
+        // Binarize the input image.
         int[][] binaryArray = binarizer.toBinaryArray(inputImage);
         BufferedImage binaryImage = binarizer.toBufferedImage(binaryArray);
-
+        
+        // Write the binarized image to disk as "binarized.png".
         try {
-            File inputFile = new File(inputImagePath);
-            String baseName = inputFile.getName().replaceAll("\\.[^.]+$", "");
-            File output = new File("thumbnails/" + baseName + "-binarized.png");
-            ImageIO.write(binaryImage, "png", output);
-            System.out.println("Binarized image saved as " + output.getPath());
+            ImageIO.write(binaryImage, "png", new File("binarized.png"));
+            System.out.println("Binarized image saved as binarized.png");
         } catch (Exception e) {
             System.err.println("Error saving binarized image.");
             e.printStackTrace();
         }
-
+        
+        // Create an ImageGroupFinder using a BinarizingImageGroupFinder with a DFS-based BinaryGroupFinder.
         ImageGroupFinder groupFinder = new BinarizingImageGroupFinder(binarizer, new DfsBinaryGroupFinder());
+        
+        // Find connected groups in the input image.
+        // The BinarizingImageGroupFinder is expected to internally binarize the image,
+        // then locate connected groups of white pixels.
         List<Group> groups = groupFinder.findConnectedGroups(inputImage);
-
-        try (java.io.PrintWriter writer = new java.io.PrintWriter("groups.csv")) {
+        
+        // Write the groups information to a CSV file "groups.csv".
+        try (PrintWriter writer = new PrintWriter("groups.csv")) {
             for (Group group : groups) {
                 writer.println(group.toCsvRow());
             }
