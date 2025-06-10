@@ -51,9 +51,12 @@ const startVideoProcessingJob = (req, res) => {
     // Load current jobs and add a new entry
     const jobsData = loadJobsData();
     jobsData[jobId] = {
-        jobId,
-        status: 'processing',
-        outputFileName: `${jobId}/result.csv`
+        jobId, // Save the job ID
+        status: 'processing', // Set a starting status of processing
+        outputFileName: `${jobId}/result.csv`, // Save the filepath of the result.csv file
+        videoFileName: filename, // Save original video file name
+        targetColor: targetColor, // Save target color
+        threshold: Number(threshold) // Save threshold as a number
     };
     saveJobsData(jobsData);
 
@@ -94,6 +97,7 @@ const startVideoProcessingJob = (req, res) => {
     }
 };
 
+
 const getProcessingJobStatus = (req, res) => {
     // Get jobId from params
     const { jobId } = req.params;
@@ -114,7 +118,7 @@ const getProcessingJobStatus = (req, res) => {
         // If the job has finished successfully, return the result.csv file path in the response
         if (job.status === 'done') {
             response.result = path.join('/results', job.outputFileName);
-        } 
+        }
         // If the job failed, return an error message in the response
         else if (job.status === 'error') {
             response.error = job.error || "Unknown error occurred";
