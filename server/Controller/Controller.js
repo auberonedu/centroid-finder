@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import { v4 as uuidv4 } from "uuid";
 import { spawn } from "child_process";
-import { generateThumbnail } from "../Utils/ffmpegHelpers.js"; 
+import { generateThumbnail } from "../Utils/ffmpegHelpers.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,11 +15,10 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const indexFilePath = path.resolve(__dirname, "./videoIndex.json");
 const videosDir = path.resolve(__dirname, process.env.VIDEO_DIR);
-
 const thumbnailsDir = path.resolve(__dirname, "../thumbnails");
-const outputDir = path.resolve(__dirname, "../output");  // use this as the CSV directory
+const outputDir = path.resolve(__dirname, "../output");
 
-const jobStatusMap = new Map(); // Needed for getStatus
+const jobStatusMap = new Map();
 
 const loadIndex = async () => {
   try {
@@ -83,7 +82,7 @@ const getVideos = async (req, res) => {
 
       const fullVideoPath = path.join(videosDir, file);
       try {
-        const thumbFile = await generateThumbnail(fullVideoPath, thumbnailsDir); // returns filename
+        const thumbFile = await generateThumbnail(fullVideoPath, thumbnailsDir);
         index[file].thumbnail = `thumbnails/${thumbFile}`;
       } catch (err) {
         console.error(`Failed to generate thumbnail for ${file}:`, err);
@@ -160,28 +159,20 @@ const getVideoById = async (req, res) => {
 
 const videoProcessing = async (req, res) => {
   const jobId = uuidv4();
-<<<<<<< HEAD
   const { filename, color, threshold, interval } = req.body;
-=======
-  const outputCsvPath = path.join(resultsDir, `${jobId}.csv`);
-  
-  const { videoPath, targetColorHex, threshold, frameInterval } = req.body;
->>>>>>> server
-
-  const cleanInterval = interval.replace("s", "");
 
   if (!filename || !color || !threshold || !interval) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
+  const cleanInterval = interval.replace("s", "");
   const colorString = `${color.r},${color.g},${color.b}`;
   const videoPath = path.join(videosDir, filename);
   await fs.mkdir(outputDir, { recursive: true });
   const outputCsvPath = path.join(outputDir, `${jobId}.csv`);
-
   const jarPath = req.app.locals.JAR_PATH;
-  console.log("🐾 Using JAR file at:", jarPath);
 
+  console.log("🐾 Using JAR file at:", jarPath);
   jobStatusMap.set(jobId, { status: "processing", output: "", error: "" });
 
   const args = [
@@ -218,38 +209,23 @@ const videoProcessing = async (req, res) => {
 
   java.on("close", (code) => {
     if (code === 0) {
-      jobStatusMap.set(jobId, {
-        status: "completed",
-        output,
-        error: "",
-      });
+      jobStatusMap.set(jobId, { status: "completed", output, error: "" });
     } else {
-      jobStatusMap.set(jobId, {
-        status: "failed",
-        output,
-        error,
-      });
+      jobStatusMap.set(jobId, { status: "failed", output, error });
     }
   });
 
-  res.json({
-    jobId,
-    message: "Video processing started.",
-  });
+  res.json({ jobId, message: "Video processing started." });
 };
 
 const getCompletedCSVs = async (req, res) => {
   try {
-    const files = await fs.promises.readdir(resultsDir);
-
-    const csvFiles = files.filter((file) => file.endsWith('.csv'));
-
-    res.json({
-      csvFiles
-    });
+    const files = await fs.readdir(outputDir);
+    const csvFiles = files.filter((file) => file.endsWith(".csv"));
+    res.json({ csvFiles });
   } catch (err) {
-    console.error('Error reading results directory:', err);
-    res.status(500).json({ error: 'Unable to list CSV files' });
+    console.error("Error reading output directory:", err);
+    res.status(500).json({ error: "Unable to list CSV files" });
   }
 };
 
@@ -275,9 +251,9 @@ const getStatus = (req, res) => {
 };
 
 export default {
-    getVideos,
-    getVideoById,
-    videoProcessing,
-    getCompletedCSVs,
-    getStatus
+  getVideos,
+  getVideoById,
+  videoProcessing,
+  getCompletedCSVs,
+  getStatus,
 };
