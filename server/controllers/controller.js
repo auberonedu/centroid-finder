@@ -110,7 +110,7 @@ const postVideo = (req, res) => {
 
         javaSpawn.unref(); // this allows the parent Node to exit independently of the javaSpawn
 
-        jobStatus.set(jobId, "processing")
+        jobStatus.set(jobId, { status: "processing" })
 
         // Check to see if job is done
         const checkInterval = 3000; // Check every 3 seconds
