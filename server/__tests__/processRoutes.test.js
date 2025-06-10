@@ -90,4 +90,36 @@ describe('Process Controller Routes', () => {
             }
         });
     });
+
+    // Test suite for the GET /jobs route
+    describe('GET /jobs', () => {
+        // Test Case 1: Should return 200 and an array of job entries
+        it('should return a list of all jobs in jobs.json', async () => {
+            const response = await request(app).get('/jobs');
+
+            // Expecting a 200 OK status
+            expect(response.status).toBe(200);
+
+            // Response body should be an array
+            expect(Array.isArray(response.body)).toBe(true);
+
+            // If jobs exist, validate structure of first job object
+            if (response.body.length > 0) {
+                const job = response.body[0];
+
+                // Always-required fields
+                expect(job).toHaveProperty('jobId');
+                expect(job).toHaveProperty('status');
+                expect(job).toHaveProperty('outputFileName');
+
+                // New fields — only test if they exist
+                if ('videoFileName' in job) {
+                    expect(typeof job.videoFileName).toBe('string');
+                    expect(typeof job.targetColor).toBe('string');
+                    expect(typeof job.threshold).toBe('number');
+                }
+            }
+        });
+    });
+
 });

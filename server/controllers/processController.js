@@ -133,4 +133,17 @@ const getProcessingJobStatus = (req, res) => {
     }
 };
 
-export default { startVideoProcessingJob, getProcessingJobStatus };
+const getAllJobs = (req, res) => {
+    try {
+        // Load and return all jobs from the jobs.json file
+        const jobsData = loadJobsData();
+        const allJobs = Object.values(jobsData); // Convert from object to array
+        return res.status(200).json(allJobs);
+    } catch (err) {
+        console.error("Error fetching all jobs:", err);
+        return res.status(500).json({ error: "Error loading job list" });
+    }
+};
+
+
+export default { startVideoProcessingJob, getProcessingJobStatus, getAllJobs };
