@@ -29,4 +29,4 @@ COPY target/videoprocessor.jar ./processor/videoprocessor.jar
 EXPOSE 8080
 
 # Start the server
-CMD ["node", "server/app.js"]
+CMD ["npm", "dev"]
