@@ -15,15 +15,11 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const indexFilePath = path.resolve(__dirname, "./videoIndex.json");
 const videosDir = path.resolve(__dirname, process.env.VIDEO_DIR);
-<<<<<<< HEAD
+
 const thumbnailsDir = path.resolve(__dirname, "../thumbnails");
-const outputDir = path.resolve(__dirname, "../output");
+const outputDir = path.resolve(__dirname, "../output");  // use this as the CSV directory
 
 const jobStatusMap = new Map(); // Needed for getStatus
-=======
-const thumbnailsDir = path.resolve(__dirname, '../thumbnails');
-const resultsDir = path.resolve(__dirname, '../results');
->>>>>>> server
 
 const loadIndex = async () => {
   try {
