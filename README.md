@@ -77,6 +77,9 @@ If you want to, you can make a new branch to start experimenting. See if you can
 ## Build command for Docker to ensure the latest frontend commits are pulled:
 - docker build --no-cache -t ghcr.io/alexanderoruban/salamander .
 
+# Push command for Docker to place the newly built container on GHCR:
+- docker push ghcr.io/alexanderoruban/salamander:latest 
+
 ## Steps for running just the backend with Docker:
 1. Create directories for results and videos like `test_videos` and `test_results` in the root directory of the project.
 2. Place videos into the new `test_videos` directory for viewing and processing
