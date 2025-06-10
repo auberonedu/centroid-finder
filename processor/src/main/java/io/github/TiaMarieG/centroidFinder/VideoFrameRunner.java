@@ -43,11 +43,19 @@ public class VideoFrameRunner {
             logger.writeHeader();
 
             Frame frame;
+            double lastLoggedSecond = -1.0;
+
             while ((frame = grabber.grabImage()) != null) {
                BufferedImage image = converter.convert(frame);
                Coordinate centroid = centroidProcessor.findCentroid(image);
                double timestamp = frameNumber * secondsPerFrame;
-               logger.write(timestamp, centroid.x(), centroid.y());
+
+               // Only log when full second has passed
+               if (timestamp - lastLoggedSecond >= 1.0) {
+                  logger.write(timestamp, centroid.x(), centroid.y());
+                  lastLoggedSecond = timestamp;
+               }
+
                frameNumber++;
             }
 
