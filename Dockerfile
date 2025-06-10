@@ -4,8 +4,9 @@ FROM eclipse-temurin:21
 WORKDIR /app
 
 # Default ENV
-ENV VIDEO_DIR=/app/videos
-ENV OUTPUT_DIR=/app/results
+ENV VIDEO_DIR=/videos
+ENV OUTPUT_DIR=/results
+ENV JOBS_DIR=app/jobs
 ENV JAR_PATH=/app/target/videoprocessor.jar
 
 # Installing Curl and Node.js
@@ -25,7 +26,7 @@ COPY server ./server
 COPY target/videoprocessor.jar ./processor/videoprocessor.jar
 
 # Expose backend port
-EXPOSE 3000
+EXPOSE 8080
 
 # Start the server
 CMD ["node", "server/app.js"]

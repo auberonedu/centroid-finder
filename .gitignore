@@ -28,3 +28,6 @@ replay_pid*
 *.mp4
 *.csv
 test_output/
+
+# Folders
+results/
