@@ -2,7 +2,6 @@
 *.class
 
 # Java archive files
-*.jar
 *.war
 *.nar
 *.ear
@@ -20,7 +19,8 @@ replay_pid*
 
 # Maven build output
 /target/
-processor/target/
+processor/target/*
+!processor/target/salamander-jar-with-dependencies.jar
 
 # Output files
 *.csv
