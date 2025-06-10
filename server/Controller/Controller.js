@@ -122,11 +122,17 @@ const getVideos = async (req, res) => {
 
 const getVideoById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { videoID } = req.params;
+
+    const isValidUUID = /^[0-9a-fA-F-]{36}$/.test(videoID);
+    if (!isValidUUID) {
+      return res.status(400).json({ error: "Invalid video ID format" });
+    }
+
     const index = await loadIndex();
 
     const entry = Object.entries(index).find(
-      ([filename, meta]) => meta.id === id
+      ([filename, meta]) => meta.id === videoID
     );
 
     if (!entry) {
@@ -232,8 +238,9 @@ const getCompletedCSVs = async (req, res) => {
 const getStatus = (req, res) => {
   const { jobId } = req.params;
 
-  if (!jobId) {
-    return res.status(400).json({ error: "Missing jobId in request" });
+  // 🚨 Prevent conflict with /videos/status route
+  if (!jobId || jobId.toLowerCase() === "status") {
+    return res.status(400).json({ error: "Missing or invalid jobId in request" });
   }
 
   const jobInfo = jobStatusMap.get(jobId);

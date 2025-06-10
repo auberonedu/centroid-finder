@@ -13,15 +13,14 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Copy and install server dependencies first (leverages Docker cache)
-COPY server/package*.json ./
+COPY package*.json ./
 RUN npm install
 
 # Copy all server source code
-COPY server/. .
+COPY . .
 
 # Copy the Java JAR to the correct location
 RUN mkdir -p /processor/target
-COPY processor/target/salamander-jar-with-dependencies.jar /processor/target/
 
 # Expose backend port
 EXPOSE 3001
