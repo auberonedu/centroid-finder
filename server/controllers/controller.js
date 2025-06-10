@@ -88,9 +88,9 @@ const postVideo = (req, res) => {
         // Add job ID to map with job status of "started"
         jobStatus.set(jobId, { status: "started" })
         
-        const jarPath = path.resolve(process.env.video_processor_jar_path); // Path to the JAR file
-        const inputPath = path.resolve(process.env.video_directory_path, filename); // The full path to the input video file
-        const outputPath = path.resolve(process.env.output_directory_path, `${jobId}.csv`); // Path to where the DSV output will be saved
+        const JAVA_JAR_PATH = path.resolve(process.env.video_processor_jar_path); // Path to the JAR file 
+        const VIDEO_DIR = path.resolve(process.env.video_directory_path, filename); // The full path to the input video file
+        const RESULTS_DIR = path.resolve(process.env.output_directory_path, `${jobId}.csv`); // Path to where the DSV output will be saved
 
         // DEV CHECK TO SEE IF jarPath EXISTS
         if (existsSync(path.resolve(process.env.video_processor_jar_path))) {
@@ -102,8 +102,8 @@ const postVideo = (req, res) => {
         // Arguments to the pass to the backend
         const javaArgs = [
             '-jar',
-            jarPath,
-            inputPath,
+            JAVA_JAR_PATH,
+            VIDEO_DIR,
             //outputPath,
             targetColor,
             threshold
