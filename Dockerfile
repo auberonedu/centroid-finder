@@ -5,8 +5,7 @@ WORKDIR /app
 
 # Default ENV
 ENV VIDEO_DIR=/app/videos
-ENV RESULTS_DIR=/app/results
-ENV JOBS_DIR=/app/jobs
+ENV OUTPUT_DIR=/app/results
 ENV JAR_PATH=/app/target/videoprocessor.jar
 
 # Installing Curl and Node.js
