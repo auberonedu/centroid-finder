@@ -1,19 +1,27 @@
-"use client";
 
-import NavBar from "./components/NavBar"; // adjust if path is different
 import { Container, Box } from "@mui/material";
-import "./globals.css"; // keep this if it exists
+import ClientLayout from "./components/ClientLayout";
+import "./globals.css";
+
+export const metadata = {
+  title: "Salamander",
+  description: "Tracks salamander across frames",
+  icons: {
+    icon: "/favicon.ico", 
+  },
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <NavBar />
-        <Container maxWidth="md">
-          <Box sx={{ paddingTop: 4 }}>
-            {children}
-          </Box>
-        </Container>
+        <ClientLayout>
+          <Container maxWidth="md">
+            <Box sx={{ paddingTop: 4 }}>
+              {children}
+            </Box>
+          </Container>
+        </ClientLayout>
       </body>
     </html>
   );
