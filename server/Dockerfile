@@ -1,4 +1,4 @@
-# Use an image with both Node and OpenJDK
+# Use an image with OpenJDK 17 and install Node.js 20
 FROM openjdk:17-slim
 
 # Install Node.js 20
@@ -12,15 +12,18 @@ RUN apt-get update && \
 # Set working directory
 WORKDIR /app
 
-# Copy package files and install
+# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the app
+# Copy the JAR file BEFORE other files to prevent overwrite
+COPY ../processor/target/salamander-jar-with-dependencies.jar ./processor/target/salamander-jar-with-dependencies.jar
+
+# Copy the rest of the server code
 COPY . .
 
-# Expose the port
+# Expose the backend port
 EXPOSE 3001
 
-# Run the app
+# Start the server
 CMD ["node", "index.js"]

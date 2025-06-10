@@ -43,3 +43,5 @@ output/*.png
 
 # Node
 node_modules/
+server/.env
+server/.env
