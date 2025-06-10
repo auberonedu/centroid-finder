@@ -63,11 +63,10 @@ public class DistanceImageBinarizer implements ImageBinarizer {
                 // find distance between currentColor and target color (use distanceFinder)
                 double distance = distanceFinder.distance(currentColor, targetColor);
 
-                // if distance < threshold -- set to 1 if distance >= threshold -- set to 0
                 if (distance < threshold){
-                    binaryArray[r][c] = 1; // white
-                } else if (distance >= threshold){
-                    binaryArray[r][c] = 0; // black
+                    binaryArray[r][c] = 1; 
+                } else {
+                    binaryArray[r][c] = 0; 
                 }
 
                 

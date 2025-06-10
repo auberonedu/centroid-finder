@@ -53,14 +53,9 @@ const getThumbnail = (req, res) => {
     
     const inputPath = path.resolve(process.env.video_directory_path, filename);
     const outputFolder = path.resolve('./output');
-<<<<<<< HEAD
-    const outputImagePath = path.join(outputFolder, `${filename}-thumbnail.jpg`);
-  
-=======
     const outputImagePath = path.join(outputFolder, `${filename}-thumb.jpg`);
     console.log("Paths worked", inputPath)
 
->>>>>>> e69e4ce9e3fbd658192b66868516d1cfb230920b
     ffmpeg(inputPath)
         .on('end', () => {
             console.log('Thumbnail created at:', outputImagePath);
@@ -91,27 +86,11 @@ const postVideo = (req, res) => {
     
         const jobId = uuidv4(); // Unique job ID for tracking the processing
         // Add job ID to map with job status of "started"
-<<<<<<< HEAD
-        jobStatus.set(jobId, "started")
-
-        // Create a started marker (AI helped write this)
-        // const startMarker = path.resolve(process.env.output_directory_path, `${jobId}.started`);
-        // writeFileSync(startMarker, '');
-=======
         jobStatus.set(jobId, { status: "started" })
->>>>>>> e69e4ce9e3fbd658192b66868516d1cfb230920b
         
         const jarPath = path.resolve(process.env.video_processor_jar_path); // Path to the JAR file
         const inputPath = path.resolve(process.env.video_directory_path, filename); // The full path to the input video file
         const outputPath = path.resolve(process.env.output_directory_path, `${jobId}.csv`); // Path to where the DSV output will be saved
-<<<<<<< HEAD
-
-        // TODO: Check whether recursive should be set to true
-        // Consider a try catch to see if directory exist?
-        // Only run this line if file directory doesn't exist 
-        mkdirSync(path.dirname(startMarker), {recursive: true });
-=======
->>>>>>> e69e4ce9e3fbd658192b66868516d1cfb230920b
         
         // Arguments to the pass to the backend
         const javaArgs = [

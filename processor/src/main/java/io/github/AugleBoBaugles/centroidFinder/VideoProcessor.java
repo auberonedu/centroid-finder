@@ -93,9 +93,13 @@ public class VideoProcessor {
         int x = (currentLargestCentroidRecord != null) ? currentLargestCentroidRecord.x() : -1; 
         int y = (currentLargestCentroidRecord != null) ? currentLargestCentroidRecord.y() : -1;
 
-        writer.printf("%d,%d,%d%n", seconds, x, y); // Write one row to CSV: second, x, y
-        System.out.printf("Frame %d: Centroid (%d, %d)%n", seconds, x, y); 
-
+        if (currentLargestCentroidRecord == null) {
+            System.out.printf("Frame %d: No centroid found%n", seconds);
+            writer.printf("%d,%d,%d%n", seconds, -1, -1); // Write one row to CSV: second, x, y
+        } else {
+            System.out.printf("Frame %d: Centroid at (%d, %d)%n", seconds, currentLargestCentroidRecord.x(), currentLargestCentroidRecord.y());
+            writer.println(currentLargestCentroidRecord.toCsvRow()); 
+        }
     }
 
 }
