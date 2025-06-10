@@ -59,9 +59,16 @@ public class ImageSummaryApp {
             resultDir = "../results"; // fallback for local dev
         }
 
-        File outputFile = new File(resultDir, taskId + ".csv");
+        String baseName = new File(videoPath).getName();
+        int dotIndex = baseName.lastIndexOf('.');
+        if (dotIndex > 0) {
+            baseName = baseName.substring(0, dotIndex);
+        }
+        String outputFileName = baseName + "_" + taskId + ".csv";
+        File outputFile = new File(resultDir, outputFileName);
 
-        try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath); PrintWriter writer = new PrintWriter(outputFile)) {
+        try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath);
+                PrintWriter writer = new PrintWriter(outputFile)) {
 
             grabber.start();
             Java2DFrameConverter converter = new Java2DFrameConverter();
@@ -69,15 +76,15 @@ public class ImageSummaryApp {
 
             double fps = grabber.getFrameRate();
             // Convert microseconds to seconds
-            double durationInSeconds = grabber.getLengthInTime() / 1000000.0; 
+            double durationInSeconds = grabber.getLengthInTime() / 1000000.0;
             System.out.printf("Video duration: %.2f seconds%n", durationInSeconds);
 
             // Process one frame per second
-            for (int second = 0; second < (int)durationInSeconds; second++) {
+            for (int second = 0; second < (int) durationInSeconds; second++) {
                 // Calculate frame number and cast to int
-                int frameNumber = (int)(second * fps);
+                int frameNumber = (int) (second * fps);
                 grabber.setFrameNumber(frameNumber);
-                
+
                 var frame = grabber.grabImage();
                 if (frame != null) {
                     BufferedImage image = converter.getBufferedImage(frame);
@@ -90,7 +97,7 @@ public class ImageSummaryApp {
             }
 
             grabber.stop();
-            System.out.println("Processing complete. Output: " + taskId + ".csv");
+            System.out.println("Processing complete. Output: " + outputFileName);
 
         } catch (Exception e) {
             System.err.println("Error processing video.");
