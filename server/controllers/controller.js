@@ -91,16 +91,25 @@ const postVideo = (req, res) => {
         const jarPath = path.resolve(process.env.video_processor_jar_path); // Path to the JAR file
         const inputPath = path.resolve(process.env.video_directory_path, filename); // The full path to the input video file
         const outputPath = path.resolve(process.env.output_directory_path, `${jobId}.csv`); // Path to where the DSV output will be saved
+
+        // DEV CHECK TO SEE IF jarPath EXISTS
+        if (existsSync(jarPath)) {
+        console.log('File exists!');
+        } else {
+        console.log('File does not exist!');
+        }
         
         // Arguments to the pass to the backend
         const javaArgs = [
             '-jar',
             jarPath,
             inputPath,
-            outputPath,
+            //outputPath,
             targetColor,
             threshold
         ];
+
+        console.log(javaArgs)
 
         // Spawns the Java process in detached mode
         const javaSpawn = spawn('java', javaArgs, {
