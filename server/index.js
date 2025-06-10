@@ -12,6 +12,9 @@ const __dirname = path.dirname(__filename);
 // Load environment variables from the .env file in the project root
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
+// Access configuration from the .env file
+const outputDir = path.resolve(__dirname, process.env.OUTPUT_DIR || 'results');
+
 const app = express();
 
 // Default port is used if there is no .env variable
@@ -22,8 +25,13 @@ app.use(cors());
 // Read in JSON payloads in request body
 app.use(express.json());
 
-// Serve frontend static files (built React app)
-app.use(express.static(path.join(__dirname, 'public')));
+// No longer needed: Serve frontend static files (built React app)
+// app.use(express.static(path.join(__dirname, 'public')));
+
+console.log("Serving static results from:", outputDir);
+
+// Serve the output directory statically
+app.use('/results', express.static(outputDir));
 
 // Serve routes through the router
 app.use("/", router);
