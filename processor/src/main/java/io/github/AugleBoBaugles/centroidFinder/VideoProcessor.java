@@ -38,7 +38,7 @@ public class VideoProcessor {
             PrintWriter writer = new PrintWriter(new FileWriter(csvFile, false));
 
             // Write the CSV header: column names
-            writer.println();
+            writer.println("time,x,y");
 
             // Process the video frames and write centroid data to CSV
             extractFrames(videoPath, writer);
