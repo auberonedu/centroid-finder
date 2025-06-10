@@ -1,0 +1,8 @@
+/Users/mb16/sdev334/salamander/centroid-finder/processor/src/test/java/io/github/oakes777/salamander/BinarizingImageGroupFinderTest.java
+/Users/mb16/sdev334/salamander/centroid-finder/processor/src/test/java/io/github/oakes777/salamander/DfsBinaryGroupFinderTest.java
+/Users/mb16/sdev334/salamander/centroid-finder/processor/src/test/java/io/github/oakes777/salamander/DistanceImageBinarizerTest.java
+/Users/mb16/sdev334/salamander/centroid-finder/processor/src/test/java/io/github/oakes777/salamander/EuclideanColorDistanceTest.java
+/Users/mb16/sdev334/salamander/centroid-finder/processor/src/test/java/io/github/oakes777/salamander/FrameAnalyzerTest.java
+/Users/mb16/sdev334/salamander/centroid-finder/processor/src/test/java/io/github/oakes777/salamander/VideoCentroidTrackerTest.java
+/Users/mb16/sdev334/salamander/centroid-finder/processor/src/test/java/io/github/oakes777/salamander/VideoFrameExtractorTest.java
+/Users/mb16/sdev334/salamander/centroid-finder/processor/src/test/java/io/github/oakes777/salamander/VideoProcessorMainTest.java

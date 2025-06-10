@@ -1,47 +1,19 @@
-# Compiled Java class files
+cat > .dockerignore <<EOF
+# General exclusions
 *.class
-
-# Java archive files
 *.war
 *.nar
 *.ear
-
-# Log files
 *.log
-
-# IDE/project config
 .idea/
 .vscode/
-
-# Java crash logs
 hs_err_pid*
 replay_pid*
-
-# Maven build output
-/target/
-processor/target/*
-!processor/target/salamander-jar-with-dependencies.jar
-
-# Output files
 *.csv
 *.png
-output/*.png
-
-# Local test videos
 *.mp4
-
-# BlueJ
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Compressed archives
 *.zip
 *.tar.gz
 *.rar
-
-# Node
 node_modules/
-server/.env
 server/.env
