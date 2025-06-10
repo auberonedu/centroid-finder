@@ -9,7 +9,9 @@ dotenv.config({ path: '../.env' });
 
 const listVideos = (req, res) => {
     const videoDir = process.env.VIDEO_DIR;
+    console.log('Video directory:', videoDir);
     if (!videoDir) {
+        console.error('VIDEO_DIR not set in environment');
         return res.status(500).json({ error: 'VIDEO_DIR not set in environment' });
     }
     // read list of files in videoDir
@@ -18,8 +20,10 @@ const listVideos = (req, res) => {
             console.error('Error reading video directory:', err);
             return res.status(500).json({ error: 'Error reading video directory' });
         }
+        console.log('Files found:', files);
         // filter for video files only
         const videoFiles = files.filter(f => /\.(mp4|mov|avi|mkv|webm)$/i.test(f));
+        console.log('Video files:', videoFiles);
         res.json(videoFiles);
     });
 };
@@ -90,20 +94,33 @@ const processVideo = async (req, res) => {
     const jarPath = process.env.JAR_PATH;
     const resultsDir = process.env.RESULTS_DIR;
 
+    console.log('Processing video:', {
+        filename,
+        targetColor,
+        threshold,
+        videoDir,
+        jarPath,
+        resultsDir
+    });
+
     // combine video directory and filename to resolve full file path of video 
     const videoPath = path.resolve(videoDir, filename);
+    console.log('Video path:', videoPath);
 
     // validate
     if (!filename || !targetColor || !threshold) {
         return res.status(400).json({ error: 'Missing filename, targetColor, or threshold' });
     }
     if (!fs.existsSync(videoPath)) {
+        console.error('Video file not found:', videoPath);
         return res.status(400).json({ error: 'Video file does not exist' });
     }
     if (!fs.existsSync(jarPath)) {
+        console.error('JAR file not found:', jarPath);
         return res.status(500).json({ error: 'JAR file not found' });
     }
     if (!fs.existsSync(resultsDir)) {
+        console.log('Creating results directory:', resultsDir);
         fs.mkdirSync(resultsDir, { recursive: true });
     }
 
@@ -122,11 +139,31 @@ const processVideo = async (req, res) => {
         targetColor,       // target color to look for in the video
         threshold          // threshold value for color matching in the video
     ];
+    console.log('Java process args:', args);
+
     // spawn java process to run JAR async (spawn runs java process in background)
     const javaProcess = spawn('java', args, {
         detached: true, // run process independently
-        stdio: 'ignore' // ignore standard input/output of process
+        stdio: 'pipe' // capture stdout and stderr
     });
+
+    // Log Java process output
+    javaProcess.stdout.on('data', (data) => {
+        console.log('Java stdout:', data.toString());
+    });
+
+    javaProcess.stderr.on('data', (data) => {
+        console.error('Java stderr:', data.toString());
+    });
+
+    javaProcess.on('error', (err) => {
+        console.error('Failed to start Java process:', err);
+    });
+
+    javaProcess.on('close', (code) => {
+        console.log('Java process exited with code:', code);
+    });
+
     javaProcess.unref(); // unref the child process to allow background run
 
     // poll for result file (set interval to check result file every 2 sec, if exists status="done")
@@ -136,6 +173,7 @@ const processVideo = async (req, res) => {
             const jobs = readJobs();
             jobs[jobId] = { status: 'done', filename, result: path.basename(resultFile) };
             writeJobs(jobs);
+            console.log('Job completed:', jobId);
         }
     }, 2000);
 
