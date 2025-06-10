@@ -28,5 +28,7 @@ COPY target/videoprocessor.jar ./processor/videoprocessor.jar
 # Expose backend port
 EXPOSE 8080
 
+WORKDIR /app/server
+
 # Start the server
-CMD ["npm", "dev"]
+CMD ["npm", "run", "dev"]
