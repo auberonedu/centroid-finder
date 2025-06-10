@@ -4,15 +4,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
-import javax.imageio.ImageIO;
 
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 
 /**
- * Class contains method/logic to process each frame
- * of an MP4 video file to find the largest centroid and write
- * to a CSV that centroids x and y coordinates by frame
+ * Class contains method/logic to process one frame
+ * per second of an MP4 video file to find the largest centroid and write
+ * to a CSV that contains centroids' x and y coordinates by time
  */
 public class VideoProcessor {
     private final String inputPath;
@@ -48,20 +47,23 @@ public class VideoProcessor {
             // Write header line in required format
             writer.println("time,x,y");
 
-            int totalFrames = grabber.getLengthInFrames();
             double frameRate = grabber.getFrameRate();
+            double durationSeconds = grabber.getLengthInTime() / 1_000_000.0; // microseconds to seconds
 
-            System.out.println("Video frame count: " + totalFrames);
+            System.out.println("Video duration: " + durationSeconds + " seconds");
             System.out.println("Frame rate: " + frameRate + " fps");
-
-            int frameNum = 0;
-            Frame frame;
 
             // Gets rid of pixel warning in terminal
             org.bytedeco.ffmpeg.global.avutil.av_log_set_level(org.bytedeco.ffmpeg.global.avutil.AV_LOG_ERROR);
 
-            // Loops through each frame and records the x and y coordinates
-            while ((frame = grabber.grabImage()) != null) {
+            // Process one frame per second
+            for (int sec = 0; sec < (int) durationSeconds; sec++) {
+                // Set grabber to correct timestamp (in microseconds)
+                grabber.setTimestamp(sec * 1_000_000L); // 1 second = 1,000,000 µs
+
+                Frame frame = grabber.grabImage();
+                if (frame == null) continue; // skip if no frame at that timestamp
+
                 BufferedImage image = converter.convert(frame);
                 List<Group> groups = groupFinder.findConnectedGroups(image);
 
@@ -75,21 +77,13 @@ public class VideoProcessor {
                     yCoord = biggest.centroid().y();
                 }
 
-                // Compute the time in seconds
-                double seconds = frameNum / frameRate;
-
                 // Write the time and coordinates to CSV
-                writer.printf("%.3f,%d,%d%n", seconds, xCoord, yCoord);
+                writer.printf("%d,%d,%d%n", sec, xCoord, yCoord);
 
-                if (frameNum % 100 == 0) {
-                    System.out.println("Processed frame " + frameNum + " (" + seconds + " seconds)");
-                }
-
-                frameNum++;
+                System.out.println("Processed second " + sec + " (timestamp: " + (sec) + "s)");
             }
 
             grabber.stop();
         }
     }
 }
-

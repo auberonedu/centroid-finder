@@ -77,8 +77,16 @@ If you want to, you can make a new branch to start experimenting. See if you can
 ## Build command for Docker to ensure the latest frontend commits are pulled:
 - docker build --no-cache -t ghcr.io/alexanderoruban/salamander .
 
-# Push command for Docker to place the newly built container on GHCR:
+# Old push command for Intel CPUs with Docker to place the newly built container on GHCR:
 - docker push ghcr.io/alexanderoruban/salamander:latest 
+
+# New Docker build and push for both Intel and Apple M1-M4 CPUs:
+docker buildx build \
+  --no-cache \
+  --platform linux/amd64,linux/arm64 \
+  -t ghcr.io/alexanderoruban/salamander:latest \
+  --push \
+  .
 
 ## Steps for running just the backend with Docker:
 1. Create directories for results and videos like `test_videos` and `test_results` in the root directory of the project.
