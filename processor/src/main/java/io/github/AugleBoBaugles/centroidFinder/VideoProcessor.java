@@ -24,6 +24,7 @@ public class VideoProcessor {
         this.threshold = threshhold;
     }
 
+    // this is working now
     public void extractFrames() {
         try {
             // Create output directory if it doesn't exist
