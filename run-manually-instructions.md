@@ -20,20 +20,43 @@ Replace the folder paths below with your actual directories:
 export VIDEO_DIRECTORY=/full/path/to/your/videos
 export RESULTS_DIRECTORY=/full/path/to/your/results
 
+On Apple/Linux
+-------------------------
 docker run \
   -p 3001:3001 \
   -v "$VIDEO_DIRECTORY:/videos" \
   -v "$RESULTS_DIRECTORY:/results" \
   ghcr.io/oakes777/salamander:latest
+-------------------------
+
+On Windows
+-------------------------
+docker run \
+  -p 3001:3001 \
+  -v "$VIDEO_DIRECTORY:/videos" \
+  -v "$RESULTS_DIRECTORY:/results" \
+  ghcr.io/oakes777/salamander:latest
+-------------------------
 
 (This starts the backend on port 3001)
 
 Step 3: Run the Frontend
 In a new terminal window, run:
 
+on Apple/linux:
+-------------------------
 docker run \
   -p 3000:3000 \
   ghcr.io/oakes777/salamander-client:latest
+-------------------------
+
+on windows
+-------------------------
+  docker run \
+  --platform linux/arm64 \
+  -p 3000:3000 \
+  ghcr.io/oakes777/salamander-client:latest
+-------------------------  
 
 (This starts the frontend on port 3000)
 

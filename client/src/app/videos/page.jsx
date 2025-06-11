@@ -1,17 +1,7 @@
-// VideoChooserPage.jsx
-
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import {
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-  CircularProgress,
-  Paper,
-  Box,
-} from "@mui/material";
+import { Typography, List, CircularProgress, Paper, Box } from "@mui/material";
+import VideoItem from "./VideoItem"; // adjust the path if needed
 
 export default function VideoChooserPage() {
   const [videos, setVideos] = useState([]);
@@ -32,9 +22,6 @@ export default function VideoChooserPage() {
     fetchVideos();
   }, []);
 
-  console.log("👀 videos array in render:", videos);
-  console.log("🎬 video count:", videos?.length);
-
   return (
     <Box
       sx={{
@@ -48,9 +35,6 @@ export default function VideoChooserPage() {
       <Typography variant="h3" gutterBottom>
         Video Chooser Page
       </Typography>
-
-      {/* Optional debug output */}
-      {/* <pre>{JSON.stringify(videos, null, 2)}</pre> */}
 
       <Typography variant="body1" sx={{ mb: 4 }}>
         Please select the video you want to process from the list below:
@@ -71,29 +55,7 @@ export default function VideoChooserPage() {
         >
           <List>
             {videos.map((video) => (
-              <ListItem key={video.name} disablePadding>
-                <Link
-                  href={`/preview?filename=${encodeURIComponent(video.name)}`}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <Box
-                    sx={{
-                      display: "block",
-                      width: "100%",
-                      padding: 2,
-                      textAlign: "center",
-                      "&:hover": {
-                        backgroundColor: "#f0f0f0",
-                      },
-                    }}
-                  >
-                    <ListItemText
-                      primary={video.name}
-                      secondary={`Duration: ${Math.round(video.duration)}s`}
-                    />
-                  </Box>
-                </Link>
-              </ListItem>
+              <VideoItem key={video.name} video={video} />
             ))}
           </List>
         </Paper>
