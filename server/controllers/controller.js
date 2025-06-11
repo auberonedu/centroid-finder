@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Use absolute path to .env
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+// dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const statusOK = 200;
 const statusAccepted = 202;
@@ -33,7 +33,7 @@ const jobStatus = new Map([
 const getVideos = (req, res) => {
     // console.log("getVideos successfully called!")
     try {
-        const videoDir = process.env.video_directory_path;
+        const videoDir = process.env.VIDEO_DIR;
         const filenames = readdirSync(videoDir);
 
         const videos = filenames
