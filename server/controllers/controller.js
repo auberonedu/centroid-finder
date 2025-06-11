@@ -32,19 +32,21 @@ export const processVid = (req, res) => {
    }
 
    try {
+      console.log("Spawn 1");
       const jar = spawn(
          "java",
          [
             "-jar",
             process.env.JAR_PATH,
-            inputPath,
+            // inputPath,
+            "etstst",
             outputPath,
             targetColor,
             threshold.toString(),
          ],
          {
             detached: true,
-            stdio: "ignore",
+            stdio: "inherit",
          }
       );
 
@@ -221,6 +223,7 @@ export const generateCsv = (req, res) => {
    }
 
    try {
+      console.log("Do we see this");
       const jar = spawn(
          "java",
          [
@@ -233,9 +236,21 @@ export const generateCsv = (req, res) => {
          ],
          {
             detached: true,
-            stdio: "ignore",
+            stdio: ["ignore", "pipe", "pipe"],
          }
       );
+
+      if (jar.stdout) {
+         jar.stdout.on("data", (data) => {
+            process.stdout.write(data);
+         });
+      }
+
+      if (jar.stderr) {
+         jar.stderr.on("data", (data) => {
+            process.stderr.write(data);
+         });
+      }
 
       if (jar && typeof jar.unref === "function") jar.unref();
 

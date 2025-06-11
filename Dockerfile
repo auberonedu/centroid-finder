@@ -23,7 +23,7 @@ RUN cd server && npm install
 
 # Copying remaining code from the server and JAR
 COPY server ./server
-COPY target/videoprocessor.jar ./processor/videoprocessor.jar
+COPY target/videoprocessor.jar ./target/videoprocessor.jar
 
 # Expose backend port
 EXPOSE 8080
