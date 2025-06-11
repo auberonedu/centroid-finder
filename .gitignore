@@ -1,3 +1,5 @@
+.env
+
 # Compiled class file
 *.class
 
@@ -31,3 +33,5 @@ processor/target/
 
 # Node modules
 server/node_modules/
+
+

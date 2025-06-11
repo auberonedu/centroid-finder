@@ -88,12 +88,12 @@ const postVideo = (req, res) => {
         // Add job ID to map with job status of "started"
         jobStatus.set(jobId, { status: "started" })
         
-        const JAVA_JAR_PATH = path.resolve(process.env.JAVA_JAR_PATH); // Path to the JAR file 
-        const VIDEO_DIR = path.resolve(process.env.VIDEO_DIR, filename); // The full path to the input video file
-        const OUTPUT_CSV = path.resolve(process.env.RESULTS_DIR, `${jobId}.csv`); // Path to where the DSV output will be saved
+        const JAVA_JAR_PATH = path.resolve(process.env.video_processor_jar_path); // Path to the JAR file 
+        const VIDEO_DIR = path.resolve(process.env.video_directory_path, filename); // The full path to the input video file
+        const RESULTS_DIR = path.resolve(process.env.output_directory_path, `${jobId}.csv`); // Path to where the DSV output will be saved
 
         // DEV CHECK TO SEE IF jarPath EXISTS
-        if (existsSync(JAVA_JAR_PATH)) {
+        if (existsSync(path.resolve(process.env.video_processor_jar_path))) {
         console.log('File exists!');
         } else {
         console.log('File does not exist!');
