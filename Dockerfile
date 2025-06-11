@@ -16,8 +16,8 @@ COPY server/ ./
 
 # Copy Java JAR and sample input/output folders
 COPY processor/target/centroid-finder-1.0-SNAPSHOT-jar-with-dependencies.jar /app/processor/
-COPY processor/sampleInput /app/sampleInput
-COPY processor/sampleOutput /app/sampleOutput
+#COPY processor/sampleInput /app/sampleInput
+#COPY processor/sampleOutput /app/sampleOutput
 
 # Expose backend port
 EXPOSE 3000
