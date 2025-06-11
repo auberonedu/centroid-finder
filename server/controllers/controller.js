@@ -51,7 +51,7 @@ const getThumbnail = (req, res) => {
     console.log("getThumbnail successfully called!")
     const { filename } = req.params; // get the video frame
     
-    const inputPath = path.resolve(process.env.video_directory_path, filename);
+    const inputPath = path.resolve(process.env.VIDEO_DIR, filename);
     const outputFolder = path.resolve('./output');
     const outputImagePath = path.join(outputFolder, `${filename}-thumb.jpg`);
     console.log("Paths worked", inputPath)
@@ -88,12 +88,12 @@ const postVideo = (req, res) => {
         // Add job ID to map with job status of "started"
         jobStatus.set(jobId, { status: "started" })
         
-        const JAVA_JAR_PATH = path.resolve(process.env.video_processor_jar_path); // Path to the JAR file 
-        const VIDEO_DIR = path.resolve(process.env.video_directory_path, filename); // The full path to the input video file
-        const RESULTS_DIR = path.resolve(process.env.output_directory_path, `${jobId}.csv`); // Path to where the DSV output will be saved
+        const JAVA_JAR_PATH = path.resolve(process.env.JAVA_JAR_PATH); // Path to the JAR file 
+        const VIDEO_DIR = path.resolve(process.env.VIDEO_DIR, filename); // The full path to the input video file
+        const OUTPUT_CSV = path.resolve(process.env.RESULTS_DIR, `${jobId}.csv`); // Path to where the DSV output will be saved
 
         // DEV CHECK TO SEE IF jarPath EXISTS
-        if (existsSync(path.resolve(process.env.video_processor_jar_path))) {
+        if (existsSync(JAVA_JAR_PATH)) {
         console.log('File exists!');
         } else {
         console.log('File does not exist!');
@@ -128,9 +128,9 @@ const postVideo = (req, res) => {
 
         const interval = setInterval(() => {
             checks++;
-            if (existsSync(outputPath)) {
+            if (existsSync(OUTPUT_CSV)) {
                 // Job is complete
-                jobStatus.set(jobId, {status: "done", result: outputPath})
+                jobStatus.set(jobId, {status: "done", result: OUTPUT_CSV})
                 clearInterval(interval);
             } else if (checks >= maxChecks) {
                 jobStatus.set(jobId, {status: "error", error: "Job timed out"})

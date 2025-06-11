@@ -6,7 +6,7 @@ const router = express.Router();
 const { getVideos, getThumbnail, postVideo, getStatus } = controller;
 
 router.get('/', (req, res) => {
-  res.send('🚀 Centroid Finder API is running! Available routes: /api/videos, /process/:filename');
+  res.send('🚀 Centroid Finder API is running! Available routes: <ul> <li>/api/videos</li> <li>/thumbnail/:filename</li> <li>/process/:filename</li> <li>/process/:jobId/status</li> <ul>');
 });
 
 router.get("/api/videos", getVideos);
