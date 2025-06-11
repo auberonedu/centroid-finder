@@ -120,22 +120,19 @@ const getVideos = async (req, res) => {
   }
 };
 
-const getVideoById = async (req, res) => {
+const getVideoByFilename = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { filename } = req.params;
+    const decodedFilename = decodeURIComponent(filename); // handle url encoded names
+
     const index = await loadIndex();
 
-    const entry = Object.entries(index).find(
-      ([filename, meta]) => meta.id === id
-    );
-
-    if (!entry) {
-      return res.status(404).json({ error: "Video not found" });
+    const metadata = index[decodedFilename];
+    if (!metadata) {
+      return res.status(404).json({ error: "Video not found in index" });
     }
 
-    const [filename, metadata] = entry;
-    const fullPath = path.join(videosDir, filename);
-
+    const fullPath = path.join(videosDir, decodedFilename);
     if (!existsSync(fullPath)) {
       return res.status(404).json({ error: "Video file missing from disk" });
     }
@@ -145,14 +142,14 @@ const getVideoById = async (req, res) => {
 
     res.json({
       id: metadata.id,
-      name: filename,
+      name: decodedFilename,
       duration,
       createdAt: stats.birthtime,
       modifiedAt: stats.mtime,
       thumbnail: metadata.thumbnail,
     });
   } catch (err) {
-    console.error("Error in getVideoById:", err);
+    console.error("Error in getVideoByFilename:", err);
     res.status(500).json({ error: "Failed to retrieve video metadata" });
   }
 };
@@ -254,7 +251,7 @@ const getStatus = (req, res) => {
 
 export default {
   getVideos,
-  getVideoById,
+  getVideoByFilename,
   videoProcessing,
   getStatus,
 };
