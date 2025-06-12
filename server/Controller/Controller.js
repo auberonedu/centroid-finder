@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import { v4 as uuidv4 } from "uuid";
 import { spawn } from "child_process";
-import { generateThumbnail } from "../Utils/ffmpegHelpers.js"; 
+import { generateThumbnail } from "../Utils/ffmpegHelpers.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,7 +18,7 @@ const videosDir = path.resolve(__dirname, process.env.VIDEO_DIR);
 const thumbnailsDir = path.resolve(__dirname, "../thumbnails");
 const outputDir = path.resolve(__dirname, "../output");
 
-const jobStatusMap = new Map(); // Needed for getStatus
+const jobStatusMap = new Map();
 
 const loadIndex = async () => {
   try {
@@ -82,7 +82,7 @@ const getVideos = async (req, res) => {
 
       const fullVideoPath = path.join(videosDir, file);
       try {
-        const thumbFile = await generateThumbnail(fullVideoPath, thumbnailsDir); // returns filename
+        const thumbFile = await generateThumbnail(fullVideoPath, thumbnailsDir);
         index[file].thumbnail = `thumbnails/${thumbFile}`;
       } catch (err) {
         console.error(`Failed to generate thumbnail for ${file}:`, err);
@@ -122,14 +122,21 @@ const getVideos = async (req, res) => {
 
 const getVideoByFilename = async (req, res) => {
   try {
-    const { filename } = req.params;
-    const decodedFilename = decodeURIComponent(filename); // handle url encoded names
+    const { videoID } = req.params;
+
+    const isValidUUID = /^[0-9a-fA-F-]{36}$/.test(videoID);
+    if (!isValidUUID) {
+      return res.status(400).json({ error: "Invalid video ID format" });
+    }
 
     const index = await loadIndex();
 
-    const metadata = index[decodedFilename];
-    if (!metadata) {
-      return res.status(404).json({ error: "Video not found in index" });
+    const entry = Object.entries(index).find(
+      ([filename, meta]) => meta.id === videoID
+    );
+
+    if (!entry) {
+      return res.status(404).json({ error: "Video not found" });
     }
 
     const fullPath = path.join(videosDir, decodedFilename);
@@ -158,20 +165,18 @@ const videoProcessing = async (req, res) => {
   const jobId = uuidv4();
   const { filename, color, threshold, interval } = req.body;
 
-  const cleanInterval = interval.replace("s", "");
-
   if (!filename || !color || !threshold || !interval) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
+  const cleanInterval = interval.replace("s", "");
   const colorString = `${color.r},${color.g},${color.b}`;
   const videoPath = path.join(videosDir, filename);
   await fs.mkdir(outputDir, { recursive: true });
   const outputCsvPath = path.join(outputDir, `${jobId}.csv`);
-
   const jarPath = req.app.locals.JAR_PATH;
-  console.log("🐾 Using JAR file at:", jarPath);
 
+  console.log("🐾 Using JAR file at:", jarPath);
   jobStatusMap.set(jobId, { status: "processing", output: "", error: "" });
 
   const args = [
@@ -208,31 +213,32 @@ const videoProcessing = async (req, res) => {
 
   java.on("close", (code) => {
     if (code === 0) {
-      jobStatusMap.set(jobId, {
-        status: "completed",
-        output,
-        error: "",
-      });
+      jobStatusMap.set(jobId, { status: "completed", output, error: "" });
     } else {
-      jobStatusMap.set(jobId, {
-        status: "failed",
-        output,
-        error,
-      });
+      jobStatusMap.set(jobId, { status: "failed", output, error });
     }
   });
 
-  res.json({
-    jobId,
-    message: "Video processing started.",
-  });
+  res.json({ jobId, message: "Video processing started." });
+};
+
+const getCompletedCSVs = async (req, res) => {
+  try {
+    const files = await fs.readdir(outputDir);
+    const csvFiles = files.filter((file) => file.endsWith(".csv"));
+    res.json({ csvFiles });
+  } catch (err) {
+    console.error("Error reading output directory:", err);
+    res.status(500).json({ error: "Unable to list CSV files" });
+  }
 };
 
 const getStatus = (req, res) => {
   const { jobId } = req.params;
 
-  if (!jobId) {
-    return res.status(400).json({ error: "Missing jobId in request" });
+  // 🚨 Prevent conflict with /videos/status route
+  if (!jobId || jobId.toLowerCase() === "status") {
+    return res.status(400).json({ error: "Missing or invalid jobId in request" });
   }
 
   const jobInfo = jobStatusMap.get(jobId);
@@ -253,5 +259,6 @@ export default {
   getVideos,
   getVideoByFilename,
   videoProcessing,
+  getCompletedCSVs,
   getStatus,
 };

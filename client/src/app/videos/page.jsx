@@ -1,45 +1,55 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Typography, List, Paper, Box, CircularProgress } from "@mui/material";
-import VideoItem from "../components/VideoItem";  // <-- adjust import path if needed
+import { Box, List, Button, CircularProgress, Typography } from "@mui/material";
+import VideoItem from "../components/VideoItem";
 
-export default function VideoChooserPage() {
+const PAGE_SIZE = 10;
+
+export default function VideoList() {
   const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const res = await fetch("http://localhost:3001/videos");
-        if (!res.ok) throw new Error("Server response not OK");
-        const data = await res.json();
+    fetch("http://localhost:3001/videos")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch videos");
+        return res.json();
+      })
+      .then((data) => {
         setVideos(data.videos);
-      } catch (err) {
-        console.error("Error fetching videos:", err.message);
-        setTimeout(fetchVideos, 1000);
-      }
-    };
-
-    fetchVideos();
+        setError(null);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("Failed to load video list");
+      })
+      .finally(() => setLoading(false));
   }, []);
 
-  return (
-    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 6 }}>
-      <Typography variant="h3" gutterBottom>Video Chooser Page</Typography>
-      <Typography variant="body1" sx={{ mb: 4 }}>
-        Please select the video you want to process from the list below:
-      </Typography>
+  const handleNext = () => setPage((p) => p + 1);
+  const handlePrev = () => setPage((p) => Math.max(0, p - 1));
 
-      {videos.length === 0 ? (
-        <CircularProgress />
-      ) : (
-        <Paper elevation={3} sx={{ maxHeight: 400, overflowY: "auto", width: "100%", maxWidth: 600, padding: 2 }}>
-          <List>
-            {videos.map((video) => (
-              <VideoItem key={video.name} video={video} />
-            ))}
-          </List>
-        </Paper>
-      )}
+  const startIndex = page * PAGE_SIZE;
+  const paginatedVideos = videos.slice(startIndex, startIndex + PAGE_SIZE);
+
+  if (loading) return <CircularProgress />;
+  if (error) return <Typography color="error">{error}</Typography>;
+
+  return (
+    <Box>
+      <List>
+        {paginatedVideos.map((video) => (
+          <VideoItem key={video.id} video={video} />
+        ))}
+      </List>
+      <Box display="flex" justifyContent="space-between" mt={2}>
+        <Button disabled={page === 0} onClick={handlePrev}>Previous</Button>
+        <Button disabled={startIndex + PAGE_SIZE >= videos.length} onClick={handleNext}>
+          Next
+        </Button>
+      </Box>
     </Box>
   );
 }

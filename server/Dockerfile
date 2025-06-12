@@ -1,26 +1,25 @@
-# Use an image with both Node and OpenJDK
+# server/Dockerfile
+
 FROM openjdk:17-slim
 
-# Install Node.js 20
+# Install ffmpeg and Node.js 20
 RUN apt-get update && \
-    apt-get install -y curl && \
+    apt-get install -y --no-install-recommends curl ffmpeg gnupg ca-certificates && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends nodejs && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files and install
+# Install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the app
+# Copy server source
 COPY . .
 
-# Expose the port
-EXPOSE 3001
+# ✅ Copy pre-built JAR into image
+COPY processor.jar /processor/target/salamander-jar-with-dependencies.jar
 
-# Run the app
+EXPOSE 3001
 CMD ["node", "index.js"]

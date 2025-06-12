@@ -1,52 +1,26 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
   ListItem,
   ListItemText,
-  CircularProgress,
   Avatar,
 } from "@mui/material";
 import Link from "next/link";
 
 export default function VideoItem({ video }) {
-  const [metadata, setMetadata] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const timeoutRef = useRef(null);
+  const [hovered, setHovered] = useState(false);
 
-  const handleMouseEnter = () => {
-    if (metadata || loading) return;
-
-    // Debounce for smoother UX
-    timeoutRef.current = setTimeout(async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(
-          `http://localhost:3001/videos/file/${encodeURIComponent(video.name)}`
-        );
-        if (!res.ok) throw new Error("Failed to fetch metadata");
-        const data = await res.json();
-        setMetadata(data);
-      } catch (err) {
-        console.error(err);
-        setError("Metadata not available");
-      } finally {
-        setLoading(false);
-      }
-    }, 300); // delay to avoid instant triggers
-  };
-
-  const handleMouseLeave = () => {
-    clearTimeout(timeoutRef.current);
-  };
+  const thumbnailUrl = video.thumbnail
+    ? `http://localhost:3001/${video.thumbnail}`
+    : null;
 
   return (
     <ListItem
       disablePadding
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <Link
         href={`/preview?filename=${encodeURIComponent(video.name)}`}
@@ -64,9 +38,9 @@ export default function VideoItem({ video }) {
           }}
         >
           {/* Thumbnail */}
-          {metadata?.thumbnail ? (
+          {thumbnailUrl ? (
             <Avatar
-              src={`http://localhost:3001/${metadata.thumbnail}`}
+              src={thumbnailUrl}
               alt="thumbnail"
               variant="square"
               sx={{ width: 80, height: 45 }}
@@ -81,28 +55,19 @@ export default function VideoItem({ video }) {
                 fontSize: 12,
               }}
             >
-              {loading ? <CircularProgress size={20} /> : "No Preview"}
+              No Preview
             </Avatar>
           )}
 
-          {/* Text Info */}
+          {}
           <Box sx={{ textAlign: "left", flex: 1 }}>
-            <ListItemText
-              primary={video.name}
-              secondary={
-                loading ? (
-                  "Loading metadata..."
-                ) : error ? (
-                  error
-                ) : metadata ? (
-                  `Duration: ${Math.round(metadata.duration)}s | Created: ${new Date(
-                    metadata.createdAt
-                  ).toLocaleDateString()}`
-                ) : (
-                  "Hover to load metadata"
-                )
-              }
-            />
+            <Typography variant="body1">{video.name}</Typography>
+            {hovered && (
+              <Typography variant="body2" color="text.secondary">
+                Duration: {Math.round(video.duration)}s | Created:{" "}
+                {new Date(video.createdAt).toLocaleDateString()}
+              </Typography>
+            )}
           </Box>
         </Box>
       </Link>

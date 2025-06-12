@@ -3,9 +3,16 @@ import controller from "../Controller/Controller.js";
 
 const router = Router();
 
-router.get("/videos", controller.getVideos);
-router.get('/videos/file/:filename', controller.getVideoByFilename);
-router.post("/process", controller.videoProcessing); 
-router.get("/videos/status/:jobId", controller.getStatus); 
+// ✅ Specific routes FIRST
+router.get('/videos/status', controller.getCompletedCSVs);
+router.get('/videos/status/:jobId', controller.getStatus);
+
+// 🛡 Safer dynamic route: Only match valid UUIDs
+router.get('/videos/:videoID', controller.getVideoById);
+
+
+// 🟢 Other routes
+router.get('/videos', controller.getVideos);
+router.post('/process', controller.videoProcessing);
 
 export default router;
