@@ -123,12 +123,9 @@ const postVideo = (req, res) => {
             console.log(data)
         })
 
-        currStatus = "error"
-
         // on exit, get code to determine success
         javaSpawn.on("exit", (code) => {
-            if (code === 0) { currStatus = "done"}
-            jobStatus.set(jobId, { status: currStatus })
+            jobStatus.set(jobId, { status: code === 0 ? "done" : "error" })
         })
 
         // error
