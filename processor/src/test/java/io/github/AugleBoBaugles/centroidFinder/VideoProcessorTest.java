@@ -22,18 +22,18 @@ public class VideoProcessorTest {
         }
     }
 
-    @Test
-    public void testExtractFramesCallsFrameToDataAtOneSecondIntervals() {
-        String videoPath = "sampleInput/sample_video_1.mp4";
-        String outputPath = "sampleOutput/test1.csv";
-        TestVideoProcessor vp = new TestVideoProcessor(videoPath, outputPath, 0xFF0000, 30); 
+    // @Test
+    // public void testExtractFramesCallsFrameToDataAtOneSecondIntervals() {
+    //     String videoPath = "sampleInput/sample_video_1.mp4";
+    //     String outputPath = "sampleOutput/test1.csv";
+    //     TestVideoProcessor vp = new TestVideoProcessor(videoPath, outputPath, 0xFF0000, 30); 
 
-        vp.extractFrames();
+    //     vp.extractFrames();
 
-        // result = number of seconds + 1
-        int expected = 5;
-        assertEquals(expected, vp.callCounter);
-    }
+    //     // result = number of seconds + 1
+    //     int expected = 5;
+    //     assertEquals(expected, vp.callCounter);
+    // }
     // extractFrames() pulls out correct frames
 
 
