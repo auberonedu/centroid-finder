@@ -116,7 +116,7 @@ const postVideo = (req, res) => {
         // Spawns the Java process in detached mode
         const javaSpawn = spawn('java', javaArgs, {
             // configure pipes between parent and child
-            stdio: ["ignore", "pipe", "ignore"]
+            stdio: ["ignore", "pipe", "pipe"]
         });
 
         jobStatus.set(jobId, { status: "processing" })
@@ -127,9 +127,9 @@ const postVideo = (req, res) => {
         });
 
         // print data
-        javaSpawn.on("data", (data) => {
-            console.log("Data from javaSpawn:", data)
-        })
+        javaSpawn.stdout.on("data", (data) => {
+            console.log("Java stdout:", data.toString());
+        });
 
         // on close, get code to determine success
         javaSpawn.on("close", (code) => {
