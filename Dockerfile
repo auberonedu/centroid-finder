@@ -1,9 +1,10 @@
 # Use Node.js base image
-FROM node:20-alpine
+FROM node:20-slim
 
 # Install Java (OpenJDK 17) and ffmpeg
-RUN apk add --no-cache openjdk21
-RUN apk add --no-cache ffmpeg
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk ffmpeg && \
+    apt-get clean
 
 # Set working directory inside container
 WORKDIR /app/server
