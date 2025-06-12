@@ -97,7 +97,7 @@ export const getJobStatus = (req, res) => {
    }
 };
 
-function monitorJob(jobId, outputPath, timeout = 30000) {
+function monitorJob(jobId, outputPath, timeout = 600000) {
    const start = Date.now();
 
    const interval = setInterval(() => {
