@@ -1,10 +1,10 @@
-import { readFileSync, readdirSync, existsSync, writeFileSync, unlink, mkdirSync } from 'fs';
+import { readdirSync } from 'fs';
 import { spawn } from 'child_process'; // start a new background process
-// import dotenv from 'dotenv';
-// import { fileURLToPath } from 'url';
 import path from 'path'; // join file paths
 import { v4 as uuidv4 } from 'uuid'; // Generate a unique job ID
 import ffmpeg from 'fluent-ffmpeg';
+// import dotenv from 'dotenv';
+// import { fileURLToPath } from 'url';
 
 // If running in a local test environment, set up local env
 // const __filename = fileURLToPath(import.meta.url);
@@ -13,7 +13,7 @@ import ffmpeg from 'fluent-ffmpeg';
 // Use absolute path to .env
 // dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-// 
+// Define status codes
 const statusOK = 200;
 const statusAccepted = 202;
 const statusBadRequest = 400;
@@ -112,6 +112,7 @@ const postVideo = (req, res) => {
         // Spawns the Java process in detached mode
         const javaSpawn = spawn('java', javaArgs, {
             // configure pipes between parent and child
+            // corresponds to stdin, stdout, sterr 
             stdio: ["ignore", "pipe", "pipe"]
         });
 
@@ -127,13 +128,13 @@ const postVideo = (req, res) => {
             console.log("Java stdout:", data.toString());
         });
 
-        // on close, get code to determine success
+        // on close, set job status to done if exit code '0', or error if other exit code
         javaSpawn.on("close", (code) => {
             console.log("Process closed with code:", code);
             jobStatus.set(jobId, { status: code === 0 ? "done" : "error" });
         });
 
-        // error
+        // on error, set job status to error
         javaSpawn.on("error", (err) => {
             jobStatus.set(jobId, { status: "error", error: err })
         })
@@ -144,13 +145,14 @@ const postVideo = (req, res) => {
         console.log("postVideo error: ", err.message);
         res.status(statusServerError).json({ "error": "Error starting job" })
     }
-    
 };
 
 // GET /process/:jobId/status
 const getStatus = (req, res) => {
+    // get job ID from path parameter
     const { jobId } = req.params;
 
+    // Check if job ID is in job status map
     if (!jobStatus.has(jobId)) {
         return res.status(statusNotFound).json({"error":"Job ID not found"})
     } else {
