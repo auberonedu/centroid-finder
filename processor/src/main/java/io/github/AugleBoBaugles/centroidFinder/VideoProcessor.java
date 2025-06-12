@@ -28,11 +28,11 @@ public class VideoProcessor {
     public void extractFrames() {
         try {
             // Create output directory if it doesn't exist
-            String outputDir = "sampleOutput"; 
-            new File(outputDir).mkdirs();
+            // String outputDir = "sampleOutput"; 
+            // new File(outputDir).mkdirs();
 
             // Path to the CSV output file
-            String csvFilePath = outputDir + "/largestCentroids.csv";
+            String csvFilePath = outputPath + "/largestCentroids.csv";
 
             // Create the file and initialize writer (false = overwrite if file exists)
             File csvFile = new File(csvFilePath);
