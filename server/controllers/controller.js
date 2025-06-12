@@ -1,18 +1,19 @@
 import { readFileSync, readdirSync, existsSync, writeFileSync, unlink, mkdirSync } from 'fs';
 import { spawn } from 'child_process'; // start a new background process
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
+// import { fileURLToPath } from 'url';
 import path from 'path'; // join file paths
-import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid'; // Generate a unique job ID
 import ffmpeg from 'fluent-ffmpeg';
 
-// Get __dirname equivalent in ES module scope
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// If running in a local test environment, set up local env
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 // Use absolute path to .env
 // dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
+// 
 const statusOK = 200;
 const statusAccepted = 202;
 const statusBadRequest = 400;
@@ -31,15 +32,16 @@ const jobStatus = new Map([
 
 // GET /api/videos
 const getVideos = (req, res) => {
-    // console.log("getVideos successfully called!")
     try {
-        const videoDir = process.env.VIDEO_DIR;
-        const filenames = readdirSync(videoDir);
+        // get filenames object from video directory
+        const filenames = readdirSync(process.env.VIDEO_DIR);
 
+        // Create a videos object containing each mp4 video
         const videos = filenames
             .filter((file) => file.endsWith('.mp4'))
             .map((file) => ({ video: file}));
 
+        // return all videos
         res.status(statusOK).json(videos)
     } catch (err) {
         console.log("getVideos error: ", err.message);
@@ -47,38 +49,44 @@ const getVideos = (req, res) => {
     }
 };
 
+// GET /thumbnail/:filename
 const getThumbnail = (req, res) => {
-    console.log("getThumbnail successfully called!")
-    const { filename } = req.params; // get the video frame
+    // get filename from path parameter
+    const { filename } = req.params; 
     
+    // save input file, output directory, and output image paths
     const inputPath = path.resolve(process.env.VIDEO_DIR, filename);
     const outputFolder = path.resolve('./output');
     const outputImagePath = path.join(outputFolder, `${filename}-thumb.jpg`);
-    console.log("Paths worked", inputPath)
 
+    // AI helped write this
     ffmpeg(inputPath)
+        // this runs when ffmpeg processes input file successfully
         .on('end', () => {
             console.log('Thumbnail created at:', outputImagePath);
             res.sendFile(outputImagePath); // Send back the image
         })
+        // this runs if there is an error
         .on('error', (err) => {
             console.error('FFmpeg error:', err.message);
             res.status(statusServerError).json({ error: 'Failed to generate thumbnail' });
         })
+        // these are the instructions to grab a screenshot from the video
         .screenshots({
             count: 1,
             folder: outputFolder,
             filename: `${filename}-thumb.jpg`,
-            timemarks: ['00:00:00.000'],
+            timemarks: ['00:00:00.000'], // take from start of video
     }); 
 }
         
-
+// POST /process/:filename
 const postVideo = (req, res) => {
-    // Try catch to check that parameters are valid
-    const { filename } = req.params; // Extracts the video filename from the URL
-    const { targetColor, threshold } = req.query; // Extracts query parameters from the request URL
-        
+    // get filename from path parameter and targetColor and threshold from query parameters
+    const { filename } = req.params; 
+    const { targetColor, threshold } = req.query; 
+    
+    // validate that targetColor and threshhold exist (further validation happens in processor)
     if (!targetColor || !threshold) {
         return res.status(statusBadRequest).json({ error: "Missing targetColor or threshold query parameter" });
     }
@@ -172,6 +180,7 @@ const postVideo = (req, res) => {
     
 };
 
+// GET /process/:jobId/status
 const getStatus = (req, res) => {
     const { jobId } = req.params;
 
@@ -186,9 +195,4 @@ const getStatus = (req, res) => {
     }
 };
 
-// TODO: Create a getCSV function that retrieves the coordinates
-
 export default { getVideos, getThumbnail, postVideo, getStatus };
-
-// ** NOTE: When you run 'npm test' in the command line there will be a random generated file in the sampleOutput folder. ...
-// ** ...We're going to need to write a getCSV function to see those coordinates.
