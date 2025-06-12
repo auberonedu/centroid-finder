@@ -94,7 +94,7 @@ const startVideoProcess = async (req, res) => {
         jobId,
       ],
       {
-        stdio: ["ignore", "pipe", "ignore"],
+        stdio: ["ignore", "pipe", "pipe"],
       }
     );
 
