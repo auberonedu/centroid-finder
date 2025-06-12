@@ -78,20 +78,14 @@ const postVideo = (req, res) => {
     // Try catch to check that parameters are valid
     const { filename } = req.params; // Extracts the video filename from the URL
     const { targetColor, threshold } = req.query; // Extracts query parameters from the request URL
-    try {
         
-        if (!targetColor || !threshold) {
-            return res.status(statusBadRequest).json({ error: "Missing targetColor or threshold query parameter" });
-        }
-
-        const jobId = uuidv4(); // Unique job ID for tracking the processing
-        // Add job ID to map with job status of "started"
-        jobStatus.set(jobId, { status: "started" })
-
-    } catch (err) {
-        console.log("postVideo error: ", err.message);
-        res.status(statusServerError).json({ "error": "Error starting job" })
+    if (!targetColor || !threshold) {
+        return res.status(statusBadRequest).json({ error: "Missing targetColor or threshold query parameter" });
     }
+
+    const jobId = uuidv4(); // Unique job ID for tracking the processing
+    // Add job ID to map with job status of "started"
+    jobStatus.set(jobId, { status: "started" })
 
     try {
         const JAVA_JAR_PATH = path.resolve(process.env.JAVA_JAR_PATH); // Path to the JAR file 
@@ -131,7 +125,8 @@ const postVideo = (req, res) => {
 
         // on exit, get code to determine success
         javaSpawn.on("exit", (code) => {
-            if (code === 0) { currStatus = "done"} else { currStatus = "error"}
+            currStatus = "error"
+            if (code === 0) { currStatus = "done"}
             jobStatus.set(jobId, { status: currStatus })
         })
 
