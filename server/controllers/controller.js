@@ -93,7 +93,7 @@ const postVideo = (req, res) => {
         const OUTPUT_CSV = path.resolve(process.env.RESULTS_DIR, `${jobId}.csv`); // Path to where the DSV output will be saved
 
         // DEV CHECK TO SEE IF jarPath EXISTS
-        if (existsSync(path.resolve(process.env.video_processor_jar_path))) {
+        if (existsSync(path.resolve(JAVA_JAR_PATH))) {
         console.log('File exists!');
         } else {
         console.log('File does not exist!');
