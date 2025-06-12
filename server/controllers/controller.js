@@ -98,14 +98,6 @@ const postVideo = (req, res) => {
     try {
         const JAVA_JAR_PATH = path.resolve(process.env.JAVA_JAR_PATH); // Path to the JAR file 
         const VIDEO_DIR = path.resolve(process.env.VIDEO_DIR, filename); // The full path to the input video file
-        //const OUTPUT_CSV = path.resolve(process.env.RESULTS_DIR, `${jobId}.csv`); // Path to where the DSV output will be saved
-
-        // DEV CHECK TO SEE IF jarPath EXISTS
-        if (existsSync(path.resolve(JAVA_JAR_PATH))) {
-        console.log('File exists!');
-        } else {
-        console.log('File does not exist!');
-        }
         
         // Arguments to the pass to the backend
         const javaArgs = [
@@ -116,10 +108,6 @@ const postVideo = (req, res) => {
             targetColor,
             threshold
         ];
-
-        console.log(javaArgs)
-
-        console.log("Spawning Java process")
 
         // Spawns the Java process in detached mode
         const javaSpawn = spawn('java', javaArgs, {
@@ -149,27 +137,6 @@ const postVideo = (req, res) => {
         javaSpawn.on("error", (err) => {
             jobStatus.set(jobId, { status: "error", error: err })
         })
-
-        //javaSpawn.unref(); // this allows the parent Node to exit independently of the javaSpawn
-
-
-
-        // Check to see if job is done
-        // const checkInterval = 3000; // Check every 3 seconds
-        // const maxChecks = 200; // Optional: stop after 200 checks (~10 minutes)
-        // let checks = 0;
-
-        // const interval = setInterval(() => {
-        //     checks++;
-        //     if (existsSync(OUTPUT_CSV)) {
-        //         // Job is complete
-        //         jobStatus.set(jobId, {status: "done", result: OUTPUT_CSV})
-        //         clearInterval(interval);
-        //     } else if (checks >= maxChecks) {
-        //         jobStatus.set(jobId, {status: "error", error: "Job timed out"})
-        //         clearInterval(interval);
-        //     }
-        // }, checkInterval);
 
         // Response to the client with the job id
         res.status(statusAccepted).json({ jobId });
