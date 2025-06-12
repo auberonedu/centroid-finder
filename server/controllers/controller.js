@@ -104,7 +104,7 @@ const postVideo = (req, res) => {
             '-jar',
             JAVA_JAR_PATH,
             VIDEO_DIR,
-            //outputPath,
+            process.env.RESULTS_DIR,
             targetColor,
             threshold
         ];
