@@ -5,8 +5,10 @@ import { spawn } from "child_process";
 import { randomUUID } from "crypto";
 import multer from "multer";
 
-const jobStatus = {}; // In-memory job tracking
+// In-memory job tracking
+const jobStatus = {}; 
 
+// return list of all videos within video directory
 const getVideos = async (req, res) => {
   try {
     const videoDir = process.env.VIDEO_PATH;
@@ -19,6 +21,7 @@ const getVideos = async (req, res) => {
   }
 };
 
+// return thumbnail of first frame at first second
 const getThumbnail = async (req, res) => {
   try {
     const videoDir = process.env.VIDEO_PATH;
@@ -47,6 +50,7 @@ const getThumbnail = async (req, res) => {
   }
 };
 
+// Start video processing using child_process
 const startVideoProcess = async (req, res) => {
   const { filename } = req.params;
   const { targetColor, threshold } = req.query;
@@ -124,7 +128,7 @@ const startVideoProcess = async (req, res) => {
   }
 };
 
-
+// Logic for getting job status
 const getJobStatus = (req, res) => {
   const { jobId } = req.params;
   const job = jobStatus[jobId];
@@ -144,17 +148,16 @@ const getJobStatus = (req, res) => {
   return res.status(500).json({ error: "Error fetching job status" });
 };
 
-
+// Store multer upload in Video Path
 const storage = multer.diskStorage({
-  destination: '/videos',
+  destination: path.resolve(process.env.VIDEO_PATH),
   filename: (req, file, cb) => {
-    cb(null, file.originalname); // Or add timestamp for uniqueness
+    cb(null, file.originalname); 
   }
 });
 
 const upload = multer({ storage });
 
-// Example upload route
 const UploadVideo = (req, res) => {
   res.send(`Uploaded to /videos/${req.file.filename}`);
 };
