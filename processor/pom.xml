@@ -11,7 +11,7 @@
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <mainClass>io.github.TiaMarieG.centroidFinder.ImageSummaryApp</mainClass>
+        <mainClass>io.github.TiaMarieG.centroidFinder.VideoProcessor</mainClass>
     </properties>
 
     <build>
@@ -24,7 +24,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>io.github.TiaMarieG.centroidFinder.CentroidPlotter</mainClass>
+                    <mainClass>io.github.TiaMarieG.centroidFinder.VideoProcessor</mainClass>
                 </configuration>
             </plugin>
 
