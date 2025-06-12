@@ -151,8 +151,53 @@
 //   });
 // });
 
-import controller from '../Controller.js';
+import { describe, it, expect, vi } from 'vitest';
+import { getMockReq, getMockRes } from 'vitest-mock-express';
+import { videoProcessing } from './path/to/your/controller';
+import { spawn } from 'child_process';
 
-test('controller is defined', () => {
-  expect(controller).toBeDefined();
+// Mock the spawn function to prevent actual execution
+vi.mock('child_process', () => ({
+  spawn: vi.fn(() => ({
+    stdout: { on: vi.fn() },
+    stderr: { on: vi.fn() },
+    on: vi.fn((event, callback) => {
+      if (event === 'close') callback(0); // Simulate successful completion
+    }),
+  })),
+}));
+
+describe('videoProcessing Controller', () => {
+  it('should start video processing and return a job ID', async () => {
+    const { req, res } = getMockRes();
+    req.body = {
+      filename: 'test.mp4',
+      color: { r: 255, g: 0, b: 0 },
+      threshold: 0.5,
+      interval: '1s',
+    };
+
+    await videoProcessing(req, res);
+
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        jobId: expect.any(String),
+        message: 'Video processing started.',
+      })
+    );
+  });
+
+  it('should handle missing required fields', async () => {
+    const { req, res } = getMockRes();
+    req.body = {}; // Missing required fields
+
+    await videoProcessing(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        error: 'Missing required fields',
+      })
+    );
+  });
 });
