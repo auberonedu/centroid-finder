@@ -14,7 +14,6 @@ public class VideoProcessor {
     private String outputPath;
     private int targetColor;
     private int threshold;
-    private int secondIncrement = 1; // TODO: Possible customizable feature later
 
     // Constructor
     public VideoProcessor(String videoPath, String outputPath, int targetColor, int threshhold) {
@@ -27,16 +26,12 @@ public class VideoProcessor {
     // this is working now
     public void extractFrames() {
         try {
-            // Create output directory if it doesn't exist
-            // String outputDir = "sampleOutput"; 
-            // new File(outputDir).mkdirs();
 
+            // Get the video title from the path
             File video = new File(videoPath);
             String videoName = video.getName();
             int dotIndex = videoName.lastIndexOf('.');
-
             videoName = videoName.substring(0, dotIndex);
-
 
             // Path to the CSV output file
             String csvFilePath = outputPath + "/" + videoName + ".csv";
@@ -102,9 +97,6 @@ public class VideoProcessor {
         LargestCentroidRecord currentLargestCentroidRecord = currentCentroid.findLargestCentroid(); // Get the Result
 
         // Extract the X and the Y, if no group is found then use -1
-        int x = (currentLargestCentroidRecord != null) ? currentLargestCentroidRecord.x() : -1; 
-        int y = (currentLargestCentroidRecord != null) ? currentLargestCentroidRecord.y() : -1;
-
         if (currentLargestCentroidRecord == null) {
             System.out.printf("Frame %d: No centroid found%n", seconds);
             writer.printf("%d,%d,%d%n", seconds, -1, -1); // Write one row to CSV: second, x, y
