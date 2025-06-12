@@ -20,6 +20,8 @@ const outputDir = path.resolve(__dirname, "../output");
 
 const jobStatusMap = new Map();
 
+
+
 const loadIndex = async () => {
   try {
     const data = await fs.readFile(indexFilePath, "utf8");
@@ -254,6 +256,7 @@ const getStatus = (req, res) => {
     error: jobInfo.error,
   });
 };
+
 
 export default {
   getVideos,
