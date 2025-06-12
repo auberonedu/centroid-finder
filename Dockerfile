@@ -1,10 +1,20 @@
-# Use Node.js base image
 FROM node:20-slim
 
-# Install Java (OpenJDK 17) and ffmpeg
-RUN apt-get update && \
-    apt-get install -y openjdk-17-jdk ffmpeg && \
-    apt-get clean
+# Install dependencies for installing Java and ffmpeg
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
+    ffmpeg \
+    && apt-get clean
+
+# Add Eclipse Adoptium GPG key and repo
+RUN mkdir -p /etc/apt/keyrings && \
+    wget -O- https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor > /etc/apt/keyrings/adoptium.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb bullseye main" > /etc/apt/sources.list.d/adoptium.list && \
+    apt-get update && \
+    apt-get install -y temurin-21-jdk && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set working directory inside container
 WORKDIR /app/server
