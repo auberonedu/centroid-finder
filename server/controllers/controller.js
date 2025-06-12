@@ -83,11 +83,17 @@ const postVideo = (req, res) => {
         if (!targetColor || !threshold) {
             return res.status(statusBadRequest).json({ error: "Missing targetColor or threshold query parameter" });
         }
-    
+
         const jobId = uuidv4(); // Unique job ID for tracking the processing
         // Add job ID to map with job status of "started"
         jobStatus.set(jobId, { status: "started" })
-        
+
+    } catch (err) {
+        console.log("postVideo error: ", err.message);
+        res.status(statusServerError).json({ "error": "Error starting job" })
+    }
+
+    try {
         const JAVA_JAR_PATH = path.resolve(process.env.JAVA_JAR_PATH); // Path to the JAR file 
         const VIDEO_DIR = path.resolve(process.env.VIDEO_DIR, filename); // The full path to the input video file
         const OUTPUT_CSV = path.resolve(process.env.RESULTS_DIR, `${jobId}.csv`); // Path to where the DSV output will be saved
