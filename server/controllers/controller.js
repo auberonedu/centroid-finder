@@ -3,6 +3,7 @@ import path from "path";
 import ffmpeg from "fluent-ffmpeg";
 import { spawn } from "child_process";
 import { randomUUID } from "crypto";
+import multer from "multer";
 
 const jobStatus = {}; // In-memory job tracking
 
@@ -143,9 +144,26 @@ const getJobStatus = (req, res) => {
   return res.status(500).json({ error: "Error fetching job status" });
 };
 
+
+const storage = multer.diskStorage({
+  destination: '/videos',
+  filename: (req, file, cb) => {
+    cb(null, file.originalname); // Or add timestamp for uniqueness
+  }
+});
+
+const upload = multer({ storage });
+
+// Example upload route
+const UploadVideo = (req, res) => {
+  res.send(`Uploaded to /videos/${req.file.filename}`);
+};
+
 export default {
   getVideos,
   getThumbnail,
   startVideoProcess,
   getJobStatus,
+  UploadVideo,
+  upload
 };
