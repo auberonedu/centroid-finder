@@ -30,21 +30,18 @@ import java.io.File;
  */
 public class Main {
     public static void main(String[] args) {
+
+        // validate the correct number of arguments are there
         if (args.length < 4) {
             System.out.println("Usage: java Main <input_video> <output_path> <hex_target_color> <threshold>");
             return;
         }
         
+        // store the arguments
         String videoPath = args[0];
         String outputPath = args[1];
         String hexTargetColor = args[2];
         int threshold = 0;
-
-        // TEST
-        // String videoPath = "sampleInput/sample_video_1.mp4";
-        // String hexTargetColor = "#FF0000";
-        // int threshold = 50;
-
 
         // Handling that threshold is a valid number.
         try {
@@ -55,7 +52,6 @@ public class Main {
         }
 
         // Check that video exists, is a file, ends with ".mp4", and can be opened (written with AI assist)
-        // TODO: Validate this!!
         File file = new File(videoPath);
         if (!file.exists()) {
             System.out.println("File does not exist.");
@@ -67,13 +63,6 @@ public class Main {
         }
         if (!videoPath.toLowerCase().endsWith(".mp4")) {
             System.out.println("File is not an mp4.");
-            return;
-        }
-        // Optionally: try opening a stream to test access
-        try (var fis = new java.io.FileInputStream(file)) {
-                // Just verifying that we can open the file
-        } catch (Exception e) {
-            System.out.println("An error occurred while checking the file: " + e.getMessage());
             return;
         }
 
@@ -93,10 +82,11 @@ public class Main {
 
         // Instantiate VideoProcessor
         VideoProcessor processor = new VideoProcessor(videoPath, outputPath, targetColor, threshold); 
-        // tell processor to process data
+
+        // Run the processor
         processor.extractFrames();
 
-        System.out.println("Video processing complete. Output saved to sampleOutput/largestCentroids.csv");
+        System.out.println("Video processing complete.");
     }
     
 }
