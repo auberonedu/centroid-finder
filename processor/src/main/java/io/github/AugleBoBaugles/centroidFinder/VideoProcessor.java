@@ -31,8 +31,15 @@ public class VideoProcessor {
             // String outputDir = "sampleOutput"; 
             // new File(outputDir).mkdirs();
 
+            File video = new File(videoPath);
+            String videoName = video.getName();
+            int dotIndex = videoName.lastIndexOf('.');
+
+            videoName = videoName.substring(0, dotIndex);
+
+
             // Path to the CSV output file
-            String csvFilePath = outputPath + "/largestCentroids.csv";
+            String csvFilePath = outputPath + "/" + videoName + ".csv";
 
             // Create the file and initialize writer (false = overwrite if file exists)
             File csvFile = new File(csvFilePath);
