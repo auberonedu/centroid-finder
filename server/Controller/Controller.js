@@ -263,5 +263,5 @@ export default {
   getVideoByFilename,
   videoProcessing,
   getCompletedCSVs,
-  getStatus,
+  getStatus
 };

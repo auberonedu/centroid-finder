@@ -1,11 +1,13 @@
 import { Router } from "express";
-import {
-  getCompletedCSVs,
-  getStatus,
-  getVideoByFilename,
+import controller from "../Controller/Controller.js";
+
+const { 
   getVideos,
+  getVideoByFilename,
   videoProcessing,
-} from "../Controller/Controller.js";
+  getCompletedCSVs,
+  getStatus
+} = controller;
 
 const router = Router();
 
