@@ -8,7 +8,7 @@ router.get('/videos/status', controller.getCompletedCSVs);
 router.get('/videos/status/:jobId', controller.getStatus);
 
 // 🛡 Safer dynamic route: Only match valid UUIDs
-router.get('/videos/:videoID', controller.getVideoById);
+router.get('/videos/:videoID', controller.getVideoByFilename);
 
 
 // 🟢 Other routes
