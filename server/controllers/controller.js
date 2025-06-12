@@ -76,9 +76,9 @@ const getThumbnail = (req, res) => {
 
 const postVideo = (req, res) => {
     // Try catch to check that parameters are valid
+    const { filename } = req.params; // Extracts the video filename from the URL
+    const { targetColor, threshold } = req.query; // Extracts query parameters from the request URL
     try {
-        const { filename } = req.params; // Extracts the video filename from the URL
-        const { targetColor, threshold } = req.query; // Extracts query parameters from the request URL
         
         if (!targetColor || !threshold) {
             return res.status(statusBadRequest).json({ error: "Missing targetColor or threshold query parameter" });
@@ -119,11 +119,26 @@ const postVideo = (req, res) => {
 
         // Spawns the Java process in detached mode
         const javaSpawn = spawn('java', javaArgs, {
-            detached: true, // this ensures that the process is independent from the Node.js process
-            stdio: 'ignore' // changed from 'inherit' to 'ignore'
+            stdio: ["ignore", "pipe", "inherit"]
         });
 
-        javaSpawn.unref(); // this allows the parent Node to exit independently of the javaSpawn
+        // print data
+        javaSpawn.on("data", (data) => {
+            console.log(data)
+        })
+
+        // on exit, get code to determine success
+        javaSpawn.on("exit", (code) => {
+            if (code === 0) { currStatus = "done"} else { currStatus = "error"}
+            jobStatus.set(jobId, { status: currStatus })
+        })
+
+        // error
+        javaSpawn.on("error", (err) => {
+            jobStatus.set(jobId, { status: "error", error: err })
+        })
+
+        //javaSpawn.unref(); // this allows the parent Node to exit independently of the javaSpawn
 
         jobStatus.set(jobId, { status: "processing" })
 
