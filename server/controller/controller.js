@@ -83,17 +83,15 @@ const getThumbnail = (req, res) => {
 };
 
 const processVideo = async (req, res) => {
-    // extract filename from the req params and target color and threshold from the query string
     const { filename } = req.params;
     const { targetColor, threshold } = req.query;
     const videoDir = process.env.VIDEO_DIR;
     const jarPath = process.env.JAR_PATH;
     const resultsDir = process.env.RESULTS_DIR;
 
-    // combine video directory and filename to resolve full file path of video 
     const videoPath = path.resolve(videoDir, filename);
 
-    // validate
+    // Validate inputs
     if (!filename || !targetColor || !threshold) {
         return res.status(400).json({ error: 'Missing filename, targetColor, or threshold' });
     }
@@ -107,43 +105,52 @@ const processVideo = async (req, res) => {
         fs.mkdirSync(resultsDir, { recursive: true });
     }
 
-    const jobId = uuidv4(); // generate unique job ID for this request
-    const jobs = readJobs(); // read current jobs
-    jobs[jobId] = { status: 'processing', filename, result: null }; // add new job
-    writeJobs(jobs); // write updated job
+    const jobId = uuidv4();  // Unique job ID
+    const jobs = readJobs();  // Current jobs
+    jobs[jobId] = { status: 'processing', filename, result: null };  // Add job
+    writeJobs(jobs);  // Save updated jobs
 
-    // build args for the JAR (prepare args to pass to JAR to execute processing)
+    // Prepare args for the JAR
     const resultFile = path.resolve(resultsDir, `${jobId}.csv`);
     const args = [
-        '-jar',            // specify JAR file
-        jarPath,           // path to the JAR file
-        videoPath,         // path to the video file to be processed
-        resultFile,        // path where the results should be saved (CSV format)
-        targetColor,       // target color to look for in the video
-        threshold          // threshold value for color matching in the video
+        '-jar', jarPath,
+        videoPath,
+        resultFile,
+        targetColor,
+        threshold
     ];
-    // spawn java process to run JAR async (spawn runs java process in background)
-    const javaProcess = spawn('java', args, {
-        detached: true, // run process independently
-        stdio: 'ignore' // ignore standard input/output of process
-    });
-    javaProcess.unref(); // unref the child process to allow background run
 
-    // poll for result file (set interval to check result file every 2 sec, if exists status="done")
+    // Run the JAR asynchronously
+    const javaProcess = spawn('java', args, {
+        detached: true,
+        stdio: 'ignore'
+    });
+    javaProcess.unref();  // Unreference the process
+
+    // Poll for result file and check file size stability
+    let lastSize = 0;
     const checkInterval = setInterval(() => {
         if (fs.existsSync(resultFile)) {
-            clearInterval(checkInterval);
-            const jobs = readJobs();
-            jobs[jobId] = { status: 'done', filename, result: path.basename(resultFile) };
-            writeJobs(jobs);
+            const stats = fs.statSync(resultFile);
+            const currentSize = stats.size;
+
+            if (currentSize === lastSize) {
+                // File size is stable, consider it done
+                clearInterval(checkInterval);
+                const jobs = readJobs();
+                jobs[jobId] = { status: 'done', filename, result: path.basename(resultFile) };
+                writeJobs(jobs);
+            } else {
+                // File size has changed, keep polling
+                lastSize = currentSize;
+            }
         }
-    }, 2000);
+    }, 2000);  // Check every 2 seconds
 
     res.status(202).json({ jobId });
 };
 
 const processJobStatus = (req, res) => {
-    // extract jobId req params and stick it to readJobs func, then respond with json if exists
     const { jobId } = req.params;
     const jobs = readJobs();
     if (!jobs[jobId]) {
@@ -152,7 +159,7 @@ const processJobStatus = (req, res) => {
     res.json(jobs[jobId]);
 }
 
-// helper functions to read and write jobs
+// Helper functions to read and write jobs
 const JOBS_FILE = process.env.JOBS_FILE;
 const readJobs = () => {
     try {
@@ -165,7 +172,6 @@ const readJobs = () => {
 const writeJobs = (jobs) => {
     fs.writeFileSync(JOBS_FILE, JSON.stringify(jobs, null, 2));
 };
-
 
 export default {
     listVideos,
