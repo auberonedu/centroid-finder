@@ -8,10 +8,6 @@ import {
   LinearProgress,
   Alert,
   Button,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
 } from "@mui/material";
 
 export default function ResultsPage() {
@@ -19,9 +15,7 @@ export default function ResultsPage() {
   const [status, setStatus] = useState("loading");
   const [outputUrl, setOutputUrl] = useState(null);
   const [error, setError] = useState(null);
-  const [csvList, setCsvList] = useState([]);
 
-  // Poll job status
   useEffect(() => {
     if (!jobId) return;
 
@@ -52,20 +46,6 @@ export default function ResultsPage() {
     return () => clearInterval(pollInterval);
   }, [jobId]);
 
-  // Load list of all CSVs
-  useEffect(() => {
-    fetch("http://localhost:3001/videos/status")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data.csvFiles)) {
-          setCsvList(data.csvFiles.sort((a, b) => b.localeCompare(a)));
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching CSV list:", err);
-      });
-  }, []);
-
   return (
     <Box sx={{ p: 4, textAlign: "center" }}>
       <Typography variant="h4" gutterBottom>
@@ -84,7 +64,7 @@ export default function ResultsPage() {
       {status === "completed" && (
         <>
           <Typography variant="h6" sx={{ mb: 2 }}>
-            Video processing complete!
+            ✅ Video processing complete!
           </Typography>
           <Button
             variant="contained"
@@ -95,15 +75,21 @@ export default function ResultsPage() {
           >
             ⬇️ Download CSV
           </Button>
+          <Button
+            variant="outlined"
+            sx={{ mt: 2, ml: 2 }}
+            href="/videos/history"
+          >
+            📁 View All CSVs
+          </Button>
         </>
       )}
       {status === "failed" && (
         <Alert severity="error" sx={{ mt: 2 }}>
-          Processing failed: {error}
+          ❌ Processing failed: {error}
         </Alert>
       )}
 
-      {/* Back button */}
       <Button
         variant="outlined"
         sx={{ mt: 4 }}
@@ -111,38 +97,6 @@ export default function ResultsPage() {
       >
         🔁 Process Another Video
       </Button>
-
-      {/* Divider + Past CSV List */}
-      <Divider sx={{ my: 4 }} />
-      <Typography variant="h6" gutterBottom>
-        🗂 Previously Processed CSVs
-      </Typography>
-
-      {csvList.length === 0 ? (
-        <Typography variant="body2" color="text.secondary">
-          No past results found.
-        </Typography>
-      ) : (
-        <List>
-          {csvList.map((file) => (
-            <ListItem key={file}>
-              <ListItemText
-                primary={
-                  <a
-                    href={`http://localhost:3001/output/${file}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    download
-                  >
-                    {file}
-                  </a>
-                }
-                secondary={`Click to download ${file}`}
-              />
-            </ListItem>
-          ))}
-        </List>
-      )}
     </Box>
   );
 }

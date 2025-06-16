@@ -62,5 +62,9 @@
   "earth.mp4": {
     "id": "9d046bb7-0910-474d-b95b-13b121a9b1d8",
     "thumbnail": "thumbnails/earth.mp4.jpg"
+  },
+  "big_buck_bunny.mp4": {
+    "id": "cd6d5b42-dc0f-4454-9326-2076cf735b48",
+    "thumbnail": "thumbnails/big_buck_bunny.mp4.jpg"
   }
 }

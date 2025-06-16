@@ -14,8 +14,8 @@ export default function NavBar() {
         <Button color="inherit" component={Link} href="/videos">
           Video List
         </Button>
-        <Button color="inherit" component={Link} href="/results/example-job-id">
-          Results (Demo)
+        <Button color="inherit" component={Link} href="/results">
+          All Results
         </Button>
       </Toolbar>
     </AppBar>

@@ -37,7 +37,7 @@ export default function VideoItem({ video }) {
             },
           }}
         >
-          {/* Thumbnail */}
+          {}
           {thumbnailUrl ? (
             <Avatar
               src={thumbnailUrl}
