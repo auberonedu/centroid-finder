@@ -30,12 +30,8 @@ WORKDIR /app
 # Copy backend's package.json and package-lock.json
 COPY server/package*.json ./server/
 
-# Install all the backend dependencies
-RUN cd server && npm install
-
-# Use later when finished:
 # Omit the dev dependencies with npm clean install
-# RUN cd server && npm ci --omit=dev
+RUN cd server && npm ci --omit=dev
 
 # Copy the backend source code
 COPY server ./server
