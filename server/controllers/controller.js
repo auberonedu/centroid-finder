@@ -164,4 +164,4 @@ const getStatus = (req, res) => {
     }
 };
 
-export default { getVideos, getThumbnail, postVideo, getStatus, getResultPath };
+export default { getVideos, getThumbnail, postVideo, getStatus };
