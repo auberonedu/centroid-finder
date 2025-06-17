@@ -27,6 +27,7 @@ Windows
 export VIDEO_DIRECTORY=$(cygpath -m "C:\Users\fullpath\to\your\videos\here") 
 export RESULTS_DIRECTORY=$(cygpath -m "C:\Users\fullpath\to\your\results\here") 
 
+
 On Apple/Linux
 -------------------------
 docker run \
@@ -39,6 +40,7 @@ docker run \
 On Windows
 -------------------------
 docker run \
+  --platform linux/arm64 \
   -p 3001:3001 \
   -v "$VIDEO_DIRECTORY:/videos" \
   -v "$RESULTS_DIRECTORY:/results" \
