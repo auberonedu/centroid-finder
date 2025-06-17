@@ -25,7 +25,7 @@ export RESULTS_DIRECTORY=/full/path/to/your/results
 Windows
 -------------------------
 export VIDEO_DIRECTORY=$(cygpath -m "C:\Users\fullpath\to\your\videos\here") 
-export RESULTS_DIRECTORY=/(cygpath -m "C:\Users\fullpath\to\your\results\here") 
+export RESULTS_DIRECTORY=$(cygpath -m "C:\Users\fullpath\to\your\results\here") 
 
 On Apple/Linux
 -------------------------
