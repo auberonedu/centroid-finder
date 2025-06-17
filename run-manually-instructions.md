@@ -17,8 +17,15 @@ Before running the containers, determine the full absolute paths to:
 Step 2: Run the Backend
 Replace the folder paths below with your actual directories:
 
+Apple/Linux
+-------------------------
 export VIDEO_DIRECTORY=/full/path/to/your/videos
 export RESULTS_DIRECTORY=/full/path/to/your/results
+
+Windows
+-------------------------
+export VIDEO_DIRECTORY=$(cygpath -m "C:\Users\fullpath\to\your\videos\here") 
+export RESULTS_DIRECTORY=/(cygpath -m "C:\Users\fullpath\to\your\results\here") 
 
 On Apple/Linux
 -------------------------
