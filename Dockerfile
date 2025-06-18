@@ -1,3 +1,4 @@
+# -------- Base Image --------
 FROM node:20-slim
 
 # Install Java and ffmpeg
@@ -8,19 +9,21 @@ RUN apt-get update && \
 # Set working directory
 WORKDIR /app
 
-# Copy all files into the container
+# Copy everything
 COPY . .
 
-# Install Node dependencies from /server
-WORKDIR /app/server
+# Install dependencies
 RUN npm install
+RUN npm --prefix server install
+RUN npm --prefix frontend install
 
-# Environment variables for paths (used inside code)
+# Set environment variables
 ENV VIDEO_PATH=/videos
 ENV RESULT_PATH=/results
 
-# Expose the API port
+# Expose ports for both frontend and backend
 EXPOSE 3000
+EXPOSE 3001
 
-# Run the Node app using your dev script
+# Start both frontend and backend
 CMD ["npm", "run", "dev"]
