@@ -1,4 +1,4 @@
-# Compiled class file
+ === Java / Maven ===
 *.class
 
 # Log file
@@ -18,7 +18,35 @@
 *.zip
 *.tar.gz
 *.rar
+*.mp4
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+/target/
+
+# === Node.js ===
+/server/node_modules/
+/server/.env
+
+# === Output & Generated Files ===
+/sampleOutput/
+groups.csv
+test.csv
+output.csv
+binarized.png
+frame_*.png
+mander.csv
+server/utils/jobs/
+
+# === IDEs and Editors ===
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# === OS-specific ===
+.DS_Store
+Thumbs.db
