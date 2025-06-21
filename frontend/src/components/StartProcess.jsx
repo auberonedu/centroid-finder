@@ -5,24 +5,34 @@ import CompletedJobs from "./CompletedJobs";
 import withVideoProcessing from "./withVideoProcessing";
 
 const StartProcess = ({ filename, color, threshold, status, error, jobId, start }) => {
-  const [completedJobs, setCompletedJobs] = useState([]);
+  // Initialize from localStorage on first render
+  const [completedJobs, setCompletedJobs] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("completedJobs");
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
 
   useEffect(() => {
     if (!jobId) return;
 
-    // intervally call backend to fetch progess of job
     const interval = setInterval(async () => {
       try {
         const res = await fetch(`http://localhost:3000/process/${jobId}/status`);
         const data = await res.json();
 
-        // if job is done, stop calling 
         if (data.status === "done") {
-          setCompletedJobs((prev) => [...prev, { jobId, filename }]);
+          const newJob = { jobId, filename };
+
+          setCompletedJobs((prev) => {
+            const updated = [...prev, newJob];
+            localStorage.setItem("completedJobs", JSON.stringify(updated));
+            return updated;
+          });
+
           clearInterval(interval);
         }
-
-        // If error, stop calling and return an error
       } catch (err) {
         console.error("Failed to check job status:", err);
         clearInterval(interval);
@@ -34,7 +44,7 @@ const StartProcess = ({ filename, color, threshold, status, error, jobId, start 
 
   return (
     <Box sx={{ marginTop: 6, textAlign: "center" }}>
-      {/* processing button. if status is processing, button is disabled */}
+      {/* Start Button */}
       <Button
         variant="contained"
         onClick={() => start(filename, color, threshold)}
@@ -44,26 +54,26 @@ const StartProcess = ({ filename, color, threshold, status, error, jobId, start 
         {status === "processing" ? "Processing..." : "Start Process"}
       </Button>
 
-      {/* If job is still processing, render MUI progress bar */}
+      {/* Progress Indicator */}
       {status === "processing" && (
         <Box sx={{ width: "100%", mt: 2 }}>
           <LinearProgress />
         </Box>
       )}
 
-
-      {/* Return error if error in job processing */}
+      {/* Error Message */}
       {error && (
         <Typography sx={{ mt: 2, color: "red" }}>{error}</Typography>
       )}
 
+      {/* Success Message */}
       {status === "done" && (
         <Box sx={{ mt: 2 }}>
           <Typography>✅ Process complete!</Typography>
         </Box>
       )}
 
-      {/* Render list of completed jobs */}
+      {/* Completed Jobs List */}
       <CompletedJobs jobs={completedJobs} />
     </Box>
   );
