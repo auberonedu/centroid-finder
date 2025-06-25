@@ -32,11 +32,15 @@ const withVideoProcessing = (WrappedComponent) => {
       }
     };
 
-    // ✅ NEW: Reset function
     const reset = () => {
       setStatus("idle");
       setError("");
       setJobId(null);
+    };
+
+    // ✅ Add this
+    const done = () => {
+      setStatus("done");
     };
 
     return (
@@ -46,7 +50,8 @@ const withVideoProcessing = (WrappedComponent) => {
         error={error}
         jobId={jobId}
         start={start}
-        reset={reset} // ⬅️ pass to wrapped component
+        reset={reset}
+        done={done} // <-- pass to wrapped component
       />
     );
   };

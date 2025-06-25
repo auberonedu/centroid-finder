@@ -12,12 +12,13 @@ const StartProcess = ({
   error,
   jobId,
   start,
-  reset
+  reset,
+  done,
 }) => {
   const [completedJobs, setCompletedJobs] = useState([]);
   const [jobError, setJobError] = useState("");
 
-  // Fetch completed jobs initially
+  // Fetch completed jobs on load
   useEffect(() => {
     const fetchCompleted = async () => {
       try {
@@ -48,24 +49,49 @@ const StartProcess = ({
             if (prev.some((job) => job.jobId === jobId)) return prev;
             return [...prev, newJob];
           });
+          done();
           clearInterval(interval);
         } else if (data.status === "error") {
           setJobError(data.error || "An unknown error occurred.");
-          reset(); // <-- allow retry by resetting HOC state
+          reset();
           clearInterval(interval);
         }
       } catch (err) {
         console.error("Failed to check job status:", err);
         setJobError("Network error while checking job status.");
-        reset(); // <-- reset on fetch failure
+        reset();
         clearInterval(interval);
       }
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [jobId, filename, reset]);
+  }, [jobId, filename, reset, done]);
 
-  // Delete a single job
+  // Handle download
+  const handleDownload = async (jobId, filename) => {
+  try {
+    const baseName = filename.replace(/\.[^/.]+$/, "");
+    const downloadPath = `http://localhost:3000/process/${baseName}_${jobId}.csv`;
+
+    const res = await fetch(downloadPath);
+    if (!res.ok) throw new Error("File not found");
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${baseName}_${jobId}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error("Download failed:", err);
+  }
+};
+
+
   const handleDeleteJob = async (jobIdToDelete) => {
     try {
       const res = await fetch(`http://localhost:3000/api/completed/${jobIdToDelete}`, {
@@ -78,7 +104,6 @@ const StartProcess = ({
     }
   };
 
-  // Clear all jobs
   const handleClearAll = async () => {
     const confirmed = window.confirm(
       "Are you sure you want to delete all completed jobs? This will permanently remove all CSV files."
@@ -102,7 +127,7 @@ const StartProcess = ({
       <Button
         variant="contained"
         onClick={() => {
-          setJobError(""); // clear old errors
+          setJobError("");
           start(filename, color, threshold);
         }}
         disabled={status === "processing"}
@@ -118,22 +143,27 @@ const StartProcess = ({
         </Box>
       )}
 
-      {/* Error from start() */}
+      {/* Errors */}
       {error && (
         <Typography sx={{ mt: 2, color: "red" }}>{error}</Typography>
       )}
-
-      {/* Error from polling */}
       {jobError && (
         <Typography sx={{ mt: 2, color: "red" }}>
           ⚠️ Job Failed: {jobError}
         </Typography>
       )}
 
-      {/* Success */}
-      {status === "done" && (
+      {/* Success & Download */}
+      {status === "done" && jobId && (
         <Box sx={{ mt: 2 }}>
           <Typography>✅ Process complete!</Typography>
+          <Button
+            variant="outlined"
+            sx={{ mt: 1 }}
+            onClick={() => handleDownload(jobId, filename)}
+          >
+            Download CSV
+          </Button>
         </Box>
       )}
 
