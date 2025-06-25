@@ -4,11 +4,20 @@ import { Box, Button, Typography, LinearProgress } from "@mui/material";
 import CompletedJobs from "./CompletedJobs";
 import withVideoProcessing from "./withVideoProcessing";
 
-const StartProcess = ({ filename, color, threshold, status, error, jobId, start }) => {
+const StartProcess = ({
+  filename,
+  color,
+  threshold,
+  status,
+  error,
+  jobId,
+  start,
+  reset
+}) => {
   const [completedJobs, setCompletedJobs] = useState([]);
   const [jobError, setJobError] = useState("");
 
-  // Fetch completed jobs on initial load
+  // Fetch completed jobs initially
   useEffect(() => {
     const fetchCompleted = async () => {
       try {
@@ -24,7 +33,7 @@ const StartProcess = ({ filename, color, threshold, status, error, jobId, start 
     fetchCompleted();
   }, []);
 
-  // Poll job status if a job is active
+  // Poll job status
   useEffect(() => {
     if (!jobId) return;
 
@@ -35,74 +44,65 @@ const StartProcess = ({ filename, color, threshold, status, error, jobId, start 
 
         if (data.status === "done") {
           const newJob = { jobId, filename };
-
           setCompletedJobs((prev) => {
             if (prev.some((job) => job.jobId === jobId)) return prev;
             return [...prev, newJob];
           });
-
           clearInterval(interval);
         } else if (data.status === "error") {
           setJobError(data.error || "An unknown error occurred.");
+          reset(); // <-- allow retry by resetting HOC state
           clearInterval(interval);
         }
       } catch (err) {
         console.error("Failed to check job status:", err);
         setJobError("Network error while checking job status.");
+        reset(); // <-- reset on fetch failure
         clearInterval(interval);
       }
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [jobId, filename]);
+  }, [jobId, filename, reset]);
 
-  // Delete a single job from the server
+  // Delete a single job
   const handleDeleteJob = async (jobIdToDelete) => {
     try {
       const res = await fetch(`http://localhost:3000/api/completed/${jobIdToDelete}`, {
         method: "DELETE",
       });
-
-      if (!res.ok) {
-        throw new Error("Failed to delete job from server");
-      }
-
+      if (!res.ok) throw new Error("Failed to delete job");
       setCompletedJobs((prev) => prev.filter((job) => job.jobId !== jobIdToDelete));
     } catch (err) {
       console.error("Error deleting job:", err);
     }
   };
 
-  // Clear all jobs after confirmation
+  // Clear all jobs
   const handleClearAll = async () => {
     const confirmed = window.confirm(
       "Are you sure you want to delete all completed jobs? This will permanently remove all CSV files."
     );
-
     if (!confirmed) return;
 
     try {
       const res = await fetch("http://localhost:3000/api/completed", {
         method: "DELETE",
       });
-
-      if (!res.ok) {
-        throw new Error("Failed to clear completed jobs on server");
-      }
-
+      if (!res.ok) throw new Error("Failed to clear jobs");
       setCompletedJobs([]);
     } catch (err) {
-      console.error("Error clearing completed jobs:", err);
+      console.error("Error clearing jobs:", err);
     }
   };
 
   return (
     <Box sx={{ marginTop: 6, textAlign: "center" }}>
-      {/* Start Processing Button */}
+      {/* Start Button */}
       <Button
         variant="contained"
         onClick={() => {
-          setJobError(""); // clear previous error
+          setJobError(""); // clear old errors
           start(filename, color, threshold);
         }}
         disabled={status === "processing"}
@@ -111,26 +111,26 @@ const StartProcess = ({ filename, color, threshold, status, error, jobId, start 
         {status === "processing" ? "Processing..." : "Start Process"}
       </Button>
 
-      {/* Loading Indicator */}
-      {status === "processing" && (
+      {/* Loading Bar */}
+      {status === "processing" && !jobError && (
         <Box sx={{ width: "100%", mt: 2 }}>
           <LinearProgress />
         </Box>
       )}
 
-      {/* Error Message from withVideoProcessing */}
+      {/* Error from start() */}
       {error && (
         <Typography sx={{ mt: 2, color: "red" }}>{error}</Typography>
       )}
 
-      {/* Job Failure Message from polling */}
+      {/* Error from polling */}
       {jobError && (
         <Typography sx={{ mt: 2, color: "red" }}>
           ⚠️ Job Failed: {jobError}
         </Typography>
       )}
 
-      {/* Success Message */}
+      {/* Success */}
       {status === "done" && (
         <Box sx={{ mt: 2 }}>
           <Typography>✅ Process complete!</Typography>
