@@ -4,6 +4,7 @@ import ffmpeg from "fluent-ffmpeg";
 import { spawn } from "child_process";
 import { randomUUID } from "crypto";
 import multer from "multer";
+import { get } from "https";
 
 // In-memory job tracking
 const jobStatus = {}; 
@@ -88,38 +89,44 @@ const startVideoProcess = async (req, res) => {
     jobStatus[jobId] = { status: "processing" };
 
     const child = spawn(
-      "java",
-      [
-        "-jar",
-        "/app/Processor/target/centroidFinderVideo-jar-with-dependencies.jar",
-        path.join("/videos", filename),
-        targetColor,
-        thresholdNum.toString(),
-        jobId,
-      ],
-      {
-        stdio: ["ignore", "pipe", "pipe"],
-      }
-    );
+  "java",
+  [
+    "-jar",
+    "/app/Processor/target/centroidFinderVideo-jar-with-dependencies.jar",
+    path.join("/videos", filename),
+    targetColor,
+    thresholdNum.toString(),
+    jobId,
+  ],
+  {
+    stdio: ["ignore", "pipe", "pipe"],
+  }
+);
 
-    let output = "";
+let output = "";
 
-    child.stdout.on("data", (data) => {
-      const text = data.toString();
-      output += text;
-      console.log(`[JAR OUTPUT ${jobId}]: ${text.trim()}`);
-    });
+child.stdout.on("data", (data) => {
+  const text = data.toString();
+  output += text;
+  console.log(`[JAR OUTPUT ${jobId}]: ${text.trim()}`);
+});
 
-    child.on("exit", (code) => {
-      jobStatus[jobId] = { status: code === 0 ? "done" : "error" };
-    });
+child.stderr.on("data", (data) => {
+  const text = data.toString();
+  console.error(`[JAR ERROR ${jobId}]: ${text.trim()}`);
+});
 
-    child.on("error", (err) => {
-      jobStatus[jobId] = {
-        status: "error",
-        error: `Error processing video: ${err.message}`,
-      };
-    });
+child.on("exit", (code) => {
+  jobStatus[jobId] = { status: code === 0 ? "done" : "error" };
+});
+
+child.on("error", (err) => {
+  jobStatus[jobId] = {
+    status: "error",
+    error: `Error processing video: ${err.message}`,
+  };
+});
+
 
     res.status(202).json({ jobId });
   } catch (err) {
@@ -162,11 +169,78 @@ const UploadVideo = (req, res) => {
   res.send(`Uploaded to /videos/${req.file.filename}`);
 };
 
+// List all completed CSV jobs in the results directory
+const getCompletedJobs = async (req, res) => {
+  try {
+    const resultsDir = process.env.RESULTS_PATH || "/results";
+    const files = await fs.readdir(resultsDir);
+
+    const csvJobs = files
+      .filter(file => file.endsWith(".csv"))
+      .map(file => {
+        const [name, jobId] = file.replace(".csv", "").split("_");
+        return {
+          filename: name + ".mp4",  // Adjust if you allow other formats
+          jobId
+        };
+      });
+
+    res.status(200).json(csvJobs);
+  } catch (err) {
+    console.error("Failed to read results directory:", err);
+    res.status(500).json({ error: "Could not fetch completed jobs" });
+  }
+};
+
+const deleteCompletedJob = async (req, res) => {
+  const { jobId } = req.params;
+
+  try {
+    const resultsDir = process.env.RESULTS_PATH || "/results";
+    const files = await fs.readdir(resultsDir);
+
+    const matchingFile = files.find(file => file.endsWith(`${jobId}.csv`));
+
+    if (!matchingFile) {
+      return res.status(404).json({ error: "CSV file not found" });
+    }
+
+    await fs.unlink(path.join(resultsDir, matchingFile));
+    res.status(200).json({ message: "File deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting file:", err);
+    res.status(500).json({ error: "Failed to delete file" });
+  }
+};
+
+const clearAllCompletedJobs = async (req, res) => {
+  try {
+    const resultsDir = process.env.RESULTS_PATH || "/results";
+    const files = await fs.readdir(resultsDir);
+
+    const csvFiles = files.filter((file) => file.endsWith(".csv"));
+    const deletePromises = csvFiles.map((file) =>
+      fs.unlink(path.join(resultsDir, file))
+    );
+
+    await Promise.all(deletePromises);
+
+    res.status(200).json({ message: "All completed jobs deleted successfully" });
+  } catch (err) {
+    console.error("Error clearing completed jobs:", err);
+    res.status(500).json({ error: "Failed to clear completed jobs" });
+  }
+};
+
+
 export default {
   getVideos,
   getThumbnail,
   startVideoProcess,
   getJobStatus,
   UploadVideo,
+  getCompletedJobs,
+  deleteCompletedJob,
+  clearAllCompletedJobs,
   upload
 };

@@ -102,6 +102,7 @@ public class ImageSummaryApp {
         } catch (Exception e) {
             System.err.println("Error processing video.");
             e.printStackTrace();
+            System.exit(1);
         }
     }
 }
