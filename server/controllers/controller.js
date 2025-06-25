@@ -91,6 +91,7 @@ const startVideoProcess = async (req, res) => {
     const child = spawn(
   "java",
   [
+    "-Xss16m",
     "-jar",
     "/app/Processor/target/centroidFinderVideo-jar-with-dependencies.jar",
     path.join("/videos", filename),
