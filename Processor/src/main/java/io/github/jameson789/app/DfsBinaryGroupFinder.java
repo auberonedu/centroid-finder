@@ -3,6 +3,7 @@ package io.github.jameson789.app;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 public class DfsBinaryGroupFinder implements BinaryGroupFinder {
    /**
@@ -35,74 +36,83 @@ public class DfsBinaryGroupFinder implements BinaryGroupFinder {
     * @param image a rectangular 2D array containing only 1s and 0s
     * @return the found groups of connected pixels in descending order
     */
-    @Override
+
+@Override
     public List<Group> findConnectedGroups(int[][] image) {
-        if (image == null || image.length == 0 || image[0] == null)
-        throw new IllegalArgumentException("Invalid image input");
-
+        if (image == null || image.length == 0 || image[0] == null){
+            throw new IllegalArgumentException("Invalid image input");
+        }
         int expectedWidth = image[0].length;
-        List<Group> coordinates = new ArrayList<>();
-
-        // search entire image looking for connections of 1's
-        for(int row = 0; row < image.length; row++){
-            if (image[row] == null || image[row].length != expectedWidth) {
+        // create shallow copy of image array to keep track of visited pixels without editing original array
+        int[][] imageClone = image.clone();
+        // create list to add groups to
+        List<Group> groups = new ArrayList<Group>();
+        // nested for loop to find start of each group
+        for (int y = 0; y < imageClone.length; y++){
+            // if image[y] is null, throw null pointer
+            if (imageClone[y] == null || imageClone[y].length != expectedWidth){
                 throw new IllegalArgumentException("Input binary array is not rectangular.");
             }
+            for(int x = 0; x < imageClone[y].length; x++){
 
-            for(int col = 0; col < image[0].length; col++){
-                if(image[row][col] == 1){
-                    List<int[]> coordinate  = new ArrayList<>();
-                    findConnectedGroupsDFS(image, row, col, coordinate);
+                // when group is found, perform dfs with that x, y as starting point
+                if (imageClone[y][x] == 1){
+                    // dfs will need to fill an array with the size of the group and a sum of the group's x and y coordinates
+                    // index 0 will have size, 1 will have sum of xs, 2 will have sum of ys
+                    int[] groupInfo = new int[3];
 
-                    // get size of group and x / y sum for calculating centroid
-                    int size = coordinate.size();
-                    int xSum = 0;
-                    int ySum = 0;
+                    dfs(imageClone, y, x, groupInfo);
+                    // a new Group record will be created and added to the List using this info^
+                    int size = groupInfo[0];
+                    int xCentroid = groupInfo[1] / size;
+                    int yCentroid = groupInfo[2] / size;
 
-                    for(int[] cord : coordinate){
-                        int y = cord[0];
-                        int x = cord[1];
-
-                        xSum += x;
-                        ySum += y;
-                    }
-
-                    //x = sum of all x coords in group / size
-                    //y = sum of all y coords in group / size
-                    Coordinate centroid = new Coordinate(xSum / size, ySum / size);
-                    coordinates.add(new Group(size, centroid));
+                    groups.add(new Group(size, new Coordinate(xCentroid, yCentroid)));
                 }
             }
         }
-
-        //sort coordinates in descending order (reverses compareTo method)
-        coordinates.sort(Collections.reverseOrder());
-        return coordinates;
+        
+        // sort list and return it
+        Collections.sort(groups, Collections.reverseOrder());
+        return groups;
     }
 
-    public void findConnectedGroupsDFS(int[][] image, int row, int col, List<int[]> coordinates) {
+    private void dfs(int[][] image, int startY, int startX, int[] groupInfo){
 
-        // base case for edge of image and if pixel is not a 1
-        if (row < 0 || row >= image.length || col < 0 || image[row] == null || col >= image[row].length || image[row][col] != 1) {
-            return;
-        }
-
-        coordinates.add(new int[]{row, col});
-
-        // set the current location as a 0 to mark as visited
-        image[row][col] = 0;
-
+        // create 2d array of direction options
         int[][] directions = {
-                {1, 0},
-                {-1, 0},
-                {0, 1},
-                {0, -1}
+            {-1, 0},
+            {1, 0},
+            {0, -1},
+            {0, 1}
         };
 
-        for (int[] direction : directions) {
-            findConnectedGroupsDFS(image, row + direction[0], col + direction[1], coordinates);
-        }
+        Stack<int[]> stack = new Stack<>();
+        stack.push(new int[]{startX, startY});
 
+        while (!stack.isEmpty()){
+            int[] node = stack.pop();
+
+            int x = node[0];
+            int y = node[1];
+            // if node is invalid or already visited, skip forward
+            if (y < 0 || y >= image.length || image[y] == null || x < 0 || x >= image[y].length || image[y][x] == 0) continue;
+
+            // set node to visited
+            image[y][x] = 0;
+
+            // save node information
+            groupInfo[0] += 1;
+            groupInfo[1] += x;
+            groupInfo[2] += y;
+
+            // check nodes in every direction
+            for (int[] dir: directions){
+                stack.push(new int[]{x + dir[0], y + dir[1]});
+            }
+
+        }
     }
+
 
 }
