@@ -8,6 +8,8 @@ const StartProcess = ({
   filename,
   color,
   threshold,
+  areaValues,
+  areaNames,
   status,
   error,
   jobId,
@@ -17,6 +19,9 @@ const StartProcess = ({
 }) => {
   const [completedJobs, setCompletedJobs] = useState([]);
   const [jobError, setJobError] = useState("");
+
+  // if areas are selected, create map of names and values, else set to null
+  const areas = areaValues.length == 0 ? null : new Map(areaNames.map((key, index) => [key, areaValues[index]]));
 
   // Fetch completed jobs on load
   useEffect(() => {
@@ -128,7 +133,7 @@ const StartProcess = ({
         variant="contained"
         onClick={() => {
           setJobError("");
-          start(filename, color, threshold);
+          start(filename, color, threshold, areas);
         }}
         disabled={status === "processing"}
         sx={{ backgroundColor: "lightblue", color: "black" }}

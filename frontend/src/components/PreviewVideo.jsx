@@ -13,7 +13,7 @@ export default function PreviewVideo({ params }) {
   const [threshold, setThreshold] = useState(100);
   const [areas, setAreas] = useState([]);
   const [areaToggle, setAreaToggle] = useState(false);
-  const [areaNames, setAreaNames] = useState([1, 2]);
+  const [areaNames, setAreaNames] = useState(['1', '2']);
   // Refs for canvas and image
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -88,11 +88,9 @@ export default function PreviewVideo({ params }) {
     })
   }
 
-  // render area name in area
+  // render area name in area selector
   const renderAreaNames = (areaProps) => {
     if (!areaProps.isChanging) {
-      console.log(areaNames)
-      console.log(areas)
         return (
             <div key={areaProps.areaNumber}>
                 <Typography>{areaNames[areaProps.areaNumber - 1]}</Typography>
@@ -238,7 +236,9 @@ export default function PreviewVideo({ params }) {
       </Box>
 
       {/* Process button */}
-      <StartProcess filename={filename} color={color} threshold={threshold} />
+      {areaToggle ? <StartProcess filename={filename} color={color} threshold={threshold} areaValues={areas} areaNames={areaNames} /> :
+        <StartProcess filename={filename} color={color} threshold={threshold} areaValues={[]} areaNames={[]} />}
+      
     </Container>
   );
 }
