@@ -1,15 +1,19 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Slider, Container, Box, Typography } from "@mui/material";
+import { Slider, Container, Box, Typography, Checkbox, TextField} from "@mui/material";
 import StartProcess from "./StartProcess";
+import { AreaSelector, IArea } from '@bmunozg/react-image-area';
 
 export default function PreviewVideo({ params }) {
   // Get filename from URL
   const { filename } = useParams();
-  // States for color and threshold
+  // States for color, threshold, and areas
   const [color, setColor] = useState("#000000");
   const [threshold, setThreshold] = useState(100);
+  const [areas, setAreas] = useState([]);
+  const [areaToggle, setAreaToggle] = useState(false);
+  const [areaNames, setAreaNames] = useState([1, 2]);
   // Refs for canvas and image
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -75,6 +79,28 @@ export default function PreviewVideo({ params }) {
     ctx.putImageData(imageData, 0, 0);
   };
 
+  // handle state change of area name
+  const handleNameChange = (index, newVal) => {
+    setAreaNames(prev => {
+      const newNames = [...prev];
+      newNames[index] = newVal;
+      return newNames;
+    })
+  }
+
+  // render area name in area
+  const renderAreaNames = (areaProps) => {
+    if (!areaProps.isChanging) {
+      console.log(areaNames)
+      console.log(areas)
+        return (
+            <div key={areaProps.areaNumber}>
+                <Typography>{areaNames[areaProps.areaNumber - 1]}</Typography>
+            </div>
+        );
+    }
+  };
+
   // Card style
   const cardStyle = {
     padding: 2,
@@ -85,6 +111,20 @@ export default function PreviewVideo({ params }) {
     maxWidth: 320,
     flex: "1 1 320px",
   };
+
+  // Original Image thumbnail
+  const OgImage = () => {
+    return(
+    <img
+      src={thumbnailUrl}
+      alt="Original thumbnail"
+      style={{
+        width: "300px",
+        borderRadius: 8,
+        border: "1px solid #ccc",
+      }}
+    /> )
+  }
 
   return (
     <Container maxWidth="md" sx={{ py: 5, px: 3, bgcolor: "#f9f9f9", borderRadius: 2, boxShadow: 2, marginTop: 2 }}>
@@ -102,15 +142,19 @@ export default function PreviewVideo({ params }) {
             <Typography variant="h6" gutterBottom>
               Original
             </Typography>
-            <img
-              src={thumbnailUrl}
-              alt="Original thumbnail"
-              style={{
-                width: "300px",
-                borderRadius: 8,
-                border: "1px solid #ccc",
-              }}
-            />
+            {areaToggle &&
+              <AreaSelector
+                areas={areas}
+                onChange={(areas) => setAreas(areas)}
+                debug
+                customAreaRenderer={renderAreaNames}
+                maxAreas={2}
+                unit="percentage"
+              >
+                <OgImage />
+              </AreaSelector>
+            }
+            {!areaToggle && <OgImage />}
           </Box>
 
           {/* Binarized image */}
@@ -167,6 +211,29 @@ export default function PreviewVideo({ params }) {
             onChange={(e, newValue) => setThreshold(newValue)}
             sx={{ width: 250 }}
           />
+
+          {/* Area Selector */}
+          <Typography sx={{ marginLeft: 2 }}>Set Regions:</Typography>
+          <Checkbox
+            onChange={(e) => setAreaToggle(prev => !prev)}
+          />
+          {/* Area Names inputs */}
+          {areaToggle && 
+            <div>
+              {areaNames.map((value, index) => (
+                <TextField
+                  key={index} 
+                  value={value}
+                  label={'Region ' + (index + 1) }
+                  onChange={(e) => handleNameChange(index, e.target.value)}
+                  size="small"
+                  sx={{ marginLeft: 2 }}
+                />
+              ))}
+            </div>
+          }
+
+
         </Box>
       </Box>
 
