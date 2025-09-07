@@ -55,6 +55,8 @@ const getThumbnail = async (req, res) => {
 const startVideoProcess = async (req, res) => {
   const { filename } = req.params;
   const { targetColor, threshold } = req.query;
+  const  areas = req.body || null;
+  console.log(areas);
 
   // Check if params are missing
   if (!targetColor || !threshold) {
