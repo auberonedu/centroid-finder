@@ -8,12 +8,14 @@ import { AreaSelector, IArea } from '@bmunozg/react-image-area';
 export default function PreviewVideo({ params }) {
   // Get filename from URL
   const { filename } = useParams();
-  // States for color, threshold, and areas
+  // States for color, threshold
   const [color, setColor] = useState("#000000");
   const [threshold, setThreshold] = useState(100);
-  const [areas, setAreas] = useState([]);
-  const [areaToggle, setAreaToggle] = useState(false);
-  const [areaNames, setAreaNames] = useState(['1', '2']);
+  // States for areas
+  const [areas, setAreas] = useState([]); // collected area data
+  const [areaData, setAreaData] = useState([]); // computed area data
+  const [areaToggle, setAreaToggle] = useState(false); // toggle for optional area selections
+  const [areaNames, setAreaNames] = useState(['1', '2']); // area names
   // Refs for canvas and image
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -41,6 +43,27 @@ export default function PreviewVideo({ params }) {
       drawBinarized(imgRef.current, color, threshold);
     }
   }, [color, threshold]);
+
+  // Calculate area data
+  useEffect(() => {
+    if (imgRef.current){
+      const img = imgRef.current
+      const height = img.height;
+      const width = img.width;
+      const newAreaData = [];
+      areas.forEach(area => {
+        const newArea = {};
+        newArea.x = Math.round(area.x * width / 100);
+        newArea.y = Math.round(area.y * height / 100);
+        newArea.width = Math.round(area.width * width / 100);
+        newArea.height = Math.round(area.height * height / 100);
+        newAreaData.push(newArea)
+      });
+      
+      setAreaData(newAreaData);
+    }
+    
+  }, [areas])
 
   // convert the image to binary based on color and threshold
   const drawBinarized = (img, targetColor, threshold) => {
@@ -144,7 +167,6 @@ export default function PreviewVideo({ params }) {
               <AreaSelector
                 areas={areas}
                 onChange={(areas) => setAreas(areas)}
-                debug
                 customAreaRenderer={renderAreaNames}
                 maxAreas={2}
                 unit="percentage"
@@ -236,7 +258,7 @@ export default function PreviewVideo({ params }) {
       </Box>
 
       {/* Process button */}
-      {areaToggle ? <StartProcess filename={filename} color={color} threshold={threshold} areaValues={areas} areaNames={areaNames} /> :
+      {areaToggle ? <StartProcess filename={filename} color={color} threshold={threshold} areaValues={areaData} areaNames={areaNames} /> :
         <StartProcess filename={filename} color={color} threshold={threshold} areaValues={[]} areaNames={[]} />}
       
     </Container>
