@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Slider, Container, Box, Typography, Checkbox, TextField, IconButton} from "@mui/material";
+import { Slider, Container, Box, Typography, Checkbox, TextField, IconButton, Alert, Collapse} from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import StartProcess from "./StartProcess";
-import { AreaSelector, IArea } from '@bmunozg/react-image-area';
+import { AreaSelector } from '@bmunozg/react-image-area';
 
 export default function PreviewVideo({ params }) {
   // Get filename from URL
@@ -18,6 +18,10 @@ export default function PreviewVideo({ params }) {
   const [areaData, setAreaData] = useState([]); // computed area data
   const [areaToggle, setAreaToggle] = useState(false); // toggle for optional area selections
   const [areaNames, setAreaNames] = useState(['1', '2']); // area names
+  // States for alerts
+  const [infoAlert, setInfoAlert] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessages, setErrorMessages] = useState([]);
   // Refs for canvas and image
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -118,7 +122,12 @@ export default function PreviewVideo({ params }) {
     if (!areaProps.isChanging) {
         return (
             <div key={areaProps.areaNumber}>
-                <Typography>{areaNames[areaProps.areaNumber - 1]}</Typography>
+                <Typography
+                sx={{
+                  textShadow: '1px 1px white, -1px -1px white, -1px 1px white, 1px -1px white',
+                  opacity: '65%'
+                }}
+                >{areaNames[areaProps.areaNumber - 1]}</Typography>
             </div>
         );
     }
@@ -143,6 +152,48 @@ export default function PreviewVideo({ params }) {
       setAreaNames(prev => prev.slice(0, -1));
       setAreas(prev => prev.slice(0, -1));
     }
+  }
+
+  // Form Validation
+  const checkErrors = () => {
+    const messages = [];
+    let hasError = false;
+
+    if (areaToggle){
+      
+
+      // Check for invalid area name
+      const validChars = /^[a-zA-Z0-9\s]*$/;
+      // allow alphanumeric input with length between 0 and 100
+      areaNames.forEach(name => {
+        if (name.length <= 0){
+          hasError = true;
+          messages.push('Region names cannot be empty.')
+        } else if (name.length >= 100){
+          hasError = true;
+          messages.push('Region names cannot be longer than 100 characters.')
+        }
+
+        if (!validChars.test(name)){
+          hasError = true;
+          messages.push('Region names cannot have non-alphanumeric characters.')
+        }
+      });
+
+      // Check for invalid areas
+      if (areaNames.length > areas.length){
+        hasError = true;
+        messages.push('You must make region selection(s) before continuing.')
+      }
+    }
+    setError(hasError);
+    setErrorMessages(messages);
+    return hasError;
+  }
+
+  const clearErrors = () => {
+    setError(false);
+    setErrorMessages([]);
   }
 
   // Card style
@@ -216,6 +267,30 @@ export default function PreviewVideo({ params }) {
           </Box>
         </Box>
 
+        {/* Alerts */}
+        <Collapse in={infoAlert}>
+        <Alert 
+          onClose={() => {setInfoAlert(false)}} 
+          severity="info"
+        >
+          Click original thumbnail to make region selection(s)
+        </Alert>
+        </Collapse>
+
+        {
+          error && 
+          <>
+            {errorMessages.map((value, index) => (
+              <Alert
+              key={index}
+              severity="error"
+              >
+                {value}
+              </Alert>
+            ))}
+          </> 
+        }
+
         {/* Controls */}
         <Box
           sx={{
@@ -258,7 +333,11 @@ export default function PreviewVideo({ params }) {
           {/* Area Selector */}
           <Typography sx={{ marginLeft: 2 }}>Set Regions:</Typography>
           <Checkbox
-            onChange={(e) => setAreaToggle(prev => !prev)}
+            onChange={(e) => {
+              setAreaToggle(prev => !prev);
+              setInfoAlert(!areaToggle);
+              clearErrors();
+            }}
           />
           {/* Area Names inputs */}
           {areaToggle && 
@@ -301,8 +380,8 @@ export default function PreviewVideo({ params }) {
       </Box>
 
       {/* Process button */}
-      {areaToggle ? <StartProcess filename={filename} color={color} threshold={threshold} areaValues={areaData} areaNames={areaNames} /> :
-        <StartProcess filename={filename} color={color} threshold={threshold} areaValues={[]} areaNames={[]} />}
+      {areaToggle ? <StartProcess filename={filename} color={color} threshold={threshold} areaValues={areaData} areaNames={areaNames} checkErrors={checkErrors}/> :
+        <StartProcess filename={filename} color={color} threshold={threshold} areaValues={[]} areaNames={[]} checkErrors={checkErrors} />}
       
     </Container>
   );
