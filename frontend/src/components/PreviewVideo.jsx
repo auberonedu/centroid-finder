@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Slider, Container, Box, Typography, Checkbox, TextField} from "@mui/material";
+import { Slider, Container, Box, Typography, Checkbox, TextField, IconButton} from "@mui/material";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import StartProcess from "./StartProcess";
 import { AreaSelector, IArea } from '@bmunozg/react-image-area';
 
@@ -122,6 +124,27 @@ export default function PreviewVideo({ params }) {
     }
   };
 
+  // Add area selection
+  const addArea = () => {
+    let num = areaNames.length;
+    if (num >= 10){
+      // don't do anything if 10 or more areas
+    } else {
+      num++;
+      setAreaNames(prev => [...prev, `${num}`]);
+    }
+  }
+
+  // Delete area selection
+  const deleteArea = () => {
+    if (areaNames.length <= 1){
+      // don't do anything if 1 or less areas
+    } else {
+      setAreaNames(prev => prev.slice(0, -1));
+      setAreas(prev => prev.slice(0, -1));
+    }
+  }
+
   // Card style
   const cardStyle = {
     padding: 2,
@@ -168,7 +191,7 @@ export default function PreviewVideo({ params }) {
                 areas={areas}
                 onChange={(areas) => setAreas(areas)}
                 customAreaRenderer={renderAreaNames}
-                maxAreas={2}
+                maxAreas={areaNames.length}
                 unit="percentage"
               >
                 <OgImage />
@@ -247,9 +270,29 @@ export default function PreviewVideo({ params }) {
                   label={'Region ' + (index + 1) }
                   onChange={(e) => handleNameChange(index, e.target.value)}
                   size="small"
-                  sx={{ marginLeft: 2 }}
+                  sx={{ marginLeft: 2, marginBottom: 2 }}
                 />
               ))}
+              {/* Delete last area button */}
+              <IconButton
+                onClick={() => {
+                  deleteArea();
+                }}
+                disabled={areaNames.length <= 1}
+              >
+                <RemoveCircleOutlineIcon />
+              </IconButton>
+              
+              {/* Add area button */}
+              <IconButton
+                onClick={() => {
+                  addArea();
+                }}
+                disabled={areaNames.length >= 10}
+              >
+                <AddCircleOutlineIcon />
+              </IconButton>
+              
             </div>
           }
 
