@@ -141,6 +141,7 @@ export default function PreviewVideo({ params }) {
     } else {
       num++;
       setAreaNames(prev => [...prev, `${num}`]);
+      clearErrors();
     }
   }
 
@@ -149,8 +150,11 @@ export default function PreviewVideo({ params }) {
     if (areaNames.length <= 1){
       // don't do anything if 1 or less areas
     } else {
+      if (areaNames.length == areas.length){
+        setAreas(prev => prev.slice(0, -1));
+      }
       setAreaNames(prev => prev.slice(0, -1));
-      setAreas(prev => prev.slice(0, -1));
+      clearErrors();
     }
   }
 
