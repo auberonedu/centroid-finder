@@ -100,6 +100,7 @@ const startVideoProcess = async (req, res) => {
     targetColor,
     thresholdNum.toString(),
     jobId,
+    //pass through area data here
   ],
   {
     stdio: ["ignore", "pipe", "pipe"],
