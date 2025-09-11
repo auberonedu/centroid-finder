@@ -3,6 +3,7 @@
 /Users/jamesonfarmer/sdev334/centroid-finder/Processor/src/main/java/io/github/jameson789/app/BinarizingImageGroupFinder.java
 /Users/jamesonfarmer/sdev334/centroid-finder/Processor/src/main/java/io/github/jameson789/app/ColorDistanceFinder.java
 /Users/jamesonfarmer/sdev334/centroid-finder/Processor/src/main/java/io/github/jameson789/app/EuclideanColorDistance.java
+/Users/jamesonfarmer/sdev334/centroid-finder/Processor/src/main/java/io/github/jameson789/app/Region.java
 /Users/jamesonfarmer/sdev334/centroid-finder/Processor/src/main/java/io/github/jameson789/app/Coordinate.java
 /Users/jamesonfarmer/sdev334/centroid-finder/Processor/src/main/java/io/github/jameson789/app/DistanceImageBinarizer.java
 /Users/jamesonfarmer/sdev334/centroid-finder/Processor/src/main/java/io/github/jameson789/app/Group.java

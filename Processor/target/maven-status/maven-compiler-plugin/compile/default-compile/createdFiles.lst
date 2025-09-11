@@ -8,6 +8,7 @@ io/github/jameson789/app/CentroidResult.class
 io/github/jameson789/app/DistanceImageBinarizer.class
 io/github/jameson789/app/BinarizingImageGroupFinder.class
 io/github/jameson789/app/EuclideanColorDistance.class
+io/github/jameson789/app/Region.class
 io/github/jameson789/app/DfsBinaryGroupFinder.class
 io/github/jameson789/app/ImageSummaryApp.class
 io/github/jameson789/app/Coordinate.class
