@@ -7,6 +7,7 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import StartProcess from "./StartProcess";
 import { AreaSelector } from '@bmunozg/react-image-area';
 import useBinarizedImage from "@/hooks/useBinarizedImage";
+import useAreaValidation from "@/hooks/useAreaValidation";
 
 export default function PreviewVideo({ params }) {
   // Get filename from URL
@@ -24,8 +25,14 @@ export default function PreviewVideo({ params }) {
 
   // States for alerts
   const [infoAlert, setInfoAlert] = useState(false);
-  const [error, setError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState([]);
+
+  // errors
+  const {
+    error,
+    errorMessages,
+    checkErrors,
+    clearErrors
+  } = useAreaValidation(areaNames, areas, areaToggle);
 
   // Refs for canvas and image
   const imgRef = useRef(null);
@@ -71,8 +78,8 @@ export default function PreviewVideo({ params }) {
   }, [areas])
 
   // ---- Handlers ----
-  
-  // handle state change of area name
+
+  // handle change of area names
   const handleNameChange = (index, newVal) => {
     setAreaNames(prev => {
       const newNames = [...prev];
@@ -80,22 +87,6 @@ export default function PreviewVideo({ params }) {
       return newNames;
     })
   }
-
-  // render area name in area selector
-  const renderAreaNames = (areaProps) => {
-    if (!areaProps.isChanging) {
-        return (
-            <div key={areaProps.areaNumber}>
-                <Typography
-                sx={{
-                  textShadow: '1px 1px white, -1px -1px white, -1px 1px white, 1px -1px white',
-                  opacity: '65%'
-                }}
-                >{areaNames[areaProps.areaNumber - 1]}</Typography>
-            </div>
-        );
-    }
-  };
 
   // Add area selection
   const addArea = () => {
@@ -122,45 +113,21 @@ export default function PreviewVideo({ params }) {
     }
   }
 
-  // Form Validation
-  const checkErrors = () => {
-    const messages = [];
-    let hasError = false;
-
-    if (areaToggle){
-      // Check for invalid area name
-      const validChars = /^[a-zA-Z0-9\s]*$/;
-      // allow alphanumeric input with length between 0 and 100
-      areaNames.forEach(name => {
-        if (name.length <= 0){
-          hasError = true;
-          messages.push('Region names cannot be empty.')
-        } else if (name.length >= 100){
-          hasError = true;
-          messages.push('Region names cannot be longer than 100 characters.')
-        }
-
-        if (!validChars.test(name)){
-          hasError = true;
-          messages.push('Region names cannot have non-alphanumeric characters.')
-        }
-      });
-
-      // Check for invalid areas
-      if (areaNames.length > areas.length){
-        hasError = true;
-        messages.push('You must make region selection(s) before continuing.')
-      }
+  // render area name in area selector
+  const renderAreaNames = (areaProps) => {
+    if (!areaProps.isChanging) {
+        return (
+            <div key={areaProps.areaNumber}>
+                <Typography
+                sx={{
+                  textShadow: '1px 1px white, -1px -1px white, -1px 1px white, 1px -1px white',
+                  opacity: '65%'
+                }}
+                >{areaNames[areaProps.areaNumber - 1]}</Typography>
+            </div>
+        );
     }
-    setError(hasError);
-    setErrorMessages(messages);
-    return hasError;
-  }
-
-  const clearErrors = () => {
-    setError(false);
-    setErrorMessages([]);
-  }
+  };
 
   // ---- Styles ----
 
@@ -349,8 +316,14 @@ export default function PreviewVideo({ params }) {
       </Box>
 
       {/* Process button */}
-      {areaToggle ? <StartProcess filename={filename} color={color} threshold={threshold} areaValues={areaData} areaNames={areaNames} checkErrors={checkErrors}/> :
-        <StartProcess filename={filename} color={color} threshold={threshold} areaValues={[]} areaNames={[]} checkErrors={checkErrors} />}
+      <StartProcess
+        filename={filename}
+        color={color}
+        threshold={threshold}
+        areaValues={areaToggle ? areaData : []}
+        areaNames={areaToggle ? areaNames : []}
+        checkErrors={checkErrors}
+      />
       
     </Container>
   );
