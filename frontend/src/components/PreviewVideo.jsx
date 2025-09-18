@@ -6,25 +6,31 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import StartProcess from "./StartProcess";
 import { AreaSelector } from '@bmunozg/react-image-area';
+import useBinarizedImage from "@/hooks/useBinarizedImage";
 
 export default function PreviewVideo({ params }) {
   // Get filename from URL
   const { filename } = useParams();
+
   // States for color, threshold
   const [color, setColor] = useState("#000000");
   const [threshold, setThreshold] = useState(100);
+
   // States for areas
   const [areas, setAreas] = useState([]); // collected area data
   const [areaData, setAreaData] = useState([]); // computed area data
   const [areaToggle, setAreaToggle] = useState(false); // toggle for optional area selections
   const [areaNames, setAreaNames] = useState(['1', '2']); // area names
+
   // States for alerts
   const [infoAlert, setInfoAlert] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
+
   // Refs for canvas and image
-  const canvasRef = useRef(null);
   const imgRef = useRef(null);
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const canvasRef = useBinarizedImage(imgRef, imgLoaded, color, threshold);
 
   // Thumbnail URL
   const thumbnailUrl = `http://localhost:3000/thumbnail/${encodeURIComponent(
@@ -39,16 +45,9 @@ export default function PreviewVideo({ params }) {
 
     img.onload = () => {
       imgRef.current = img;
-      drawBinarized(img, color, threshold);
+      setImgLoaded(true);
     };
   }, [thumbnailUrl]);
-
-  // Update binarized image when color/threshold changes
-  useEffect(() => {
-    if (imgRef.current) {
-      drawBinarized(imgRef.current, color, threshold);
-    }
-  }, [color, threshold]);
 
   // Calculate area data
   useEffect(() => {
@@ -71,43 +70,8 @@ export default function PreviewVideo({ params }) {
     
   }, [areas])
 
-  // convert the image to binary based on color and threshold
-  const drawBinarized = (img, targetColor, threshold) => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-
-    // Scale image
-    const scale = 300 / img.width;
-    const width = img.width * scale;
-    const height = img.height * scale;
-
-    canvas.width = width;
-    canvas.height = height;
-
-    // Draw and process the image
-    ctx.drawImage(img, 0, 0, width, height);
-    const imageData = ctx.getImageData(0, 0, width, height);
-    const data = imageData.data;
-
-    // target color values
-    const rT = parseInt(targetColor.slice(1, 3), 16);
-    const gT = parseInt(targetColor.slice(3, 5), 16);
-    const bT = parseInt(targetColor.slice(5, 7), 16);
-
-    // Process each individual pixel
-    for (let i = 0; i < data.length; i += 4) {
-      const r = data[i];
-      const g = data[i + 1];
-      const b = data[i + 2];
-
-      const diff = Math.sqrt((r - rT) ** 2 + (g - gT) ** 2 + (b - bT) ** 2);
-      const value = diff < threshold ? 0 : 255;
-      data[i] = data[i + 1] = data[i + 2] = value;
-    }
-
-    ctx.putImageData(imageData, 0, 0);
-  };
-
+  // ---- Handlers ----
+  
   // handle state change of area name
   const handleNameChange = (index, newVal) => {
     setAreaNames(prev => {
@@ -164,8 +128,6 @@ export default function PreviewVideo({ params }) {
     let hasError = false;
 
     if (areaToggle){
-      
-
       // Check for invalid area name
       const validChars = /^[a-zA-Z0-9\s]*$/;
       // allow alphanumeric input with length between 0 and 100
@@ -200,6 +162,8 @@ export default function PreviewVideo({ params }) {
     setErrorMessages([]);
   }
 
+  // ---- Styles ----
+
   // Card style
   const cardStyle = {
     padding: 2,
@@ -225,6 +189,7 @@ export default function PreviewVideo({ params }) {
     /> )
   }
 
+  // ---- Rendering ----
   return (
     <Container maxWidth="md" sx={{ py: 5, px: 3, bgcolor: "#f9f9f9", borderRadius: 2, boxShadow: 2, marginTop: 2 }}>
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5, marginBottom: 2 }}>
