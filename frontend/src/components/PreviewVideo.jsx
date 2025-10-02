@@ -16,6 +16,7 @@ export default function PreviewVideo({ params }) {
   // States for color, threshold
   const [color, setColor] = useState("#000000");
   const [threshold, setThreshold] = useState(100);
+  const [timeIncrement, setTimeIncrement] = useState(1);
 
   // States for areas
   const [areas, setAreas] = useState([]); // collected area data
@@ -264,6 +265,21 @@ export default function PreviewVideo({ params }) {
             max={255}
             onChange={(e, newValue) => setThreshold(newValue)}
             sx={{ width: 250 }}
+          />
+
+          {/* Increment slider */}
+          <Typography sx={{ marginLeft: 2 }}>Time Increment:</Typography>
+          <Slider
+            value={timeIncrement}
+            valueLabelDisplay="auto"
+            valueLabelFormat={(value, index) => (
+              <span>{value} second(s)</span>
+            )}
+            step={1}
+            min={1}
+            max={60}
+            onChange={(e, newValue) => setTimeIncrement(newValue)}
+            sx={{ width: 250, backgroundColor: "transparent" }}
           />
 
           {/* Area Selector */}
