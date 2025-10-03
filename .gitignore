@@ -22,3 +22,20 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+*.mp4
+/server/frame_centroids.csv
+node_modules
+.DS_Store
+**/target/
+**/surefire-reports/
+**/maven-status/
+.idea/
+.vscode/
+server/frame_centroids.csv
+*.csv
+
+.next/
+
+
+*.env
