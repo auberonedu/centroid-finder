@@ -282,7 +282,7 @@ export default function PreviewVideo({ params }) {
               min={1}
               max={60}
               onChange={(e, newValue) => setTimeIncrement(newValue)}
-              sx={{ width: 250, backgroundColor: "transparent" }}
+              sx={{ width: 250 }}
             />
           </Box>
 
