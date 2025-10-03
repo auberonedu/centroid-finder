@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Slider, Container, Box, Typography, Checkbox, TextField, IconButton, Alert, Collapse} from "@mui/material";
+import { Slider, Container, Box, Typography, Checkbox, TextField, IconButton, Alert, Collapse, Tooltip} from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import StartProcess from "./StartProcess";
@@ -268,19 +268,23 @@ export default function PreviewVideo({ params }) {
           />
 
           {/* Increment slider */}
-          <Typography sx={{ marginLeft: 2 }}>Time Increment:</Typography>
-          <Slider
-            value={timeIncrement}
-            valueLabelDisplay="auto"
-            valueLabelFormat={(value, index) => (
-              <span>{value} second(s)</span>
-            )}
-            step={1}
-            min={1}
-            max={60}
-            onChange={(e, newValue) => setTimeIncrement(newValue)}
-            sx={{ width: 250, backgroundColor: "transparent" }}
-          />
+          <Box sx={{display: 'flex', gap: '1.5em'}}>
+            <Tooltip title="Data is recorded every X seconds" arrow>
+              <Typography sx={{ marginLeft: 2 }}>Time Increment:</Typography>
+            </Tooltip>
+            <Slider
+              value={timeIncrement}
+              valueLabelDisplay="auto"
+              valueLabelFormat={(value, index) => (
+                <span>{value} second(s)</span>
+              )}
+              step={1}
+              min={1}
+              max={60}
+              onChange={(e, newValue) => setTimeIncrement(newValue)}
+              sx={{ width: 250, backgroundColor: "transparent" }}
+            />
+          </Box>
 
           {/* Area Selector */}
           <Typography sx={{ marginLeft: 2 }}>Set Regions:</Typography>
@@ -336,6 +340,7 @@ export default function PreviewVideo({ params }) {
         filename={filename}
         color={color}
         threshold={threshold}
+        timeIncrement={timeIncrement}
         areaValues={areaToggle ? areaData : []}
         areaNames={areaToggle ? areaNames : []}
         checkErrors={checkErrors}
